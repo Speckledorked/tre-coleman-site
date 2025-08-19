@@ -1,0 +1,298 @@
+/*
+ * Tre Coleman Website CSS
+ *
+ * This stylesheet defines the layout, typography, and color palette for
+ * Tre Coleman’s marketing website. It is designed to be simple and
+ * adaptable, so brand colours can be swapped easily. The palette uses
+ * dark blues and warm accents for a contemporary, operator‑first feel.
+ */
+
+/* Root variables make it easy to update colours across the site */
+:root {
+  --primary-colour: #0d3b66;
+  --secondary-colour: #ee964b;
+  --accent-colour: #f95738;
+  --light-bg: #faf0ca;
+  --dark-text: #1a1a1a;
+  --max-width: 1200px;
+  --font-stack: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-stack);
+  color: var(--dark-text);
+  line-height: 1.6;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--primary-colour);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Layout containers */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Header */
+header {
+  background-color: var(--primary-colour);
+  color: white;
+  padding: 1rem 0;
+}
+
+header .logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+nav a {
+  color: white;
+  font-weight: 500;
+}
+
+nav a.button {
+  background-color: var(--accent-colour);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+nav a.button:hover {
+  background-color: var(--secondary-colour);
+}
+
+/* Hero section */
+.hero {
+  background-color: var(--light-bg);
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary-colour);
+}
+
+.hero p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero .cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero .cta-buttons a {
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  border: 2px solid var(--primary-colour);
+}
+
+.hero .cta-buttons a.primary {
+  background-color: var(--primary-colour);
+  color: white;
+  border-color: var(--primary-colour);
+}
+
+.hero .cta-buttons a.primary:hover {
+  background-color: var(--secondary-colour);
+}
+
+.hero .cta-buttons a.secondary {
+  background-color: transparent;
+  color: var(--primary-colour);
+}
+
+.hero .cta-buttons a.secondary:hover {
+  background-color: var(--primary-colour);
+  color: white;
+}
+
+/* Pillar cards */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.pillar {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.pillar:hover {
+  transform: translateY(-4px);
+}
+
+.pillar h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  color: var(--primary-colour);
+}
+
+.pillar p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.pillar a {
+  font-weight: 600;
+  color: var(--accent-colour);
+}
+
+/* Sections */
+section {
+  padding: 3rem 0;
+}
+
+/* Proof strip */
+.proof-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  font-weight: 500;
+  color: var(--primary-colour);
+}
+
+/* Credibility */
+.credibility {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-colour);
+  color: white;
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+footer .footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+footer .footer-content p {
+  font-size: 0.9rem;
+}
+
+footer ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+footer ul li a {
+  color: white;
+  font-size: 0.9rem;
+}
+
+/* Forms */
+form {
+  display: grid;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+label {
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+button[type="submit"] {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-colour);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--secondary-colour);
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.inline-flex {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
