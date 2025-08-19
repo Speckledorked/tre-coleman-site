@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://speckledorked.github.io/tre-coleman-site/sitemap.xml

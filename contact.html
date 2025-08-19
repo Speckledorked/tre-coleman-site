@@ -9,14 +9,7 @@
       content="Tell me your bottleneck. Get a simple first step today." />
     <!-- Relative CSS path for GitHub Pages -->
     <link rel="stylesheet" href="style.css" />
-    <script>
-      // Basic form submission handler: shows an alert and prevents actual submission
-      function handleSubmit(event) {
-        event.preventDefault();
-        alert('Thanks—look for a reply today. If it’s urgent, include “ASAP” and I’ll prioritise it.');
-        event.target.reset();
-      }
-    </script>
+    <!-- Form submission is handled via a script at the bottom of the page -->
   </head>
   <body>
     <!-- Header -->
@@ -29,7 +22,7 @@
             <li><a href="case-studies.html">Case Studies</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html" aria-current="page">Contact</a></li>
-            <li><a href="contact.html" class="button">Get the playbook</a></li>
+            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a></li>
           </ul>
         </nav>
       </div>
@@ -39,52 +32,75 @@
       <div class="container">
         <h1 class="mb-2">Let’s talk</h1>
         <p class="mb-2">Tell me where the bottleneck is. I’ll share a simple first step you can take this week.</p>
-        <form onsubmit="handleSubmit(event)">
+        <form id="contactForm" action="https://formsubmit.co/ph_tre@yahoo.com" method="POST" novalidate>
           <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required />
+            <label>Name
+              <input name="name" required />
+            </label>
           </div>
           <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required />
+            <label>Email
+              <input type="email" name="email" required />
+            </label>
           </div>
           <div>
-            <label for="company">Company</label>
-            <input type="text" id="company" name="company" />
+            <label>Company
+              <input name="company" />
+            </label>
           </div>
           <div>
-            <label for="phone">Phone <span style="font-weight: 400;">(optional)</span></label>
-            <input type="text" id="phone" name="phone" />
+            <label>Phone (optional)
+              <input name="phone" />
+            </label>
           </div>
           <div>
-            <label for="location">Location</label>
-            <input type="text" id="location" name="location" />
+            <label>Location
+              <input name="location" />
+            </label>
           </div>
           <div>
-            <label for="bottleneck">Biggest bottleneck</label>
-            <textarea id="bottleneck" name="bottleneck" required></textarea>
+            <label>Biggest bottleneck
+              <textarea name="bottleneck" rows="4" required></textarea>
+            </label>
           </div>
           <div>
-            <label for="budget">Budget range</label>
-            <select id="budget" name="budget">
-              <option value="">Select...</option>
-              <option value="<5k">Under $5k</option>
-              <option value="5k-10k">$5k–$10k</option>
-              <option value="10k-25k">$10k–$25k</option>
-              <option value=">25k">$25k+</option>
-            </select>
+            <label>Budget range
+              <select name="budget">
+                <option value="">Select…</option>
+                <option>&lt;$2k</option>
+                <option>$2k–$5k</option>
+                <option>$5k–$10k</option>
+                <option>$10k+</option>
+              </select>
+            </label>
           </div>
           <div>
-            <label for="start">Preferred start</label>
-            <select id="start" name="start">
-              <option value="">Select...</option>
-              <option value="ASAP">ASAP</option>
-              <option value="1-3 months">1–3 months</option>
-              <option value="3+ months">3+ months</option>
-            </select>
+            <label>Preferred start
+              <select name="start">
+                <option value="">Select…</option>
+                <option>ASAP</option>
+                <option>Next 30 days</option>
+                <option>Next quarter</option>
+              </select>
+            </label>
           </div>
-          <button type="submit">Get my plan</button>
+          <!-- Anti-spam & metadata -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;">
+          <input type="hidden" name="_subject" value="New Lead from TreColeman.co">
+          <input type="hidden" name="_autoresponse" value="Thanks for reaching out — I’ll review and reply shortly. If you’d like to book now: https://calendly.com/ph_tre">
+          <input type="hidden" name="_next" id="nextUrl" value="">
+          <input type="hidden" name="utm_source">
+          <input type="hidden" name="utm_medium">
+          <input type="hidden" name="utm_campaign">
+          <input type="hidden" name="_captcha" value="true">
+          <button type="submit" class="button" style="margin-top:1rem;">Get my plan</button>
         </form>
+        <!-- Inline Calendly embed -->
+        <div class="mt-2">
+          <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+          <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+          <div class="calendly-inline-widget" data-url="https://calendly.com/ph_tre" style="min-width:320px;height:700px;"></div>
+        </div>
       </div>
     </section>
     
@@ -101,7 +117,32 @@
       </div>
     </footer>
     <script>
+      // Set the current year in the footer
       document.getElementById('year').textContent = new Date().getFullYear();
+      // Capture UTM parameters from the query string and populate hidden fields
+      (function captureUTM() {
+        const params = new URLSearchParams(location.search);
+        ['utm_source','utm_medium','utm_campaign'].forEach(function(key) {
+          const val = params.get(key);
+          if (val) {
+            const field = document.querySelector('[name="' + key + '"]');
+            if (field) field.value = val;
+          }
+        });
+      })();
+      // Before submitting, build the _next URL to redirect to Calendly with prefilled name and email
+      document.getElementById('contactForm').addEventListener('submit', function() {
+        const form = this;
+        const hp = form.querySelector('[name="website"]');
+        // Honeypot: if filled, do nothing special
+        if (hp && hp.value.trim() !== '') return;
+        const nameVal = encodeURIComponent(form.elements.name.value || '');
+        const emailVal = encodeURIComponent(form.elements.email.value || '');
+        const calUrl = new URL('https://calendly.com/ph_tre');
+        if (nameVal) calUrl.searchParams.set('name', decodeURIComponent(nameVal));
+        if (emailVal) calUrl.searchParams.set('email', decodeURIComponent(emailVal));
+        document.getElementById('nextUrl').value = calUrl.toString();
+      });
     </script>
   </body>
 </html>
