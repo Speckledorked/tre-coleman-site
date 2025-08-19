@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Playbook | Tre Coleman</title>
+    <meta
+      name="description"
+      content="Download your free restaurant AI & operations playbook and discover how to cut waste, tighten execution and scale smart." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="logo"><a href="index.html" style="color:white;">Tre Coleman</a></div>
+        <nav>
+          <ul>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="lead-magnet.html" aria-current="page">Free Playbook</a></li>
+            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section hero">
+      <div class="container">
+        <h1>Get the 90‑Day AI & Ops Playbook</h1>
+        <p class="mb-2">
+          Learn the exact frameworks I use to cut overtime, lift margins and simplify training. This free playbook walks you through
+          a 90‑day rollout of AI integrations, SOPs and LSM that actually move the numbers.
+        </p>
+        <div class="cta-group">
+          <a href="#download-form" class="button">Download now</a>
+          <a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Download Section -->
+    <section class="section">
+      <div class="container">
+        <h2>What’s inside</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>AI integrations that stick</h3>
+            <p>Step‑by‑step guidance to automate your most time‑consuming tasks: scheduling, reporting, prep lists and more.</p>
+          </div>
+          <div class="card">
+            <h3>SOPs & training frameworks</h3>
+            <p>Templates for role scorecards, checklists and 30‑60‑90 plans so your standards actually get used.</p>
+          </div>
+          <div class="card">
+            <h3>LSM & menu tactics</h3>
+            <p>Practical playbooks to drive traffic and ticket size through grassroots marketing and menu engineering.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Form Section -->
+    <section class="section" id="download-form">
+      <div class="container">
+        <h2 class="mb-2">Grab your free copy</h2>
+        <p class="mb-2">Fill out the short form and I’ll email you the playbook right away. You’ll also get a link to book a call if you’re ready to dive deeper.</p>
+        <form id="playbookForm" action="https://formsubmit.co/ph_tre@yahoo.com" method="POST" novalidate>
+          <div>
+            <label>Name
+              <input name="name" required />
+            </label>
+          </div>
+          <div>
+            <label>Email
+              <input type="email" name="email" required />
+            </label>
+          </div>
+          <div>
+            <label>Biggest bottleneck (optional)
+              <textarea name="bottleneck" rows="3"></textarea>
+            </label>
+          </div>
+          <!-- anti‑spam & metadata -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;">
+          <input type="hidden" name="_subject" value="New Playbook Request">
+          <!-- Auto response: include playbook link and Calendly call to action -->
+          <input type="hidden" name="_autoresponse" value="Thanks for requesting the playbook! Download it here: https://speckledorked.github.io/tre-coleman-site/assets/lead-magnet.pdf\n\nIf you’d like to talk through it, book a call: https://calendly.com/ph_tre">
+          <!-- After submission redirect built via JS below -->
+          <input type="hidden" name="_next" id="playbookNextUrl" value="">
+          <input type="hidden" name="utm_source">
+          <input type="hidden" name="utm_medium">
+          <input type="hidden" name="utm_campaign">
+          <input type="hidden" name="_captcha" value="true">
+          <button type="submit" class="button" style="margin-top:1rem;">Send me the playbook</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-content">
+        <p>&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="case-studies.html">Case Studies</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="lead-magnet.html" aria-current="page">Free Playbook</a></li>
+        </ul>
+      </div>
+    </footer>
+    
+    <script>
+      // Set current year
+      document.getElementById('year').textContent = new Date().getFullYear();
+      // Capture UTM parameters
+      (function() {
+        const params = new URLSearchParams(window.location.search);
+        ['utm_source','utm_medium','utm_campaign'].forEach(function(key) {
+          const val = params.get(key);
+          if (val) {
+            const field = document.querySelector('[name="' + key + '"]');
+            if (field) field.value = val;
+          }
+        });
+      })();
+      // Build redirect URL with prefilled Calendly on submit
+      document.getElementById('playbookForm').addEventListener('submit', function() {
+        const form = this;
+        const hp = form.querySelector('[name="website"]');
+        if (hp && hp.value.trim() !== '') return;
+        const name = encodeURIComponent(form.elements.name.value || '');
+        const email = encodeURIComponent(form.elements.email.value || '');
+        const url = new URL('https://calendly.com/ph_tre');
+        if (name) url.searchParams.set('name', decodeURIComponent(name));
+        if (email) url.searchParams.set('email', decodeURIComponent(email));
+        document.getElementById('playbookNextUrl').value = url.toString();
+      });
+    </script>
+  </body>
+</html>
