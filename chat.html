@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chat | Tre Coleman</title>
+    <meta
+      name="description"
+      content="Chat with our AI assistant. Get generic answers for free or unlock premium, document‑aware responses by logging in." />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Additional inline styles for the chat page */
+      .chat-section {
+        margin-top: 2rem;
+      }
+      .chat-widget {
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background-color: #fafafa;
+      }
+      .login-container,
+      .premium-container {
+        margin-top: 2rem;
+      }
+      .login-container input[type="password"] {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 200px;
+      }
+      .login-container button {
+        margin-left: 0.5rem;
+      }
+      .upgrade-note {
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo">Tre Coleman</div>
+        <nav>
+          <ul>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="lead-magnet.html">Free Playbook</a></li>
+            <!-- Highlight chat page in nav -->
+            <li><a href="chat.html" aria-current="page">AI Chat</a></li>
+            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>AI Chat</h1>
+        <p>Get quick answers from our AI assistant. The free version provides general guidance. Unlock the premium chat for tailored answers based on your documents.</p>
+      </section>
+
+      <!-- Free chat section -->
+      <section class="chat-section" id="free-chat">
+        <h2>Free Chat</h2>
+        <p>This chat provides generic answers based on publicly available information.</p>
+        <div class="chat-widget">
+          <!-- Placeholder for generic chatbot embed. Replace this div with your generic bot embed code (e.g., Chatbase or other service) -->
+          <p><em>Generic AI chat widget would be embedded here.</em></p>
+        </div>
+        <p class="upgrade-note">Need more specific help? <a href="#" id="show-login">Unlock the premium chat</a> for tailored guidance.</p>
+      </section>
+
+      <!-- Login form for premium access -->
+      <section class="login-container" id="login-form" style="display: none;">
+        <h2>Premium Access</h2>
+        <p>Enter the password provided to you to unlock the premium chat.</p>
+        <input type="password" id="premium-password" placeholder="Enter password" />
+        <button id="login-btn">Unlock</button>
+        <p id="login-error" style="color: red; display: none;">Incorrect password. Try again.</p>
+      </section>
+
+      <!-- Premium chat section -->
+      <section class="premium-container" id="premium-chat" style="display: none;">
+        <h2>Premium Chat</h2>
+        <p>You have unlocked access to the premium chat. This version can draw from your private documents and provide tailored answers.</p>
+        <div class="chat-widget">
+          <!-- Placeholder for premium chatbot embed. Replace with your premium bot embed code that includes client‑specific documents -->
+          <p><em>Premium AI chat widget would be embedded here.</em></p>
+        </div>
+        <button id="logout-btn" class="button" style="margin-top: 1rem;">Log out</button>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-content">
+        <p>&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="case-studies.html">Case Studies</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="chat.html" aria-current="page">AI Chat</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script>
+      // Update footer year
+      document.getElementById('year').textContent = new Date().getFullYear();
+      // Password used to unlock premium chat. Change this to whatever you like.
+      const premiumPassword = 'trepremium';
+      // Utility to update which sections are visible
+      function updateView() {
+        const hasPremium = localStorage.getItem('premium') === 'true';
+        const freeChat = document.getElementById('free-chat');
+        const loginForm = document.getElementById('login-form');
+        const premiumChat = document.getElementById('premium-chat');
+        if (hasPremium) {
+          freeChat.style.display = 'none';
+          loginForm.style.display = 'none';
+          premiumChat.style.display = 'block';
+        } else {
+          freeChat.style.display = 'block';
+          loginForm.style.display = 'none';
+          premiumChat.style.display = 'none';
+        }
+      }
+      // Show login form when user clicks the unlock link
+      document.getElementById('show-login').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('login-form').style.display = 'block';
+      });
+      // Handle login button click
+      document.getElementById('login-btn').addEventListener('click', function () {
+        const inputPassword = document.getElementById('premium-password').value;
+        if (inputPassword === premiumPassword) {
+          localStorage.setItem('premium', 'true');
+          document.getElementById('login-error').style.display = 'none';
+          updateView();
+        } else {
+          document.getElementById('login-error').style.display = 'block';
+        }
+      });
+      // Handle logout button click
+      document.getElementById('logout-btn').addEventListener('click', function () {
+        localStorage.removeItem('premium');
+        updateView();
+      });
+      // Initialize view on page load
+      updateView();
+    </script>
+  </body>
+</html>
