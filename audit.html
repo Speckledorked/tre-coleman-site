@@ -1,456 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Restaurant Operations Audit | Tre’ Coleman</title>
-  <!-- Use your site’s styles -->
-  <link rel="stylesheet" href="style.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Restaurant Operations Audit - Tre' Coleman</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        /* --- Simple top navigation (minimal styles to avoid conflicts) --- */
+        .top-nav {
+            background: #2c3e50;
+            color: #fff;
+        }
+        .top-nav .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: .75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .top-nav .brand { font-weight: 700; letter-spacing: .3px; }
+        .top-nav ul { list-style: none; display: flex; gap: 1rem; }
+        .top-nav a { color: #fff; text-decoration: none; }
+        .top-nav a:hover { text-decoration: underline; }
 
-  <!-- Quiz-specific styles (kept minimal, using your :root variables) -->
-  <style>
-    .quiz-wrap {
-      max-width: 820px;
-      margin: 2rem auto;
-      background: #fff;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-      padding: 1.25rem;
-    }
-    .progress-bar {
-      height: 6px;
-      background: #e9ecef;
-      border-radius: 4px;
-      overflow: hidden;
-      margin: 0.5rem 0 1rem;
-    }
-    .progress-bar > .progress {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent-colour), var(--secondary-colour), var(--primary-colour));
-      transition: width 0.3s ease;
-    }
-    .section {
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      background: #fafafa;
-    }
-    .section h3 {
-      margin-bottom: .75rem;
-      color: var(--dark-text);
-      font-size: 1.1rem;
-    }
-    .question { margin-bottom: .75rem; }
-    .question label { display:block; margin-bottom:.35rem; font-weight:600; color: var(--dark-text); }
-    .question select, .question input {
-      width:100%;
-      padding:.6rem .7rem;
-      border:1px solid #ddd;
-      border-radius:6px;
-      font: inherit;
-    }
-    .calculate-btn {
-      width:100%;
-      padding: .9rem 1rem;
-      border:none;
-      border-radius:6px;
-      font-weight:700;
-      cursor:pointer;
-      color:#fff;
-      background: var(--accent-colour);
-      transition: background .2s ease;
-    }
-    .calculate-btn:hover { background: var(--secondary-colour); }
+        .container {
+            max-width: 800px;
+            margin: 1rem auto;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .header h1 { font-size: 2rem; margin-bottom: 0.5rem; font-weight: 600; }
+        .header p { opacity: 0.9; font-size: 1.1rem; }
 
-    .results {
-      display:none;
-      margin-top:1rem;
-      background:#fff;
-      border:1px solid #eee;
-      border-radius:8px;
-      padding:1rem;
-    }
-    .results.show { display:block; }
-    .score-display { text-align:center; margin-bottom:1rem; }
-    .score-circle {
-      width:110px; height:110px; margin:.25rem auto .75rem;
-      border-radius:50%; display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:1.6rem; font-weight:800;
-    }
-    .score-excellent { background: linear-gradient(135deg, #27ae60, #2ecc71); }
-    .score-good { background: linear-gradient(135deg, #f39c12, #e67e22); }
-    .score-poor { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .progress-bar { height: 6px; background: #ecf0f1; margin: 0; }
+        .progress { height: 100%; background: linear-gradient(90deg, #e74c3c, #f39c12, #27ae60); width: 0%; transition: width 0.3s ease; }
 
-    .recommendations {
-      border-left:4px solid var(--primary-colour);
-      background:#f9fafb;
-      padding:1rem; border-radius:6px; margin-bottom:1rem;
-    }
-    .recommendations h4 { margin-bottom:.5rem; color: var(--primary-colour); }
-    .priority-high { border-left-color:#e74c3c; background:#fff5f5; }
-    .priority-high h4 { color:#e74c3c; }
-    .priority-medium { border-left-color:#f39c12; background:#fffbf0; }
-    .priority-medium h4 { color:#f39c12; }
+        .content { padding: 2rem; }
+        .section { margin-bottom: 2rem; padding: 1.5rem; border-radius: 10px; border: 2px solid #ecf0f1; transition: all 0.3s ease; }
+        .section.active { border-color: #3498db; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1); }
+        .section h3 {
+            color: #2c3e50; margin-bottom: 1rem; font-size: 1.3rem; display: flex; align-items: center;
+        }
+        .section-icon {
+            width: 24px; height: 24px; margin-right: 0.5rem; background: #3498db;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 0.8rem;
+        }
+        .question { margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #3498db; }
+        .question label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #2c3e50; }
+        .question select, .question input {
+            width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; background: white; transition: border-color 0.3s ease;
+        }
+        .question select:focus, .question input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1); }
 
-    .cta {
-      margin-top:1rem; padding:1.25rem; border-radius:8px; color:#fff;
-      background: var(--primary-colour); text-align:center;
-    }
-    .cta .contact-form {
-      max-width:420px; margin:.75rem auto 0; display:flex; gap:.5rem; flex-wrap:wrap;
-    }
-    .cta input[type="email"] {
-      flex:1; min-width: 220px; padding:.6rem .7rem; border-radius:6px; border:none;
-    }
-    .cta button { padding:.6rem 1rem; border:none; border-radius:6px; font-weight:700; cursor:pointer; background:var(--secondary-colour); color:#fff; }
-    .cta button:hover { background: var(--accent-colour); }
-    .cta .contact-line { margin-top:.75rem; opacity:.9; }
-    .cta .contact-line a { color:#fff; text-decoration:underline; }
-  </style>
+        .results {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem; border-radius: 10px; margin-top: 2rem; display: none;
+        }
+        .results.show { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .score-display { text-align: center; margin-bottom: 2rem; }
+        .score-circle {
+            width: 120px; height: 120px; margin: 0 auto 1rem; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white;
+        }
+        .score-excellent { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .score-good { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .score-poor { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+        .recommendations { background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #27ae60; margin-bottom: 1.5rem; }
+        .recommendations h4 { color: #27ae60; margin-bottom: 1rem; }
+        .priority-high { background: #fff5f5; border-left-color: #e74c3c; }
+        .priority-high h4 { color: #e74c3c; }
+        .priority-medium { background: #fffbf0; border-left-color: #f39c12; }
+        .priority-medium h4 { color: #f39c12; }
+
+        .cta {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white; padding: 2rem; border-radius: 10px; text-align: center; margin-top: 2rem;
+        }
+        .cta h3 { margin-bottom: 1rem; }
+        .cta p { margin-bottom: 1.5rem; opacity: 0.9; }
+
+        .contact-form { display: flex; gap: 1rem; max-width: 400px; margin: 0 auto; }
+        .contact-form input {
+            flex: 1; padding: 0.75rem; border: none; border-radius: 5px; font-size: 1rem;
+        }
+        .contact-form button {
+            background: #27ae60; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background 0.3s ease;
+        }
+        .contact-form button:hover { background: #219a52; }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 2rem; transition: all 0.3s ease;
+        }
+        .calculate-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3); }
+
+        @media (max-width: 768px) {
+            .container { margin: 1rem; }
+            .content { padding: 1rem; }
+            .contact-form { flex-direction: column; }
+            .header h1 { font-size: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
+    <!-- NEW: Top Navigation (clickable links). Update hrefs to your routes. -->
+    <nav class="top-nav" aria-label="Primary">
+        <div class="nav-inner">
+            <div class="brand">Tre’ Coleman</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/resources">Resources</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-  <!-- Site Header (uses your header/nav styles from style.css) -->
-  <header>
-    <div class="container" style="display:flex; align-items:center; justify-content:space-between;">
-      <div class="logo">Tre’ Coleman</div>
-      <nav>
-        <ul>
-          <!-- Update hrefs as needed to match your routes -->
-          <li><a href="/">Home</a></li>
-          <li><a href="/services">Services</a></li>
-          <li><a href="/resources">Resources</a></li>
-          <li><a href="/contact" class="button">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero (styled by your .hero rules) -->
-  <section class="hero">
     <div class="container">
-      <h1>🍽️ Restaurant Operations Audit</h1>
-      <p>Discover hidden profit leaks and optimization opportunities in your restaurant.</p>
+        <div class="header">
+            <h1>🍽️ Restaurant Operations Audit</h1>
+            <p>Discover hidden profit leaks and optimization opportunities in your restaurant</p>
+        </div>
+
+        <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
+
+        <div class="content">
+            <div class="section active">
+                <h3><span class="section-icon">1</span>Food Cost Management</h3>
+                <div class="question">
+                    <label>What's your current food cost percentage?</label>
+                    <select id="foodCost">
+                        <option value="">Select range</option>
+                        <option value="5">Under 25% (Excellent)</option>
+                        <option value="3">25-30% (Good)</option>
+                        <option value="2">30-35% (Acceptable)</option>
+                        <option value="1">Over 35% (Needs attention)</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How often do you conduct inventory counts?</label>
+                    <select id="inventory">
+                        <option value="">Select frequency</option>
+                        <option value="5">Daily/Weekly</option>
+                        <option value="4">Bi-weekly</option>
+                        <option value="2">Monthly</option>
+                        <option value="1">Quarterly or less</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Do you have standardized recipes with precise portioning?</label>
+                    <select id="recipes">
+                        <option value="">Select answer</option>
+                        <option value="5">Yes, all items</option>
+                        <option value="3">Most items</option>
+                        <option value="2">Some items</option>
+                        <option value="1">No standardization</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="section-icon">2</span>Labor Efficiency</h3>
+                <div class="question">
+                    <label>What's your labor cost percentage?</label>
+                    <select id="laborCost">
+                        <option value="">Select range</option>
+                        <option value="5">Under 25%</option>
+                        <option value="4">25-30%</option>
+                        <option value="2">30-35%</option>
+                        <option value="1">Over 35%</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How do you schedule staff?</label>
+                    <select id="scheduling">
+                        <option value="">Select method</option>
+                        <option value="5">Data-driven forecasting system</option>
+                        <option value="3">Based on historical patterns</option>
+                        <option value="2">Manager intuition</option>
+                        <option value="1">Fixed schedules regardless of demand</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How often do you experience overtime?</label>
+                    <select id="overtime">
+                        <option value="">Select frequency</option>
+                        <option value="5">Rarely (under 5% of payroll)</option>
+                        <option value="3">Occasionally (5-10%)</option>
+                        <option value="2">Regularly (10-15%)</option>
+                        <option value="1">Frequently (over 15%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="section-icon">3</span>Revenue Optimization</h3>
+                <div class="question">
+                    <label>What's your average table turn time during peak hours?</label>
+                    <select id="turnTime">
+                        <option value="">Select time</option>
+                        <option value="5">Under 45 minutes</option>
+                        <option value="4">45-60 minutes</option>
+                        <option value="2">60-75 minutes</option>
+                        <option value="1">Over 75 minutes</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Do you track and optimize your menu mix?</label>
+                    <select id="menuMix">
+                        <option value="">Select answer</option>
+                        <option value="5">Yes, monthly analysis with strategic adjustments</option>
+                        <option value="3">Quarterly reviews</option>
+                        <option value="2">Occasional analysis</option>
+                        <option value="1">No formal tracking</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>What's your average ticket size trend?</label>
+                    <select id="ticketSize">
+                        <option value="">Select trend</option>
+                        <option value="5">Consistently increasing</option>
+                        <option value="4">Stable</option>
+                        <option value="2">Slightly declining</option>
+                        <option value="1">Significantly declining</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="section-icon">4</span>Technology & Systems</h3>
+                <div class="question">
+                    <label>How integrated are your POS, inventory, and scheduling systems?</label>
+                    <select id="integration">
+                        <option value="">Select level</option>
+                        <option value="5">Fully integrated with real-time data</option>
+                        <option value="3">Partially integrated</option>
+                        <option value="2">Separate systems with manual data entry</option>
+                        <option value="1">Paper-based or basic POS only</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Do you use data analytics for decision making?</label>
+                    <select id="analytics">
+                        <option value="">Select usage</option>
+                        <option value="5">Advanced analytics with predictive insights</option>
+                        <option value="4">Regular reporting and analysis</option>
+                        <option value="2">Basic reports occasionally</option>
+                        <option value="1">Decisions based on intuition only</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="section-icon">5</span>Quality & Consistency</h3>
+                <div class="question">
+                    <label>How standardized are your operating procedures?</label>
+                    <select id="procedures">
+                        <option value="">Select level</option>
+                        <option value="5">Comprehensive, documented, and regularly updated</option>
+                        <option value="4">Well documented for most processes</option>
+                        <option value="2">Basic documentation</option>
+                        <option value="1">Mostly informal/tribal knowledge</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How do you monitor food quality and consistency?</label>
+                    <select id="quality">
+                        <option value="">Select method</option>
+                        <option value="5">Systematic quality checks with documented standards</option>
+                        <option value="3">Regular but informal monitoring</option>
+                        <option value="2">Occasional spot checks</option>
+                        <option value="1">Reactive - only when problems arise</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="calculateAudit()">📊 Get My Operations Score & Recommendations</button>
+
+            <div id="results" class="results"><!-- Results injected here --></div>
+        </div>
     </div>
-  </section>
 
-  <main class="container">
-    <div class="quiz-wrap">
-      <div class="progress-bar"><div id="progressBar" class="progress"></div></div>
+    <script>
+        function updateProgress() {
+            const questions = document.querySelectorAll('select');
+            const answered = Array.from(questions).filter(q => q.value !== '').length;
+            const progress = (answered / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
 
-      <!-- Sections -->
-      <div class="section">
-        <h3>1) Food Cost Management</h3>
-        <div class="question">
-          <label>What’s your current food cost percentage?</label>
-          <select id="foodCost">
-            <option value="">Select range</option>
-            <option value="5">Under 25% (Excellent)</option>
-            <option value="3">25-30% (Good)</option>
-            <option value="2">30-35% (Acceptable)</option>
-            <option value="1">Over 35% (Needs attention)</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>How often do you conduct inventory counts?</label>
-          <select id="inventory">
-            <option value="">Select frequency</option>
-            <option value="5">Daily/Weekly</option>
-            <option value="4">Bi-weekly</option>
-            <option value="2">Monthly</option>
-            <option value="1">Quarterly or less</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>Do you have standardized recipes with precise portioning?</label>
-          <select id="recipes">
-            <option value="">Select answer</option>
-            <option value="5">Yes, all items</option>
-            <option value="3">Most items</option>
-            <option value="2">Some items</option>
-            <option value="1">No standardization</option>
-          </select>
-        </div>
-      </div>
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionQuestions = section.querySelectorAll('select');
+                const sectionAnswered = Array.from(sectionQuestions).every(q => q.value !== '');
+                if (sectionAnswered) {
+                    section.style.borderColor = '#27ae60';
+                    section.style.background = '#f8fff8';
+                } else if (Array.from(sectionQuestions).some(q => q.value !== '')) {
+                    section.style.borderColor = '#f39c12';
+                    section.style.background = '#fffef8';
+                } else {
+                    section.style.borderColor = '#ecf0f1';
+                    section.style.background = 'white';
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => select.addEventListener('change', updateProgress));
+        });
 
-      <div class="section">
-        <h3>2) Labor Efficiency</h3>
-        <div class="question">
-          <label>What’s your labor cost percentage?</label>
-          <select id="laborCost">
-            <option value="">Select range</option>
-            <option value="5">Under 25%</option>
-            <option value="4">25-30%</option>
-            <option value="2">30-35%</option>
-            <option value="1">Over 35%</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>How do you schedule staff?</label>
-          <select id="scheduling">
-            <option value="">Select method</option>
-            <option value="5">Data-driven forecasting system</option>
-            <option value="3">Based on historical patterns</option>
-            <option value="2">Manager intuition</option>
-            <option value="1">Fixed schedules regardless of demand</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>How often do you experience overtime?</label>
-          <select id="overtime">
-            <option value="">Select frequency</option>
-            <option value="5">Rarely (under 5% of payroll)</option>
-            <option value="3">Occasionally (5-10%)</option>
-            <option value="2">Regularly (10-15%)</option>
-            <option value="1">Frequently (over 15%)</option>
-          </select>
-        </div>
-      </div>
+        function calculateAudit() {
+            const questions = ['foodCost','inventory','recipes','laborCost','scheduling','overtime','turnTime','menuMix','ticketSize','integration','analytics','procedures','quality'];
+            const answers = {};
+            let totalScore = 0, answeredCount = 0;
 
-      <div class="section">
-        <h3>3) Revenue Optimization</h3>
-        <div class="question">
-          <label>What’s your average table turn time during peak hours?</label>
-          <select id="turnTime">
-            <option value="">Select time</option>
-            <option value="5">Under 45 minutes</option>
-            <option value="4">45-60 minutes</option>
-            <option value="2">60-75 minutes</</option>
-            <option value="1">Over 75 minutes</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>Do you track and optimize your menu mix?</label>
-          <select id="menuMix">
-            <option value="">Select answer</option>
-            <option value="5">Yes, monthly analysis with strategic adjustments</option>
-            <option value="3">Quarterly reviews</option>
-            <option value="2">Occasional analysis</option>
-            <option value="1">No formal tracking</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>What’s your average ticket size trend?</label>
-          <select id="ticketSize">
-            <option value="">Select trend</option>
-            <option value="5">Consistently increasing</option>
-            <option value="4">Stable</option>
-            <option value="2">Slightly declining</option>
-            <option value="1">Significantly declining</option>
-          </select>
-        </div>
-      </div>
+            questions.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.value !== '') {
+                    answers[id] = parseInt(el.value, 10);
+                    totalScore += parseInt(el.value, 10);
+                    answeredCount++;
+                }
+            });
 
-      <div class="section">
-        <h3>4) Technology & Systems</h3>
-        <div class="question">
-          <label>How integrated are your POS, inventory, and scheduling systems?</label>
-          <select id="integration">
-            <option value="">Select level</option>
-            <option value="5">Fully integrated with real-time data</option>
-            <option value="3">Partially integrated</option>
-            <option value="2">Separate systems with manual data entry</option>
-            <option value="1">Paper-based or basic POS only</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>Do you use data analytics for decision making?</label>
-          <select id="analytics">
-            <option value="">Select usage</option>
-            <option value="5">Advanced analytics with predictive insights</option>
-            <option value="4">Regular reporting and analysis</option>
-            <option value="2">Basic reports occasionally</option>
-            <option value="1">Decisions based on intuition only</option>
-          </select>
-        </div>
-      </div>
+            if (answeredCount < questions.length) {
+                alert('Please answer all questions to get your complete audit results.');
+                return;
+            }
 
-      <div class="section">
-        <h3>5) Quality & Consistency</h3>
-        <div class="question">
-          <label>How standardized are your operating procedures?</label>
-          <select id="procedures">
-            <option value="">Select level</option>
-            <option value="5">Comprehensive, documented, and regularly updated</option>
-            <option value="4">Well documented for most processes</option>
-            <option value="2">Basic documentation</option>
-            <option value="1">Mostly informal/tribal knowledge</option>
-          </select>
-        </div>
-        <div class="question">
-          <label>How do you monitor food quality and consistency?</label>
-          <select id="quality">
-            <option value="">Select method</option>
-            <option value="5">Systematic quality checks with documented standards</option>
-            <option value="3">Regular but informal monitoring</option>
-            <option value="2">Occasional spot checks</option>
-            <option value="1">Reactive — only when problems arise</option>
-          </select>
-        </div>
-      </div>
+            const maxScore = questions.length * 5;
+            const percentage = Math.round((totalScore / maxScore) * 100);
 
-      <button class="calculate-btn" onclick="calculateAudit()">📊 Get My Operations Score & Recommendations</button>
+            let scoreClass, scoreText, recommendations;
+            if (percentage >= 80) {
+                scoreClass = 'score-excellent'; scoreText = 'Excellent'; recommendations = getExcellentRecommendations(answers);
+            } else if (percentage >= 60) {
+                scoreClass = 'score-good'; scoreText = 'Good'; recommendations = getGoodRecommendations(answers);
+            } else {
+                scoreClass = 'score-poor'; scoreText = 'Needs Improvement'; recommendations = getPoorRecommendations(answers);
+            }
 
-      <div id="results" class="results"></div>
-    </div>
-  </main>
+            const resultsHTML = `
+                <div class="score-display">
+                    <div class="score-circle ${scoreClass}">${percentage}%</div>
+                    <h2>Your Operations Score: ${scoreText}</h2>
+                    <p>Based on ${answeredCount} key operational areas</p>
+                </div>
 
-  <footer>
-    <div class="container footer-content">
-      <p>&copy; <span id="yr"></span> Tre’ Coleman. All rights reserved.</p>
-    </div>
-  </footer>
+                ${recommendations}
 
-  <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
+                <div class="cta">
+                    <h3>🚀 Ready to Optimize Your Restaurant Operations?</h3>
+                    <p>Get a personalized 30-minute consultation to discuss your specific challenges and opportunities.</p>
+                    <div class="contact-form">
+                        <input type="email" placeholder="Your email address" id="emailInput">
+                        <button onclick="submitContact()">Get Free Consultation</button>
+                    </div>
+                    <!-- CHANGED: Real contact info, clickable -->
+                    <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.9;">
+                        📧 <a href="mailto:ph_tre@yahoo.com" style="color:#fff; text-decoration:underline;">ph_tre@yahoo.com</a>
+                        &nbsp;|&nbsp;
+                        📱 <a href="tel:5408079045" style="color:#fff; text-decoration:underline;">540-807-9045</a>
+                    </p>
+                </div>
+            `;
 
-    function updateProgress() {
-      const selects = document.querySelectorAll('select');
-      const answered = Array.from(selects).filter(s => s.value !== '').length;
-      const pct = Math.round((answered / selects.length) * 100);
-      document.getElementById('progressBar').style.width = pct + '%';
-    }
-    document.addEventListener('change', (e) => {
-      if (e.target.tagName === 'SELECT') updateProgress();
-    });
+            const box = document.getElementById('results');
+            box.innerHTML = resultsHTML;
+            box.classList.add('show');
+            box.scrollIntoView({ behavior: 'smooth' });
+        }
 
-    function calculateAudit() {
-      const ids = ['foodCost','inventory','recipes','laborCost','scheduling','overtime','turnTime','menuMix','ticketSize','integration','analytics','procedures','quality'];
-      let total=0, answered=0, a={};
-      for (const id of ids) {
-        const el = document.getElementById(id);
-        if (!el || !el.value) { alert('Please answer all questions to get complete results.'); return; }
-        a[id] = Number(el.value); total += Number(el.value); answered++;
-      }
-      const max = ids.length * 5;
-      const pct = Math.round((total/max)*100);
-      let cls='score-good', label='Good', recs=getGoodRecommendations(a);
-      if (pct >= 80){ cls='score-excellent'; label='Excellent'; recs=getExcellentRecommendations(a); }
-      else if (pct < 60){ cls='score-poor'; label='Needs Improvement'; recs=getPoorRecommendations(a); }
+        function getExcellentRecommendations(answers) {
+            return `
+                <div class="recommendations">
+                    <h4>🎯 Fine-Tuning Opportunities</h4>
+                    <p><strong>Your restaurant is performing exceptionally well!</strong> Here are some advanced optimization strategies:</p>
+                    <ul>
+                        <li>Implement predictive analytics for demand forecasting</li>
+                        <li>Explore dynamic pricing strategies for peak/off-peak periods</li>
+                        <li>Consider expanding your high-performing processes to additional locations</li>
+                        <li>Develop a staff training program to maintain your high standards</li>
+                    </ul>
+                    <p><strong>Estimated additional profit potential:</strong> 3-7% through advanced optimization</p>
+                </div>
+            `;
+        }
 
-      const html = `
-        <div class="score-display">
-          <div class="score-circle ${cls}">${pct}%</div>
-          <h2>Your Operations Score: ${label}</h2>
-          <p>Based on ${answered} key operational areas</p>
-        </div>
-        ${recs}
-        <div class="cta">
-          <h3>🚀 Ready to Optimize Your Restaurant Operations?</h3>
-          <p>Get a personalized 30-minute consultation to discuss your specific challenges and opportunities.</p>
-          <div class="contact-form">
-            <input type="email" id="emailInput" placeholder="Your email address"/>
-            <button type="button" onclick="submitContact()">Get Free Consultation</button>
-          </div>
-          <p class="contact-line">
-            📧 <a href="mailto:ph_tre@yahoo.com">ph_tre@yahoo.com</a> |
-            📱 <a href="tel:5408079045">540-807-9045</a>
-          </p>
-        </div>`;
-      const box = document.getElementById('results');
-      box.innerHTML = html;
-      box.classList.add('show');
-      box.scrollIntoView({behavior:'smooth'});
-    }
+        function getGoodRecommendations(answers) {
+            let recs = [];
+            if (answers.foodCost <= 2) {
+                recs.push(`
+                    <div class="recommendations priority-high">
+                        <h4>🔥 High Priority: Food Cost Control</h4>
+                        <p><strong>Immediate action needed:</strong> Your food costs are above optimal levels.</p>
+                        <ul>
+                            <li>Implement weekly inventory tracking</li>
+                            <li>Standardize all recipe portions</li>
+                            <li>Analyze vendor pricing and negotiate better deals</li>
+                            <li>Reduce waste through better prep scheduling</li>
+                        </ul>
+                        <p><strong>Expected savings:</strong> 2-5% reduction in food costs within 60 days</p>
+                    </div>
+                `);
+            }
+            if (answers.laborCost <= 2 || answers.overtime <= 2) {
+                recs.push(`
+                    <div class="recommendations priority-high">
+                        <h4>⚡ High Priority: Labor Optimization</h4>
+                        <p><strong>Your labor costs need attention.</strong> Focus on scheduling efficiency:</p>
+                        <ul>
+                            <li>Implement data-driven scheduling based on historical sales</li>
+                            <li>Cross-train staff to improve flexibility</li>
+                            <li>Set overtime alerts and approval processes</li>
+                            <li>Optimize prep schedules to reduce peak-hour needs</li>
+                        </ul>
+                        <p><strong>Expected savings:</strong> 3-8% reduction in labor costs</p>
+                    </div>
+                `);
+            }
+            if (answers.integration <= 2) {
+                recs.push(`
+                    <div class="recommendations priority-medium">
+                        <h4>📊 Medium Priority: System Integration</h4>
+                        <p>Better system integration will improve efficiency and decision-making:</p>
+                        <ul>
+                            <li>Connect POS data with inventory management</li>
+                            <li>Automate sales reporting and analysis</li>
+                            <li>Implement real-time cost tracking</li>
+                        </ul>
+                        <p><strong>Expected impact:</strong> 10-15 hours/week time savings</p>
+                    </div>
+                `);
+            }
+            return recs.join('') + `
+                <div class="recommendations">
+                    <h4>💡 Overall Assessment</h4>
+                    <p>Your restaurant has solid fundamentals with room for significant improvement. Focus on the high-priority areas first for maximum impact.</p>
+                    <p><strong>Total estimated profit increase:</strong> 8-15% within 90 days</p>
+                </div>
+            `;
+        }
 
-    function getExcellentRecommendations(a){
-      return `
-        <div class="recommendations">
-          <h4>🎯 Fine-Tuning Opportunities</h4>
-          <p><strong>Your restaurant is performing exceptionally well.</strong> Consider advanced optimization:</p>
-          <ul>
-            <li>Predictive analytics for demand forecasting</li>
-            <li>Dynamic pricing for peak/off-peak</li>
-            <li>Scale best processes across locations</li>
-            <li>Codify training to sustain standards</li>
-          </ul>
-          <p><strong>Additional profit potential:</strong> 3–7% via advanced optimization</p>
-        </div>`;
-    }
+        function getPoorRecommendations(answers) {
+            return `
+                <div class="recommendations priority-high">
+                    <h4>🚨 Urgent: Comprehensive Operations Overhaul Needed</h4>
+                    <p><strong>Your restaurant has significant operational challenges that need immediate attention.</strong></p>
+                    <h5>Phase 1 (First 30 days):</h5>
+                    <ul>
+                        <li>Implement basic inventory tracking system</li>
+                        <li>Standardize your top 10 menu items with precise recipes</li>
+                        <li>Review and optimize staff schedules</li>
+                        <li>Set up weekly cost reporting</li>
+                    </ul>
+                    <h5>Phase 2 (Days 31-60):</h5>
+                    <ul>
+                        <li>Analyze menu profitability and remove low-margin items</li>
+                        <li>Implement quality control checkpoints</li>
+                        <li>Train staff on standardized procedures</li>
+                        <li>Set up integrated POS and inventory system</li>
+                    </ul>
+                    <h5>Phase 3 (Days 61-90):</h5>
+                    <ul>
+                        <li>Optimize menu mix based on profitability</li>
+                        <li>Implement data-driven scheduling</li>
+                        <li>Develop standard operating procedures</li>
+                        <li>Set up performance monitoring systems</li>
+                    </ul>
+                    <p><strong>Expected results:</strong> 15-25% profit increase within 90 days with proper implementation</p>
+                </div>
+            `;
+        }
 
-    function getGoodRecommendations(a){
-      const recs=[];
-      if (a.foodCost <= 2){
-        recs.push(`
-          <div class="recommendations priority-high">
-            <h4>🔥 High Priority: Food Cost Control</h4>
-            <ul>
-              <li>Weekly inventory tracking</li>
-              <li>Standardize all recipe portions</li>
-              <li>Rebid vendors and tighten receiving</li>
-              <li>Prep scheduling to reduce waste</li>
-            </ul>
-            <p><strong>Expected impact:</strong> 2–5% food cost reduction</p>
-          </div>`);
-      }
-      if (a.laborCost <= 2 || a.overtime <= 2){
-        recs.push(`
-          <div class="recommendations priority-high">
-            <h4>⚡ High Priority: Labor Optimization</h4>
-            <ul>
-              <li>Data-driven scheduling by sales forecasts</li>
-              <li>Cross-train for flexibility</li>
-              <li>Overtime alerts & approvals</li>
-              <li>Align prep with demand curves</li>
-            </ul>
-            <p><strong>Expected impact:</strong> 3–8% labor savings</p>
-          </div>`);
-      }
-      if (a.integration <= 2){
-        recs.push(`
-          <div class="recommendations priority-medium">
-            <h4>📊 Medium Priority: System Integration</h4>
-            <ul>
-              <li>Connect POS ↔ inventory</li>
-              <li>Automate reporting</li>
-              <li>Real-time cost tracking</li>
-            </ul>
-            <p><strong>Time savings:</strong> 10–15 hours/week</p>
-          </div>`);
-      }
-      recs.push(`
-        <div class="recommendations">
-          <h4>💡 Overall Assessment</h4>
-          <p>Solid fundamentals with room for significant improvement. Focus high-priority areas first for maximum ROI.</p>
-          <p><strong>Total estimated profit lift:</strong> 8–15% in 90 days</p>
-        </div>`);
-      return recs.join('');
-    }
-
-    function getPoorRecommendations(a){
-      return `
-        <div class="recommendations priority-high">
-          <h4>🚨 Urgent: Comprehensive Operations Overhaul</h4>
-          <h5>Phase 1 (0–30 days)</h5>
-          <ul>
-            <li>Implement weekly inventory & top-10 recipe standards</li>
-            <li>Rework staff schedules; set OT controls</li>
-            <li>Weekly cost reporting cadence</li>
-          </ul>
-          <h5>Phase 2 (31–60 days)</h5>
-          <ul>
-            <li>Menu profitability analysis; retire low-margin items</li>
-            <li>Quality control checkpoints; staff training</li>
-            <li>Connect POS ↔ inventory systems</li>
-          </ul>
-          <h5>Phase 3 (61–90 days)</h5>
-          <ul>
-            <li>Optimize mix by contribution</li>
-            <li>Data-driven scheduling</li>
-            <li>Finalize SOPs & performance dashboards</li>
-          </ul>
-          <p><strong>Expected results:</strong> 15–25% profit increase in 90 days</p>
-        </div>`;
-    }
-
-    function submitContact(){
-      const email = document.getElementById('emailInput').value.trim();
-      if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
-      alert(`Thanks! I’ll contact you at ${email} within 24 hours to schedule your consultation.`);
-      // TODO: hook to your form handler / CRM endpoint
-    }
-  </script>
+        function submitContact() {
+            const email = document.getElementById('emailInput').value;
+            if (email && email.includes('@')) {
+                alert(`Thank you! I'll contact you at ${email} within 24 hours to schedule your free consultation.`);
+                // Hook this to your form/CRM as needed
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        }
+    </script>
 </body>
 </html>
