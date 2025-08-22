@@ -368,6 +368,9 @@
                 scoreClass = 'score-poor'; scoreText = 'Needs Improvement'; recommendations = getPoorRecommendations(answers);
             }
 
+            // Store summary data globally for email submission later
+            window.auditData = { percentage, scoreText, answers };
+
             const resultsHTML = `
                 <div class="score-display">
                     <div class="score-circle ${scoreClass}">${percentage}%</div>
@@ -382,11 +385,11 @@
                     <p>Get a personalized 30-minute consultation to discuss your specific challenges and opportunities.</p>
                     <div class="contact-form">
                         <input type="email" placeholder="Your email address" id="emailInput">
-                        <button onclick="submitContact()">Get Free Consultation</button>
+                        <button type="button" onclick="submitContact()">Get Free Consultation</button>
                     </div>
-                    <!-- CHANGED: Real contact info, clickable -->
+                    <!-- Updated contact info -->
                     <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.9;">
-                        📧 <a href="mailto:ph_tre@yahoo.com" style="color:#fff; text-decoration:underline;">ph_tre@yahoo.com</a>
+                        📧 <a href="mailto:hello@trecoleman.com" style="color:#fff; text-decoration:underline;">hello@trecoleman.com</a>
                         &nbsp;|&nbsp;
                         📱 <a href="tel:5408079045" style="color:#fff; text-decoration:underline;">540-807-9045</a>
                     </p>
@@ -503,12 +506,71 @@
 
         function submitContact() {
             const email = document.getElementById('emailInput').value;
-            if (email && email.includes('@')) {
-                alert(`Thank you! I'll contact you at ${email} within 24 hours to schedule your free consultation.`);
-                // Hook this to your form/CRM as needed
-            } else {
+            if (!email || !email.includes('@')) {
                 alert('Please enter a valid email address.');
+                return;
             }
+            // Build a hidden form to send the audit summary and user email to FormSubmit
+            const summary = window.auditData || {};
+            // Compose a detailed message with score and raw answers
+            const detailLines = [];
+            if (summary.percentage !== undefined && summary.scoreText) {
+                detailLines.push(`Score: ${summary.percentage}% (${summary.scoreText})`);
+            }
+            if (summary.answers) {
+                Object.keys(summary.answers).forEach(function(key) {
+                    detailLines.push(`${key}: ${summary.answers[key]}`);
+                });
+            }
+            const message = detailLines.join('\n');
+
+            const form = document.createElement('form');
+            form.action = 'https://formsubmit.co/hello@trecoleman.com';
+            form.method = 'POST';
+            form.style.display = 'none';
+
+            // Include the visitor's email
+            const userEmailField = document.createElement('input');
+            userEmailField.name = 'visitor_email';
+            userEmailField.value = email;
+            form.appendChild(userEmailField);
+
+            // Include the audit details
+            const detailsField = document.createElement('input');
+            detailsField.name = 'audit_summary';
+            detailsField.value = message;
+            form.appendChild(detailsField);
+
+            // Subject for easy filtering
+            const subjectField = document.createElement('input');
+            subjectField.type = 'hidden';
+            subjectField.name = '_subject';
+            subjectField.value = 'New Operations Audit Request';
+            form.appendChild(subjectField);
+
+            // Disable reCAPTCHA
+            const captchaField = document.createElement('input');
+            captchaField.type = 'hidden';
+            captchaField.name = '_captcha';
+            captchaField.value = 'false';
+            form.appendChild(captchaField);
+
+            // Autoresponse to the visitor (optional)
+            const autoResponseField = document.createElement('input');
+            autoResponseField.type = 'hidden';
+            autoResponseField.name = '_autoresponse';
+            autoResponseField.value = "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. You can also book time now: https://calendly.com/ph_tre";
+            form.appendChild(autoResponseField);
+
+            // Redirect back to the audit page with a query string to show a thank-you state
+            const nextField = document.createElement('input');
+            nextField.type = 'hidden';
+            nextField.name = '_next';
+            nextField.value = 'https://trecoleman.com/audit.html?submitted=1';
+            form.appendChild(nextField);
+
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>
