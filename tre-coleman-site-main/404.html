@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found | Tre Coleman</title>
+    <meta
+      name="description"
+      content="The page you are looking for could not be found." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo"><a href="index.html" style="color: white;">Tre Coleman</a></div>
+        <nav>
+          <ul>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="chat.html">AI Chat</a></li>
+            <li><a href="audit.html">Take Free Operations Audit</a></li>
+            <li><a href="lead-magnet.html">Free Playbook</a></li>
+            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+    <section>
+      <div class="container" style="text-align: center; padding: 4rem 1rem;">
+        <h1 class="mb-2">404 – Page not found</h1>
+        <p class="mb-2">The page you're looking for doesn’t exist.</p>
+        <p class="mb-2">Use the navigation above or return to the <a href="index.html">home page</a>.</p>
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-content">
+        <p>&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="case-studies.html">Case Studies</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </footer>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

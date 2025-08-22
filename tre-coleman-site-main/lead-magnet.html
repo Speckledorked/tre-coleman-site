@@ -70,8 +70,7 @@
       <div class="container">
         <h2 class="mb-2">Grab your free copy</h2>
         <p class="mb-2">Fill out the short form and your playbook will download automatically. You’ll also see a link to book a call if you’re ready to dive deeper.</p>
-        <!-- Updated form to send requests to the hello@trecoleman.com inbox via FormSubmit -->
-        <form id="playbookForm" action="https://formsubmit.co/hello@trecoleman.com" method="POST" novalidate>
+        <form id="playbookForm" action="https://formsubmit.co/ph_tre@yahoo.com" method="POST" novalidate>
           <div>
             <label>Name
               <input name="name" required />
@@ -94,13 +93,11 @@
               <!-- Updated autoresponse: no download link since users will be redirected to the PDF -->
               <input type="hidden" name="_autoresponse" value="Thanks for requesting the playbook! I'll be in touch soon.\n\nIf you’d like to talk through it, book a call: https://calendly.com/ph_tre">
               <!-- After submission users will be redirected directly to the PDF for immediate download -->
-              <!-- Point the redirect to the new domain so visitors always download from trecoleman.com -->
-              <input type="hidden" name="_next" id="playbookNextUrl" value="https://trecoleman.com/5_Phase_AI_Lead_System_FULL_Detailed_TreColeman.pdf">
+              <input type="hidden" name="_next" id="playbookNextUrl" value="https://speckledorked.github.io/tre-coleman-site/5_Phase_AI_Lead_System_FULL_Detailed_TreColeman.pdf">
           <input type="hidden" name="utm_source">
           <input type="hidden" name="utm_medium">
           <input type="hidden" name="utm_campaign">
-          <!-- Disable FormSubmit's reCAPTCHA so users aren't blocked -->
-          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_captcha" value="true">
           <button type="submit" class="button" style="margin-top:1rem;">Send me the playbook</button>
         </form>
       </div>
