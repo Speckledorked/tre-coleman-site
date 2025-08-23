@@ -71,6 +71,28 @@
         }
         .question select:focus, .question input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1); }
 
+        /* Email collection section */
+        .email-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+        .email-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .email-section h3 { margin-bottom: 1rem; font-size: 1.5rem; }
+        .email-section p { margin-bottom: 1.5rem; opacity: 0.9; }
+        .email-form { max-width: 400px; margin: 0 auto; }
+        .email-form input[type="email"] {
+            width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
+        }
+        .email-form button {
+            background: var(--accent-colour); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; transition: all 0.3s ease;
+        }
+        .email-form button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+
         .results {
             background: var(--light-bg);
             padding: 2rem; border-radius: 10px; margin-top: 2rem; display: none;
@@ -128,7 +150,7 @@
     <!-- NEW: Top Navigation (clickable links). Update hrefs to your routes. -->
     <nav class="top-nav" aria-label="Primary">
         <div class="nav-inner">
-            <div class="brand">Tre’ Coleman</div>
+            <div class="brand">Tre' Coleman</div>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
@@ -303,13 +325,29 @@
                 </div>
             </div>
 
-            <button class="calculate-btn" onclick="calculateAudit()">📊 Get My Operations Score & Recommendations</button>
+            <button class="calculate-btn" onclick="validateAndProceed()">📊 Calculate My Operations Score</button>
+
+            <!-- NEW: Email collection section -->
+            <div id="emailSection" class="email-section">
+                <h3>🎯 Get Your Personalized Results</h3>
+                <p>Enter your email to receive your detailed operations score and customized recommendations:</p>
+                <div class="email-form">
+                    <input type="email" id="emailInput" placeholder="Enter your email address" required>
+                    <button onclick="showResults()">Get My Results & Recommendations</button>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">
+                    📧 Your email helps us provide personalized follow-up recommendations
+                </p>
+            </div>
 
             <div id="results" class="results"><!-- Results injected here --></div>
         </div>
     </div>
 
     <script>
+        // Store audit data globally
+        window.auditData = {};
+
         function updateProgress() {
             const questions = document.querySelectorAll('select');
             const answered = Array.from(questions).filter(q => q.value !== '').length;
@@ -332,12 +370,13 @@
                 }
             });
         }
+        
         document.addEventListener('DOMContentLoaded', function() {
             const selects = document.querySelectorAll('select');
             selects.forEach(select => select.addEventListener('change', updateProgress));
         });
 
-        function calculateAudit() {
+        function validateAndProceed() {
             const questions = ['foodCost','inventory','recipes','laborCost','scheduling','overtime','turnTime','menuMix','ticketSize','integration','analytics','procedures','quality'];
             const answers = {};
             let totalScore = 0, answeredCount = 0;
@@ -359,23 +398,53 @@
             const maxScore = questions.length * 5;
             const percentage = Math.round((totalScore / maxScore) * 100);
 
-            let scoreClass, scoreText, recommendations;
+            let scoreClass, scoreText;
             if (percentage >= 80) {
-                scoreClass = 'score-excellent'; scoreText = 'Excellent'; recommendations = getExcellentRecommendations(answers);
+                scoreClass = 'score-excellent'; 
+                scoreText = 'Excellent';
             } else if (percentage >= 60) {
-                scoreClass = 'score-good'; scoreText = 'Good'; recommendations = getGoodRecommendations(answers);
+                scoreClass = 'score-good'; 
+                scoreText = 'Good';
             } else {
-                scoreClass = 'score-poor'; scoreText = 'Needs Improvement'; recommendations = getPoorRecommendations(answers);
+                scoreClass = 'score-poor'; 
+                scoreText = 'Needs Improvement';
             }
 
-            // Store summary data globally for email submission later
-            window.auditData = { percentage, scoreText, answers };
+            // Store audit data for later use
+            window.auditData = { percentage, scoreText, answers, scoreClass, totalScore, maxScore };
+
+            // Show email collection section
+            document.getElementById('emailSection').classList.add('show');
+            document.getElementById('emailSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showResults() {
+            const email = document.getElementById('emailInput').value;
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address to see your results.');
+                return;
+            }
+
+            // Store the email
+            window.auditData.email = email;
+
+            // Generate and display results
+            const { percentage, scoreText, answers, scoreClass } = window.auditData;
+            
+            let recommendations;
+            if (percentage >= 80) {
+                recommendations = getExcellentRecommendations(answers);
+            } else if (percentage >= 60) {
+                recommendations = getGoodRecommendations(answers);
+            } else {
+                recommendations = getPoorRecommendations(answers);
+            }
 
             const resultsHTML = `
                 <div class="score-display">
                     <div class="score-circle ${scoreClass}">${percentage}%</div>
                     <h2>Your Operations Score: ${scoreText}</h2>
-                    <p>Based on ${answeredCount} key operational areas</p>
+                    <p>Based on 13 key operational areas</p>
                 </div>
 
                 ${recommendations}
@@ -383,11 +452,13 @@
                 <div class="cta">
                     <h3>🚀 Ready to Optimize Your Restaurant Operations?</h3>
                     <p>Get a personalized 30-minute consultation to discuss your specific challenges and opportunities.</p>
-                    <div class="contact-form">
-                        <input type="email" placeholder="Your email address" id="emailInput">
-                        <button type="button" onclick="submitContact()">Get Free Consultation</button>
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <a href="https://calendly.com/ph_tre" target="_blank" rel="noopener" 
+                           style="background: var(--accent-colour); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: all 0.3s ease;">
+                           📅 Schedule Free Consultation
+                        </a>
                     </div>
-                    <!-- Updated contact info -->
+                    <!-- Contact info -->
                     <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.9;">
                         📧 <a href="mailto:hello@trecoleman.com" style="color:#fff; text-decoration:underline;">hello@trecoleman.com</a>
                         &nbsp;|&nbsp;
@@ -396,10 +467,73 @@
                 </div>
             `;
 
-            const box = document.getElementById('results');
-            box.innerHTML = resultsHTML;
-            box.classList.add('show');
-            box.scrollIntoView({ behavior: 'smooth' });
+            const resultsBox = document.getElementById('results');
+            resultsBox.innerHTML = resultsHTML;
+            resultsBox.classList.add('show');
+            resultsBox.scrollIntoView({ behavior: 'smooth' });
+
+            // Send the audit data via FormSubmit
+            submitAuditData();
+        }
+
+        function submitAuditData() {
+            const { email, percentage, scoreText, answers } = window.auditData;
+            
+            // Compose detailed message with score and answers
+            const detailLines = [`Score: ${percentage}% (${scoreText})`];
+            Object.keys(answers).forEach(key => {
+                detailLines.push(`${key}: ${answers[key]}`);
+            });
+            const message = detailLines.join('\n');
+
+            // Create and submit hidden form
+            const form = document.createElement('form');
+            form.action = 'https://formsubmit.co/hello@trecoleman.com';
+            form.method = 'POST';
+            form.style.display = 'none';
+
+            // User email
+            const userEmailField = document.createElement('input');
+            userEmailField.name = 'visitor_email';
+            userEmailField.value = email;
+            form.appendChild(userEmailField);
+
+            // Audit details
+            const detailsField = document.createElement('input');
+            detailsField.name = 'audit_summary';
+            detailsField.value = message;
+            form.appendChild(detailsField);
+
+            // Subject
+            const subjectField = document.createElement('input');
+            subjectField.type = 'hidden';
+            subjectField.name = '_subject';
+            subjectField.value = 'New Operations Audit Completed';
+            form.appendChild(subjectField);
+
+            // Disable reCAPTCHA
+            const captchaField = document.createElement('input');
+            captchaField.type = 'hidden';
+            captchaField.name = '_captcha';
+            captchaField.value = 'false';
+            form.appendChild(captchaField);
+
+            // Autoresponse
+            const autoResponseField = document.createElement('input');
+            autoResponseField.type = 'hidden';
+            autoResponseField.name = '_autoresponse';
+            autoResponseField.value = "Thanks for completing the operations audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre";
+            form.appendChild(autoResponseField);
+
+            // No redirect needed since results are already shown
+            const nextField = document.createElement('input');
+            nextField.type = 'hidden';
+            nextField.name = '_next';
+            nextField.value = 'https://trecoleman.com/audit.html?submitted=1';
+            form.appendChild(nextField);
+
+            document.body.appendChild(form);
+            form.submit();
         }
 
         function getExcellentRecommendations(answers) {
@@ -503,75 +637,9 @@
                 </div>
             `;
         }
-
-        function submitContact() {
-            const email = document.getElementById('emailInput').value;
-            if (!email || !email.includes('@')) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            // Build a hidden form to send the audit summary and user email to FormSubmit
-            const summary = window.auditData || {};
-            // Compose a detailed message with score and raw answers
-            const detailLines = [];
-            if (summary.percentage !== undefined && summary.scoreText) {
-                detailLines.push(`Score: ${summary.percentage}% (${summary.scoreText})`);
-            }
-            if (summary.answers) {
-                Object.keys(summary.answers).forEach(function(key) {
-                    detailLines.push(`${key}: ${summary.answers[key]}`);
-                });
-            }
-            const message = detailLines.join('\n');
-
-            const form = document.createElement('form');
-            form.action = 'https://formsubmit.co/hello@trecoleman.com';
-            form.method = 'POST';
-            form.style.display = 'none';
-
-            // Include the visitor's email
-            const userEmailField = document.createElement('input');
-            userEmailField.name = 'visitor_email';
-            userEmailField.value = email;
-            form.appendChild(userEmailField);
-
-            // Include the audit details
-            const detailsField = document.createElement('input');
-            detailsField.name = 'audit_summary';
-            detailsField.value = message;
-            form.appendChild(detailsField);
-
-            // Subject for easy filtering
-            const subjectField = document.createElement('input');
-            subjectField.type = 'hidden';
-            subjectField.name = '_subject';
-            subjectField.value = 'New Operations Audit Request';
-            form.appendChild(subjectField);
-
-            // Disable reCAPTCHA
-            const captchaField = document.createElement('input');
-            captchaField.type = 'hidden';
-            captchaField.name = '_captcha';
-            captchaField.value = 'false';
-            form.appendChild(captchaField);
-
-            // Autoresponse to the visitor (optional)
-            const autoResponseField = document.createElement('input');
-            autoResponseField.type = 'hidden';
-            autoResponseField.name = '_autoresponse';
-            autoResponseField.value = "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. You can also book time now: https://calendly.com/ph_tre";
-            form.appendChild(autoResponseField);
-
-            // Redirect back to the audit page with a query string to show a thank-you state
-            const nextField = document.createElement('input');
-            nextField.type = 'hidden';
-            nextField.name = '_next';
-            nextField.value = 'https://trecoleman.com/audit.html?submitted=1';
-            form.appendChild(nextField);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
