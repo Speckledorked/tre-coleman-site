@@ -15,6 +15,73 @@
             background: var(--light-bg);
             min-height: 100vh;
         }
+
+        function getPoorRecommendations(answers) {
+            // Analyze specific problem areas for targeted recommendations
+            let criticalIssues = [];
+            if (answers.foodCost <= 2) criticalIssues.push('food cost control');
+            if (answers.laborCost <= 2) criticalIssues.push('labor cost management');
+            if (answers.inventory <= 2) criticalIssues.push('inventory tracking');
+            if (answers.recipes <= 2) criticalIssues.push('recipe standardization');
+            if (answers.scheduling <= 2) criticalIssues.push('staff scheduling');
+            if (answers.turnTime <= 2) criticalIssues.push('service speed');
+            if (answers.menuMix <= 2) criticalIssues.push('menu optimization');
+            if (answers.integration <= 2) criticalIssues.push('system integration');
+            if (answers.procedures <= 2) criticalIssues.push('operational procedures');
+            if (answers.quality <= 2) criticalIssues.push('quality control');
+
+            return `
+                <div class="recommendations priority-high">
+                    <h4>🚨 Urgent: Comprehensive Operations Overhaul Required</h4>
+                    <p><strong>Your restaurant has significant operational challenges in ${criticalIssues.length} key areas:</strong> ${criticalIssues.slice(0, 3).join(', ')}${criticalIssues.length > 3 ? `, and ${criticalIssues.length - 3} others` : ''}.</p>
+                    <p><strong>Critical issues identified that need immediate attention:</strong></p>
+                    
+                    <h5>🔥 Phase 1 - Crisis Management (First 30 days):</h5>
+                    <ul>
+                        ${answers.foodCost === 1 ? '<li><strong>URGENT - Food cost crisis:</strong> Implement daily cost tracking - you\'re losing significant money</li>' : ''}
+                        ${answers.laborCost === 1 ? '<li><strong>URGENT - Labor cost crisis:</strong> Review all schedules immediately - excessive labor spending</li>' : ''}
+                        ${answers.inventory <= 2 ? '<li><strong>Inventory system:</strong> Start weekly counts immediately to stop waste and theft</li>' : ''}
+                        ${answers.recipes <= 2 ? '<li><strong>Recipe standardization:</strong> Document your top 10 menu items with exact portions</li>' : ''}
+                        ${answers.quality <= 2 ? '<li><strong>Quality control:</strong> Implement basic food safety and consistency checks</li>' : ''}
+                        <li><strong>Cash flow monitoring:</strong> Track daily sales vs. costs to prevent cash flow problems</li>
+                        <li><strong>Staff meeting:</strong> Address operational standards and expectations immediately</li>
+                    </ul>
+
+                    <h5>⚡ Phase 2 - Stabilization (Days 31-60):</h5>
+                    <ul>
+                        ${answers.menuMix <= 2 ? '<li><strong>Menu engineering:</strong> Remove low-profit items and promote high-margin dishes</li>' : ''}
+                        ${answers.turnTime <= 2 ? '<li><strong>Service speed:</strong> Streamline kitchen and service workflows</li>' : ''}
+                        ${answers.scheduling <= 2 ? '<li><strong>Staff scheduling:</strong> Match labor to sales patterns - eliminate overstaffing</li>' : ''}
+                        ${answers.procedures <= 2 ? '<li><strong>Standard procedures:</strong> Create basic operating procedures for key processes</li>' : ''}
+                        <li><strong>Vendor review:</strong> Renegotiate contracts and eliminate unnecessary suppliers</li>
+                        <li><strong>Staff training:</strong> Ensure all team members understand new standards</li>
+                    </ul>
+
+                    <h5>🎯 Phase 3 - Growth Foundation (Days 61-90):</h5>
+                    <ul>
+                        ${answers.integration <= 2 ? '<li><strong>Technology upgrade:</strong> Implement integrated POS and inventory systems</li>' : ''}
+                        ${answers.analytics <= 2 ? '<li><strong>Reporting systems:</strong> Set up automated daily/weekly performance reports</li>' : ''}
+                        <li><strong>Performance monitoring:</strong> Track key metrics daily (food cost %, labor %, sales per seat)</li>
+                        <li><strong>Continuous improvement:</strong> Weekly review meetings to identify and solve problems</li>
+                        <li><strong>Customer feedback:</strong> Implement system to track satisfaction and respond to issues</li>
+                        <li><strong>Financial controls:</strong> Establish budgets and variance reporting</li>
+                    </ul>
+
+                    <p><strong>Expected results with proper implementation:</strong></p>
+                    <ul>
+                        <li><strong>Month 1:</strong> Stop major losses, stabilize operations (5-10% cost reduction)</li>
+                        <li><strong>Month 2:</strong> Improve efficiency and quality (additional 5-8% profit improvement)</li>
+                        <li><strong>Month 3:</strong> Build foundation for growth (additional 5-7% profit improvement)</li>
+                    </ul>
+                    <p><strong>Total potential profit increase: 15-25% within 90 days</strong></p>
+                    
+                    <p style="background: #ffe6e6; padding: 1rem; border-radius: 5px; margin-top: 1rem;"><strong>⚠️ WARNING:</strong> Without immediate action, your restaurant may face serious financial difficulties. These issues compound quickly and can lead to business failure. Consider hiring a restaurant operations consultant immediately to guide the turnaround process.</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
         /* --- Simple top navigation (minimal styles to avoid conflicts) --- */
         .top-nav {
             background: var(--primary-colour);
@@ -71,6 +138,29 @@
         }
         .question select:focus, .question input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1); }
 
+        /* Email collection section - shown BEFORE results */
+        .email-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+        .email-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .email-section h3 { margin-bottom: 1rem; font-size: 1.5rem; }
+        .email-section p { margin-bottom: 1.5rem; opacity: 0.9; }
+        .email-form { max-width: 400px; margin: 0 auto; }
+        .email-form input[type="email"] {
+            width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
+        }
+        .email-form button {
+            background: var(--accent-colour); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; transition: all 0.3s ease;
+        }
+        .email-form button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+        .email-form button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
         .results {
             background: var(--light-bg);
             padding: 2rem; border-radius: 10px; margin-top: 2rem; display: none;
@@ -89,6 +179,8 @@
 
         .recommendations { background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--primary-colour); margin-bottom: 1.5rem; }
         .recommendations h4 { color: var(--primary-colour); margin-bottom: 1rem; }
+        .recommendations ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+        .recommendations li { margin-bottom: 0.5rem; }
         .priority-high { background: #fff5f5; border-left-color: var(--accent-colour); }
         .priority-high h4 { color: var(--accent-colour); }
         .priority-medium { background: #fffbf0; border-left-color: var(--secondary-colour); }
@@ -128,7 +220,7 @@
     <!-- NEW: Top Navigation (clickable links). Update hrefs to your routes. -->
     <nav class="top-nav" aria-label="Primary">
         <div class="nav-inner">
-            <div class="brand">Tre’ Coleman</div>
+            <div class="brand">Tre' Coleman</div>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
@@ -303,13 +395,34 @@
                 </div>
             </div>
 
-            <button class="calculate-btn" onclick="calculateAudit()">📊 Get My Operations Score & Recommendations</button>
+            <button class="calculate-btn" onclick="calculateAudit()">📊 Calculate My Operations Score</button>
 
+            <!-- EMAIL COLLECTION SECTION - SHOWN BEFORE RESULTS -->
+            <div id="emailSection" class="email-section">
+                <h3>🎯 Enter Your Email to See Results</h3>
+                <p><strong>Your audit is complete! You're one step away from your personalized results.</strong></p>
+                <p>Enter your email below to receive your detailed operations score and customized recommendations:</p>
+                <div class="email-form">
+                    <input type="email" id="emailInput" placeholder="Enter your email address" required>
+                    <button id="showResultsBtn" onclick="showResults()">🚀 Show My Results Now</button>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">
+                    📧 We'll also send you additional optimization tips and follow-up recommendations
+                </p>
+                <p style="font-size: 0.8rem; margin-top: 0.5rem; opacity: 0.7;">
+                    🔒 Your email is secure and will only be used for restaurant optimization resources
+                </p>
+            </div>
+
+            <!-- RESULTS SECTION - ONLY SHOWN AFTER EMAIL SUBMISSION -->
             <div id="results" class="results"><!-- Results injected here --></div>
         </div>
     </div>
 
     <script>
+        // Store audit data globally
+        window.auditData = {};
+
         function updateProgress() {
             const questions = document.querySelectorAll('select');
             const answered = Array.from(questions).filter(q => q.value !== '').length;
@@ -332,6 +445,7 @@
                 }
             });
         }
+        
         document.addEventListener('DOMContentLoaded', function() {
             const selects = document.querySelectorAll('select');
             selects.forEach(select => select.addEventListener('change', updateProgress));
@@ -359,23 +473,70 @@
             const maxScore = questions.length * 5;
             const percentage = Math.round((totalScore / maxScore) * 100);
 
-            let scoreClass, scoreText, recommendations;
+            let scoreClass, scoreText;
             if (percentage >= 80) {
-                scoreClass = 'score-excellent'; scoreText = 'Excellent'; recommendations = getExcellentRecommendations(answers);
+                scoreClass = 'score-excellent'; 
+                scoreText = 'Excellent';
             } else if (percentage >= 60) {
-                scoreClass = 'score-good'; scoreText = 'Good'; recommendations = getGoodRecommendations(answers);
+                scoreClass = 'score-good'; 
+                scoreText = 'Good';
             } else {
-                scoreClass = 'score-poor'; scoreText = 'Needs Improvement'; recommendations = getPoorRecommendations(answers);
+                scoreClass = 'score-poor'; 
+                scoreText = 'Needs Improvement';
             }
 
-            // Store summary data globally for email submission later
-            window.auditData = { percentage, scoreText, answers };
+            // Store audit data for later use - NO RESULTS SHOWN YET
+            window.auditData = { percentage, scoreText, answers, scoreClass, totalScore, maxScore };
+
+            // Show email collection section INSTEAD of results
+            document.getElementById('emailSection').classList.add('show');
+            document.getElementById('emailSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showResults() {
+            const email = document.getElementById('emailInput').value.trim();
+            
+            // Strict email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                alert('Please enter a valid email address to see your results.');
+                document.getElementById('emailInput').focus();
+                return;
+            }
+
+            // Disable button and show loading state
+            const btn = document.getElementById('showResultsBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Loading Your Results...';
+
+            // Store the email
+            window.auditData.email = email;
+
+            // Generate and display results - ONLY NOW ARE RESULTS SHOWN
+            setTimeout(() => {
+                generateAndShowResults();
+                btn.disabled = false;
+                btn.textContent = '🚀 Show My Results Now';
+            }, 1500);
+        }
+
+        function generateAndShowResults() {
+            const { percentage, scoreText, answers, scoreClass } = window.auditData;
+            
+            let recommendations;
+            if (percentage >= 80) {
+                recommendations = getExcellentRecommendations(answers);
+            } else if (percentage >= 60) {
+                recommendations = getGoodRecommendations(answers);
+            } else {
+                recommendations = getPoorRecommendations(answers);
+            }
 
             const resultsHTML = `
                 <div class="score-display">
                     <div class="score-circle ${scoreClass}">${percentage}%</div>
                     <h2>Your Operations Score: ${scoreText}</h2>
-                    <p>Based on ${answeredCount} key operational areas</p>
+                    <p>Based on 13 key operational areas</p>
                 </div>
 
                 ${recommendations}
@@ -383,11 +544,13 @@
                 <div class="cta">
                     <h3>🚀 Ready to Optimize Your Restaurant Operations?</h3>
                     <p>Get a personalized 30-minute consultation to discuss your specific challenges and opportunities.</p>
-                    <div class="contact-form">
-                        <input type="email" placeholder="Your email address" id="emailInput">
-                        <button type="button" onclick="submitContact()">Get Free Consultation</button>
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <a href="https://calendly.com/ph_tre" target="_blank" rel="noopener" 
+                           style="background: var(--accent-colour); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: all 0.3s ease;">
+                           📅 Schedule Free Consultation
+                        </a>
                     </div>
-                    <!-- Updated contact info -->
+                    <!-- Contact info -->
                     <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.9;">
                         📧 <a href="mailto:hello@trecoleman.com" style="color:#fff; text-decoration:underline;">hello@trecoleman.com</a>
                         &nbsp;|&nbsp;
@@ -396,156 +559,48 @@
                 </div>
             `;
 
-            const box = document.getElementById('results');
-            box.innerHTML = resultsHTML;
-            box.classList.add('show');
-            box.scrollIntoView({ behavior: 'smooth' });
+            const resultsBox = document.getElementById('results');
+            resultsBox.innerHTML = resultsHTML;
+            resultsBox.classList.add('show');
+            resultsBox.scrollIntoView({ behavior: 'smooth' });
+
+            // Send the audit data via FormSubmit in background
+            submitAuditData();
         }
 
-        function getExcellentRecommendations(answers) {
-            return `
-                <div class="recommendations">
-                    <h4>🎯 Fine-Tuning Opportunities</h4>
-                    <p><strong>Your restaurant is performing exceptionally well!</strong> Here are some advanced optimization strategies:</p>
-                    <ul>
-                        <li>Implement predictive analytics for demand forecasting</li>
-                        <li>Explore dynamic pricing strategies for peak/off-peak periods</li>
-                        <li>Consider expanding your high-performing processes to additional locations</li>
-                        <li>Develop a staff training program to maintain your high standards</li>
-                    </ul>
-                    <p><strong>Estimated additional profit potential:</strong> 3-7% through advanced optimization</p>
-                </div>
-            `;
-        }
-
-        function getGoodRecommendations(answers) {
-            let recs = [];
-            if (answers.foodCost <= 2) {
-                recs.push(`
-                    <div class="recommendations priority-high">
-                        <h4>🔥 High Priority: Food Cost Control</h4>
-                        <p><strong>Immediate action needed:</strong> Your food costs are above optimal levels.</p>
-                        <ul>
-                            <li>Implement weekly inventory tracking</li>
-                            <li>Standardize all recipe portions</li>
-                            <li>Analyze vendor pricing and negotiate better deals</li>
-                            <li>Reduce waste through better prep scheduling</li>
-                        </ul>
-                        <p><strong>Expected savings:</strong> 2-5% reduction in food costs within 60 days</p>
-                    </div>
-                `);
-            }
-            if (answers.laborCost <= 2 || answers.overtime <= 2) {
-                recs.push(`
-                    <div class="recommendations priority-high">
-                        <h4>⚡ High Priority: Labor Optimization</h4>
-                        <p><strong>Your labor costs need attention.</strong> Focus on scheduling efficiency:</p>
-                        <ul>
-                            <li>Implement data-driven scheduling based on historical sales</li>
-                            <li>Cross-train staff to improve flexibility</li>
-                            <li>Set overtime alerts and approval processes</li>
-                            <li>Optimize prep schedules to reduce peak-hour needs</li>
-                        </ul>
-                        <p><strong>Expected savings:</strong> 3-8% reduction in labor costs</p>
-                    </div>
-                `);
-            }
-            if (answers.integration <= 2) {
-                recs.push(`
-                    <div class="recommendations priority-medium">
-                        <h4>📊 Medium Priority: System Integration</h4>
-                        <p>Better system integration will improve efficiency and decision-making:</p>
-                        <ul>
-                            <li>Connect POS data with inventory management</li>
-                            <li>Automate sales reporting and analysis</li>
-                            <li>Implement real-time cost tracking</li>
-                        </ul>
-                        <p><strong>Expected impact:</strong> 10-15 hours/week time savings</p>
-                    </div>
-                `);
-            }
-            return recs.join('') + `
-                <div class="recommendations">
-                    <h4>💡 Overall Assessment</h4>
-                    <p>Your restaurant has solid fundamentals with room for significant improvement. Focus on the high-priority areas first for maximum impact.</p>
-                    <p><strong>Total estimated profit increase:</strong> 8-15% within 90 days</p>
-                </div>
-            `;
-        }
-
-        function getPoorRecommendations(answers) {
-            return `
-                <div class="recommendations priority-high">
-                    <h4>🚨 Urgent: Comprehensive Operations Overhaul Needed</h4>
-                    <p><strong>Your restaurant has significant operational challenges that need immediate attention.</strong></p>
-                    <h5>Phase 1 (First 30 days):</h5>
-                    <ul>
-                        <li>Implement basic inventory tracking system</li>
-                        <li>Standardize your top 10 menu items with precise recipes</li>
-                        <li>Review and optimize staff schedules</li>
-                        <li>Set up weekly cost reporting</li>
-                    </ul>
-                    <h5>Phase 2 (Days 31-60):</h5>
-                    <ul>
-                        <li>Analyze menu profitability and remove low-margin items</li>
-                        <li>Implement quality control checkpoints</li>
-                        <li>Train staff on standardized procedures</li>
-                        <li>Set up integrated POS and inventory system</li>
-                    </ul>
-                    <h5>Phase 3 (Days 61-90):</h5>
-                    <ul>
-                        <li>Optimize menu mix based on profitability</li>
-                        <li>Implement data-driven scheduling</li>
-                        <li>Develop standard operating procedures</li>
-                        <li>Set up performance monitoring systems</li>
-                    </ul>
-                    <p><strong>Expected results:</strong> 15-25% profit increase within 90 days with proper implementation</p>
-                </div>
-            `;
-        }
-
-        function submitContact() {
-            const email = document.getElementById('emailInput').value;
-            if (!email || !email.includes('@')) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            // Build a hidden form to send the audit summary and user email to FormSubmit
-            const summary = window.auditData || {};
-            // Compose a detailed message with score and raw answers
-            const detailLines = [];
-            if (summary.percentage !== undefined && summary.scoreText) {
-                detailLines.push(`Score: ${summary.percentage}% (${summary.scoreText})`);
-            }
-            if (summary.answers) {
-                Object.keys(summary.answers).forEach(function(key) {
-                    detailLines.push(`${key}: ${summary.answers[key]}`);
-                });
-            }
+        function submitAuditData() {
+            const { email, percentage, scoreText, answers } = window.auditData;
+            
+            // Compose detailed message with score and answers
+            const detailLines = [`Score: ${percentage}% (${scoreText})`];
+            Object.keys(answers).forEach(key => {
+                detailLines.push(`${key}: ${answers[key]}`);
+            });
             const message = detailLines.join('\n');
 
+            // Create and submit hidden form
             const form = document.createElement('form');
             form.action = 'https://formsubmit.co/hello@trecoleman.com';
             form.method = 'POST';
             form.style.display = 'none';
 
-            // Include the visitor's email
+            // User email
             const userEmailField = document.createElement('input');
             userEmailField.name = 'visitor_email';
             userEmailField.value = email;
             form.appendChild(userEmailField);
 
-            // Include the audit details
+            // Audit details
             const detailsField = document.createElement('input');
             detailsField.name = 'audit_summary';
             detailsField.value = message;
             form.appendChild(detailsField);
 
-            // Subject for easy filtering
+            // Subject
             const subjectField = document.createElement('input');
             subjectField.type = 'hidden';
             subjectField.name = '_subject';
-            subjectField.value = 'New Operations Audit Request';
+            subjectField.value = 'New Operations Audit Completed';
             form.appendChild(subjectField);
 
             // Disable reCAPTCHA
@@ -555,14 +610,14 @@
             captchaField.value = 'false';
             form.appendChild(captchaField);
 
-            // Autoresponse to the visitor (optional)
+            // Autoresponse
             const autoResponseField = document.createElement('input');
             autoResponseField.type = 'hidden';
             autoResponseField.name = '_autoresponse';
-            autoResponseField.value = "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. You can also book time now: https://calendly.com/ph_tre";
+            autoResponseField.value = "Thanks for completing the operations audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre";
             form.appendChild(autoResponseField);
 
-            // Redirect back to the audit page with a query string to show a thank-you state
+            // No redirect needed since results are already shown
             const nextField = document.createElement('input');
             nextField.type = 'hidden';
             nextField.name = '_next';
@@ -572,6 +627,151 @@
             document.body.appendChild(form);
             form.submit();
         }
-    </script>
-</body>
-</html>
+
+        function getExcellentRecommendations(answers) {
+            return `
+                <div class="recommendations">
+                    <h4>🎯 Advanced Optimization Opportunities</h4>
+                    <p><strong>Congratulations! Your restaurant is performing exceptionally well.</strong> Here are advanced strategies to maximize your already strong operations:</p>
+                    <ul>
+                        <li><strong>Predictive analytics</strong> - Use AI for demand forecasting and inventory optimization</li>
+                        <li><strong>Dynamic pricing</strong> - Implement surge pricing for peak periods and promotional pricing for slow times</li>
+                        <li><strong>Franchise/expansion opportunities</strong> - Your systems are ready to scale to additional locations</li>
+                        <li><strong>Staff development program</strong> - Create a management training pipeline to maintain standards</li>
+                        <li><strong>Customer lifetime value optimization</strong> - Implement loyalty programs and personalized marketing</li>
+                        <li><strong>Operational benchmarking</strong> - Share your best practices with industry networks</li>
+                    </ul>
+                    <p><strong>Estimated additional profit potential:</strong> 3-7% through advanced optimization techniques</p>
+                    <p><strong>Consider these premium strategies:</strong></p>
+                    <ul>
+                        <li>Partner with food delivery optimization platforms</li>
+                        <li>Implement IoT sensors for real-time equipment monitoring</li>
+                        <li>Explore catering and private event opportunities</li>
+                        <li>Consider consulting for other restaurants in your area</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function getGoodRecommendations(answers) {
+            let recs = [];
+            
+            // Food Cost Analysis - Detailed and targeted
+            if (answers.foodCost <= 2) {
+                recs.push(`
+                    <div class="recommendations priority-high">
+                        <h4>🔥 High Priority: Food Cost Control</h4>
+                        <p><strong>Your food costs are ${answers.foodCost === 1 ? 'critically high (over 35%)' : 'above optimal levels (30-35%)'}</strong> - immediate action needed:</p>
+                        <ul>
+                            <li><strong>Weekly inventory tracking</strong> - Identify waste patterns and theft</li>
+                            <li><strong>Recipe standardization</strong> - Control portions and reduce over-portioning</li>
+                            <li><strong>Vendor negotiation</strong> - Analyze pricing and consolidate suppliers</li>
+                            <li><strong>Waste reduction program</strong> - Track daily waste and implement FIFO rotation</li>
+                            <li><strong>Menu engineering</strong> - Focus on high-margin items and eliminate low-performers</li>
+                        </ul>
+                        <p><strong>Expected impact:</strong> ${answers.foodCost === 1 ? '5-8%' : '2-5%'} reduction in food costs within 60 days (potential savings: $2,000-8,000+ monthly)</p>
+                    </div>
+                `);
+            }
+            
+            // Labor Cost Analysis - Targeted recommendations  
+            if (answers.laborCost <= 2 || answers.overtime <= 2) {
+                const isLaborHigh = answers.laborCost <= 2;
+                const isOvertimeHigh = answers.overtime <= 2;
+                let laborIssue = '';
+                if (isLaborHigh && isOvertimeHigh) {
+                    laborIssue = 'high overall labor costs AND excessive overtime';
+                } else if (isLaborHigh) {
+                    laborIssue = 'high labor cost percentage';
+                } else {
+                    laborIssue = 'excessive overtime expenses';
+                }
+                
+                recs.push(`
+                    <div class="recommendations priority-high">
+                        <h4>⚡ High Priority: Labor Optimization</h4>
+                        <p><strong>You have ${laborIssue}</strong> - focus on scheduling efficiency:</p>
+                        <ul>
+                            <li><strong>Data-driven scheduling</strong> - Use sales forecasting to optimize staff levels</li>
+                            <li><strong>Cross-training program</strong> - Increase flexibility and reduce overstaffing</li>
+                            ${isOvertimeHigh ? '<li><strong>Overtime controls</strong> - Implement approval processes and alerts</li>' : ''}
+                            <li><strong>Peak-hour optimization</strong> - Adjust prep schedules to reduce rush-hour staffing needs</li>
+                            <li><strong>Performance tracking</strong> - Monitor sales per labor hour by shift and employee</li>
+                        </ul>
+                        <p><strong>Expected savings:</strong> ${isLaborHigh && isOvertimeHigh ? '5-10%' : '3-8%'} reduction in labor costs (potential savings: $1,500-6,000+ monthly)</p>
+                    </div>
+                `);
+            }
+            
+            // Revenue Optimization - Based on specific weaknesses
+            if (answers.turnTime <= 2 || answers.menuMix <= 2 || answers.ticketSize <= 2) {
+                let revenueIssues = [];
+                if (answers.turnTime <= 2) revenueIssues.push('slow table turns');
+                if (answers.menuMix <= 2) revenueIssues.push('poor menu optimization');
+                if (answers.ticketSize <= 2) revenueIssues.push('declining average tickets');
+                
+                recs.push(`
+                    <div class="recommendations priority-high">
+                        <h4>💰 High Priority: Revenue Optimization</h4>
+                        <p><strong>Revenue issues identified:</strong> ${revenueIssues.join(', ')}</p>
+                        <ul>
+                            ${answers.turnTime <= 2 ? '<li><strong>Speed of service</strong> - Streamline kitchen processes and server workflows</li>' : ''}
+                            ${answers.menuMix <= 2 ? '<li><strong>Menu engineering</strong> - Promote high-margin items and redesign menu layout</li>' : ''}
+                            ${answers.ticketSize <= 2 ? '<li><strong>Upselling training</strong> - Implement systematic upselling and cross-selling</li>' : ''}
+                            <li><strong>Table management</strong> - Optimize seating algorithms and reservation systems</li>
+                            <li><strong>Peak-hour strategies</strong> - Implement dynamic pricing and promotions</li>
+                        </ul>
+                        <p><strong>Expected impact:</strong> 10-20% increase in revenue per seat (potential increase: $3,000-12,000+ monthly)</p>
+                    </div>
+                `);
+            }
+            
+            // Technology & Systems - If lagging
+            if (answers.integration <= 2 || answers.analytics <= 2) {
+                recs.push(`
+                    <div class="recommendations priority-medium">
+                        <h4>📊 Medium Priority: Technology Upgrade</h4>
+                        <p><strong>Your systems are holding back efficiency.</strong> Technology improvements needed:</p>
+                        <ul>
+                            ${answers.integration <= 2 ? '<li><strong>System integration</strong> - Connect POS, inventory, and scheduling systems</li>' : ''}
+                            ${answers.analytics <= 2 ? '<li><strong>Analytics implementation</strong> - Set up automated reporting and dashboards</li>' : ''}
+                            <li><strong>Real-time monitoring</strong> - Track key metrics (food cost, labor, sales) daily</li>
+                            <li><strong>Automated alerts</strong> - Get notified when metrics exceed targets</li>
+                        </ul>
+                        <p><strong>Expected impact:</strong> 10-15 hours/week time savings + better decision making</p>
+                    </div>
+                `);
+            }
+            
+            // Quality & Consistency - If below standards
+            if (answers.procedures <= 2 || answers.quality <= 2) {
+                recs.push(`
+                    <div class="recommendations priority-medium">
+                        <h4>🎯 Medium Priority: Operational Consistency</h4>
+                        <p><strong>Standardization will improve quality and reduce training time:</strong></p>
+                        <ul>
+                            ${answers.procedures <= 2 ? '<li><strong>Document procedures</strong> - Create step-by-step guides for all key processes</li>' : ''}
+                            ${answers.quality <= 2 ? '<li><strong>Quality checkpoints</strong> - Implement systematic food and service quality controls</li>' : ''}
+                            <li><strong>Staff training program</strong> - Ensure consistent execution across all shifts</li>
+                            <li><strong>Customer feedback system</strong> - Track satisfaction and identify improvement areas</li>
+                        </ul>
+                        <p><strong>Expected impact:</strong> Improved customer satisfaction + reduced training costs</p>
+                    </div>
+                `);
+            }
+            
+            return recs.join('') + `
+                <div class="recommendations">
+                    <h4>💡 Overall Assessment</h4>
+                    <p><strong>Your restaurant has solid fundamentals with significant room for improvement.</strong> Focus on the high-priority areas first for maximum impact.</p>
+                    <p><strong>Total estimated profit increase:</strong> 12-25% within 90 days by addressing your specific challenges</p>
+                    <p><strong>Recommended next steps:</strong></p>
+                    <ul>
+                        <li>Week 1-2: Address your highest-priority issue first</li>
+                        <li>Week 3-4: Implement supporting systems and training</li>
+                        <li>Month 2: Monitor results and fine-tune processes</li>
+                        <li>Month 3: Expand improvements to other operational areas</li>
+                    </ul>
+                </div>
+            `;
+        }
