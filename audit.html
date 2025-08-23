@@ -16,72 +16,6 @@
             min-height: 100vh;
         }
 
-        function getPoorRecommendations(answers) {
-            // Analyze specific problem areas for targeted recommendations
-            let criticalIssues = [];
-            if (answers.foodCost <= 2) criticalIssues.push('food cost control');
-            if (answers.laborCost <= 2) criticalIssues.push('labor cost management');
-            if (answers.inventory <= 2) criticalIssues.push('inventory tracking');
-            if (answers.recipes <= 2) criticalIssues.push('recipe standardization');
-            if (answers.scheduling <= 2) criticalIssues.push('staff scheduling');
-            if (answers.turnTime <= 2) criticalIssues.push('service speed');
-            if (answers.menuMix <= 2) criticalIssues.push('menu optimization');
-            if (answers.integration <= 2) criticalIssues.push('system integration');
-            if (answers.procedures <= 2) criticalIssues.push('operational procedures');
-            if (answers.quality <= 2) criticalIssues.push('quality control');
-
-            return `
-                <div class="recommendations priority-high">
-                    <h4>🚨 Urgent: Comprehensive Operations Overhaul Required</h4>
-                    <p><strong>Your restaurant has significant operational challenges in ${criticalIssues.length} key areas:</strong> ${criticalIssues.slice(0, 3).join(', ')}${criticalIssues.length > 3 ? `, and ${criticalIssues.length - 3} others` : ''}.</p>
-                    <p><strong>Critical issues identified that need immediate attention:</strong></p>
-                    
-                    <h5>🔥 Phase 1 - Crisis Management (First 30 days):</h5>
-                    <ul>
-                        ${answers.foodCost === 1 ? '<li><strong>URGENT - Food cost crisis:</strong> Implement daily cost tracking - you\'re losing significant money</li>' : ''}
-                        ${answers.laborCost === 1 ? '<li><strong>URGENT - Labor cost crisis:</strong> Review all schedules immediately - excessive labor spending</li>' : ''}
-                        ${answers.inventory <= 2 ? '<li><strong>Inventory system:</strong> Start weekly counts immediately to stop waste and theft</li>' : ''}
-                        ${answers.recipes <= 2 ? '<li><strong>Recipe standardization:</strong> Document your top 10 menu items with exact portions</li>' : ''}
-                        ${answers.quality <= 2 ? '<li><strong>Quality control:</strong> Implement basic food safety and consistency checks</li>' : ''}
-                        <li><strong>Cash flow monitoring:</strong> Track daily sales vs. costs to prevent cash flow problems</li>
-                        <li><strong>Staff meeting:</strong> Address operational standards and expectations immediately</li>
-                    </ul>
-
-                    <h5>⚡ Phase 2 - Stabilization (Days 31-60):</h5>
-                    <ul>
-                        ${answers.menuMix <= 2 ? '<li><strong>Menu engineering:</strong> Remove low-profit items and promote high-margin dishes</li>' : ''}
-                        ${answers.turnTime <= 2 ? '<li><strong>Service speed:</strong> Streamline kitchen and service workflows</li>' : ''}
-                        ${answers.scheduling <= 2 ? '<li><strong>Staff scheduling:</strong> Match labor to sales patterns - eliminate overstaffing</li>' : ''}
-                        ${answers.procedures <= 2 ? '<li><strong>Standard procedures:</strong> Create basic operating procedures for key processes</li>' : ''}
-                        <li><strong>Vendor review:</strong> Renegotiate contracts and eliminate unnecessary suppliers</li>
-                        <li><strong>Staff training:</strong> Ensure all team members understand new standards</li>
-                    </ul>
-
-                    <h5>🎯 Phase 3 - Growth Foundation (Days 61-90):</h5>
-                    <ul>
-                        ${answers.integration <= 2 ? '<li><strong>Technology upgrade:</strong> Implement integrated POS and inventory systems</li>' : ''}
-                        ${answers.analytics <= 2 ? '<li><strong>Reporting systems:</strong> Set up automated daily/weekly performance reports</li>' : ''}
-                        <li><strong>Performance monitoring:</strong> Track key metrics daily (food cost %, labor %, sales per seat)</li>
-                        <li><strong>Continuous improvement:</strong> Weekly review meetings to identify and solve problems</li>
-                        <li><strong>Customer feedback:</strong> Implement system to track satisfaction and respond to issues</li>
-                        <li><strong>Financial controls:</strong> Establish budgets and variance reporting</li>
-                    </ul>
-
-                    <p><strong>Expected results with proper implementation:</strong></p>
-                    <ul>
-                        <li><strong>Month 1:</strong> Stop major losses, stabilize operations (5-10% cost reduction)</li>
-                        <li><strong>Month 2:</strong> Improve efficiency and quality (additional 5-8% profit improvement)</li>
-                        <li><strong>Month 3:</strong> Build foundation for growth (additional 5-7% profit improvement)</li>
-                    </ul>
-                    <p><strong>Total potential profit increase: 15-25% within 90 days</strong></p>
-                    
-                    <p style="background: #ffe6e6; padding: 1rem; border-radius: 5px; margin-top: 1rem;"><strong>⚠️ WARNING:</strong> Without immediate action, your restaurant may face serious financial difficulties. These issues compound quickly and can lead to business failure. Consider hiring a restaurant operations consultant immediately to guide the turnaround process.</p>
-                </div>
-            `;
-        }
-    </script>
-</body>
-</html>
         /* --- Simple top navigation (minimal styles to avoid conflicts) --- */
         .top-nav {
             background: var(--primary-colour);
@@ -517,6 +451,9 @@
                 generateAndShowResults();
                 btn.disabled = false;
                 btn.textContent = '🚀 Show My Results Now';
+                
+                // FIXED: Submit form data in background without page navigation
+                submitAuditDataAsync();
             }, 1500);
         }
 
@@ -563,12 +500,10 @@
             resultsBox.innerHTML = resultsHTML;
             resultsBox.classList.add('show');
             resultsBox.scrollIntoView({ behavior: 'smooth' });
-
-            // Send the audit data via FormSubmit in background
-            submitAuditData();
         }
 
-        function submitAuditData() {
+        // FIXED: Async form submission without page navigation
+        async function submitAuditDataAsync() {
             const { email, percentage, scoreText, answers } = window.auditData;
             
             // Compose detailed message with score and answers
@@ -578,54 +513,24 @@
             });
             const message = detailLines.join('\n');
 
-            // Create and submit hidden form
-            const form = document.createElement('form');
-            form.action = 'https://formsubmit.co/hello@trecoleman.com';
-            form.method = 'POST';
-            form.style.display = 'none';
+            // Create form data
+            const formData = new FormData();
+            formData.append('visitor_email', email);
+            formData.append('audit_summary', message);
+            formData.append('_subject', 'New Operations Audit Completed');
+            formData.append('_captcha', 'false');
+            formData.append('_autoresponse', "Thanks for completing the operations audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre");
 
-            // User email
-            const userEmailField = document.createElement('input');
-            userEmailField.name = 'visitor_email';
-            userEmailField.value = email;
-            form.appendChild(userEmailField);
-
-            // Audit details
-            const detailsField = document.createElement('input');
-            detailsField.name = 'audit_summary';
-            detailsField.value = message;
-            form.appendChild(detailsField);
-
-            // Subject
-            const subjectField = document.createElement('input');
-            subjectField.type = 'hidden';
-            subjectField.name = '_subject';
-            subjectField.value = 'New Operations Audit Completed';
-            form.appendChild(subjectField);
-
-            // Disable reCAPTCHA
-            const captchaField = document.createElement('input');
-            captchaField.type = 'hidden';
-            captchaField.name = '_captcha';
-            captchaField.value = 'false';
-            form.appendChild(captchaField);
-
-            // Autoresponse
-            const autoResponseField = document.createElement('input');
-            autoResponseField.type = 'hidden';
-            autoResponseField.name = '_autoresponse';
-            autoResponseField.value = "Thanks for completing the operations audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre";
-            form.appendChild(autoResponseField);
-
-            // No redirect needed since results are already shown
-            const nextField = document.createElement('input');
-            nextField.type = 'hidden';
-            nextField.name = '_next';
-            nextField.value = 'https://trecoleman.com/audit.html?submitted=1';
-            form.appendChild(nextField);
-
-            document.body.appendChild(form);
-            form.submit();
+            // Submit using fetch instead of form.submit() to avoid page navigation
+            try {
+                await fetch('https://formsubmit.co/hello@trecoleman.com', {
+                    method: 'POST',
+                    body: formData
+                });
+                console.log('Audit data submitted successfully');
+            } catch (error) {
+                console.error('Error submitting audit data:', error);
+            }
         }
 
         function getExcellentRecommendations(answers) {
@@ -775,3 +680,70 @@
                 </div>
             `;
         }
+
+        function getPoorRecommendations(answers) {
+            // Analyze specific problem areas for targeted recommendations
+            let criticalIssues = [];
+            if (answers.foodCost <= 2) criticalIssues.push('food cost control');
+            if (answers.laborCost <= 2) criticalIssues.push('labor cost management');
+            if (answers.inventory <= 2) criticalIssues.push('inventory tracking');
+            if (answers.recipes <= 2) criticalIssues.push('recipe standardization');
+            if (answers.scheduling <= 2) criticalIssues.push('staff scheduling');
+            if (answers.turnTime <= 2) criticalIssues.push('service speed');
+            if (answers.menuMix <= 2) criticalIssues.push('menu optimization');
+            if (answers.integration <= 2) criticalIssues.push('system integration');
+            if (answers.procedures <= 2) criticalIssues.push('operational procedures');
+            if (answers.quality <= 2) criticalIssues.push('quality control');
+
+            return `
+                <div class="recommendations priority-high">
+                    <h4>🚨 Urgent: Comprehensive Operations Overhaul Required</h4>
+                    <p><strong>Your restaurant has significant operational challenges in ${criticalIssues.length} key areas:</strong> ${criticalIssues.slice(0, 3).join(', ')}${criticalIssues.length > 3 ? `, and ${criticalIssues.length - 3} others` : ''}.</p>
+                    <p><strong>Critical issues identified that need immediate attention:</strong></p>
+                    
+                    <h5>🔥 Phase 1 - Crisis Management (First 30 days):</h5>
+                    <ul>
+                        ${answers.foodCost === 1 ? '<li><strong>URGENT - Food cost crisis:</strong> Implement daily cost tracking - you\'re losing significant money</li>' : ''}
+                        ${answers.laborCost === 1 ? '<li><strong>URGENT - Labor cost crisis:</strong> Review all schedules immediately - excessive labor spending</li>' : ''}
+                        ${answers.inventory <= 2 ? '<li><strong>Inventory system:</strong> Start weekly counts immediately to stop waste and theft</li>' : ''}
+                        ${answers.recipes <= 2 ? '<li><strong>Recipe standardization:</strong> Document your top 10 menu items with exact portions</li>' : ''}
+                        ${answers.quality <= 2 ? '<li><strong>Quality control:</strong> Implement basic food safety and consistency checks</li>' : ''}
+                        <li><strong>Cash flow monitoring:</strong> Track daily sales vs. costs to prevent cash flow problems</li>
+                        <li><strong>Staff meeting:</strong> Address operational standards and expectations immediately</li>
+                    </ul>
+
+                    <h5>⚡ Phase 2 - Stabilization (Days 31-60):</h5>
+                    <ul>
+                        ${answers.menuMix <= 2 ? '<li><strong>Menu engineering:</strong> Remove low-profit items and promote high-margin dishes</li>' : ''}
+                        ${answers.turnTime <= 2 ? '<li><strong>Service speed:</strong> Streamline kitchen and service workflows</li>' : ''}
+                        ${answers.scheduling <= 2 ? '<li><strong>Staff scheduling:</strong> Match labor to sales patterns - eliminate overstaffing</li>' : ''}
+                        ${answers.procedures <= 2 ? '<li><strong>Standard procedures:</strong> Create basic operating procedures for key processes</li>' : ''}
+                        <li><strong>Vendor review:</strong> Renegotiate contracts and eliminate unnecessary suppliers</li>
+                        <li><strong>Staff training:</strong> Ensure all team members understand new standards</li>
+                    </ul>
+
+                    <h5>🎯 Phase 3 - Growth Foundation (Days 61-90):</h5>
+                    <ul>
+                        ${answers.integration <= 2 ? '<li><strong>Technology upgrade:</strong> Implement integrated POS and inventory systems</li>' : ''}
+                        ${answers.analytics <= 2 ? '<li><strong>Reporting systems:</strong> Set up automated daily/weekly performance reports</li>' : ''}
+                        <li><strong>Performance monitoring:</strong> Track key metrics daily (food cost %, labor %, sales per seat)</li>
+                        <li><strong>Continuous improvement:</strong> Weekly review meetings to identify and solve problems</li>
+                        <li><strong>Customer feedback:</strong> Implement system to track satisfaction and respond to issues</li>
+                        <li><strong>Financial controls:</strong> Establish budgets and variance reporting</li>
+                    </ul>
+
+                    <p><strong>Expected results with proper implementation:</strong></p>
+                    <ul>
+                        <li><strong>Month 1:</strong> Stop major losses, stabilize operations (5-10% cost reduction)</li>
+                        <li><strong>Month 2:</strong> Improve efficiency and quality (additional 5-8% profit improvement)</li>
+                        <li><strong>Month 3:</strong> Build foundation for growth (additional 5-7% profit improvement)</li>
+                    </ul>
+                    <p><strong>Total potential profit increase: 15-25% within 90 days</strong></p>
+                    
+                    <p style="background: #ffe6e6; padding: 1rem; border-radius: 5px; margin-top: 1rem;"><strong>⚠️ WARNING:</strong> Without immediate action, your restaurant may face serious financial difficulties. These issues compound quickly and can lead to business failure. Consider hiring a restaurant operations consultant immediately to guide the turnaround process.</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
