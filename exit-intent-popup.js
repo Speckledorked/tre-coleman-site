@@ -245,9 +245,9 @@
       primary: emphasiseAudit
     };
     const playbookOffer = {
-      title: 'Free 90‑Day Playbook',
-      subject: 'New Playbook Request (Exit Intent)',
-      nextUrl: 'https://trecoleman.com/5_Phase_AI_Lead_System_FULL_Detailed_TreColeman.pdf',
+      title: 'Free AI Playbook
+      subjec'New AI Playbook Request (Exit Intent)',
+      nextUrl: 'https://trecoleman.com/AI_Ops_Playbook.pdf.pdf',
       autoResponse: "Thanks for requesting the playbook! I'll be in touch soon.\n\nIf you’d like to talk through it, book a call: https://calendly.com/ph_tre",
       primary: !emphasiseAudit
     };
