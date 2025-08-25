@@ -32,8 +32,15 @@
     shown = true;
     sessionStorage.setItem(SESSION_KEY, 'true');
 
-    // Decide which version to emphasise (50/50 split)
-    const emphasiseAudit = Math.random() < 0.5;
+    //     // Decide which variant to emphasise using sessionStorage
+    const VARIANT_KEY = 'exit_intent_variant';
+    let variant = sessionStorage.getItem(VARIANT_KEY);
+    if (!variant) {
+      variant = Math.random() < 0.5 ? 'audit' : 'playbook';
+      sessionStorage.setItem(VARIANT_KEY, variant);
+    }
+    const emphasiseAudit = variant === 'audit';
+    
 
     // Base colours – update these to match your palette
     const primaryColour = '#2c5f2d';
@@ -235,8 +242,8 @@
       offerDiv.appendChild(form);
       return offerDiv;
     }
-
-    // Define offers
+        // Define offers
+            // Define offers
     const auditOffer = {
       title: 'Free Operations Audit',
       subject: 'New Operations Audit (Exit Intent)',
@@ -244,17 +251,25 @@
       autoResponse: "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. You can also book time now: https://calendly.com/ph_tre",
       primary: emphasiseAudit
     };
+
     const playbookOffer = {
-      title: 'Free AI Playbook
-      subjec'New AI Playbook Request (Exit Intent)',
-      nextUrl: 'https://trecoleman.com/AI_Ops_Playbook.pdf.pdf',
-      autoResponse: "Thanks for requesting the playbook! I'll be in touch soon.\n\nIf you’d like to talk through it, book a call: https://calendly.com/ph_tre",
+      title: 'Free 90-Day Playbook',
+      subject: 'New Playbook Request (Exit Intent)',
+      nextUrl: 'https://trecoleman.com/5_Phase_AI_Lead_System_FULL_Detailed_TreColeman.pdf',
+      autoResponse: "Thanks for requesting the playbook! I'll be in touch soon.\n\nIf you'd like to talk through it, book a call: https://calendly.com/ph_tre",
       primary: !emphasiseAudit
     };
 
-    // Order offers based on emphasised variant
-    const ordered = emphasiseAudit ? [auditOffer, playbookOffer] : [playbookOffer, auditOffer];
-    ordered.forEach(off => offersContainer.appendChild(createOffer(off)));
+    // Append only the selected offer based on the emphasised variant
+    const selectedOffer = emphasiseAudit ? auditOffer : playbookOffer;
+    offersContainer.appendChild(createOffer(selectedOffer));
+    
+// Append only the selected offer based on the emphasised variant
+
+    
+     
+        const selectedOffer = emphasiseAudit ? auditOffer : playbookOffer;
+        offersContainer.appendChild(createOffer(selectedOffer));
 
     // Build modal structure
     modal.appendChild(closeBtn);
