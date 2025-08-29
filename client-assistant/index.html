@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Client Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    html,body{height:100%;margin:0;}
+    #vf{height:100vh;}
+  </style>
+</head>
+<body>
+  <div id="vf"></div>
+  <!-- Voiceflow Premium Client Assistant -->
+  <script type="text/javascript">
+    (function(d,t){
+      var v=d.createElement(t), s=d.getElementsByTagName(t)[0];
+      v.onload=function(){
+        window.voiceflow.chat.load({
+          verify:{ projectID:"68b082e347e3ae3c7ae44483" },
+          url:"https://general-runtime.voiceflow.com",
+          versionID:"production",
+          assistant:{ allowSound:false }
+        });
+      };
+      v.src="https://cdn.voiceflow.com/widget/bundle.mjs";
+      v.type="text/javascript";
+      s.parentNode.insertBefore(v,s);
+    })(document,"script");
+  </script>
+</body>
+</html>
