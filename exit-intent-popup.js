@@ -15,6 +15,16 @@
  * 2. Ensure there is no conflicting element with ids
  *    `exitIntentOverlay` or `exitIntentModal` in your markup.
  */
+// Crisp Chat Integration
+window.$crisp=[];
+window.CRISP_WEBSITE_ID="be57159b-af24-45a1-8e47-1207df3715lf";
+(function(){
+  var d=document,s=d.createElement("script");
+  s.src="https://client.crisp.chat/l.js";
+  s.async=1;
+  d.getElementsByTagName("head")[0].appendChild(s);
+})();
+
 
 (function () {
   const SESSION_KEY = 'tre_exit_intent_shown';
