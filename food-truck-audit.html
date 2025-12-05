@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Food Truck Operations Audit - Tre' Coleman</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-stack, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+            line-height: 1.6;
+            color: var(--dark-text, #2c3e50);
+            background: var(--light-bg, #f8f9fa);
+            min-height: 100vh;
+        }
+
+        .top-nav { background: var(--primary-colour, #2c3e50); color: white; }
+        .top-nav .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: .75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .top-nav .brand { font-weight: 700; letter-spacing: .3px; }
+        .top-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .top-nav a { color: #fff; text-decoration: none; font-size: 0.9rem; }
+        .top-nav a:hover { text-decoration: underline; }
+
+        .container {
+            max-width: 800px;
+            margin: 1rem auto;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .header {
+            background: var(--primary-colour, #2c3e50);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .header h1 { font-size: 2rem; margin-bottom: 0.5rem; font-weight: 600; }
+        .header p { opacity: 0.9; font-size: 1.1rem; }
+
+        .progress-bar { height: 6px; background: var(--secondary-colour, #95a5a6); margin: 0; }
+        .progress { height: 100%; background: var(--accent-colour, #e74c3c); width: 0%; transition: width 0.3s ease; }
+
+        .content { padding: 2rem; }
+        .section { margin-bottom: 2rem; padding: 1.5rem; border-radius: 10px; border: 2px solid #ecf0f1; transition: all 0.3s ease; display: none; }
+        .section.active { border-color: var(--primary-colour, #2c3e50); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); display: block; }
+        .section h3 {
+            color: var(--primary-colour, #2c3e50); margin-bottom: 1rem; font-size: 1.3rem; display: flex; align-items: center;
+        }
+        .section-icon {
+            min-width: 28px; height: 28px; margin-right: 0.5rem; background: var(--primary-colour, #2c3e50);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .question { margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; border-left: 4px solid var(--primary-colour, #2c3e50); }
+        .question label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #2c3e50; }
+        .question select {
+            width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; background: white; transition: border-color 0.3s ease;
+        }
+        .question select:focus { outline: none; border-color: #3498db; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1); }
+
+        .email-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+        .email-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .email-section h3 { margin-bottom: 1rem; font-size: 1.5rem; }
+        .email-section p { margin-bottom: 1.5rem; opacity: 0.9; }
+        .email-form { max-width: 400px; margin: 0 auto; }
+        .email-form input[type="email"], .email-form input[type="text"] {
+            width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
+        }
+        .email-form button {
+            background: var(--accent-colour, #e74c3c); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; transition: all 0.3s ease;
+        }
+        .email-form button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+
+        .results {
+            background: var(--light-bg, #f8f9fa);
+            padding: 2rem; border-radius: 10px; margin-top: 2rem; display: none;
+        }
+        .results.show { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .score-display { text-align: center; margin-bottom: 2rem; }
+        .score-circle {
+            width: 120px; height: 120px; margin: 0 auto 1rem; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white;
+        }
+        .score-excellent { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+        .score-good { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .score-poor { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+        .recommendations { background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--primary-colour, #2c3e50); margin-bottom: 1.5rem; }
+        .recommendations h4 { color: var(--primary-colour, #2c3e50); margin-bottom: 1rem; }
+        .recommendations h5 { color: var(--primary-colour, #2c3e50); margin: 1rem 0 0.5rem; font-size: 1.1rem; }
+        .recommendations ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+        .recommendations li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .priority-high { background: #fff5f5; border-left-color: var(--accent-colour, #e74c3c); }
+        .priority-high h4, .priority-high h5 { color: var(--accent-colour, #e74c3c); }
+        .priority-medium { background: #fffbf0; border-left-color: var(--secondary-colour, #f39c12); }
+        .priority-medium h4, .priority-medium h5 { color: var(--secondary-colour, #f39c12); }
+
+        .cta {
+            background: var(--primary-colour, #2c3e50);
+            color: white; padding: 2rem; border-radius: 10px; text-align: center; margin-top: 2rem;
+        }
+        .cta h3 { margin-bottom: 1rem; font-size: 1.8rem; }
+        .cta p { margin-bottom: 1.5rem; font-size: 1.1rem; }
+        .cta a {
+            display: inline-block; background: var(--accent-colour, #e74c3c); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: all 0.3s ease;
+        }
+        .cta a:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+
+        .nav-buttons {
+            display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem;
+        }
+        .nav-buttons button {
+            padding: 1rem 2rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: bold; transition: all 0.3s ease; flex: 1;
+        }
+        .nav-buttons button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+        .nav-buttons button:disabled { background: #ecf0f1; color: #95a5a6; cursor: not-allowed; transform: none; }
+        .btn-prev { background: var(--secondary-colour, #95a5a6); color: white; }
+        .btn-next { background: var(--primary-colour, #2c3e50); color: white; }
+        .btn-submit { background: var(--accent-colour, #e74c3c); color: white; }
+
+        @media (max-width: 768px) {
+            .content { padding: 1rem; }
+            .header h1 { font-size: 1.5rem; }
+            .section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav" aria-label="Primary">
+        <div class="nav-inner">
+            <div class="brand">Tre' Coleman</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="https://calendly.com/ph_tre" target="_blank" rel="noopener">Book Call</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>🚚 Food Truck Operations Audit</h1>
+            <p>Discover hidden profit leaks and growth opportunities in your mobile food business</p>
+        </div>
+
+        <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
+
+        <div class="content">
+            <!-- Section 1: Food Cost Management -->
+            <div class="section active">
+                <h3><span class="section-icon">1</span>Food Cost Management</h3>
+                <div class="question">
+                    <label>What's your current food cost percentage?</label>
+                    <select id="foodCost">
+                        <option value="">Select range</option>
+                        <option value="5">Under 28% (Excellent)</option>
+                        <option value="4">28-32% (Good)</option>
+                        <option value="2">32-36% (Acceptable)</option>
+                        <option value="1">Over 36% (Needs attention)</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How often do you track waste and spoilage?</label>
+                    <select id="wasteTracking">
+                        <option value="">Select frequency</option>
+                        <option value="5">Daily with documentation</option>
+                        <option value="3">Weekly tracking</option>
+                        <option value="2">Monthly or when obvious</option>
+                        <option value="1">Rarely or never</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Do you use pre-portioned ingredients?</label>
+                    <select id="portioning">
+                        <option value="">Select answer</option>
+                        <option value="5">Yes, for all items</option>
+                        <option value="3">For most high-volume items</option>
+                        <option value="2">For some items</option>
+                        <option value="1">No standardized portioning</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 2: Menu Engineering -->
+            <div class="section">
+                <h3><span class="section-icon">2</span>Menu Engineering</h3>
+                <div class="question">
+                    <label>How well do your menu items travel and hold?</label>
+                    <select id="menuPortability">
+                        <option value="">Select answer</option>
+                        <option value="5">All items designed for mobile service</option>
+                        <option value="3">Most work well, some challenges</option>
+                        <option value="2">Some items lose quality quickly</option>
+                        <option value="1">Frequent quality issues</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Average service time per customer order?</label>
+                    <select id="serviceSpeed">
+                        <option value="">Select time</option>
+                        <option value="5">Under 3 minutes</option>
+                        <option value="4">3-5 minutes</option>
+                        <option value="2">5-8 minutes</option>
+                        <option value="1">Over 8 minutes</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How often do you analyze item profitability?</label>
+                    <select id="profitAnalysis">
+                        <option value="">Select frequency</option>
+                        <option value="5">Weekly or after each event</option>
+                        <option value="3">Monthly</option>
+                        <option value="2">Quarterly</option>
+                        <option value="1">Rarely or never</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 3: Equipment Reliability -->
+            <div class="section">
+                <h3><span class="section-icon">3</span>Equipment Reliability</h3>
+                <div class="question">
+                    <label>Do you have backup equipment plans?</label>
+                    <select id="backupEquipment">
+                        <option value="">Select answer</option>
+                        <option value="5">Backup for all critical equipment</option>
+                        <option value="3">Backup for key items (generator, refrigeration)</option>
+                        <option value="2">Limited backup options</option>
+                        <option value="1">No backup plans</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How often do you perform preventive maintenance?</label>
+                    <select id="maintenance">
+                        <option value="">Select frequency</option>
+                        <option value="5">Weekly inspection, monthly service</option>
+                        <option value="3">Monthly inspection</option>
+                        <option value="2">When problems arise</option>
+                        <option value="1">Only when equipment fails</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>When was your last equipment breakdown?</label>
+                    <select id="breakdowns">
+                        <option value="">Select timeframe</option>
+                        <option value="5">Over 6 months ago</option>
+                        <option value="4">3-6 months ago</option>
+                        <option value="2">1-3 months ago</option>
+                        <option value="1">Within the last month</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 4: Commissary Operations -->
+            <div class="section">
+                <h3><span class="section-icon">4</span>Commissary Operations</h3>
+                <div class="question">
+                    <label>How efficient is your commissary prep workflow?</label>
+                    <select id="prepEfficiency">
+                        <option value="">Select answer</option>
+                        <option value="5">Fully documented, optimized process</option>
+                        <option value="3">Consistent routine, some inefficiencies</option>
+                        <option value="2">Inconsistent, often rushed</option>
+                        <option value="1">Chaotic, major time waste</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Storage and inventory management at commissary?</label>
+                    <select id="storageManagement">
+                        <option value="">Select answer</option>
+                        <option value="5">Organized, labeled, FIFO system</option>
+                        <option value="3">Generally organized</option>
+                        <option value="2">Disorganized, hard to find items</option>
+                        <option value="1">No system, frequent issues</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Commissary relationship and compliance?</label>
+                    <select id="commissaryCompliance">
+                        <option value="">Select answer</option>
+                        <option value="5">Excellent relationship, fully compliant</option>
+                        <option value="3">Good, minor issues</option>
+                        <option value="2">Occasional problems</option>
+                        <option value="1">Frequent issues or non-compliance</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 5: Event Strategy -->
+            <div class="section">
+                <h3><span class="section-icon">5</span>Event Booking Strategy</h3>
+                <div class="question">
+                    <label>Average revenue per event?</label>
+                    <select id="eventRevenue">
+                        <option value="">Select range</option>
+                        <option value="5">Over $2,500</option>
+                        <option value="4">$1,500-$2,500</option>
+                        <option value="2">$800-$1,500</option>
+                        <option value="1">Under $800</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How far in advance are events booked?</label>
+                    <select id="bookingLead">
+                        <option value="">Select timeframe</option>
+                        <option value="5">3+ months in advance</option>
+                        <option value="4">1-3 months</option>
+                        <option value="2">2-4 weeks</option>
+                        <option value="1">Week-of bookings</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>What percentage is corporate catering vs. festivals?</label>
+                    <select id="cateringMix">
+                        <option value="">Select range</option>
+                        <option value="5">50%+ corporate/private events</option>
+                        <option value="4">25-50% corporate</option>
+                        <option value="2">10-25% corporate</option>
+                        <option value="1">Under 10% corporate</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 6: Pricing & Profitability -->
+            <div class="section">
+                <h3><span class="section-icon">6</span>Pricing & Profitability</h3>
+                <div class="question">
+                    <label>Do you track profitability per event?</label>
+                    <select id="eventProfitability">
+                        <option value="">Select answer</option>
+                        <option value="5">Yes, detailed P&L per event</option>
+                        <option value="3">Track revenue and basic costs</option>
+                        <option value="2">General tracking only</option>
+                        <option value="1">No event-level tracking</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>How do you set menu pricing?</label>
+                    <select id="pricingStrategy">
+                        <option value="">Select method</option>
+                        <option value="5">Data-driven, competitive analysis</option>
+                        <option value="3">Based on food cost multiples</option>
+                        <option value="2">Match competitor pricing</option>
+                        <option value="1">Guesswork or random</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Average profit margin per event?</label>
+                    <select id="profitMargin">
+                        <option value="">Select range</option>
+                        <option value="5">Over 40%</option>
+                        <option value="4">30-40%</option>
+                        <option value="2">20-30%</option>
+                        <option value="1">Under 20% or unknown</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 7: Catering Pipeline -->
+            <div class="section">
+                <h3><span class="section-icon">7</span>Catering Lead Generation</h3>
+                <div class="question">
+                    <label>Do you have a catering lead generation system?</label>
+                    <select id="leadGeneration">
+                        <option value="">Select answer</option>
+                        <option value="5">Active marketing, consistent pipeline</option>
+                        <option value="3">Some marketing efforts</option>
+                        <option value="2">Relies on referrals only</option>
+                        <option value="1">No systematic approach</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Email list for direct marketing?</label>
+                    <select id="emailList">
+                        <option value="">Select answer</option>
+                        <option value="5">Active list, regular communication</option>
+                        <option value="3">Have a list, irregular contact</option>
+                        <option value="2">Small or inactive list</option>
+                        <option value="1">No email list</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Repeat corporate client rate?</label>
+                    <select id="repeatClients">
+                        <option value="">Select range</option>
+                        <option value="5">Over 50% repeat business</option>
+                        <option value="4">30-50% repeat</option>
+                        <option value="2">10-30% repeat</option>
+                        <option value="1">Under 10% repeat</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 8: Food Safety & Permits -->
+            <div class="section">
+                <h3><span class="section-icon">8</span>Food Safety & Compliance</h3>
+                <div class="question">
+                    <label>Most recent health inspection score?</label>
+                    <select id="healthInspection">
+                        <option value="">Select result</option>
+                        <option value="5">95-100, no violations</option>
+                        <option value="4">90-95, minor violations</option>
+                        <option value="2">85-90, some violations</option>
+                        <option value="1">Below 85 or major violations</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Do you have documented HACCP procedures?</label>
+                    <select id="haccp">
+                        <option value="">Select answer</option>
+                        <option value="5">Complete documentation, followed daily</option>
+                        <option value="3">Basic documentation</option>
+                        <option value="2">Informal procedures</option>
+                        <option value="1">No documented procedures</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Permit management (events, parking, business)?</label>
+                    <select id="permits">
+                        <option value="">Select answer</option>
+                        <option value="5">All permits current, well-organized</option>
+                        <option value="3">Current, some disorganization</option>
+                        <option value="2">Missing some permits</option>
+                        <option value="1">Permit issues or violations</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 9: Contingency Planning -->
+            <div class="section">
+                <h3><span class="section-icon">9</span>Operational Contingencies</h3>
+                <div class="question">
+                    <label>Weather backup plans for outdoor events?</label>
+                    <select id="weatherPlans">
+                        <option value="">Select answer</option>
+                        <option value="5">Comprehensive plans for all scenarios</option>
+                        <option value="3">Basic backup plans</option>
+                        <option value="2">Informal plans</option>
+                        <option value="1">No weather contingencies</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Equipment failure response plan?</label>
+                    <select id="failureResponse">
+                        <option value="">Select answer</option>
+                        <option value="5">Documented plan, backup vendors</option>
+                        <option value="3">Know what to do, not documented</option>
+                        <option value="2">Figure it out when it happens</option>
+                        <option value="1">No plan</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Insurance coverage adequate?</label>
+                    <select id="insurance">
+                        <option value="">Select answer</option>
+                        <option value="5">Comprehensive coverage</option>
+                        <option value="3">Basic coverage</option>
+                        <option value="2">Minimal coverage</option>
+                        <option value="1">No or inadequate insurance</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Section 10: Technology -->
+            <div class="section">
+                <h3><span class="section-icon">10</span>Mobile Technology Stack</h3>
+                <div class="question">
+                    <label>POS system effectiveness?</label>
+                    <select id="posSystem">
+                        <option value="">Select answer</option>
+                        <option value="5">Modern mobile POS, offline capable</option>
+                        <option value="3">Basic POS, works most of the time</option>
+                        <option value="2">Outdated or unreliable</option>
+                        <option value="1">Manual transactions or cash only</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Online ordering integration?</label>
+                    <select id="onlineOrdering">
+                        <option value="">Select answer</option>
+                        <option value="5">Full integration, pre-ordering available</option>
+                        <option value="3">Basic online presence</option>
+                        <option value="2">Social media only</option>
+                        <option value="1">No online ordering</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Social media for location updates?</label>
+                    <select id="socialMedia">
+                        <option value="">Select answer</option>
+                        <option value="5">Active, consistent updates</option>
+                        <option value="3">Regular updates</option>
+                        <option value="2">Sporadic updates</option>
+                        <option value="1">Inactive or no social media</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <button class="btn-prev" onclick="previousSection()">← Previous</button>
+                <button class="btn-next" onclick="nextSection()">Next →</button>
+                <button class="btn-submit" onclick="calculateResults()" style="display: none;">See My Results</button>
+            </div>
+
+            <!-- Email Collection Section -->
+            <div class="email-section" id="emailSection">
+                <h3>🎯 Get Your Personalized Results</h3>
+                <p>Enter your details to receive your complete operations audit with specific recommendations for your food truck.</p>
+                <form class="email-form" id="emailForm" onsubmit="submitEmail(event)">
+                    <input type="text" id="userName" placeholder="Your Name" required>
+                    <input type="email" id="userEmail" placeholder="Your Email" required>
+                    <button type="submit">Show My Results →</button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results" id="results">
+                <div class="score-display">
+                    <div class="score-circle" id="scoreCircle"></div>
+                    <h2 id="scoreText"></h2>
+                    <p id="scoreDescription"></p>
+                </div>
+                <div id="recommendations"></div>
+                
+                <div class="cta">
+                    <h3>Ready to Optimize Your Food Truck?</h3>
+                    <p>Book a free 30-minute strategy call and I'll show you exactly how to implement these improvements in your food truck operation.</p>
+                    <a href="https://calendly.com/ph_tre" target="_blank">Schedule Your Free Consultation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 0;
+        const sections = document.querySelectorAll('.section');
+        const totalSections = sections.length;
+
+        function updateProgress() {
+            const progress = ((currentSection + 1) / totalSections) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showSection(index) {
+            sections.forEach((section, i) => {
+                section.classList.toggle('active', i === index);
+            });
+
+            document.querySelector('.btn-prev').disabled = index === 0;
+            document.querySelector('.btn-next').style.display = index === totalSections - 1 ? 'none' : 'inline-block';
+            document.querySelector('.btn-submit').style.display = index === totalSections - 1 ? 'inline-block' : 'none';
+            
+            updateProgress();
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections - 1) {
+                currentSection++;
+                showSection(currentSection);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function previousSection() {
+            if (currentSection > 0) {
+                currentSection--;
+                showSection(currentSection);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function calculateResults() {
+            const answers = {
+                foodCost: parseInt(document.getElementById('foodCost').value) || 0,
+                wasteTracking: parseInt(document.getElementById('wasteTracking').value) || 0,
+                portioning: parseInt(document.getElementById('portioning').value) || 0,
+                menuPortability: parseInt(document.getElementById('menuPortability').value) || 0,
+                serviceSpeed: parseInt(document.getElementById('serviceSpeed').value) || 0,
+                profitAnalysis: parseInt(document.getElementById('profitAnalysis').value) || 0,
+                backupEquipment: parseInt(document.getElementById('backupEquipment').value) || 0,
+                maintenance: parseInt(document.getElementById('maintenance').value) || 0,
+                breakdowns: parseInt(document.getElementById('breakdowns').value) || 0,
+                prepEfficiency: parseInt(document.getElementById('prepEfficiency').value) || 0,
+                storageManagement: parseInt(document.getElementById('storageManagement').value) || 0,
+                commissaryCompliance: parseInt(document.getElementById('commissaryCompliance').value) || 0,
+                eventRevenue: parseInt(document.getElementById('eventRevenue').value) || 0,
+                bookingLead: parseInt(document.getElementById('bookingLead').value) || 0,
+                cateringMix: parseInt(document.getElementById('cateringMix').value) || 0,
+                eventProfitability: parseInt(document.getElementById('eventProfitability').value) || 0,
+                pricingStrategy: parseInt(document.getElementById('pricingStrategy').value) || 0,
+                profitMargin: parseInt(document.getElementById('profitMargin').value) || 0,
+                leadGeneration: parseInt(document.getElementById('leadGeneration').value) || 0,
+                emailList: parseInt(document.getElementById('emailList').value) || 0,
+                repeatClients: parseInt(document.getElementById('repeatClients').value) || 0,
+                healthInspection: parseInt(document.getElementById('healthInspection').value) || 0,
+                haccp: parseInt(document.getElementById('haccp').value) || 0,
+                permits: parseInt(document.getElementById('permits').value) || 0,
+                weatherPlans: parseInt(document.getElementById('weatherPlans').value) || 0,
+                failureResponse: parseInt(document.getElementById('failureResponse').value) || 0,
+                insurance: parseInt(document.getElementById('insurance').value) || 0,
+                posSystem: parseInt(document.getElementById('posSystem').value) || 0,
+                onlineOrdering: parseInt(document.getElementById('onlineOrdering').value) || 0,
+                socialMedia: parseInt(document.getElementById('socialMedia').value) || 0
+            };
+
+            const unanswered = Object.values(answers).filter(val => val === 0).length;
+            if (unanswered > 0) {
+                alert(`Please answer all questions before seeing results. You have ${unanswered} unanswered question(s).`);
+                return;
+            }
+
+            document.getElementById('emailSection').classList.add('show');
+            document.getElementById('emailSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            window.auditAnswers = answers;
+        }
+
+        function submitEmail(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            
+            console.log('User info:', { name, email });
+            
+            showResults(window.auditAnswers);
+        }
+
+        function showResults(answers) {
+            const totalScore = Object.values(answers).reduce((sum, val) => sum + val, 0);
+            const avgScore = totalScore / Object.keys(answers).length;
+
+            const scoreCircle = document.getElementById('scoreCircle');
+            const scoreText = document.getElementById('scoreText');
+            const scoreDescription = document.getElementById('scoreDescription');
+            const recommendationsDiv = document.getElementById('recommendations');
+
+            scoreCircle.textContent = avgScore.toFixed(1);
+
+            if (avgScore >= 4.0) {
+                scoreCircle.className = 'score-circle score-excellent';
+                scoreText.textContent = 'Excellent Performance';
+                scoreDescription.textContent = 'Your food truck operations are well-optimized with strong fundamentals.';
+                recommendationsDiv.innerHTML = getExcellentRecommendations(answers);
+            } else if (avgScore >= 3.0) {
+                scoreCircle.className = 'score-circle score-good';
+                scoreText.textContent = 'Good - Room for Growth';
+                scoreDescription.textContent = 'Solid operational foundation with specific areas to improve for maximum profitability.';
+                recommendationsDiv.innerHTML = getGoodRecommendations(answers);
+            } else if (avgScore >= 2.0) {
+                scoreCircle.className = 'score-circle score-good';
+                scoreText.textContent = 'Acceptable - Needs Attention';
+                scoreDescription.textContent = 'Several operational gaps that are limiting your profitability and growth potential.';
+                recommendationsDiv.innerHTML = getAcceptableRecommendations(answers);
+            } else {
+                scoreCircle.className = 'score-circle score-poor';
+                scoreText.textContent = 'Critical Issues Identified';
+                scoreDescription.textContent = 'Significant operational challenges requiring immediate attention to prevent business failure.';
+                recommendationsDiv.innerHTML = getPoorRecommendations(answers);
+            }
+
+            document.getElementById('emailSection').style.display = 'none';
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function getExcellentRecommendations(answers) {
+            return `
+                <div class="recommendations">
+                    <h4>🎯 Scaling & Optimization Opportunities</h4>
+                    <p><strong>Your food truck operates at a high level.</strong> Focus on scaling and premium opportunities:</p>
+                    <ul>
+                        <li><strong>Multi-truck expansion</strong> - Your systems are ready to replicate</li>
+                        <li><strong>Premium corporate pipeline</strong> - Shift focus to high-value catering ($3K+ events)</li>
+                        <li><strong>Franchise development</strong> - Document systems for potential franchise model</li>
+                        <li><strong>Strategic partnerships</strong> - Alliance with venues, caterers, event planners</li>
+                        <li><strong>Technology leverage</strong> - AI ordering, predictive inventory, automated marketing</li>
+                    </ul>
+                    <p><strong>Growth potential:</strong> 2-3x revenue within 12 months through strategic expansion</p>
+                </div>
+            `;
+        }
+
+        function getGoodRecommendations(answers) {
+            let recs = [];
+            
+            if (answers.cateringMix <= 3 || answers.eventRevenue <= 3) {
+                recs.push(`
+                    <div class="recommendations priority-high">
+                        <h4>🚀 High Priority: Corporate Catering Expansion</h4>
+                        <p><strong>Your biggest revenue opportunity is corporate events.</strong></p>
+                        <ul>
+                            ${answers.cateringMix <= 3 ? '<li><strong>Corporate pipeline</strong> - Build LinkedIn presence targeting HR/office managers. Corporate lunch events average $2,200 vs $800 festival days</li>' : ''}
+                            ${answers.eventRevenue <= 3 ? '<li><strong>Premium pricing strategy</strong> - Analyze your cost structure and increase prices by 15-25% for private/corporate events</li>' : ''}
+                            <li><strong>Email marketing system</strong> - Capture emails at every event. Monthly newsletter with booking incentives</li>
+                            <li><strong>Repeat client program</strong> - Quarterly events for corporate clients = predictable revenue</li>
+                        </ul>
+                        <p><strong>Expected impact:</strong> $1,200-2,000 additional monthly revenue with 30% shift to corporate events</p>
+                    </div>
+                `);
+            }
+            
+            if (answers.backupEquipment <= 3 || answers.haccp <= 3) {
+                recs.push(`
+                    <div class="recommendations priority-medium">
+                        <h4>⚙️ Medium Priority: Equipment & Compliance</h4>
+                        <p><strong>Reduce downtime risk and qualify for premium events:</strong></p>
+                        <ul>
+                            ${answers.backupEquipment <= 3 ? '<li><strong>Backup equipment plan</strong> - Generator, propane backup, spare refrigeration. One breakdown costs $800-2,500 in lost revenue</li>' : ''}
+                            ${answers.haccp <= 3 ? '<li><strong>HACCP documentation</strong> - Required for most corporate/venue events. 2-3 day implementation</li>' : ''}
+                            ${answers.maintenance <= 3 ? '<li><strong>Preventive maintenance schedule</strong> - Weekly inspections prevent 70% of breakdowns</li>' : ''}
+                        </ul>
+                        <p><strong>Expected impact:</strong> Qualify for premium events ($2K+) and prevent costly breakdowns</p>
+                    </div>
+                `);
+            }
+
+            return recs.join('') + `
+                <div class="recommendations">
+                    <h4>💡 90-Day Action Plan</h4>
+                    <ul>
+                        <li><strong>Month 1:</strong> Document HACCP, build corporate outreach list, implement event P&L tracking</li>
+                        <li><strong>Month 2:</strong> Launch LinkedIn/email campaigns, optimize high-margin menu items, backup equipment plan</li>
+                        <li><strong>Month 3:</strong> Book first 5 corporate events, streamline commissary workflow, analyze results</li>
+                    </ul>
+                    <p><strong>Potential profit increase:</strong> 40-60% revenue growth with proper execution</p>
+                </div>
+            `;
+        }
+
+        function getAcceptableRecommendations(answers) {
+            let criticalIssues = [];
+            
+            if (answers.haccp <= 2) criticalIssues.push('food safety compliance');
+            if (answers.backupEquipment <= 2) criticalIssues.push('equipment backup plans');
+            if (answers.foodCost <= 2) criticalIssues.push('food cost control');
+            if (answers.eventRevenue <= 2) criticalIssues.push('low event revenue');
+            if (answers.cateringMix <= 2) criticalIssues.push('corporate catering pipeline');
+
+            return `
+                <div class="recommendations priority-high">
+                    <h4>🚨 High Priority: Operational Stabilization Required</h4>
+                    <p><strong>Critical areas affecting profitability:</strong> ${criticalIssues.slice(0, 3).join(', ')}${criticalIssues.length > 3 ? `, and ${criticalIssues.length - 3} others` : ''}.</p>
+                    
+                    <h5>🔥 First 30 Days - Stop the Bleeding:</h5>
+                    <ul>
+                        ${answers.haccp <= 2 ? '<li><strong>URGENT - Food safety documentation:</strong> Create HACCP plan immediately. Risk: health violations, event disqualification, potential shutdown</li>' : ''}
+                        ${answers.backupEquipment <= 2 ? '<li><strong>Equipment backup plan:</strong> One breakdown = $800-2,500 lost revenue. Get backup generator and identify equipment rental sources</li>' : ''}
+                        ${answers.foodCost <= 2 ? '<li><strong>Food cost audit:</strong> Track food cost daily for 30 days. Target: reduce from current levels to 30-32%</li>' : ''}
+                        ${answers.permits <= 2 ? '<li><strong>Permit compliance review:</strong> Ensure all permits current to avoid fines or event cancellations</li>' : ''}
+                        <li><strong>Per-event profitability:</strong> Start tracking revenue minus all costs for every event</li>
+                    </ul>
+
+                    <h5>⚡ Days 31-60 - Build Systems:</h5>
+                    <ul>
+                        ${answers.cateringMix <= 2 ? '<li><strong>Corporate event strategy:</strong> Research 20 potential corporate clients. Target office managers, HR departments</li>' : ''}
+                        ${answers.prepEfficiency <= 2 ? '<li><strong>Commissary optimization:</strong> Document prep workflow, create prep lists, establish FIFO system</li>' : ''}
+                        ${answers.profitAnalysis <= 2 ? '<li><strong>Menu engineering:</strong> Analyze item profitability. Cut bottom 20%, promote top performers</li>' : ''}
+                        ${answers.emailList <= 2 ? '<li><strong>Email capture system:</strong> Start collecting emails at every event. Goal: 100 contacts in 60 days</li>' : ''}
+                    </ul>
+
+                    <h5>🎯 Days 61-90 - Growth Foundation:</h5>
+                    <ul>
+                        <li><strong>Corporate outreach campaign:</strong> Contact 50 potential corporate clients via LinkedIn/email</li>
+                        <li><strong>Premium pricing implementation:</strong> Increase corporate event pricing 15-20%</li>
+                        <li><strong>Operational documentation:</strong> Create procedures manual for consistent execution</li>
+                        <li><strong>Technology upgrades:</strong> Ensure POS is reliable, implement online ordering if viable</li>
+                    </ul>
+
+                    <p><strong>Expected results:</strong></p>
+                    <ul>
+                        <li><strong>Month 1:</strong> Stabilize operations, prevent losses (save $400-800)</li>
+                        <li><strong>Month 2:</strong> Improve margins, reduce waste (additional $300-600 profit)</li>
+                        <li><strong>Month 3:</strong> Book premium events (additional $1,000-2,500 monthly)</li>
+                    </ul>
+                    <p><strong>Total potential profit increase: $1,700-3,900 monthly within 90 days</strong></p>
+                </div>
+            `;
+        }
+
+        function getPoorRecommendations(answers) {
+            let criticalIssues = [];
+            
+            if (answers.haccp <= 2) criticalIssues.push('food safety compliance');
+            if (answers.healthInspection <= 2) criticalIssues.push('health inspection issues');
+            if (answers.backupEquipment <= 2) criticalIssues.push('no equipment backup');
+            if (answers.foodCost <= 2) criticalIssues.push('uncontrolled food costs');
+            if (answers.eventRevenue <= 2) criticalIssues.push('low revenue per event');
+            if (answers.profitMargin <= 2) criticalIssues.push('poor profit margins');
+            if (answers.maintenance <= 2) criticalIssues.push('equipment maintenance neglect');
+            if (answers.permits <= 2) criticalIssues.push('permit compliance issues');
+
+            return `
+                <div class="recommendations priority-high">
+                    <h4>🚨 CRITICAL: Immediate Business Intervention Required</h4>
+                    <p><strong>Your food truck has critical operational failures in ${criticalIssues.length} areas that threaten business survival.</strong></p>
+                    <p><strong>Identified crisis issues:</strong> ${criticalIssues.slice(0, 4).join(', ')}${criticalIssues.length > 4 ? `, and ${criticalIssues.length - 4} others` : ''}.</p>
+                    
+                    <div style="background: #ffe6e6; padding: 1rem; border-radius: 5px; margin: 1rem 0;">
+                        <p><strong>⚠️ WITHOUT IMMEDIATE ACTION:</strong></p>
+                        <ul>
+                            <li>Health department closure risk (potential $5,000-15,000 in lost revenue)</li>
+                            <li>Equipment failure during peak season</li>
+                            <li>Cash flow crisis from uncontrolled costs</li>
+                            <li>Inability to book premium events</li>
+                            <li>Possible business failure within 6-12 months</li>
+                        </ul>
+                    </div>
+
+                    <h5>🔥 WEEK 1-2: Emergency Stabilization</h5>
+                    <ul>
+                        ${answers.haccp <= 2 || answers.healthInspection <= 2 ? '<li><strong>URGENT - Food safety crisis:</strong> Contact health department, create HACCP plan, schedule re-inspection. This is business-critical</li>' : ''}
+                        ${answers.permits <= 2 ? '<li><strong>URGENT - Permit compliance:</strong> Audit all required permits, file any missing applications immediately</li>' : ''}
+                        ${answers.foodCost <= 2 ? '<li><strong>URGENT - Food cost hemorrhage:</strong> Start daily cost tracking. You may be losing $500-1,500 monthly to waste/theft</li>' : ''}
+                        ${answers.backupEquipment <= 2 ? '<li><strong>Equipment crisis plan:</strong> Create contact list for emergency rentals. One breakdown could end your season</li>' : ''}
+                        <li><strong>Cash flow emergency review:</strong> List all debts, upcoming expenses, calculate runway</li>
+                        <li><strong>Event calendar audit:</strong> Cancel low-profit events, focus on highest revenue opportunities</li>
+                    </ul>
+
+                    <h5>⚡ WEEK 3-6: Crisis Management</h5>
+                    <ul>
+                        ${answers.profitMargin <= 2 ? '<li><strong>Pricing emergency:</strong> Analyze costs, increase all prices 20-30% immediately. Your current pricing is not sustainable</li>' : ''}
+                        ${answers.eventRevenue <= 2 ? '<li><strong>Event strategy pivot:</strong> Stop accepting low-revenue events (<$800). Focus only on premium opportunities</li>' : ''}
+                        ${answers.prepEfficiency <= 2 ? '<li><strong>Commissary efficiency:</strong> Eliminate time waste. Every hour saved = money saved</li>' : ''}
+                        ${answers.maintenance <= 2 ? '<li><strong>Equipment assessment:</strong> Immediate maintenance on all critical equipment before next breakdown</li>' : ''}
+                        <li><strong>Menu simplification:</strong> Cut menu by 30-40%. Focus on highest margin items only</li>
+                        <li><strong>Vendor renegotiation:</strong> Demand better pricing or switch vendors immediately</li>
+                    </ul>
+
+                    <h5>🎯 WEEK 7-12: Survival to Stability</h5>
+                    <ul>
+                        ${answers.cateringMix <= 2 ? '<li><strong>Corporate pivot:</strong> Research and contact 50 corporate prospects. You MUST shift away from low-margin festivals</li>' : ''}
+                        ${answers.leadGeneration <= 2 ? '<li><strong>Direct marketing launch:</strong> Start capturing emails, create simple follow-up system</li>' : ''}
+                        ${answers.posSystem <= 2 ? '<li><strong>POS upgrade:</strong> Get reliable mobile POS that works offline. Cash-only loses 30% of potential sales</li>' : ''}
+                        <li><strong>Documentation sprint:</strong> Create basic procedures for food prep, service, cleanup</li>
+                        <li><strong>Staff training:</strong> If you have staff, ensure they understand new standards and systems</li>
+                        <li><strong>Financial controls:</strong> Weekly P&L review. Know exactly where you stand</li>
+                    </ul>
+
+                    <h5>📊 Expected Recovery Timeline</h5>
+                    <ul>
+                        <li><strong>Weeks 1-2:</strong> Stop critical losses, ensure legal compliance (save $500-1,000)</li>
+                        <li><strong>Weeks 3-6:</strong> Stabilize operations, improve margins (save additional $600-1,200)</li>
+                        <li><strong>Weeks 7-12:</strong> Shift to profitable events, build pipeline (add $1,000-2,500 revenue)</li>
+                    </ul>
+                    <p><strong>Potential turnaround: $2,100-4,700 monthly improvement with full implementation</strong></p>
+                    
+                    <div style="background: #fff3cd; padding: 1rem; border-radius: 5px; margin-top: 1rem;">
+                        <p><strong>💼 CRITICAL RECOMMENDATION:</strong> Your food truck requires professional intervention immediately. Consider hiring a restaurant operations consultant to guide this turnaround. The cost of consulting ($2K-5K) is far less than the cost of business failure ($20K-50K+ in losses, debt, and bankruptcy).</p>
+                        <p><strong>Alternative:</strong> If cash flow prevents hiring help, follow this plan religiously and track every metric daily. Your business depends on immediate, disciplined execution.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        showSection(0);
+    </script>
+</body>
+</html>
