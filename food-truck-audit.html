@@ -878,5 +878,33 @@
 
         showSection(0);
     </script>
-</body>
+<script>
+      // Mobile menu toggle functionality
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mainNav = document.getElementById('mainNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const navLinks = mainNav.querySelectorAll('a');
+
+      function toggleMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      mobileMenuToggle.addEventListener('click', toggleMenu);
+      mobileOverlay.addEventListener('click', closeMenu);
+      navLinks.forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
+      });
+    </script>
+  </body>
 </html>
