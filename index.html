@@ -22,23 +22,33 @@
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
     <!-- Header -->
     <header>
-      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="container">
         <div class="logo">Tre Coleman</div>
-        <nav>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- Navigation -->
+        <nav id="mainNav">
           <ul>
-            <!-- Use relative paths so the links work on GitHub Pages project sites -->
-                <li><a href="services.html">Services</a></li>
-                <li><a href="case-studies.html">Case Studies</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="chat.html">AI Chat</a></li>
-                <li><a href="audit.html">Take Free Operations Audit</a></li>
-                <li><a href="lead-magnet.html">Free Playbook</a></li>
-                <!-- Book a call CTA opens your Calendly in a new tab -->
-                <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="case-studies.html">Case Studies</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="chat.html">AI Chat</a></li>
+            <li><a href="audit.html">Free Operations Audit</a></li>
+            <li><a href="lead-magnet.html">Free Playbook</a></li>
+            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a Call</a></li>
           </ul>
         </nav>
       </div>
@@ -125,11 +135,46 @@
     <script>
       // Set current year in footer
       document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Mobile menu toggle functionality
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mainNav = document.getElementById('mainNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const navLinks = mainNav.querySelectorAll('a');
+
+      function toggleMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        // Prevent body scroll when menu is open
+        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Toggle menu on button click
+      mobileMenuToggle.addEventListener('click', toggleMenu);
+
+      // Close menu when overlay is clicked
+      mobileOverlay.addEventListener('click', closeMenu);
+
+      // Close menu when a nav link is clicked
+      navLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
+      });
+
+      // Close menu on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+          closeMenu();
+        }
+      });
     </script>
-  <</script>
-<script src="exit-intent-popup.js"></script>
-</body>
-</html>>
-  
-</body>
+    <script src="exit-intent-popup.js"></script>
+  </body>
 </html>

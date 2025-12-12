@@ -108,22 +108,34 @@
       }
     </style>
   </head>
-  <body>
+    <body>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
     <!-- Header -->
     <header>
-      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="logo"><a href="index.html" style="color: white;">Tre Coleman</a></div>
-        <nav>
+      <div class="container">
+        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- Navigation -->
+        <nav id="mainNav">
           <ul>
             <li><a href="services.html">Services</a></li>
             <li><a href="case-studies.html">Case Studies</a></li>
-            <li><a href="blog.html" aria-current="page">Blog</a></li>
+            <li><a href="blog.html">Blog</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="chat.html">AI Chat</a></li>
-            <li><a href="audit.html">Take Free Operations Audit</a></li>
+            <li><a href="audit.html">Free Operations Audit</a></li>
             <li><a href="lead-magnet.html">Free Playbook</a></li>
-            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a></li>
+            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a Call</a></li>
           </ul>
         </nav>
       </div>
@@ -251,7 +263,34 @@
     </footer>
 
     <script>
+      // Set current year in footer
       document.getElementById('year').textContent = new Date().getFullYear();
+      // Mobile menu toggle functionality
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mainNav = document.getElementById('mainNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const navLinks = mainNav.querySelectorAll('a');
+
+      function toggleMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      mobileMenuToggle.addEventListener('click', toggleMenu);
+      mobileOverlay.addEventListener('click', closeMenu);
+      navLinks.forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
+      });
       
       // Simple category filtering
       document.addEventListener('DOMContentLoaded', function() {
