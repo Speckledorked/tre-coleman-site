@@ -505,20 +505,82 @@
 
         // FIXED: Async form submission without page navigation
         async function submitAuditDataAsync() {
-            const { email, percentage, scoreText, answers } = window.auditData;
-            
-            // Compose detailed message with score and answers
-            const detailLines = [`Score: ${percentage}% (${scoreText})`];
-            Object.keys(answers).forEach(key => {
-                detailLines.push(`${key}: ${answers[key]}`);
-            });
-            const message = detailLines.join('\n');
+            const { email, percentage, scoreText, answers, totalScore, maxScore } = window.auditData;
+
+            // Generate the SAME detailed results that the user sees
+            let detailedResults = `
+=======================================================
+RESTAURANT OPERATIONS AUDIT - DETAILED RESULTS
+=======================================================
+
+Client Email: ${email}
+Overall Score: ${percentage}% (${scoreText})
+Total Points: ${totalScore} / ${maxScore}
+Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
+
+=======================================================
+INDIVIDUAL SCORES BY CATEGORY
+=======================================================
+
+FOOD COST MANAGEMENT:
+- Food Cost %: ${answers.foodCost}/5 ${getScoreLabel(answers.foodCost)}
+- Inventory Frequency: ${answers.inventory}/5 ${getScoreLabel(answers.inventory)}
+- Recipe Standardization: ${answers.recipes}/5 ${getScoreLabel(answers.recipes)}
+
+LABOR EFFICIENCY:
+- Labor Cost %: ${answers.laborCost}/5 ${getScoreLabel(answers.laborCost)}
+- Scheduling Method: ${answers.scheduling}/5 ${getScoreLabel(answers.scheduling)}
+- Overtime Frequency: ${answers.overtime}/5 ${getScoreLabel(answers.overtime)}
+
+REVENUE OPTIMIZATION:
+- Table Turn Time: ${answers.turnTime}/5 ${getScoreLabel(answers.turnTime)}
+- Menu Mix Tracking: ${answers.menuMix}/5 ${getScoreLabel(answers.menuMix)}
+- Ticket Size Trend: ${answers.ticketSize}/5 ${getScoreLabel(answers.ticketSize)}
+
+TECHNOLOGY & SYSTEMS:
+- System Integration: ${answers.integration}/5 ${getScoreLabel(answers.integration)}
+- Data Analytics: ${answers.analytics}/5 ${getScoreLabel(answers.analytics)}
+
+QUALITY & CONSISTENCY:
+- Operating Procedures: ${answers.procedures}/5 ${getScoreLabel(answers.procedures)}
+- Quality Monitoring: ${answers.quality}/5 ${getScoreLabel(answers.quality)}
+
+=======================================================
+DETAILED RECOMMENDATIONS & ACTION PLAN
+=======================================================
+`;
+
+            // Generate full recommendations based on score
+            if (percentage >= 80) {
+                detailedResults += getDetailedExcellentRecommendations(answers);
+            } else if (percentage >= 60) {
+                detailedResults += getDetailedGoodRecommendations(answers);
+            } else {
+                detailedResults += getDetailedPoorRecommendations(answers);
+            }
+
+            detailedResults += `
+
+=======================================================
+NEXT STEPS
+=======================================================
+
+1. Review this detailed analysis carefully
+2. Identify the highest-priority areas for improvement
+3. Schedule a consultation to discuss implementation: https://calendly.com/ph_tre
+4. Contact: hello@trecoleman.com | 540-807-9045
+
+=======================================================
+END OF AUDIT REPORT
+=======================================================
+`;
 
             // Create form data
             const formData = new FormData();
             formData.append('visitor_email', email);
-            formData.append('audit_summary', message);
-            formData.append('_subject', 'New Operations Audit Completed');
+            formData.append('audit_score', `${percentage}% (${scoreText})`);
+            formData.append('detailed_results', detailedResults);
+            formData.append('_subject', `New Operations Audit - ${percentage}% Score - ${email}`);
             formData.append('_captcha', 'false');
             formData.append('_autoresponse', "Thanks for completing the operations audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre");
 
@@ -532,6 +594,482 @@
             } catch (error) {
                 console.error('Error submitting audit data:', error);
             }
+        }
+
+        // Helper function to get score labels
+        function getScoreLabel(score) {
+            if (score >= 5) return '(Excellent)';
+            if (score >= 4) return '(Good)';
+            if (score >= 3) return '(Acceptable)';
+            if (score >= 2) return '(Needs Improvement)';
+            return '(Critical)';
+        }
+
+        // Generate detailed text recommendations for email
+        function getDetailedExcellentRecommendations(answers) {
+            return `
+PERFORMANCE LEVEL: EXCELLENT
+
+Congratulations! Your restaurant is performing exceptionally well. Here are advanced strategies to maximize your already strong operations:
+
+ADVANCED OPTIMIZATION OPPORTUNITIES:
+
+1. PREDICTIVE ANALYTICS
+   - Use AI for demand forecasting and inventory optimization
+   - Expected Impact: 3-5% additional efficiency
+
+2. DYNAMIC PRICING
+   - Implement surge pricing for peak periods
+   - Promotional pricing for slow times
+   - Expected Revenue Increase: 5-8%
+
+3. FRANCHISE/EXPANSION READINESS
+   - Your systems are ready to scale to additional locations
+   - Document and package your successful processes
+
+4. STAFF DEVELOPMENT PROGRAM
+   - Create management training pipeline to maintain standards
+   - Build bench strength for growth
+
+5. CUSTOMER LIFETIME VALUE OPTIMIZATION
+   - Implement loyalty programs and personalized marketing
+   - Expected CLV Increase: 15-25%
+
+6. OPERATIONAL BENCHMARKING
+   - Share best practices with industry networks
+   - Consider consulting opportunities
+
+PREMIUM STRATEGIES TO CONSIDER:
+- Partner with food delivery optimization platforms
+- Implement IoT sensors for real-time equipment monitoring
+- Explore catering and private event opportunities
+- Consider consulting for other restaurants
+
+ESTIMATED ADDITIONAL PROFIT POTENTIAL: 3-7%
+`;
+        }
+
+        function getDetailedGoodRecommendations(answers) {
+            let recs = `
+PERFORMANCE LEVEL: GOOD
+
+Your restaurant has solid fundamentals with significant room for improvement. Focus on the high-priority areas first for maximum impact.
+
+`;
+
+            // Food Cost Analysis
+            if (answers.foodCost <= 2) {
+                recs += `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔥 HIGH PRIORITY: FOOD COST CONTROL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE: Your food costs are ${answers.foodCost === 1 ? 'CRITICALLY HIGH (over 35%)' : 'ABOVE OPTIMAL (30-35%)'}
+
+IMMEDIATE ACTIONS REQUIRED:
+
+1. WEEKLY INVENTORY TRACKING
+   - Identify waste patterns and potential theft
+   - Track variance between theoretical vs actual food cost
+
+2. RECIPE STANDARDIZATION
+   - Control portions and reduce over-portioning
+   - Document exact measurements for all menu items
+
+3. VENDOR NEGOTIATION
+   - Analyze pricing across all suppliers
+   - Consolidate suppliers for better pricing power
+
+4. WASTE REDUCTION PROGRAM
+   - Track daily waste by category
+   - Implement strict FIFO rotation
+   - Train staff on waste prevention
+
+5. MENU ENGINEERING
+   - Focus promotion on high-margin items
+   - Eliminate or redesign low-performers
+
+EXPECTED IMPACT: ${answers.foodCost === 1 ? '5-8%' : '2-5%'} reduction in food costs within 60 days
+POTENTIAL SAVINGS: $2,000-8,000+ per month
+
+`;
+            }
+
+            // Labor Cost Analysis
+            if (answers.laborCost <= 2 || answers.overtime <= 2) {
+                const isLaborHigh = answers.laborCost <= 2;
+                const isOvertimeHigh = answers.overtime <= 2;
+                let laborIssue = '';
+                if (isLaborHigh && isOvertimeHigh) {
+                    laborIssue = 'HIGH OVERALL LABOR COSTS AND EXCESSIVE OVERTIME';
+                } else if (isLaborHigh) {
+                    laborIssue = 'HIGH LABOR COST PERCENTAGE';
+                } else {
+                    laborIssue = 'EXCESSIVE OVERTIME EXPENSES';
+                }
+
+                recs += `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡ HIGH PRIORITY: LABOR OPTIMIZATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE: ${laborIssue}
+
+IMMEDIATE ACTIONS REQUIRED:
+
+1. DATA-DRIVEN SCHEDULING
+   - Use sales forecasting to optimize staff levels
+   - Match labor hours to actual demand patterns
+
+2. CROSS-TRAINING PROGRAM
+   - Increase scheduling flexibility
+   - Reduce need for overstaffing as backup
+
+${isOvertimeHigh ? `3. OVERTIME CONTROLS
+   - Implement approval processes for all OT
+   - Set up automated alerts when approaching OT
+
+` : ''}4. PEAK-HOUR OPTIMIZATION
+   - Adjust prep schedules to reduce rush-hour needs
+   - Stagger arrival times for efficiency
+
+5. PERFORMANCE TRACKING
+   - Monitor sales per labor hour by shift
+   - Track individual employee productivity
+
+EXPECTED SAVINGS: ${isLaborHigh && isOvertimeHigh ? '5-10%' : '3-8%'} reduction in labor costs
+POTENTIAL SAVINGS: $1,500-6,000+ per month
+
+`;
+            }
+
+            // Revenue Optimization
+            if (answers.turnTime <= 2 || answers.menuMix <= 2 || answers.ticketSize <= 2) {
+                let issues = [];
+                if (answers.turnTime <= 2) issues.push('SLOW TABLE TURNS');
+                if (answers.menuMix <= 2) issues.push('POOR MENU OPTIMIZATION');
+                if (answers.ticketSize <= 2) issues.push('DECLINING AVERAGE TICKETS');
+
+                recs += `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💰 HIGH PRIORITY: REVENUE OPTIMIZATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUES IDENTIFIED: ${issues.join(', ')}
+
+IMMEDIATE ACTIONS REQUIRED:
+
+${answers.turnTime <= 2 ? `1. SPEED OF SERVICE
+   - Streamline kitchen processes and workflows
+   - Optimize server routes and responsibilities
+   - Implement expo station for quality control
+
+` : ''}${answers.menuMix <= 2 ? `2. MENU ENGINEERING
+   - Promote high-margin items through placement
+   - Redesign menu layout for profitability
+   - Train servers on strategic suggestions
+
+` : ''}${answers.ticketSize <= 2 ? `3. UPSELLING TRAINING
+   - Implement systematic upselling techniques
+   - Train on appetizer and beverage add-ons
+   - Create server incentive program
+
+` : ''}4. TABLE MANAGEMENT
+   - Optimize seating algorithms
+   - Improve reservation system efficiency
+
+5. PEAK-HOUR STRATEGIES
+   - Consider dynamic pricing
+   - Strategic promotions for slow periods
+
+EXPECTED IMPACT: 10-20% increase in revenue per seat
+POTENTIAL INCREASE: $3,000-12,000+ per month
+
+`;
+            }
+
+            // Technology & Systems
+            if (answers.integration <= 2 || answers.analytics <= 2) {
+                recs += `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 MEDIUM PRIORITY: TECHNOLOGY UPGRADE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE: Your systems are holding back efficiency
+
+RECOMMENDED IMPROVEMENTS:
+
+${answers.integration <= 2 ? `1. SYSTEM INTEGRATION
+   - Connect POS, inventory, and scheduling
+   - Eliminate manual data entry
+   - Enable real-time visibility
+
+` : ''}${answers.analytics <= 2 ? `2. ANALYTICS IMPLEMENTATION
+   - Set up automated reporting dashboards
+   - Track KPIs in real-time
+   - Enable data-driven decisions
+
+` : ''}3. REAL-TIME MONITORING
+   - Track food cost, labor, sales daily
+   - Automated variance alerts
+
+4. AUTOMATED ALERTS
+   - Get notified when metrics exceed targets
+   - Proactive problem identification
+
+EXPECTED IMPACT: 10-15 hours/week time savings + better decision making
+
+`;
+            }
+
+            // Quality & Consistency
+            if (answers.procedures <= 2 || answers.quality <= 2) {
+                recs += `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 MEDIUM PRIORITY: OPERATIONAL CONSISTENCY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE: Lack of standardization affects quality and training efficiency
+
+RECOMMENDED IMPROVEMENTS:
+
+${answers.procedures <= 2 ? `1. DOCUMENT PROCEDURES
+   - Create step-by-step guides for all processes
+   - Video documentation for complex tasks
+   - Make easily accessible to all staff
+
+` : ''}${answers.quality <= 2 ? `2. QUALITY CHECKPOINTS
+   - Implement systematic food quality controls
+   - Service quality monitoring system
+   - Regular audits and feedback loops
+
+` : ''}3. STAFF TRAINING PROGRAM
+   - Ensure consistent execution across shifts
+   - Regular refresher training
+   - Certification for key positions
+
+4. CUSTOMER FEEDBACK SYSTEM
+   - Track satisfaction systematically
+   - Respond quickly to issues
+   - Close the loop on complaints
+
+EXPECTED IMPACT: Improved customer satisfaction + reduced training costs
+
+`;
+            }
+
+            recs += `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 OVERALL ASSESSMENT & TIMELINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TOTAL ESTIMATED PROFIT INCREASE: 12-25% within 90 days
+
+RECOMMENDED IMPLEMENTATION TIMELINE:
+
+WEEK 1-2: Address highest-priority issue first
+- Set up tracking systems
+- Begin staff training
+- Implement quick wins
+
+WEEK 3-4: Implement supporting systems
+- Roll out new procedures
+- Monitor initial results
+- Adjust as needed
+
+MONTH 2: Monitor results and fine-tune
+- Analyze data weekly
+- Make refinements
+- Expand improvements
+
+MONTH 3: Scale improvements to other areas
+- Address medium-priority items
+- Build sustainable systems
+- Document success metrics
+
+`;
+
+            return recs;
+        }
+
+        function getDetailedPoorRecommendations(answers) {
+            // Analyze critical issues
+            let criticalIssues = [];
+            if (answers.foodCost <= 2) criticalIssues.push('FOOD COST CONTROL');
+            if (answers.laborCost <= 2) criticalIssues.push('LABOR COST MANAGEMENT');
+            if (answers.inventory <= 2) criticalIssues.push('INVENTORY TRACKING');
+            if (answers.recipes <= 2) criticalIssues.push('RECIPE STANDARDIZATION');
+            if (answers.scheduling <= 2) criticalIssues.push('STAFF SCHEDULING');
+            if (answers.turnTime <= 2) criticalIssues.push('SERVICE SPEED');
+            if (answers.menuMix <= 2) criticalIssues.push('MENU OPTIMIZATION');
+            if (answers.integration <= 2) criticalIssues.push('SYSTEM INTEGRATION');
+            if (answers.procedures <= 2) criticalIssues.push('OPERATIONAL PROCEDURES');
+            if (answers.quality <= 2) criticalIssues.push('QUALITY CONTROL');
+
+            return `
+PERFORMANCE LEVEL: NEEDS IMMEDIATE IMPROVEMENT
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚨 URGENT: COMPREHENSIVE OPERATIONS OVERHAUL REQUIRED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your restaurant has significant operational challenges in ${criticalIssues.length} key areas:
+${criticalIssues.map((issue, i) => `${i + 1}. ${issue}`).join('\n')}
+
+⚠️ WARNING: Without immediate action, these issues compound quickly and can lead to serious financial difficulties or business failure.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔥 PHASE 1 - CRISIS MANAGEMENT (First 30 Days)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMMEDIATE ACTIONS - START TODAY:
+
+${answers.foodCost === 1 ? `1. ⚠️ URGENT - FOOD COST CRISIS
+   - You're losing significant money daily
+   - Implement daily cost tracking immediately
+   - Audit inventory for waste/theft
+   - Review all vendor pricing
+   - Stop the bleeding NOW
+
+` : ''}${answers.laborCost === 1 ? `2. ⚠️ URGENT - LABOR COST CRISIS
+   - Review all schedules immediately
+   - Excessive labor spending detected
+   - Cut non-essential overtime NOW
+   - Implement approval process for all hours
+
+` : ''}${answers.inventory <= 2 ? `3. INVENTORY SYSTEM (CRITICAL)
+   - Start weekly counts immediately
+   - Track waste and theft
+   - Implement basic perpetual inventory
+
+` : ''}${answers.recipes <= 2 ? `4. RECIPE STANDARDIZATION (CRITICAL)
+   - Document top 10 menu items with exact portions
+   - Train kitchen staff on measurements
+   - Enforce portioning tools
+
+` : ''}${answers.quality <= 2 ? `5. QUALITY CONTROL (CRITICAL)
+   - Implement basic food safety checks
+   - Create consistency checklists
+   - Manager taste-testing before service
+
+` : ''}6. CASH FLOW MONITORING
+   - Track daily sales vs. costs
+   - Prevent cash flow problems
+   - Review all expenses for cuts
+
+7. STAFF MEETING
+   - Address operational standards
+   - Set clear expectations
+   - Communicate urgency of changes
+
+EXPECTED RESULTS: Stop major losses, stabilize operations (5-10% cost reduction)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡ PHASE 2 - STABILIZATION (Days 31-60)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BUILD ON PHASE 1 IMPROVEMENTS:
+
+${answers.menuMix <= 2 ? `1. MENU ENGINEERING
+   - Remove low-profit items
+   - Promote high-margin dishes
+   - Redesign menu for profitability
+
+` : ''}${answers.turnTime <= 2 ? `2. SERVICE SPEED
+   - Streamline kitchen workflows
+   - Optimize server responsibilities
+   - Reduce table turn times
+
+` : ''}${answers.scheduling <= 2 ? `3. STAFF SCHEDULING
+   - Match labor to sales patterns
+   - Eliminate overstaffing
+   - Use data for forecasting
+
+` : ''}${answers.procedures <= 2 ? `4. STANDARD PROCEDURES
+   - Create basic SOPs for key processes
+   - Document opening/closing checklists
+   - Train all staff on standards
+
+` : ''}5. VENDOR REVIEW
+   - Renegotiate all contracts
+   - Eliminate unnecessary suppliers
+   - Consolidate for better pricing
+
+6. STAFF TRAINING
+   - Ensure team understands new standards
+   - Cross-train for flexibility
+   - Set performance expectations
+
+EXPECTED RESULTS: Improve efficiency and quality (additional 5-8% profit improvement)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 PHASE 3 - GROWTH FOUNDATION (Days 61-90)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POSITION FOR SUSTAINABLE GROWTH:
+
+${answers.integration <= 2 ? `1. TECHNOLOGY UPGRADE
+   - Implement integrated POS/inventory
+   - Eliminate manual processes
+   - Enable real-time data
+
+` : ''}${answers.analytics <= 2 ? `2. REPORTING SYSTEMS
+   - Set up automated daily/weekly reports
+   - Track KPIs consistently
+   - Data-driven decision making
+
+` : ''}3. PERFORMANCE MONITORING
+   - Daily tracking of key metrics
+   - Food cost %, labor %, sales per seat
+   - Trend analysis and forecasting
+
+4. CONTINUOUS IMPROVEMENT
+   - Weekly review meetings
+   - Identify and solve problems quickly
+   - Celebrate wins, address issues
+
+5. CUSTOMER FEEDBACK
+   - Implement satisfaction tracking
+   - Respond to issues promptly
+   - Build loyalty program
+
+6. FINANCIAL CONTROLS
+   - Establish budgets by category
+   - Variance reporting weekly
+   - Cash flow forecasting
+
+EXPECTED RESULTS: Build foundation for growth (additional 5-7% profit improvement)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 90-DAY RESULTS PROJECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MONTH 1: Stop major losses, stabilize operations (5-10% improvement)
+MONTH 2: Improve efficiency and quality (additional 5-8% improvement)
+MONTH 3: Build foundation for growth (additional 5-7% improvement)
+
+TOTAL POTENTIAL PROFIT INCREASE: 15-25% WITHIN 90 DAYS
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ CRITICAL WARNING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+These issues are serious and compound quickly. Without immediate, decisive action, your restaurant faces potential business failure within 6-12 months.
+
+STRONGLY RECOMMEND:
+- Hire a restaurant operations consultant immediately
+- Implement changes under expert guidance
+- Weekly check-ins to track progress
+- Consider emergency cash flow strategies
+
+This is a turnaround situation that requires professional help and urgent action.
+
+`;
         }
 
         function getExcellentRecommendations(answers) {
