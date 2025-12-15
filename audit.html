@@ -591,20 +591,30 @@ END OF AUDIT REPORT
 
             // Create form data
             const formData = new FormData();
-            formData.append('visitor_email', email);
+            // IMPORTANT: Field must be named 'email' for _autoresponse to work
+            formData.append('email', email);
             formData.append('audit_score', `${percentage}% (${scoreText})`);
             formData.append('detailed_results', detailedResults);
             formData.append('_subject', `New Operations Audit - ${percentage}% Score - ${email}`);
             formData.append('_captcha', 'false');
             formData.append('_autoresponse', "Thanks for completing the operations audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre");
 
-            // Submit using fetch instead of form.submit() to avoid page navigation
+            // Submit using fetch to FormSubmit.co AJAX endpoint (required for fetch requests)
             try {
-                await fetch('https://formsubmit.co/hello@trecoleman.com', {
+                const response = await fetch('https://formsubmit.co/ajax/hello@trecoleman.com', {
                     method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
                     body: formData
                 });
-                console.log('Audit data submitted successfully');
+
+                const result = await response.json();
+                if (response.ok) {
+                    console.log('Audit data submitted successfully:', result);
+                } else {
+                    console.error('FormSubmit error:', result);
+                }
             } catch (error) {
                 console.error('Error submitting audit data:', error);
             }
