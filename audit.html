@@ -730,13 +730,12 @@ END OF AUDIT REPORT
 
             // Create form data
             const formData = new FormData();
-            // IMPORTANT: Field must be named 'email' for _autoresponse to work
             formData.append('email', email);
             formData.append('audit_score', `${percentage}% (${scoreText})`);
             formData.append('detailed_results', detailedResults);
-            formData.append('_subject', `New Operations Audit - ${percentage}% Score - ${email}`);
+            formData.append('_subject', `Your Restaurant Operations Audit Results - ${percentage}% Score`);
+            formData.append('_cc', email); // Send copy to the user with their detailed results
             formData.append('_captcha', 'false');
-            formData.append('_autoresponse', "Thanks for completing the operations audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre");
 
             // Submit using fetch to FormSubmit.co AJAX endpoint (required for fetch requests)
             try {

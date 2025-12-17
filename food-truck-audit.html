@@ -846,9 +846,9 @@ END OF AUDIT REPORT
             formData.append('audit_score', `${percentage}% (${scoreText})`);
             formData.append('biggest_concern', biggestFear || 'Not provided');
             formData.append('detailed_results', detailedResults);
-            formData.append('_subject', `New Food Truck Launch Audit - ${percentage}% Score - ${email}`);
+            formData.append('_subject', `Your Food Truck Launch Audit Results - ${percentage}% Score`);
+            formData.append('_cc', email); // Send copy to the user with their detailed results
             formData.append('_captcha', 'false');
-            formData.append('_autoresponse', "Thanks for completing the Food Truck Launch Readiness Audit! We've received your results and will follow up soon with additional insights. You can also book time directly: https://calendly.com/ph_tre");
 
             // Submit using fetch to FormSubmit.co AJAX endpoint
             try {
