@@ -862,12 +862,20 @@ END OF AUDIT REPORT
 
                 const result = await response.json();
                 if (response.ok) {
-                    console.log('Audit data submitted successfully:', result);
+                    console.log('✅ Form submitted successfully:', result);
+                    // Show success message to user
+                    const resultsBox = document.getElementById('results');
+                    const successMsg = document.createElement('div');
+                    successMsg.style.cssText = 'background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #c3e6cb;';
+                    successMsg.innerHTML = '✅ <strong>Results emailed!</strong> Check your inbox at <strong>' + email + '</strong> for your detailed audit report.';
+                    resultsBox.insertBefore(successMsg, resultsBox.firstChild);
                 } else {
-                    console.error('FormSubmit error:', result);
+                    console.error('❌ FormSubmit error:', result);
+                    alert('⚠️ Email delivery issue: Results displayed below but email may not have sent. Screenshot your results or contact hello@trecoleman.com');
                 }
             } catch (error) {
-                console.error('Error submitting audit data:', error);
+                console.error('❌ Error submitting form:', error);
+                alert('⚠️ Email delivery issue: Results displayed below but email may not have sent. Screenshot your results or contact hello@trecoleman.com');
             }
         }
 
