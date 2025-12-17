@@ -30,9 +30,53 @@
             justify-content: space-between;
         }
         .top-nav .brand { font-weight: 700; letter-spacing: .3px; }
-        .top-nav ul { list-style: none; display: flex; gap: 1rem; }
-        .top-nav a { color: #fff; text-decoration: none; }
+        .top-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .top-nav a { color: #fff; text-decoration: none; font-size: 0.9rem; }
         .top-nav a:hover { text-decoration: underline; }
+        .mobile-menu-toggle { display: none; }
+
+        /* Mobile Navigation */
+        @media (max-width: 1024px) {
+            .top-nav .nav-inner {
+                flex-wrap: wrap;
+                position: relative;
+            }
+            .mobile-menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0.5rem;
+                z-index: 1000;
+            }
+            .top-nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: var(--primary-colour);
+                padding: 1rem 0;
+                margin-top: 0.5rem;
+                gap: 0;
+            }
+            .top-nav ul.active {
+                display: flex;
+            }
+            .top-nav li {
+                width: 100%;
+                text-align: left;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .top-nav li a {
+                display: block;
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+            }
+            .top-nav li:last-child {
+                border-bottom: none;
+            }
+        }
 
         .container {
             max-width: 800px;
@@ -269,7 +313,8 @@
     <nav class="top-nav" aria-label="Primary">
         <div class="nav-inner">
             <div class="brand">Tre' Coleman</div>
-            <ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">☰</button>
+            <ul id="navMenu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="case-studies.html">Case Studies</a></li>
@@ -1320,6 +1365,31 @@ steps in the right order.
 
 Schedule your strategy session to get started on the right path.
 `;
+        }
+    </script>
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.top-nav')) {
+                    navMenu.classList.remove('active');
+                }
+            });
+
+            // Close menu when a link is clicked
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                });
+            });
         }
     </script>
     <script src="/exit-intent-popup.js" defer></script>
