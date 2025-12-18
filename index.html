@@ -8,6 +8,124 @@
       name="description"
       content="Restaurant operations and AI integration that actually move numbers. SOPs, training, LSM, and menu engineering—built by an operator." />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Enhanced hero with background image support */
+      .hero {
+        position: relative;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(29, 78, 216, 0.95) 100%),
+                    url('images/hero-restaurant.jpg') center/cover no-repeat;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 0;
+      }
+
+      .hero .container {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Dropdown navigation styles */
+      .nav-dropdown {
+        position: relative;
+      }
+
+      .nav-dropdown > a::after {
+        content: ' ▾';
+        font-size: 0.8em;
+        margin-left: 0.25rem;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        min-width: 220px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 0.5rem 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 0.75rem 1.25rem;
+        color: var(--text-colour);
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-size: 0.95rem;
+      }
+
+      .dropdown-menu a:hover {
+        background: var(--light-bg);
+        color: var(--primary-colour);
+      }
+
+      /* Enhanced CTA button in nav */
+      .nav-cta {
+        background: white !important;
+        color: var(--primary-colour) !important;
+        padding: 0.65rem 1.5rem !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.3s ease !important;
+      }
+
+      .nav-cta:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+      }
+
+      /* Mobile dropdown behavior */
+      @media (max-width: 1024px) {
+        .dropdown-menu {
+          position: static;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          box-shadow: none;
+          background: rgba(255, 255, 255, 0.05);
+          margin: 0.5rem 0;
+          display: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+          display: block;
+        }
+
+        .dropdown-menu a {
+          color: white;
+          padding-left: 2rem;
+        }
+
+        .dropdown-menu a:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+        }
+      }
+    </style>
     <!-- Open Graph & Social meta tags -->
     <meta property="og:title" content="Tre’ Coleman | AI Strategy & Operations for Restaurants" />
     <meta
@@ -42,14 +160,19 @@
           <ul>
             <li><a href="services.html">Services</a></li>
             <li><a href="case-studies.html">Case Studies</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Audits</a>
+              <div class="dropdown-menu">
+                <a href="audit.html">Restaurant Audit</a>
+                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+              </div>
+            </li>
             <li><a href="blog.html">Blog</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="chat.html">AI Chat</a></li>
-            <li><a href="audit.html">Restaurant Audit</a></li>
-            <li><a href="food-truck-audit.html">Food Truck Launch Audit</a></li>
             <li><a href="lead-magnet.html">Free Playbook</a></li>
-            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a Call</a></li>
+            <li><a href="https://calendly.com/ph_tre" class="button nav-cta" target="_blank" rel="noopener">Book a Call</a></li>
           </ul>
         </nav>
       </div>
@@ -174,6 +297,17 @@
         if (e.key === 'Escape' && mainNav.classList.contains('active')) {
           closeMenu();
         }
+      });
+
+      // Mobile dropdown toggle
+      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
+      dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            toggle.parentElement.classList.toggle('active');
+          }
+        });
       });
     </script>
     <script src="exit-intent-popup.js"></script>
