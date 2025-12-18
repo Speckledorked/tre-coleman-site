@@ -39,7 +39,7 @@
             <li><a href="audit.html">Restaurant Audit</a></li>
             <li><a href="food-truck-audit.html">Food Truck Launch Audit</a></li>
             <li><a href="lead-magnet.html">Free Playbook</a></li>
-            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a Call</a></li>
+            <li><a href="https://calendly.com/hello-trecoleman/30min" class="button" target="_blank" rel="noopener">Book a Call</a></li>
           </ul>
         </nav>
       </div>
@@ -105,7 +105,7 @@
           <!-- Anti-spam & metadata -->
           <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;">
           <input type="hidden" name="_subject" value="New Lead from TreColeman.co">
-          <input type="hidden" name="_autoresponse" value="Thanks for reaching out — I’ll review and reply shortly. If you’d like to book now: https://calendly.com/ph_tre">
+          <input type="hidden" name="_autoresponse" value="Thanks for reaching out — I’ll review and reply shortly. If you’d like to book now: https://calendly.com/hello-trecoleman/30min">
           <input type="hidden" name="_next" id="nextUrl" value="">
           <input type="hidden" name="utm_source">
           <input type="hidden" name="utm_medium">
@@ -118,7 +118,7 @@
         <div class="mt-2">
           <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
           <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-          <div class="calendly-inline-widget" data-url="https://calendly.com/ph_tre" style="min-width:320px;height:700px;"></div>
+          <div class="calendly-inline-widget" data-url="https://calendly.com/hello-trecoleman/30min" style="min-width:320px;height:700px;"></div>
         </div>
       </div>
     </section>
@@ -185,7 +185,7 @@
         if (hp && hp.value.trim() !== '') return;
         const nameVal = encodeURIComponent(form.elements.name.value || '');
         const emailVal = encodeURIComponent(form.elements.email.value || '');
-        const calUrl = new URL('https://calendly.com/ph_tre');
+        const calUrl = new URL('https://calendly.com/hello-trecoleman/30min');
         if (nameVal) calUrl.searchParams.set('name', decodeURIComponent(nameVal));
         if (emailVal) calUrl.searchParams.set('email', decodeURIComponent(emailVal));
         document.getElementById('nextUrl').value = calUrl.toString();
