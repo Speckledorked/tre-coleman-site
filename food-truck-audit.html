@@ -16,23 +16,105 @@
             min-height: 100vh;
         }
 
-        /* --- Simple top navigation (minimal styles to avoid conflicts) --- */
+        /* --- Improved top navigation --- */
         .top-nav {
             background: var(--primary-colour);
             color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .top-nav .nav-inner {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: .75rem 1rem;
+            padding: 0 1.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            min-height: 70px;
         }
-        .top-nav .brand { font-weight: 700; letter-spacing: .3px; }
-        .top-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; }
-        .top-nav a { color: #fff; text-decoration: none; font-size: 0.9rem; }
-        .top-nav a:hover { text-decoration: underline; }
+        .top-nav .brand {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: .3px;
+        }
+        .top-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.75rem;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .top-nav li {
+            position: relative;
+        }
+        .top-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        .top-nav a:hover {
+            opacity: 0.8;
+            text-decoration: none;
+        }
+
+        /* Dropdown styling for desktop */
+        .nav-dropdown {
+            position: relative;
+        }
+        .nav-dropdown > a::after {
+            content: ' ▾';
+            font-size: 0.8rem;
+            margin-left: 0.25rem;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 220px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 0 0 8px 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            margin-top: 1rem;
+            z-index: 1000;
+        }
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 0.75rem 1.25rem;
+            color: var(--dark-text);
+            font-size: 0.95rem;
+        }
+        .dropdown-menu a:hover {
+            background: var(--light-bg);
+            opacity: 1;
+        }
+
+        /* CTA Button styling */
+        .nav-cta {
+            background: var(--accent-colour);
+            padding: 0.65rem 1.5rem !important;
+            border-radius: 6px;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .nav-cta:hover {
+            opacity: 1 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
         .mobile-menu-toggle { display: none; }
 
         /* Mobile Navigation */
@@ -72,9 +154,44 @@
                 display: block;
                 padding: 0.75rem 1rem;
                 font-size: 1rem;
+                white-space: normal;
             }
             .top-nav li:last-child {
                 border-bottom: none;
+            }
+
+            /* Mobile dropdown styling */
+            .nav-dropdown > a::after {
+                float: right;
+            }
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: rgba(255,255,255,0.05);
+                margin: 0;
+                padding: 0;
+                border-radius: 0;
+                display: none;
+            }
+            .nav-dropdown.active .dropdown-menu {
+                display: block;
+            }
+            .dropdown-menu a {
+                color: white;
+                padding: 0.75rem 1rem 0.75rem 2rem;
+                font-size: 0.95rem;
+            }
+            .dropdown-menu a:hover {
+                background: rgba(255,255,255,0.1);
+            }
+
+            /* Mobile CTA styling */
+            .nav-cta {
+                margin: 0.5rem 1rem;
+                text-align: center;
             }
         }
 
@@ -317,16 +434,21 @@
             <ul id="navMenu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
+                <li class="nav-dropdown">
+                    <a href="#">Audits</a>
+                    <div class="dropdown-menu">
+                        <a href="audit.html">Restaurant Audit</a>
+                        <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+                    </div>
+                </li>
                 <li><a href="case-studies.html">Case Studies</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="chat.html">AI Chat</a></li>
-                <li><a href="audit.html">Restaurant Audit</a></li>
-                <li><a href="food-truck-audit.html" aria-current="page">Food Truck Launch Audit</a></li>
                 <li><a href="lead-magnet.html">Free Playbook</a></li>
                 <!-- Book a call CTA opens your Calendly in a new tab -->
-                <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a call</a></li>
+                <li><a href="https://calendly.com/ph_tre" class="nav-cta" target="_blank" rel="noopener">Book a Call</a></li>
             </ul>
         </div>
     </nav>
@@ -1419,6 +1541,18 @@ Schedule your strategy session to get started on the right path.
                 navMenu.classList.toggle('active');
             });
 
+            // Mobile dropdown toggle
+            document.querySelectorAll('.nav-dropdown > a').forEach(dropdownToggle => {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // On mobile, toggle the dropdown
+                    if (window.innerWidth <= 1024) {
+                        const parent = this.parentElement;
+                        parent.classList.toggle('active');
+                    }
+                });
+            });
+
             // Close menu when clicking outside
             document.addEventListener('click', function(event) {
                 if (!event.target.closest('.top-nav')) {
@@ -1426,8 +1560,8 @@ Schedule your strategy session to get started on the right path.
                 }
             });
 
-            // Close menu when a link is clicked
-            navMenu.querySelectorAll('a').forEach(link => {
+            // Close menu when a non-dropdown link is clicked
+            navMenu.querySelectorAll('a:not(.nav-dropdown > a)').forEach(link => {
                 link.addEventListener('click', function() {
                     navMenu.classList.remove('active');
                 });
