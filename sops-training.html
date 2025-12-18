@@ -6,11 +6,167 @@
     <title>SOPs & Training Systems | Tre Coleman</title>
     <meta
       name="description"
-      content="Role scorecards, checklists, micro‑training and 30‑60‑90s that stick." />
-    <!-- Relative CSS path for GitHub Pages -->
+      content="Build training systems that eliminate tribal knowledge and get new hires productive 50% faster. Role scorecards, checklists, and micro-training that actually stick." />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .service-hero {
+        position: relative;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(29, 78, 216, 0.95) 100%),
+                    url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=1080&fit=crop') center/cover no-repeat;
+        color: white;
+        padding: 4rem 0 3rem;
+        margin-bottom: 3rem;
+      }
+      .service-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 0;
+      }
+      .service-hero .container {
+        position: relative;
+        z-index: 1;
+      }
+      .service-hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+      .service-hero .subtitle {
+        font-size: 1.25rem;
+        opacity: 0.95;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .section-divider {
+        margin: 4rem 0;
+        border: none;
+        border-top: 2px solid var(--light-bg);
+      }
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+      .benefit-card {
+        background: white;
+        border: 2px solid var(--light-bg);
+        border-radius: 12px;
+        padding: 1.75rem;
+        transition: all 0.3s ease;
+      }
+      .benefit-card:hover {
+        border-color: var(--primary-colour);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transform: translateY(-4px);
+      }
+      .benefit-card h3 {
+        color: var(--primary-colour);
+        margin-bottom: 0.75rem;
+        font-size: 1.3rem;
+      }
+      .process-steps {
+        counter-reset: step-counter;
+        margin: 2rem 0;
+      }
+      .process-step {
+        counter-increment: step-counter;
+        position: relative;
+        padding-left: 4rem;
+        margin-bottom: 2.5rem;
+      }
+      .process-step::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-colour);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .process-step h3 {
+        margin-bottom: 0.5rem;
+        color: var(--primary-colour);
+      }
+      .outcomes-list {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-left: 4px solid var(--accent-colour);
+        padding: 2rem;
+        border-radius: 8px;
+        margin: 2rem 0;
+      }
+      .outcomes-list ul {
+        list-style: none;
+        margin: 1rem 0;
+      }
+      .outcomes-list li {
+        padding: 0.75rem 0;
+        padding-left: 2rem;
+        position: relative;
+      }
+      .outcomes-list li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--accent-colour);
+        font-weight: bold;
+        font-size: 1.3rem;
+      }
+      .cta-section {
+        background: linear-gradient(135deg, var(--primary-colour) 0%, var(--secondary-colour) 100%);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin: 3rem 0;
+      }
+      .cta-section h2 {
+        color: white;
+        margin-bottom: 1rem;
+      }
+      .cta-section p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+      }
+      .cta-section .button {
+        background: white;
+        color: var(--primary-colour);
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .cta-section .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+      @media (max-width: 768px) {
+        .service-hero h1 {
+          font-size: 2rem;
+        }
+        .service-hero .subtitle {
+          font-size: 1.1rem;
+        }
+        .benefits-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
-    <body>
+  <body>
     <!-- Mobile Menu Overlay -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
@@ -18,15 +174,11 @@
     <header>
       <div class="container">
         <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
-
-        <!-- Mobile Menu Toggle Button -->
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
           <span></span>
           <span></span>
           <span></span>
         </button>
-
-        <!-- Navigation -->
         <nav id="mainNav">
           <ul>
             <li><a href="services.html">Services</a></li>
@@ -38,29 +190,213 @@
             <li><a href="audit.html">Restaurant Audit</a></li>
             <li><a href="food-truck-audit.html">Food Truck Launch Audit</a></li>
             <li><a href="lead-magnet.html">Free Playbook</a></li>
-            <li><a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Book a Call</a></li>
+            <li><a href="https://calendly.com/hello-trecoleman/30min" class="button" target="_blank" rel="noopener">Book a Call</a></li>
           </ul>
         </nav>
       </div>
     </header>
-    
+
+    <!-- Hero Section -->
+    <div class="service-hero">
+      <div class="container text-center">
+        <h1>SOPs & Training Systems</h1>
+        <p class="subtitle">Eliminate tribal knowledge and get new hires productive 50% faster. Build training systems with role scorecards, checklists, micro-training, and 30-60-90 plans that actually stick.</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
     <section>
       <div class="container">
-        <h1 class="mb-2">SOPs &amp; Training Systems</h1>
-        <p class="mb-2"><strong>What’s included:</strong> Role scorecards, checklists, opening/closing procedures, micro‑training videos, 30‑60‑90 plans.</p>
-        <p class="mb-2"><strong>Promise:</strong> Clarity that speeds ramp time and reduces “tribal knowledge.”</p>
-        <div class="mt-2">
-        <a href="contact.html" class="primary button">Get a SOP sample →</a>
+        <!-- Problem/Solution -->
+        <h2 class="mb-2">The Problem You're Facing</h2>
+        <p class="mb-2">
+          Your best employees hold critical knowledge in their heads—opening procedures, quality standards,
+          troubleshooting steps—that disappears when they're not on shift. New hires take 4-6 weeks to get
+          productive, and even then, execution varies wildly between shifts. Managers spend hours re-training
+          the same basics because nothing is documented.
+        </p>
+        <p class="mb-2">
+          <strong>The cost?</strong> Slow ramp times, inconsistent quality, frustrated managers training the same
+          thing repeatedly, and customers experiencing different service depending on who's working.
+        </p>
+
+        <hr class="section-divider" />
+
+        <!-- Benefits -->
+        <h2 class="mb-2">What Professional SOPs & Training Deliver</h2>
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <h3>50% Faster Onboarding</h3>
+            <p>
+              New hires follow clear checklists and micro-training videos. They hit productivity benchmarks
+              in 2-3 weeks instead of 4-6, with less manager hand-holding.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Consistent Execution</h3>
+            <p>
+              Every team member follows the same proven process—opening, closing, service standards,
+              quality checks. No more "that's not how I was trained."
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Knowledge Transfer</h3>
+            <p>
+              Capture your best employees' expertise in simple, actionable SOPs. When they leave or
+              get promoted, their knowledge stays with you.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Manager Leverage</h3>
+            <p>
+              Managers stop repeating the same training. They can point to a video or checklist instead
+              of explaining from scratch every time.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Performance Clarity</h3>
+            <p>
+              Role scorecards define exactly what "good" looks like for each position. Performance
+              conversations become objective, not subjective.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Scalable Standards</h3>
+            <p>
+              Built to scale across locations. Train new stores faster, maintain brand consistency,
+              and reduce quality variability.
+            </p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- How It Works -->
+        <h2 class="mb-2">How We Build Your Training Systems</h2>
+        <div class="process-steps">
+          <div class="process-step">
+            <h3>Role & Task Analysis</h3>
+            <p>
+              We shadow your team for 3-5 days, documenting every critical task, decision point, and quality
+              standard. We identify your star performers and capture what makes them successful.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>SOP Documentation</h3>
+            <p>
+              We create clear, step-by-step SOPs for every key process—opening/closing, prep work, service
+              standards, cleaning, quality checks. Simple checklists, not 50-page manuals nobody reads.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>Micro-Training Videos</h3>
+            <p>
+              We film 2-5 minute training videos for critical tasks using your actual team and equipment.
+              New hires can watch, practice, and reference these any time.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>Role Scorecards</h3>
+            <p>
+              We build role scorecards that define success metrics for each position—line cook, server,
+              shift lead, etc. Clear expectations = objective performance reviews.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>30-60-90 Day Plans</h3>
+            <p>
+              We create progressive training plans that gradually increase responsibility. New hires know
+              exactly what they should master each month, and managers can track their progress.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>Rollout & Training</h3>
+            <p>
+              We train your managers on how to use the new systems, implement them with your team, and
+              provide 30 days of support to refine based on real-world feedback.
+            </p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- Outcomes -->
+        <h2 class="mb-2">Real Outcomes You Can Expect</h2>
+        <div class="outcomes-list">
+          <h3 style="margin-bottom: 1rem;">After implementing professional SOPs and training systems, clients typically see:</h3>
+          <ul>
+            <li><strong>50% faster onboarding</strong>—new hires productive in 2-3 weeks instead of 4-6</li>
+            <li><strong>40% reduction</strong> in manager time spent on repetitive training</li>
+            <li><strong>Consistent quality</strong> across all shifts and locations</li>
+            <li><strong>20-30% reduction</strong> in early turnover (first 90 days)</li>
+            <li><strong>Objective performance management</strong>—clear expectations eliminate disputes</li>
+            <li><strong>Knowledge preservation</strong>—star employee expertise captured permanently</li>
+            <li><strong>Faster multi-unit expansion</strong>—replicate training systems to new locations</li>
+          </ul>
+          <p style="margin-top: 1.5rem; font-style: italic;">
+            <strong>Typical ROI:</strong> 4-6x return within the first 90 days through reduced training time,
+            lower early turnover, and improved labor efficiency—not counting improved consistency and
+            customer satisfaction.
+          </p>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- What's Included -->
+        <h2 class="mb-2">What's Included in Your Training System</h2>
+        <ul class="mb-2" style="list-style: disc inside; margin-left: 1.5rem; line-height: 1.8;">
+          <li><strong>Opening & Closing Checklists</strong> for every station and shift</li>
+          <li><strong>Role Scorecards</strong> defining success metrics for each position</li>
+          <li><strong>Step-by-Step SOPs</strong> for critical processes (15-25 procedures)</li>
+          <li><strong>Micro-Training Videos</strong> (10-15 videos, 2-5 minutes each)</li>
+          <li><strong>30-60-90 Day Plans</strong> for each key role</li>
+          <li><strong>Quality Standards Guide</strong> with photo examples</li>
+          <li><strong>Manager Training Guide</strong> on how to use the system</li>
+          <li><strong>Digital Organization</strong>—everything accessible on tablets/phones</li>
+          <li><strong>30 Days Post-Launch Support</strong> for refinement</li>
+        </ul>
+
+        <hr class="section-divider" />
+
+        <!-- Who It's For -->
+        <h2 class="mb-2">Who This Is For</h2>
+        <p class="mb-2">
+          <strong>This service is perfect for:</strong>
+        </p>
+        <ul class="mb-2" style="list-style: disc inside; margin-left: 1.5rem; line-height: 1.8;">
+          <li><strong>Multi-unit operators</strong> struggling with inconsistent execution across locations</li>
+          <li><strong>Growing brands</strong> that need repeatable training systems to scale</li>
+          <li><strong>High-turnover operations</strong> tired of constant re-training</li>
+          <li><strong>Operators with tribal knowledge</strong> locked in key employees' heads</li>
+          <li><strong>Brands preparing for expansion</strong> or franchising</li>
+        </ul>
+        <p class="mb-2">
+          <strong>Not a fit if:</strong> You're a single-location with simple processes and low turnover,
+          or you're looking for generic templates instead of custom documentation of your specific operations.
+        </p>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+          <h2>Ready to Eliminate Tribal Knowledge?</h2>
+          <p>
+            Book a 30-minute Training System Assessment. We'll review your current onboarding process,
+            identify your biggest training gaps, and show you exactly how we'd document your operations.
+          </p>
+          <a href="https://calendly.com/hello-trecoleman/30min" class="button" target="_blank" rel="noopener">Schedule Your Training Assessment →</a>
+          <p style="font-size: 0.95rem; margin-top: 1.5rem; opacity: 0.9;">
+            Or email <a href="mailto:hello@trecoleman.com" style="color: white; text-decoration: underline;">hello@trecoleman.com</a>
+            to request a sample SOP and role scorecard template.
+          </p>
         </div>
       </div>
     </section>
-    
+
     <!-- Footer -->
     <footer>
       <div class="container footer-content">
         <p>&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
         <ul>
-          <li><a href="services.html" aria-current="page">Services</a></li>
+          <li><a href="services.html">Services</a></li>
           <li><a href="case-studies.html">Case Studies</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
@@ -69,9 +405,7 @@
       </div>
     </footer>
     <script>
-      // Set current year in footer
       document.getElementById('year').textContent = new Date().getFullYear();
-      // Mobile menu toggle functionality
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
@@ -98,5 +432,6 @@
         if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
       });
     </script>
+    <script src="/exit-intent-popup.js" defer></script>
   </body>
 </html>
