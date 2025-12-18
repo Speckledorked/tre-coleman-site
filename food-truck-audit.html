@@ -204,10 +204,26 @@
             overflow: hidden;
         }
         .header {
-            background: linear-gradient(135deg, #1a5080 0%, #2a6ba0 100%);
+            position: relative;
+            background: linear-gradient(135deg, rgba(26, 80, 128, 0.95) 0%, rgba(42, 107, 160, 0.95) 100%),
+                        url('https://images.unsplash.com/photo-1565123409695-7b5ef63a2efb?w=1920&h=600&fit=crop') center/cover no-repeat;
             color: white;
             padding: 2.5rem 2rem;
             text-align: center;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 0;
+        }
+        .header h1, .header p {
+            position: relative;
+            z-index: 1;
         }
         .header h1 {
             font-size: 2rem;
