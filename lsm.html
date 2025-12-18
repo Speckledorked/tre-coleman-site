@@ -6,11 +6,151 @@
     <title>Local Store Marketing (LSM) | Tre Coleman</title>
     <meta
       name="description"
-      content="12‑week calendar + in‑store activations to drive traffic and capture guests." />
-    <!-- Relative CSS path for GitHub Pages -->
+      content="Drive consistent traffic with trackable local marketing. 12-week calendars, in-store activations, and community partnerships that actually fill seats." />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .service-hero {
+        background: linear-gradient(135deg, var(--primary-colour) 0%, var(--secondary-colour) 100%);
+        color: white;
+        padding: 4rem 0 3rem;
+        margin-bottom: 3rem;
+      }
+      .service-hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+      .service-hero .subtitle {
+        font-size: 1.25rem;
+        opacity: 0.95;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .section-divider {
+        margin: 4rem 0;
+        border: none;
+        border-top: 2px solid var(--light-bg);
+      }
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+      .benefit-card {
+        background: white;
+        border: 2px solid var(--light-bg);
+        border-radius: 12px;
+        padding: 1.75rem;
+        transition: all 0.3s ease;
+      }
+      .benefit-card:hover {
+        border-color: var(--primary-colour);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transform: translateY(-4px);
+      }
+      .benefit-card h3 {
+        color: var(--primary-colour);
+        margin-bottom: 0.75rem;
+        font-size: 1.3rem;
+      }
+      .process-steps {
+        counter-reset: step-counter;
+        margin: 2rem 0;
+      }
+      .process-step {
+        counter-increment: step-counter;
+        position: relative;
+        padding-left: 4rem;
+        margin-bottom: 2.5rem;
+      }
+      .process-step::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 50px;
+        height: 50px;
+        background: var(--primary-colour);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .process-step h3 {
+        margin-bottom: 0.5rem;
+        color: var(--primary-colour);
+      }
+      .outcomes-list {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-left: 4px solid var(--accent-colour);
+        padding: 2rem;
+        border-radius: 8px;
+        margin: 2rem 0;
+      }
+      .outcomes-list ul {
+        list-style: none;
+        margin: 1rem 0;
+      }
+      .outcomes-list li {
+        padding: 0.75rem 0;
+        padding-left: 2rem;
+        position: relative;
+      }
+      .outcomes-list li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--accent-colour);
+        font-weight: bold;
+        font-size: 1.3rem;
+      }
+      .cta-section {
+        background: linear-gradient(135deg, var(--primary-colour) 0%, var(--secondary-colour) 100%);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin: 3rem 0;
+      }
+      .cta-section h2 {
+        color: white;
+        margin-bottom: 1rem;
+      }
+      .cta-section p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+      }
+      .cta-section .button {
+        background: white;
+        color: var(--primary-colour);
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .cta-section .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+      @media (max-width: 768px) {
+        .service-hero h1 {
+          font-size: 2rem;
+        }
+        .service-hero .subtitle {
+          font-size: 1.1rem;
+        }
+        .benefits-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
-    <body>
+  <body>
     <!-- Mobile Menu Overlay -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
@@ -18,15 +158,11 @@
     <header>
       <div class="container">
         <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
-
-        <!-- Mobile Menu Toggle Button -->
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
           <span></span>
           <span></span>
           <span></span>
         </button>
-
-        <!-- Navigation -->
         <nav id="mainNav">
           <ul>
             <li><a href="services.html">Services</a></li>
@@ -43,30 +179,209 @@
         </nav>
       </div>
     </header>
-    
+
+    <!-- Hero Section -->
+    <div class="service-hero">
+      <div class="container text-center">
+        <h1>Local Store Marketing (LSM)</h1>
+        <p class="subtitle">Stop throwing money at ads that don't work. Build a 12-week marketing calendar with trackable in-store activations, community partnerships, and offers that actually fill seats.</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
     <section>
       <div class="container">
-        <h1 class="mb-2">Local Store Marketing (LSM)</h1>
-        <p class="mb-2"><strong>Approach:</strong> Pair a 12‑week calendar with in‑store activations and trackable offers.</p>
-        <p class="mb-2"><strong>Focus areas:</strong></p>
-        <ul class="mb-2" style="list-style: disc inside; margin-left: 1rem;">
-          <li>Neighborhood partnerships</li>
-          <li>Daypart promos</li>
-          <li>SMS/email capture</li>
-          <li>Review lifts</li>
+        <!-- Problem/Solution -->
+        <h2 class="mb-2">The Problem You're Facing</h2>
+        <p class="mb-2">
+          You're running random promotions with no clear strategy—$5 off Tuesday here, a Facebook post there,
+          maybe a loyalty punch card someone mentioned. Marketing feels reactive instead of strategic. You're
+          not sure what's working, what's wasting money, or how to drive traffic during slow periods. Meanwhile,
+          competitors are consistently packed.
+        </p>
+        <p class="mb-2">
+          <strong>The cost?</strong> Inconsistent traffic, unpredictable revenue, wasted marketing spend on
+          tactics that don't convert, and empty seats during periods you desperately need to fill.
+        </p>
+
+        <hr class="section-divider" />
+
+        <!-- Benefits -->
+        <h2 class="mb-2">What Strategic Local Marketing Delivers</h2>
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <h3>Consistent Traffic</h3>
+            <p>
+              12-week marketing calendar with scheduled activations every week—no more scrambling
+              for last-minute ideas. Predictable promotions = predictable traffic.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Trackable Results</h3>
+            <p>
+              Every offer has a unique code or tracking mechanism. Know exactly what drives
+              traffic, what doesn't, and where to double down.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Community Integration</h3>
+            <p>
+              Build relationships with local businesses, schools, sports teams, and organizations.
+              Turn your neighbors into your best marketing channel.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Fill Slow Periods</h3>
+            <p>
+              Strategic offers targeted at your specific slow days/dayparts. Turn dead
+              Mondays into profitable service periods.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Guest Retention</h3>
+            <p>
+              Loyalty programs, email campaigns, and remarketing that bring customers back
+              monthly instead of once a year.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <h3>Low-Cost, High-Impact</h3>
+            <p>
+              Focus on tactics with proven ROI—community partnerships, targeted offers,
+              referral programs. Not expensive brand advertising.
+            </p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- How It Works -->
+        <h2 class="mb-2">How We Build Your LSM System</h2>
+        <div class="process-steps">
+          <div class="process-step">
+            <h3>Traffic Analysis & Opportunity Mapping</h3>
+            <p>
+              We analyze your sales data to identify slow periods, peak times, and customer frequency patterns.
+              We map your local area for partnership opportunities—businesses, schools, organizations within
+              3 miles.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>12-Week Marketing Calendar</h3>
+            <p>
+              We build a 12-week calendar with specific activations every week—community nights, targeted offers,
+              partnership promotions, loyalty rewards. Each activation has clear objectives and tracking.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>Offer Design & Tracking Setup</h3>
+            <p>
+              We design offers that fill your specific needs (slow dayparts, new customer acquisition, repeat
+              visits). Every offer has unique tracking codes so you know exactly what's working.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>Partnership Development</h3>
+            <p>
+              We help you establish 3-5 local partnerships—corporate lunch programs, school fundraisers,
+              sports team sponsorships. These become consistent monthly traffic drivers.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>Execution Playbooks</h3>
+            <p>
+              We create simple execution guides for each activation—who does what, when to promote,
+              how to track results. Your team can run these without constant oversight.
+            </p>
+          </div>
+          <div class="process-step">
+            <h3>Monthly Optimization Reviews</h3>
+            <p>
+              We meet monthly to review performance, adjust tactics, and plan the next quarter's calendar.
+              Double down on what works, kill what doesn't.
+            </p>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- Outcomes -->
+        <h2 class="mb-2">Real Outcomes You Can Expect</h2>
+        <div class="outcomes-list">
+          <h3 style="margin-bottom: 1rem;">After implementing strategic local marketing, clients typically see:</h3>
+          <ul>
+            <li><strong>15-25% increase</strong> in traffic during previously slow periods</li>
+            <li><strong>30-40% improvement</strong> in customer frequency (visits per year)</li>
+            <li><strong>3-5 predictable partnerships</strong> driving monthly catering or group business</li>
+            <li><strong>Trackable ROI</strong> on every promotion—know exactly what's worth repeating</li>
+            <li><strong>Consistent weekly activations</strong> instead of reactive, random promotions</li>
+            <li><strong>10-15% reduction</strong> in paid advertising spend (replaced with higher-ROI tactics)</li>
+            <li><strong>Community presence</strong> that generates word-of-mouth and organic traffic</li>
+          </ul>
+          <p style="margin-top: 1.5rem; font-style: italic;">
+            <strong>Typical ROI:</strong> 5-8x return on marketing investment within the first quarter through
+            increased traffic, better customer retention, and strategic partnerships—not counting the long-term
+            value of community integration.
+          </p>
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- What's Included -->
+        <h2 class="mb-2">What's Included in Your LSM System</h2>
+        <ul class="mb-2" style="list-style: disc inside; margin-left: 1.5rem; line-height: 1.8;">
+          <li><strong>12-Week Marketing Calendar</strong> with scheduled activations and promotions</li>
+          <li><strong>Traffic Analysis Report</strong> identifying your biggest opportunities</li>
+          <li><strong>Trackable Offer Designs</strong> for slow periods and customer acquisition</li>
+          <li><strong>Local Partnership Strategy</strong> with target list and outreach templates</li>
+          <li><strong>Loyalty Program Design</strong> (if you don't have one) or optimization</li>
+          <li><strong>Email/SMS Campaign Templates</strong> for monthly promotions</li>
+          <li><strong>Execution Playbooks</strong> for each activation type</li>
+          <li><strong>Tracking Dashboard</strong> to measure every promotion's performance</li>
+          <li><strong>Monthly Strategy Reviews</strong> for ongoing optimization</li>
         </ul>
-        <div class="mt-2">
-        <a href="contact.html" class="primary button">See the 12‑week LSM outline →</a>
+
+        <hr class="section-divider" />
+
+        <!-- Who It's For -->
+        <h2 class="mb-2">Who This Is For</h2>
+        <p class="mb-2">
+          <strong>This service is perfect for:</strong>
+        </p>
+        <ul class="mb-2" style="list-style: disc inside; margin-left: 1.5rem; line-height: 1.8;">
+          <li><strong>Single or multi-unit restaurants</strong> with inconsistent traffic patterns</li>
+          <li><strong>Neighborhood concepts</strong> that need deeper community integration</li>
+          <li><strong>Operators with significant slow periods</strong> (weekday lunch, Monday dinner, etc.)</li>
+          <li><strong>Brands spending on ads</strong> without clear ROI or tracking</li>
+          <li><strong>Growing concepts</strong> ready to build repeatable marketing systems</li>
+        </ul>
+        <p class="mb-2">
+          <strong>Not a fit if:</strong> You're already at max capacity every service period, or you're
+          looking for brand awareness campaigns instead of traffic-driving tactics with measurable ROI.
+        </p>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+          <h2>Ready to Fill Your Slow Periods?</h2>
+          <p>
+            Book a 30-minute LSM Strategy Call. We'll review your traffic patterns, identify your biggest
+            opportunities, and show you exactly how we'd build your 12-week marketing calendar.
+          </p>
+          <a href="https://calendly.com/ph_tre" class="button" target="_blank" rel="noopener">Schedule Your LSM Strategy Call →</a>
+          <p style="font-size: 0.95rem; margin-top: 1.5rem; opacity: 0.9;">
+            Or email <a href="mailto:hello@trecoleman.com" style="color: white; text-decoration: underline;">hello@trecoleman.com</a>
+            to request a sample 12-week marketing calendar.
+          </p>
         </div>
       </div>
     </section>
-    
+
     <!-- Footer -->
     <footer>
       <div class="container footer-content">
         <p>&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
         <ul>
-          <li><a href="services.html" aria-current="page">Services</a></li>
+          <li><a href="services.html">Services</a></li>
           <li><a href="case-studies.html">Case Studies</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
@@ -75,9 +390,7 @@
       </div>
     </footer>
     <script>
-      // Set current year in footer
       document.getElementById('year').textContent = new Date().getFullYear();
-      // Mobile menu toggle functionality
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
@@ -104,5 +417,6 @@
         if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
       });
     </script>
+    <script src="/exit-intent-popup.js" defer></script>
   </body>
 </html>
