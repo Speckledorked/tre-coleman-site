@@ -9,11 +9,11 @@
       content="Restaurant operations and AI integration that actually move numbers. SOPs, training, LSM, and menu engineering—built by an operator." />
     <link rel="stylesheet" href="style.css" />
     <style>
-      /* Enhanced hero with background image support */
+      /* Hero with background image and dark overlay */
       .hero {
         position: relative;
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(29, 78, 216, 0.95) 100%),
-                    url('https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=1920&h=1080&fit=crop') center/cover no-repeat;
+        background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&h=1080&fit=crop') center/cover no-repeat;
+        color: white;
         min-height: 500px;
         display: flex;
         align-items: center;
@@ -26,7 +26,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.2);
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.6) 100%);
         z-index: 0;
       }
 
@@ -34,6 +34,7 @@
         position: relative;
         z-index: 1;
       }
+
 
       /* Dropdown navigation styles */
       .nav-dropdown {
@@ -159,7 +160,6 @@
         <nav id="mainNav">
           <ul>
             <li><a href="services.html">Services</a></li>
-            <li><a href="case-studies.html">Case Studies</a></li>
             <li class="nav-dropdown">
               <a href="#" onclick="return false;">Audits</a>
               <div class="dropdown-menu">
@@ -170,7 +170,6 @@
             <li><a href="blog.html">Blog</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="chat.html">AI Chat</a></li>
             <li><a href="lead-magnet.html">Free Playbook</a></li>
             <li><a href="https://calendly.com/hello-trecoleman/30min" class="button nav-cta" target="_blank" rel="noopener">Book a Call</a></li>
           </ul>
@@ -248,10 +247,8 @@
         <p>&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
         <ul>
           <li><a href="services.html">Services</a></li>
-          <li><a href="case-studies.html">Case Studies</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <li><a href="chat.html">AI Chat</a></li>
         </ul>
       </div>
     </footer>
