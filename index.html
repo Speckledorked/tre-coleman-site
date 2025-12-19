@@ -9,13 +9,30 @@
       content="Restaurant operations and AI integration that actually move numbers. SOPs, training, LSM, and menu engineering—built by an operator." />
     <link rel="stylesheet" href="style.css" />
     <style>
-      /* Clean hero with simple gradient */
+      /* Hero with background image and dark overlay */
       .hero {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        position: relative;
+        background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&h=1080&fit=crop') center/cover no-repeat;
         color: white;
         min-height: 500px;
         display: flex;
         align-items: center;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.6) 100%);
+        z-index: 0;
+      }
+
+      .hero .container {
+        position: relative;
+        z-index: 1;
       }
 
 
