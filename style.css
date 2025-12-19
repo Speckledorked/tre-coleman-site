@@ -9,35 +9,35 @@
 
 /* Root variables make it easy to update colours across the site */
 :root {
-  /* Primary colors with gradients */
-  --primary-colour: #0d3b66;
-  --primary-dark: #08243d;
-  --primary-light: #1a5080;
-  --secondary-colour: #ee964b;
-  --secondary-light: #f4a962;
-  --accent-colour: #f95738;
-  --accent-dark: #d63920;
+  /* Primary colors - Deep, sophisticated navy */
+  --primary-colour: #1e3a5f;
+  --primary-dark: #152b45;
+  --primary-light: #2a4a70;
+  --secondary-colour: #2c3e50;
+  --secondary-light: #34495e;
+  --accent-colour: #d4a574;
+  --accent-dark: #b8935f;
 
   /* Background colors */
-  --light-bg: #faf8f4;
+  --light-bg: #f8f9fa;
   --card-bg: #ffffff;
-  --light-gray: #f5f7fa;
+  --light-gray: #e9ecef;
 
   /* Text colors */
-  --dark-text: #1a1a1a;
+  --dark-text: #2c3e50;
   --medium-text: #4a5568;
   --light-text: #718096;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #0d3b66 0%, #1a5080 100%);
-  --gradient-secondary: linear-gradient(135deg, #ee964b 0%, #f4a962 100%);
-  --gradient-accent: linear-gradient(135deg, #f95738 0%, #ff6b4d 100%);
+  --gradient-primary: linear-gradient(135deg, #1e3a5f 0%, #2a4a70 100%);
+  --gradient-secondary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  --gradient-accent: linear-gradient(135deg, #d4a574 0%, #e4b584 100%);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04);
+  /* Shadows - softer, more refined */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12), 0 4px 6px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.06);
 
   /* Layout */
   --max-width: 1200px;
