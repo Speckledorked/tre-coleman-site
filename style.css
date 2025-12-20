@@ -195,7 +195,7 @@ nav a {
 }
 
 nav a:hover {
-  color: var(--secondary-colour);
+  color: var(--accent-colour);
   text-decoration: none;
 }
 
