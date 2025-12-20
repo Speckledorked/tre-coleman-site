@@ -11,8 +11,7 @@
     <style>
       .service-hero {
         position: relative;
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.95) 0%, rgba(29, 78, 216, 0.95) 100%),
-                    url('https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1920&h=1080&fit=crop') center/cover no-repeat;
+        background: url('https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1920&h=1080&fit=crop') center/cover no-repeat;
         color: white;
         padding: 4rem 0 3rem;
         margin-bottom: 3rem;
@@ -24,12 +23,17 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, rgba(30, 58, 95, 0.88) 0%, rgba(44, 62, 80, 0.88) 100%);
         z-index: 0;
       }
       .service-hero .container {
         position: relative;
         z-index: 1;
+      }
+      .service-hero h1,
+      .service-hero .subtitle {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
       }
       .service-hero h1 {
         font-size: 2.5rem;
