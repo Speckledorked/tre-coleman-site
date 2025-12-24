@@ -103,8 +103,7 @@
           <!-- Anti-spam & metadata -->
           <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;">
           <input type="hidden" name="_subject" value="New Lead from TreColeman.co">
-          <input type="hidden" name="_autoresponse" value="Thanks for reaching out — I’ll review and reply shortly. If you’d like to book now: profit-leak-snapshot.html">
-          <input type="hidden" name="_next" id="nextUrl" value="">
+          <input type="hidden" name="_autoresponse" value="Thanks for reaching out — I'll review and reply shortly.">
           <input type="hidden" name="utm_source">
           <input type="hidden" name="utm_medium">
           <input type="hidden" name="utm_campaign">
@@ -112,12 +111,6 @@
           <input type="hidden" name="_captcha" value="false">
           <button type="submit" class="button" style="margin-top:1rem;">Get my plan</button>
         </form>
-        <!-- Inline Calendly embed -->
-        <div class="mt-2">
-          <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-          <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-          <div class="calendly-inline-widget" data-url="profit-leak-snapshot.html" style="min-width:320px;height:700px;"></div>
-        </div>
       </div>
     </section>
     
@@ -173,18 +166,15 @@
           }
         });
       })();
-      // Before submitting, build the _next URL to redirect to Calendly with prefilled name and email
-      document.getElementById('contactForm').addEventListener('submit', function() {
+      // Form validation - honeypot check only
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
         const form = this;
         const hp = form.querySelector('[name="website"]');
-        // Honeypot: if filled, do nothing special
-        if (hp && hp.value.trim() !== '') return;
-        const nameVal = encodeURIComponent(form.elements.name.value || '');
-        const emailVal = encodeURIComponent(form.elements.email.value || '');
-        const calUrl = new URL('profit-leak-snapshot.html');
-        if (nameVal) calUrl.searchParams.set('name', decodeURIComponent(nameVal));
-        if (emailVal) calUrl.searchParams.set('email', decodeURIComponent(emailVal));
-        document.getElementById('nextUrl').value = calUrl.toString();
+        // Honeypot: if filled, prevent submission
+        if (hp && hp.value.trim() !== '') {
+          e.preventDefault();
+          return false;
+        }
       });
     </script>
   </body>
