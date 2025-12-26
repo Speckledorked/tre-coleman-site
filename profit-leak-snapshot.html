@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profit Leak Snapshot - 90-Minute Restaurant Diagnostic | Tre Coleman</title>
+  <meta name="description" content="Your restaurant is bleeding money and you can't figure out where it's going. 90-minute diagnostic to identify your top 3 profit leaks. $750.">
+
+  <!-- Load Stripe script once at top -->
+  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #2c3e50;
+      background: #ffffff;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2c3e50 100%);
+      color: white;
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero .tagline {
+      font-size: 1.6rem;
+      line-height: 1.4;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      font-weight: 400;
+    }
+
+    .hero .description {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+      opacity: 0.9;
+    }
+
+    .hero .pricing {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    .hero .pricing .amount {
+      color: #d4a574;
+      font-size: 2.5rem;
+    }
+
+    /* CTA Buttons */
+    .cta-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .btn-primary {
+      background: #d4a574;
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #b8935f;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .btn-secondary {
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      border: 2px solid rgba(255,255,255,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: white;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .credit-note {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      font-style: italic;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Content Sections */
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+
+    .section h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: #1e3a5f;
+    }
+
+    .section h3 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      margin-top: 3rem;
+      color: #1e3a5f;
+    }
+
+    .section p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      color: #4a5568;
+    }
+
+    .section ul {
+      list-style: none;
+      margin: 2rem 0;
+    }
+
+    .section ul li {
+      font-size: 1.2rem;
+      padding: 1rem 0;
+      padding-left: 2rem;
+      position: relative;
+      color: #2c3e50;
+      line-height: 1.7;
+    }
+
+    .section ul li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #d4a574;
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+
+    /* Important callout */
+    .important {
+      background: #f8f9fa;
+      border-left: 4px solid #d4a574;
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+      font-size: 1.15rem;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+
+    /* What NOT section */
+    .not-included {
+      background: #f8f9fa;
+      padding: 2rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+    }
+
+    .not-included ul li::before {
+      content: "×";
+      color: #e74c3c;
+    }
+
+    /* Dark CTA sections */
+    .cta-section {
+      background: #2c3e50;
+      color: white;
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* FAQ Section */
+    .faq {
+      background: #f8f9fa;
+      padding: 5rem 1.5rem;
+    }
+
+    .faq-item {
+      max-width: 800px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .faq-item h3 {
+      font-size: 1.4rem;
+      color: #1e3a5f;
+      margin-bottom: 0.75rem;
+      margin-top: 0;
+    }
+
+    .faq-item p {
+      font-size: 1.15rem;
+      color: #4a5568;
+      margin-bottom: 0;
+    }
+
+    /* Stripe container */
+    .stripe-container {
+      margin: 2rem auto;
+      max-width: 400px;
+    }
+
+    /* Footer */
+    footer {
+      background: #1e3a5f;
+      color: white;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    footer a {
+      color: #d4a574;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero .tagline {
+        font-size: 1.3rem;
+      }
+
+      .hero .description {
+        font-size: 1.1rem;
+      }
+
+      .section h2,
+      .cta-section h2 {
+        font-size: 2rem;
+      }
+
+      .section p,
+      .section ul li {
+        font-size: 1.1rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your restaurant is bleeding money and you can't figure out where it's going.</h1>
+
+      <p class="tagline">Labor costs are up. Food costs are creeping. Sales look okay but your bank account tells a different story. You need answers—fast.</p>
+
+      <p class="description">The Profit Leak Snapshot is a 90-minute diagnostic to identify your top 3 profit leaks, calculate what they're costing you every month, and decide what to fix first.</p>
+
+      <p class="pricing">Investment: <span class="amount">$750</span> (paid at booking)</p>
+
+      <div class="cta-buttons">
+        <div class="stripe-container">
+          <stripe-buy-button
+            buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ"
+            publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW"
+          >
+          </stripe-buy-button>
+        </div>
+        <a href="mailto:hello@trecoleman.com" class="btn-secondary">Email a question</a>
+      </div>
+
+      <p class="credit-note">If you decide to move forward with implementation support, the $750 credits toward your engagement.</p>
+    </div>
+  </section>
+
+  <!-- What This Is -->
+  <section class="section">
+    <h2>What this is</h2>
+    <p><strong>This is not consulting theater. It is a fast, operator-level diagnosis.</strong></p>
+
+    <p>In 90 minutes, we will:</p>
+    <ul>
+      <li>Review your last 90 days of key numbers (P&L, labor summary, sales mix basics)</li>
+      <li>Pressure-test what you think the problem is</li>
+      <li>Identify the top 3 likely profit leaks</li>
+      <li>Estimate monthly and annual impact ranges</li>
+      <li>Prioritize what to fix first based on impact vs effort</li>
+      <li>Call out what not to touch yet</li>
+    </ul>
+  </section>
+
+  <!-- What You Walk Away With -->
+  <section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2>What you walk away with</h2>
+      <p>You will leave the call with:</p>
+      <ul>
+        <li>Your top 3 profit leaks, clearly named</li>
+        <li>A rough $ impact estimate for each leak (monthly and annual ranges)</li>
+        <li>A simple Fix First order: first, second, third</li>
+        <li>A clear recommendation on whether deeper work is worth it</li>
+      </ul>
+
+      <div class="important">
+        <strong>Important:</strong> This is a diagnostic. It is designed to create clarity, not deliver a full implementation plan.
+      </div>
+    </div>
+  </section>
+
+  <!-- What This Is Not -->
+  <section class="section">
+    <h2>What this is not</h2>
+    <p>To keep the Snapshot clean and valuable, we do <strong>not</strong>:</p>
+
+    <div class="not-included">
+      <ul>
+        <li>Rebuild schedules or staffing plans</li>
+        <li>Rewrite your menu or fully engineer it</li>
+        <li>Create SOPs</li>
+        <li>Set up software or AI automations</li>
+        <li>Deliver a recording</li>
+        <li>Deliver a written roadmap</li>
+      </ul>
+    </div>
+
+    <p>If you want help implementing the fixes, that is a separate scope.</p>
+  </section>
+
+  <!-- Who This Is For -->
+  <section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2>Who this is for</h2>
+      <p>This is for operators who:</p>
+      <ul>
+        <li>Are losing money every month and need to know why</li>
+        <li>Can see labor or food costs spiraling but don't know how to fix it</li>
+        <li>Just got a brutal P&L or almost missed payroll</li>
+        <li>Are done throwing money at the problem without a clear plan</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- What to Bring -->
+  <section class="section">
+    <h2>What to bring</h2>
+    <p>Have these ready on the call:</p>
+    <ul>
+      <li>Last 3 months of P&L</li>
+      <li>A labor summary (hours, payroll, OT if available)</li>
+      <li>Basic sales mix or top sellers list from your POS (if available)</li>
+    </ul>
+    <p>If you are missing something, we will work with what you have and flag the gaps.</p>
+  </section>
+
+  <!-- Why This Works -->
+  <section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2>Why this works</h2>
+
+      <p>You don't need another consultant telling you what's broken. You need someone to show you exactly where the money is going and what to fix first.</p>
+
+      <p>The Snapshot cuts through the noise:</p>
+      <ul>
+        <li>No 50-page reports gathering dust</li>
+        <li>No vague recommendations</li>
+        <li>Just clear answers with dollar amounts attached</li>
+      </ul>
+
+      <p style="margin-top: 2rem;">Most operators waste months chasing the wrong problem. This gets you focused on the right fix—today.</p>
+    </div>
+  </section>
+
+  <!-- Pricing CTA -->
+  <section class="cta-section">
+    <h2>Pricing</h2>
+    <p style="font-size: 2rem; color: #d4a574; font-weight: 700; margin-bottom: 2rem;">$750 paid at booking</p>
+
+    <div class="stripe-container">
+      <stripe-buy-button
+        buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ"
+        publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW"
+      >
+      </stripe-buy-button>
+    </div>
+
+    <p class="credit-note" style="color: rgba(255,255,255,0.85); margin-top: 2rem;">If you move forward with full implementation support, your $750 credits toward that engagement.</p>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h2 style="text-align: center; font-size: 2.5rem; color: #1e3a5f; margin-bottom: 3rem;">FAQ</h2>
+
+      <div class="faq-item">
+        <h3>How long is the session?</h3>
+        <p>90 minutes.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Do I get a recording or a written plan?</h3>
+        <p>No. This is a live diagnostic and prioritization session.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Will you tell me exactly what to do step-by-step?</h3>
+        <p>You will leave with what to fix first and why. Implementation is a separate scope.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>What if I do not have perfect reports?</h3>
+        <p>Bring what you have. We will diagnose from available data and identify what is missing.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can you help implement the fixes?</h3>
+        <p>Yes, if it makes sense. We can scope that after the Snapshot. If we move into an engagement, the $750 credits toward it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-section">
+    <h2>Ready to stop the bleeding?</h2>
+
+    <div class="cta-buttons">
+      <div class="stripe-container">
+        <stripe-buy-button
+          buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ"
+          publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW"
+        >
+        </stripe-buy-button>
+      </div>
+      <a href="mailto:hello@trecoleman.com" class="btn-secondary">Email a question</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Questions? Contact Tre Coleman</p>
+    <p><a href="https://trecoleman.com">trecoleman.com</a></p>
+    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
