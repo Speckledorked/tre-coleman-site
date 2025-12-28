@@ -9,6 +9,81 @@
       content="Operator-first insights on AI integration, restaurant operations, and team development. Real strategies that move numbers." />
     <link rel="stylesheet" href="style.css" />
     <style>
+      /* Dropdown navigation styles */
+      .nav-dropdown {
+        position: relative;
+      }
+
+      .nav-dropdown > a::after {
+        content: ' ▾';
+        font-size: 0.8em;
+        margin-left: 0.25rem;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        min-width: 220px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 0.5rem 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 0.75rem 1.25rem;
+        color: var(--text-colour);
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-size: 0.95rem;
+      }
+
+      .dropdown-menu a:hover {
+        background: var(--light-bg);
+        color: var(--primary-colour);
+      }
+
+      /* Mobile dropdown behavior */
+      @media (max-width: 1024px) {
+        .dropdown-menu {
+          position: static;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          box-shadow: none;
+          background: rgba(255, 255, 255, 0.05);
+          margin: 0.5rem 0;
+          display: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+          display: block;
+        }
+
+        .dropdown-menu a {
+          color: white;
+          padding-left: 2rem;
+        }
+
+        .dropdown-menu a:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+        }
+      }
+
       /* Additional styles for blog page */
       .blog-header {
         background-color: var(--light-bg);
@@ -288,7 +363,18 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
       });
-      
+
+      // Mobile dropdown toggle
+      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
+      dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            toggle.parentElement.classList.toggle('active');
+          }
+        });
+      });
+
       // Simple category filtering
       document.addEventListener('DOMContentLoaded', function() {
         const categoryLinks = document.querySelectorAll('.blog-categories a');
