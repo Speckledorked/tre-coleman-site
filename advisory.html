@@ -85,6 +85,7 @@
 }
     <style>
       .service-hero {
+        overflow: hidden;
         position: relative;
         background: url('https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1920&h=1080&fit=crop') center/cover no-repeat;
         color: white;
@@ -203,6 +204,8 @@
         font-size: 1.3rem;
       }
       .cta-section {
+        position: relative;
+        z-index: 1;
         background: linear-gradient(135deg, var(--primary-colour) 0%, var(--secondary-colour) 100%);
         color: white;
         padding: 3rem 2rem;
@@ -241,6 +244,16 @@
         .benefits-grid {
           grid-template-columns: 1fr;
         }
+      }
+      /* Main content section background and text */
+      section {
+        position: relative;
+        z-index: 1;
+        background-color: white;
+        color: #2c3e50;
+      }
+      section h2, section h3, section p {
+        color: #2c3e50;
       }
     </style>
   </head>
