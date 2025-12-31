@@ -258,7 +258,7 @@ window.CRISP_WEBSITE_ID="be57159b-af24-45a1-8e47-1207df3715lf";
       title: 'Free Operations Audit',
       subject: 'New Operations Audit (Exit Intent)',
       nextUrl: 'https://trecoleman.com/audit.html?submitted=1',
-      autoResponse: "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. You can also book time now: https://calendly.com/hello-trecoleman/30min",
+      autoResponse: "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. Want to dive deeper? Book a $750 Profit Leak Snapshot: https://trecoleman.com/profit-leak-snapshot.html",
       primary: emphasiseAudit
     };
 
@@ -266,7 +266,7 @@ window.CRISP_WEBSITE_ID="be57159b-af24-45a1-8e47-1207df3715lf";
       title: 'Free 90-Day Playbook',
       subject: 'New Playbook Request (Exit Intent)',
       nextUrl: 'https://trecoleman.com/5_Phase_AI_Lead_System_FULL_Detailed_TreColeman.pdf',
-      autoResponse: "Thanks for requesting the playbook! I'll be in touch soon.\n\nIf you'd like to talk through it, book a call: https://calendly.com/hello-trecoleman/30min",
+      autoResponse: "Thanks for requesting the playbook! I'll be in touch soon.\n\nReady to identify your profit leaks? Book a $750 Profit Leak Snapshot: https://trecoleman.com/profit-leak-snapshot.html",
       primary: !emphasiseAudit
     };
 
