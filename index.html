@@ -216,6 +216,8 @@
         border: none;
         cursor: pointer;
         padding: 0.5rem;
+        z-index: 1001;
+        position: relative;
       }
 
       .mobile-menu-toggle span {
@@ -234,8 +236,8 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 98;
+        background: rgba(0,0,0,0.6);
+        z-index: 999;
       }
 
       @media (max-width: 1024px) {
@@ -250,11 +252,16 @@
           width: 80%;
           max-width: 400px;
           height: 100vh;
-          background: var(--white);
+          background: linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%);
+          background-image:
+            linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%),
+            repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(31, 71, 136, 0.02) 10px, rgba(31, 71, 136, 0.02) 20px);
           padding: 2rem;
+          padding-top: 5rem;
           transition: right 0.3s;
-          z-index: 99;
+          z-index: 1000;
           overflow-y: auto;
+          box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
         }
 
         nav.active {
@@ -322,16 +329,17 @@
         max-width: 900px;
         margin-left: auto;
         margin-right: auto;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 6px 20px rgba(0, 0, 0, 0.9), 0 3px 8px rgba(0, 0, 0, 1), 0 0 40px rgba(0, 0, 0, 0.5);
       }
 
       .hero-subheadline {
-        font-size: 1.25rem;
-        line-height: 1.6;
-        max-width: 800px;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        max-width: 700px;
         margin: 0 auto 2.5rem;
-        color: rgba(255,255,255,0.95) !important;
-        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.8);
+        color: #ffffff !important;
+        font-weight: 600;
+        text-shadow: 0 6px 20px rgba(0, 0, 0, 0.9), 0 3px 8px rgba(0, 0, 0, 1), 0 0 40px rgba(0, 0, 0, 0.5);
       }
 
       .cta-button {
@@ -824,12 +832,9 @@
       <div class="container">
         <h1>From the floor to the forecast—<br>I build businesses that win</h1>
         <p class="hero-subheadline">
-          Your restaurant is profitable on paper. So why are you broke? I find the profit leaks bleeding your operation dry—labor cost creep, menu killers, scheduling waste, untracked overhead—and show you exactly how to fix them.
+          I find the profit leaks bleeding your operation dry.
         </p>
         <a href="profit-leak-snapshot.html" class="cta-button">Book Your $750 Profit Leak Snapshot</a>
-        <p class="hero-note">
-          90-minute diagnostic. I identify your top 3 profit leaks and exactly what each is costing you. Most operators find $10K-$50K in recoverable costs.
-        </p>
       </div>
     </section>
 
