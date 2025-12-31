@@ -3,64 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tre Coleman | Hospitality Operations Consultant</title>
+    <title>Your Restaurant is Profitable on Paper. So Why Are You Broke? | Tre Coleman</title>
     <meta
       name="description"
-      content="Hospitality operations consultant for restaurants, food trucks, catering, and ghost kitchens. SOPs, training, labor optimization, and menu engineering—built by an operator." />
+      content="I find the profit leaks bleeding your operation dry—labor cost creep, menu killers, scheduling waste—and show you exactly how to fix them. 10+ years multi-unit restaurant management experience." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://trecoleman.com/" />
-    <meta property="og:title" content="Tre Coleman | Hospitality Operations Consultant" />
-    <meta property="og:description" content="Hospitality operations consultant for restaurants, food trucks, catering, and ghost kitchens. SOPs, training, labor optimization, and menu engineering—built by an operator." />
+    <meta property="og:title" content="Your Restaurant is Profitable on Paper. So Why Are You Broke? | Tre Coleman" />
+    <meta property="og:description" content="I find the profit leaks bleeding your operation dry—labor cost creep, menu killers, scheduling waste—and show you exactly how to fix them." />
     <meta property="og:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://trecoleman.com/" />
-    <meta name="twitter:title" content="Tre Coleman | Hospitality Operations Consultant" />
-    <meta name="twitter:description" content="Hospitality operations consultant for restaurants, food trucks, catering, and ghost kitchens. SOPs, training, labor optimization, and menu engineering—built by an operator." />
+    <meta name="twitter:title" content="Your Restaurant is Profitable on Paper. So Why Are You Broke? | Tre Coleman" />
+    <meta name="twitter:description" content="I find the profit leaks bleeding your operation dry—labor cost creep, menu killers, scheduling waste—and show you exactly how to fix them." />
     <meta name="twitter:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
 
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-      /* Hero with background image and dark overlay for maximum readability */
-      .hero {
-        position: relative;
-        background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&h=1080&fit=crop') center/cover no-repeat;
-        color: white;
-        min-height: 500px;
-        display: flex;
-        align-items: center;
+      :root {
+        --primary-navy: #1F4788;
+        --accent-gold: #F4A460;
+        --bg-cream: #FAFAF8;
+        --text-dark: #2c2c2c;
+        --text-medium: #5a5a5a;
+        --white: #ffffff;
       }
 
-      .hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(30, 58, 95, 0.96);
-        z-index: 0;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      .hero .container {
-        position: relative;
-        z-index: 1;
+      body {
+        font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--text-dark);
+        line-height: 1.6;
+        background: var(--white);
       }
 
-      .hero h1 {
-        color: #ffffff;
-        font-weight: 800;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.9);
+      h1, h2, h3, h4 {
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.2;
+        font-weight: 700;
       }
 
-      .hero p {
-        color: #ffffff;
-        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.8);
+      h1 { font-size: 2.5rem; font-weight: 800; }
+      h2 { font-size: 2rem; margin-bottom: 1.5rem; }
+      h3 { font-size: 1.5rem; }
+
+      @media (max-width: 768px) {
+        h1 { font-size: 1.75rem; }
+        h2 { font-size: 1.5rem; }
+        h3 { font-size: 1.25rem; }
       }
 
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
 
       /* Dropdown navigation styles */
       .nav-dropdown {
@@ -98,31 +108,13 @@
       .dropdown-menu a {
         display: block;
         padding: 0.75rem 1.25rem;
-        color: #2c3e50;
+        color: var(--text-dark);
         text-decoration: none;
-        transition: background 0.2s ease;
-        font-size: 0.95rem;
+        transition: background 0.2s;
       }
 
       .dropdown-menu a:hover {
-        background: #f8f9fa;
-        color: #1e3a5f;
-      }
-
-      /* Enhanced CTA button in nav */
-      .nav-cta {
-        background: white !important;
-        color: var(--primary-colour) !important;
-        padding: 0.65rem 1.5rem !important;
-        border-radius: 6px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-        transition: all 0.3s ease !important;
-      }
-
-      .nav-cta:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+        background: var(--bg-cream);
       }
 
       /* Mobile dropdown behavior */
@@ -142,29 +134,612 @@
           display: block;
         }
 
-        .dropdown-menu a {
-          color: white;
-          padding-left: 2rem;
-        }
-
-        .dropdown-menu a:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
+        .nav-dropdown > a {
+          cursor: pointer;
         }
       }
+
+      /* Navigation CTA button styling */
+      .nav-cta {
+        background: var(--accent-gold) !important;
+        color: var(--white) !important;
+        padding: 0.65rem 1.5rem !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.3s ease !important;
+      }
+
+      .nav-cta:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+      }
+
+      /* Header */
+      header {
+        background: var(--white);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-navy);
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: var(--text-dark);
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: var(--primary-navy);
+      }
+
+      /* Mobile Menu */
+      .mobile-menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+
+      .mobile-menu-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background: var(--primary-navy);
+        transition: all 0.3s;
+      }
+
+      .mobile-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 98;
+      }
+
+      @media (max-width: 1024px) {
+        .mobile-menu-toggle {
+          display: flex;
+        }
+
+        nav {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 400px;
+          height: 100vh;
+          background: var(--white);
+          padding: 2rem;
+          transition: right 0.3s;
+          z-index: 99;
+          overflow-y: auto;
+        }
+
+        nav.active {
+          right: 0;
+        }
+
+        nav ul {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0;
+        }
+
+        nav li {
+          width: 100%;
+          border-bottom: 1px solid #eee;
+        }
+
+        nav a {
+          display: block;
+          padding: 1rem 0;
+        }
+
+        .mobile-overlay.active {
+          display: block;
+        }
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(135deg, var(--primary-navy) 0%, #2d5aa0 100%);
+        color: var(--white);
+        padding: 6rem 2rem;
+        text-align: center;
+      }
+
+      .hero h1 {
+        color: var(--white);
+        margin-bottom: 1.5rem;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-subheadline {
+        font-size: 1.25rem;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto 2.5rem;
+        color: rgba(255,255,255,0.95);
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: var(--accent-gold);
+        color: var(--white);
+        padding: 1.25rem 3rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      }
+
+      .hero-note {
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        color: rgba(255,255,255,0.85);
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Credibility Bar */
+      .credibility-bar {
+        background: var(--bg-cream);
+        padding: 2rem;
+        text-align: center;
+        border-bottom: 3px solid var(--accent-gold);
+      }
+
+      .credibility-bar .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-medium);
+      }
+
+      .credibility-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .credibility-bar .container {
+          flex-direction: column;
+          gap: 1rem;
+        }
+      }
+
+      /* Section Styles */
+      section {
+        padding: 5rem 2rem;
+      }
+
+      .section-bg-white {
+        background: var(--white);
+      }
+
+      .section-bg-cream {
+        background: var(--bg-cream);
+      }
+
+      section h2 {
+        text-align: center;
+        color: var(--primary-navy);
+      }
+
+      /* Problem Section */
+      .problem-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
+      }
+
+      .problem-card {
+        text-align: center;
+      }
+
+      .problem-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .problem-card h3 {
+        color: var(--primary-navy);
+        margin-bottom: 1rem;
+      }
+
+      .problem-card p {
+        color: var(--text-medium);
+        line-height: 1.7;
+      }
+
+      .problem-closing {
+        text-align: center;
+        font-style: italic;
+        color: var(--text-medium);
+        margin-top: 3rem;
+        font-size: 1.1rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Solution Section */
+      .solution-description {
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 3rem;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-medium);
+      }
+
+      .solution-checklist {
+        max-width: 700px;
+        margin: 3rem auto;
+        text-align: left;
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+      }
+
+      .checklist-item::before {
+        content: '✓';
+        color: var(--accent-gold);
+        font-size: 1.5rem;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .solution-result {
+        text-align: center;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--primary-navy);
+        margin: 3rem auto;
+        max-width: 800px;
+        padding: 2rem;
+        background: var(--bg-cream);
+        border-left: 4px solid var(--accent-gold);
+      }
+
+      .cta-center {
+        text-align: center;
+        margin: 2rem 0;
+      }
+
+      .secondary-link {
+        display: block;
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-medium);
+        font-size: 1rem;
+      }
+
+      .secondary-link a {
+        color: var(--primary-navy);
+        text-decoration: underline;
+        font-weight: 600;
+      }
+
+      /* Proof Section */
+      .proof-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+      }
+
+      .proof-card {
+        background: var(--white);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        text-align: center;
+      }
+
+      .proof-card h3 {
+        color: var(--accent-gold);
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .proof-card p {
+        color: var(--text-medium);
+        line-height: 1.7;
+      }
+
+      .proof-note {
+        text-align: center;
+        margin-top: 3rem;
+        font-size: 0.95rem;
+        color: var(--text-medium);
+        font-style: italic;
+      }
+
+      /* Who I Am Section */
+      .bio-container {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 4rem;
+        align-items: center;
+        margin-top: 3rem;
+      }
+
+      @media (max-width: 768px) {
+        .bio-container {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+
+      .bio-photo {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      }
+
+      .bio-photo-placeholder {
+        width: 100%;
+        aspect-ratio: 3/4;
+        background: linear-gradient(135deg, var(--primary-navy) 0%, #2d5aa0 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 2rem;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      }
+
+      .bio-text p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-medium);
+      }
+
+      .bio-credentials {
+        margin-top: 2rem;
+        padding: 2rem;
+        background: var(--bg-cream);
+        border-radius: 8px;
+      }
+
+      .bio-credentials ul {
+        list-style: none;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .bio-credentials li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--text-dark);
+      }
+
+      .bio-credentials li::before {
+        content: '•';
+        color: var(--accent-gold);
+        font-size: 1.5rem;
+      }
+
+      /* Service Cards Section */
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+      }
+
+      .service-card {
+        background: var(--white);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .service-card h3 {
+        color: var(--primary-navy);
+        margin-bottom: 1rem;
+      }
+
+      .service-investment {
+        font-weight: 700;
+        color: var(--accent-gold);
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+      }
+
+      .service-card p {
+        color: var(--text-medium);
+        line-height: 1.7;
+        margin-bottom: 2rem;
+        flex-grow: 1;
+      }
+
+      .service-card .cta-button {
+        font-size: 1rem;
+        padding: 1rem 2rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Testimonials */
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
+      }
+
+      @media (max-width: 500px) {
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .testimonial-card {
+        background: var(--white);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border-left: 4px solid var(--accent-gold);
+      }
+
+      .testimonial-card p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        font-style: italic;
+      }
+
+      .testimonial-author {
+        font-weight: 700;
+        color: var(--primary-navy);
+        font-style: normal;
+      }
+
+      /* Final CTA Section */
+      .final-cta {
+        background: linear-gradient(135deg, var(--primary-navy) 0%, #2d5aa0 100%);
+        color: var(--white);
+        text-align: center;
+        padding: 5rem 2rem;
+      }
+
+      .final-cta h2 {
+        color: var(--white);
+      }
+
+      .final-cta-subheadline {
+        font-size: 1.25rem;
+        margin-bottom: 2.5rem;
+        color: rgba(255,255,255,0.95);
+      }
+
+      .final-cta .secondary-link {
+        color: rgba(255,255,255,0.85);
+      }
+
+      .final-cta .secondary-link a {
+        color: var(--white);
+      }
+
+      .final-cta-contact {
+        margin-top: 2rem;
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.75);
+      }
+
+      .final-cta-contact a {
+        color: var(--white);
+        text-decoration: underline;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--text-dark);
+        color: rgba(255,255,255,0.8);
+        padding: 3rem 2rem 2rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 2rem;
+      }
+
+      .footer-section h4 {
+        color: var(--white);
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+      }
+
+      .footer-section ul {
+        list-style: none;
+      }
+
+      .footer-section li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-section a {
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-section a:hover {
+        color: var(--accent-gold);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        font-size: 0.9rem;
+      }
     </style>
-    <!-- Open Graph & Social meta tags -->
-    <meta property="og:title" content="Tre' Coleman | Hospitality Operations Consultant" />
-    <meta
-      property="og:description"
-      content="Hospitality operations consultant for restaurants, food trucks, catering, and ghost kitchens. SOPs, training, labor optimization, and menu engineering—built by an operator." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://speckledorked.github.io/tre-coleman-site/" />
-    <!-- Replace with your own hosted image if available -->
-    <meta
-      property="og:image"
-      content="https://via.placeholder.com/1200x630.png?text=Tre+Coleman" />
-    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <!-- Mobile Menu Overlay -->
@@ -197,7 +772,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="playbook.html">Free Playbook</a></li>
-            <li><a href="profit-leak-snapshot.html" class="button nav-cta" target="_blank" rel="noopener">Book a Call</a></li>
+            <li><a href="profit-leak-snapshot.html" class="nav-cta">Book Your Snapshot</a></li>
           </ul>
         </nav>
       </div>
@@ -206,138 +781,333 @@
     <!-- Hero Section -->
     <section class="hero">
       <div class="container">
-        <h1>From the floor to the forecast—I build businesses that win</h1>
-        <p>
-          I help restaurants, food trucks, catering operations, and ghost kitchens cut waste, tighten execution, and
-          scale smart—with SOPs that stick and AI where it fits.
+        <h1>Your Restaurant is Profitable on Paper.<br>So Why Are You Broke?</h1>
+        <p class="hero-subheadline">
+          I find the profit leaks bleeding your operation dry—labor cost creep, menu killers, scheduling waste, untracked overhead—and show you exactly how to fix them.
         </p>
-        <div class="cta-buttons">
-          <a href="contact.html" class="primary">Get the playbook</a>
-          <a href="services.html" class="secondary">See services</a>
+        <a href="profit-leak-snapshot.html" class="cta-button">Book Your $750 Profit Leak Snapshot</a>
+        <p class="hero-note">
+          90-minute diagnostic. I identify your top 3 profit leaks and exactly what each is costing you. Most operators find $10K-$50K in recoverable costs.
+        </p>
+      </div>
+    </section>
+
+    <!-- Credibility Bar -->
+    <section class="credibility-bar">
+      <div class="container">
+        <div class="credibility-item">10+ Years Multi-Unit Management</div>
+        <div class="credibility-item">|</div>
+        <div class="credibility-item">$300K+ Revenue Responsibility</div>
+        <div class="credibility-item">|</div>
+        <div class="credibility-item">300+ Employees Managed</div>
+        <div class="credibility-item">|</div>
+        <div class="credibility-item">National Restaurant Brands</div>
+      </div>
+    </section>
+
+    <!-- The Problem Section -->
+    <section class="section-bg-white">
+      <div class="container">
+        <h2>You Already Know Something's Wrong</h2>
+
+        <div class="problem-grid">
+          <div class="problem-card">
+            <div class="problem-icon">📊</div>
+            <h3>Labor Cost is Out of Control</h3>
+            <p>
+              31%, 33%, 35%... it keeps climbing. Overtime is bleeding you. Scheduling is chaos. You're overstaffed on Tuesdays and understaffed on Fridays.
+            </p>
+          </div>
+
+          <div class="problem-card">
+            <div class="problem-icon">📋</div>
+            <h3>Menu Isn't Performing</h3>
+            <p>
+              Items with 55% food cost still on the menu. Your "signature dish" nobody orders. Stars buried, dogs promoted. Menu engineering? Never done it.
+            </p>
+          </div>
+
+          <div class="problem-card">
+            <div class="problem-icon">💰</div>
+            <h3>Cash Flow Doesn't Match P&L</h3>
+            <p>
+              Profitable on paper but scrambling for payroll. Money disappears between sales and bank account. You can't figure out where it's going.
+            </p>
+          </div>
+        </div>
+
+        <p class="problem-closing">
+          "The problem isn't that you don't know what needs fixing. It's that you're too buried in daily operations to actually fix it."
+        </p>
+      </div>
+    </section>
+
+    <!-- The Solution Section -->
+    <section class="section-bg-cream">
+      <div class="container">
+        <h2>I Find What's Leaking. You Decide What to Fix.</h2>
+
+        <p class="solution-description">
+          The $750 Profit Leak Snapshot is a 90-minute working session where I review your last 90 days of P&Ls, labor reports, and menu/sales data. I identify your top 3 profit leaks, calculate exactly what each one is costing you monthly and annually, and give you a prioritized action plan.
+        </p>
+
+        <div class="solution-checklist">
+          <div class="checklist-item">Top 3 profit leaks identified and quantified</div>
+          <div class="checklist-item">Exact dollar amount each leak is costing you (monthly + annual)</div>
+          <div class="checklist-item">Prioritized action plan with implementation steps</div>
+          <div class="checklist-item">Full recording + written summary delivered within 48 hours</div>
+        </div>
+
+        <div class="solution-result">
+          Most operators find at least one leak worth $10,000-$50,000 annually. The Snapshot pays for itself if I find even one mid-sized issue.
+        </div>
+
+        <div class="cta-center">
+          <a href="profit-leak-snapshot.html" class="cta-button">Book Your $750 Profit Leak Snapshot</a>
+        </div>
+
+        <p class="secondary-link">
+          Not sure yet? Start with our <a href="audit.html">free Restaurant Operations Audit →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Proof Section -->
+    <section class="section-bg-white">
+      <div class="container">
+        <h2>Real Results from Real Operators</h2>
+
+        <div class="proof-grid">
+          <div class="proof-card">
+            <h3>12% Overtime Reduction</h3>
+            <p>
+              Fixed scheduling chaos and labor cost creep in 90 days. Saved $4,800/month on a $1.8M operation.
+            </p>
+          </div>
+
+          <div class="proof-card">
+            <h3>8% Menu Margin Lift</h3>
+            <p>
+              Menu engineering eliminated dogs, repositioned puzzles, promoted stars. Added $6,400/month to bottom line.
+            </p>
+          </div>
+
+          <div class="proof-card">
+            <h3>$23K Recovered in 60 Days</h3>
+            <p>
+              One Snapshot, one major profit leak (untracked overtime), one fix. ROI: 30x investment.
+            </p>
+          </div>
+        </div>
+
+        <p class="proof-note">
+          These aren't projections. These are actual results from actual clients in Richmond, Charlottesville, and nationwide.
+        </p>
+      </div>
+    </section>
+
+    <!-- Who I Am Section -->
+    <section class="section-bg-cream">
+      <div class="container">
+        <h2>I'm Not a Theorist. I'm an Operator.</h2>
+
+        <div class="bio-container">
+          <div>
+            <!-- Replace this placeholder with actual photo: <img src="images/tre-headshot.jpg" alt="Tre Coleman" class="bio-photo"> -->
+            <div class="bio-photo-placeholder">
+              [Your Professional Photo Here]<br>
+              Replace this div with:<br>
+              &lt;img src="images/tre-headshot.jpg" alt="Tre Coleman" class="bio-photo"&gt;
+            </div>
+          </div>
+
+          <div class="bio-text">
+            <p>
+              I'm Tre Coleman. I've spent 10+ years managing multi-unit restaurant operations for national brands. I've managed 300+ employees, controlled $300K+ in revenue, and solved problems in real-time on Friday rushes.
+            </p>
+            <p>
+              I've lived the labor cost spikes, the menu engineering headaches, the cash flow panic, and the daily fires that keep you from strategic work.
+            </p>
+            <p>
+              Now I help operators fix the same profit leaks I used to battle—but with systems that actually stick and AI where it makes sense (not everywhere).
+            </p>
+            <p>
+              <strong>I'm not here to sell you theory. I'm here to show you where your money is going and how to get it back.</strong>
+            </p>
+
+            <div class="bio-credentials">
+              <ul>
+                <li>10+ years multi-unit restaurant management</li>
+                <li>Managed operations across multiple locations</li>
+                <li>$300K+ revenue responsibility</li>
+                <li>300+ employees managed</li>
+                <li>Experience with national restaurant brands</li>
+                <li>Richmond/Charlottesville, VA | Serving nationwide</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Pillars Section -->
-    <section>
+    <!-- Beyond the Snapshot Section -->
+    <section class="section-bg-white">
       <div class="container">
-        <div class="pillars">
-          <div class="pillar">
-            <h3>AI Integration &amp; Automation</h3>
-            <p>Automate the busywork. Surface next actions.</p>
-            <a href="ai-integration.html">Learn more →</a>
+        <h2>Beyond the Snapshot</h2>
+
+        <p class="solution-description">
+          The Snapshot identifies your profit leaks and gives you a clear action plan. If you need help implementing—or want ongoing strategic support—here's what's available.
+        </p>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <h3>One-Time Projects</h3>
+            <p class="service-investment">Investment: $2,500-$50,000</p>
+            <p>
+              Menu engineering, AI integration, SOP development, catering programs, multi-unit operations optimization
+            </p>
+            <a href="services.html" class="cta-button">Explore Services</a>
           </div>
-          <div class="pillar">
-            <h3>SOPs &amp; Training Systems</h3>
-            <p>Clarity, consistency, speed‑to‑competence.</p>
-            <a href="sops-training.html">Learn more →</a>
-          </div>
-          <div class="pillar">
-            <h3>LSM &amp; Menu Engineering</h3>
-            <p>Drive traffic and ticket size, on purpose.</p>
-            <a href="menu-engineering.html">Learn more →</a>
-          </div>
-          <div class="pillar">
+
+          <div class="service-card">
             <h3>Fractional COO / Advisory</h3>
-            <p>Strategic partnership without the full‑time salary.</p>
-            <a href="advisory.html">Learn more →</a>
+            <p class="service-investment">Investment: $2,000/month</p>
+            <p>
+              Weekly strategy calls, unlimited Slack/text access, implementation accountability, KPI reviews
+            </p>
+            <a href="advisory.html" class="cta-button">Learn More</a>
           </div>
-        </div>
-        <div class="proof-strip mt-2">
-          <span>90‑day AI rollout plan</span>
-          <span>SOPs your team actually uses</span>
-          <span>Menu margin lift with Stars/Plowhorses/Puzzles/Dogs</span>
-        </div>
-        <p class="credibility">Seen in: local operators, multi‑unit groups, franchise brands</p>
-        <div class="mt-2 text-center">
-          <p>If you want operator‑grade work—not theory—let’s talk.</p>
-          <!-- Secondary CTA encourages direct booking -->
-          <a href="profit-leak-snapshot.html" class="primary button" style="margin-top: 1rem;" target="_blank" rel="noopener">Book a call</a>
+
+          <div class="service-card">
+            <h3>Free Resources</h3>
+            <p class="service-investment">Investment: $0</p>
+            <p>
+              Restaurant Operations Audit, food truck launch assessment, AI playbooks, frameworks and templates
+            </p>
+            <a href="playbook.html" class="cta-button">Get Free Tools</a>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials">
+    <section class="section-bg-cream">
       <div class="container">
-        <h2 class="text-center mb-2">What clients say</h2>
-        <div class="pillars">
-          <div class="pillar">
-            <p>“Tre helped us reduce overtime costs by 12% in just 90 days while improving coverage and morale.”<br /><strong>— Regional restaurant operator</strong></p>
+        <h2>What Operators Say</h2>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <p>
+              "Tre helped us reduce overtime costs by 12% in just 90 days while improving coverage and morale. His approach was practical, not theoretical, and our managers actually use the systems he built."
+            </p>
+            <p class="testimonial-author">— Regional restaurant operator</p>
           </div>
-          <div class="pillar">
-            <p>“Our menu margin increased by 8% after applying his engineering framework and training our servers.”<br /><strong>— Sports bar owner</strong></p>
+
+          <div class="testimonial-card">
+            <p>
+              "Our menu margin increased by 8% after applying his engineering framework and training our servers on suggestive selling. ROI was immediate."
+            </p>
+            <p class="testimonial-author">— Sports bar owner</p>
           </div>
         </div>
+
+        <p class="proof-note">
+          Client names withheld to protect competitive information. These are real results from real engagements.
+        </p>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+      <div class="container">
+        <h2>Ready to Find Your Profit Leaks?</h2>
+        <p class="final-cta-subheadline">
+          90 minutes. 3 profit leaks identified. Exact dollar amounts. Clear action plan.
+        </p>
+
+        <a href="profit-leak-snapshot.html" class="cta-button">Book Your $750 Profit Leak Snapshot</a>
+
+        <p class="secondary-link">
+          Not ready for the Snapshot? Start with our <a href="audit.html">free Restaurant Operations Audit →</a>
+        </p>
+
+        <p class="final-cta-contact">
+          Questions? Email <a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a> or call <a href="tel:540-807-9045">540.807.9045</a>
+        </p>
       </div>
     </section>
 
     <!-- Footer -->
     <footer>
-      <div class="container footer-content">
-        <p>&copy; <span id="year"></span> Tre Coleman. All rights reserved.</p>
-        <ul>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-section">
+            <h4>Tre Coleman Consulting LLC</h4>
+            <p>Richmond/Charlottesville, VA<br>Serving Nationwide</p>
+            <p style="margin-top: 1rem;">© 2025 All Rights Reserved</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="advisory.html">Advisory</a></li>
+              <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <ul>
+              <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+              <li><a href="tel:540-807-9045">540.807.9045</a></li>
+              <li><a href="https://www.linkedin.com/in/tre-coleman" target="_blank" rel="noopener">LinkedIn</a></li>
+              <li><a href="https://www.facebook.com/TreColeman" target="_blank" rel="noopener">Facebook</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>From the floor to the forecast—I build businesses that win</p>
+        </div>
       </div>
     </footer>
 
+    <!-- Mobile Menu Script -->
     <script>
-      // Set current year in footer
-      document.getElementById('year').textContent = new Date().getFullYear();
-
-      // Mobile menu toggle functionality
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
-      const navLinks = mainNav.querySelectorAll('a');
 
-      function toggleMenu() {
-        mobileMenuToggle.classList.toggle('active');
+      function toggleMobileMenu() {
         mainNav.classList.toggle('active');
         mobileOverlay.classList.toggle('active');
-        // Prevent body scroll when menu is open
         document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
       }
 
-      function closeMenu() {
-        mobileMenuToggle.classList.remove('active');
-        mainNav.classList.remove('active');
-        mobileOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
+      mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+      mobileOverlay.addEventListener('click', toggleMobileMenu);
 
-      // Toggle menu on button click
-      mobileMenuToggle.addEventListener('click', toggleMenu);
-
-      // Close menu when overlay is clicked
-      mobileOverlay.addEventListener('click', closeMenu);
-
-      // Close menu when a nav link is clicked
-      navLinks.forEach(link => {
-        link.addEventListener('click', closeMenu);
-      });
-
-      // Close menu on escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mainNav.classList.contains('active')) {
-          closeMenu();
-        }
-      });
-
-      // Mobile dropdown toggle
-      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
-      dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
+      // Handle dropdown clicks on mobile
+      document.querySelectorAll('.nav-dropdown > a').forEach(dropdown => {
+        dropdown.addEventListener('click', function(e) {
           if (window.innerWidth <= 1024) {
             e.preventDefault();
-            toggle.parentElement.classList.toggle('active');
+            this.parentElement.classList.toggle('active');
+          }
+        });
+      });
+
+      // Close mobile menu when clicking a regular link
+      document.querySelectorAll('nav a:not(.nav-dropdown > a)').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 1024) {
+            toggleMobileMenu();
           }
         });
       });
     </script>
-    <script src="exit-intent-popup.js"></script>
   </body>
 </html>
