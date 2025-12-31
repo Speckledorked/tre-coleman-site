@@ -126,13 +126,14 @@ a:hover {
 
 /* Header */
 header {
-  background: transparent;
+  background: rgba(31, 71, 136, 0.85);
   color: white;
   padding: 1.25rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 header.scrolled {
