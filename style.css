@@ -445,6 +445,26 @@ section:nth-child(even) {
   background-color: white;
 }
 
+/* Section backgrounds - matching homepage */
+.section-bg-cream {
+  background: var(--light-bg);
+}
+
+.section-bg-white {
+  background: var(--card-bg);
+}
+
+.section-bg-navy {
+  background: var(--primary-colour);
+  color: white;
+}
+
+.section-bg-navy h2,
+.section-bg-navy h3,
+.section-bg-navy p {
+  color: white;
+}
+
 /* Proof strip */
 .proof-strip {
   display: flex;
