@@ -272,10 +272,30 @@
 
       /* Hero Section */
       .hero {
-        background: linear-gradient(135deg, var(--primary-navy) 0%, #2d5aa0 100%);
+        position: relative;
+        background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&h=1080&fit=crop') center/cover no-repeat;
         color: var(--white);
         padding: 6rem 2rem;
         text-align: center;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(31, 71, 136, 0.92);
+        z-index: 0;
+      }
+
+      .hero .container {
+        position: relative;
+        z-index: 1;
       }
 
       .hero h1 {
@@ -284,6 +304,7 @@
         max-width: 900px;
         margin-left: auto;
         margin-right: auto;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.9);
       }
 
       .hero-subheadline {
@@ -292,6 +313,7 @@
         max-width: 800px;
         margin: 0 auto 2.5rem;
         color: rgba(255,255,255,0.95) !important;
+        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.8);
       }
 
       .cta-button {
@@ -320,6 +342,7 @@
         max-width: 700px;
         margin-left: auto;
         margin-right: auto;
+        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.8);
       }
 
       /* Credibility Bar */
