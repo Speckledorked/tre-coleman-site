@@ -1,50 +1,52 @@
 /*
  * Tre Coleman Website CSS
  *
- * This stylesheet defines the layout, typography, and color palette for
- * Tre Coleman’s marketing website. It is designed to be simple and
- * adaptable, so brand colours can be swapped easily. The palette uses
- * dark blues and warm accents for a contemporary, operator‑first feel.
+ * Updated for operator-to-operator aesthetic - direct, practical, problem-focused.
+ * Navy + Gold color scheme with Montserrat headlines and Open Sans body text.
+ * Removed corporate consultant vibes.
  */
 
-/* Root variables make it easy to update colours across the site */
+/* Import operator-focused fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap');
+
+/* Root variables - Updated for operator-to-operator aesthetic */
 :root {
-  /* Primary colors - Deep, sophisticated navy */
-  --primary-colour: #1e3a5f;
+  /* Primary colors - Operator navy (matches homepage) */
+  --primary-colour: #1F4788;
   --primary-dark: #152b45;
-  --primary-light: #2a4a70;
+  --primary-light: #2d5aa0;
   --secondary-colour: #2c3e50;
   --secondary-light: #34495e;
-  --accent-colour: #d4a574;
-  --accent-dark: #b8935f;
+  --accent-colour: #F4A460;
+  --accent-dark: #d4895f;
 
   /* Background colors */
-  --light-bg: #f8f9fa;
+  --light-bg: #FAFAF8;
   --card-bg: #ffffff;
   --light-gray: #e9ecef;
 
   /* Text colors */
-  --dark-text: #2c3e50;
-  --medium-text: #4a5568;
+  --dark-text: #2c2c2c;
+  --medium-text: #5a5a5a;
   --light-text: #718096;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #1e3a5f 0%, #2a4a70 100%);
+  --gradient-primary: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
   --gradient-secondary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  --gradient-accent: linear-gradient(135deg, #d4a574 0%, #e4b584 100%);
+  --gradient-accent: linear-gradient(135deg, #F4A460 0%, #ffb574 100%);
 
-  /* Shadows - softer, more refined */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12), 0 4px 6px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.06);
+  /* Shadows - Stronger for operator aesthetic */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 12px 30px rgba(0, 0, 0, 0.2);
 
   /* Layout */
   --max-width: 1200px;
 
-  /* Typography - Modern system font stack */
-  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Typography - Operator-focused fonts */
+  --font-stack: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Spacing scale */
   --spacing-xs: 0.5rem;
@@ -90,14 +92,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.2;
-  color: var(--dark-text);
+  color: var(--primary-colour);
   margin-bottom: var(--spacing-lg);
 }
 
-h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
-h2 { font-size: 2rem; letter-spacing: -0.01em; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
+h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.5rem; font-weight: 700; }
+h4 { font-size: 1.25rem; font-weight: 600; }
 
 p {
   margin-bottom: var(--spacing-md);
@@ -124,14 +126,18 @@ a:hover {
 
 /* Header */
 header {
-  background: var(--gradient-primary);
+  background: transparent;
   color: white;
   padding: 1.25rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+header.scrolled {
+  background: rgba(31, 71, 136, 0.98);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
 header .container {
@@ -141,9 +147,13 @@ header .container {
 }
 
 header .logo {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
+  color: white;
+  font-family: var(--font-heading);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
   z-index: 1001;
+  transition: all 0.3s ease;
 }
 
 /* Mobile Menu Toggle */
@@ -163,6 +173,7 @@ header .logo {
   width: 25px;
   height: 3px;
   background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   transition: all 0.3s ease;
   border-radius: 3px;
 }
@@ -190,8 +201,9 @@ nav ul {
 
 nav a {
   color: white;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: color 0.3s ease;
 }
 
 nav a:hover {
