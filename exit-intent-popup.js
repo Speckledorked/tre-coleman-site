@@ -303,19 +303,22 @@ window.CRISP_WEBSITE_ID="be57159b-af24-45a1-8e47-1207df3715lf";
   }
 
   /**
-   * Detect exit intent by listening for mouse movements toward the top of
-   * the viewport. When triggered, remove the listener and show the pop‑up.
+   * Detect when user scrolls 50% down the page (works on mobile & desktop)
    */
-  function handleMouseOut(event) {
-    // If the mouse leaves to the top (y <= 0) and not to a descendant
-    if (event.clientY <= 0 && !shown) {
-      document.removeEventListener('mouseout', handleMouseOut);
+  let scrollCheckInterval;
+  function handleScroll() {
+    const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    if (scrollPercent >= 50 && !shown) {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(scrollCheckInterval);
       showExitPopup();
     }
   }
 
-  // Attach listener after a slight delay so the page can load
+  // Attach scroll listener after page loads
   setTimeout(function () {
-    document.addEventListener('mouseout', handleMouseOut);
+    window.addEventListener('scroll', handleScroll);
+    // Fallback: check scroll position every 2 seconds in case scroll event doesn't fire
+    scrollCheckInterval = setInterval(handleScroll, 2000);
   }, 1000);
 })();
