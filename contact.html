@@ -107,7 +107,6 @@
         <nav id="mainNav">
           <ul>
             <li><a href="services.html">Services</a></li>
-            <li><a href="blog.html">Blog</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li class="nav-dropdown">
@@ -129,40 +128,40 @@
         <h1 class="mb-2">Let’s talk</h1>
         <p class="mb-2">Tell me where the bottleneck is. I’ll share a simple first step you can take this week.</p>
         <!-- Update form action to send to the new domain email via FormSubmit -->
-        <form id="contactForm" action="https://formsubmit.co/hello@trecoleman.com" method="POST" novalidate>
+        <form id="contactForm" action="https://formsubmit.co/hello@trecoleman.com" method="POST">
           <div>
-            <label>Name
+            <label>Name *
               <input name="name" required />
             </label>
           </div>
           <div>
-            <label>Email
+            <label>Email *
               <input type="email" name="email" required />
             </label>
           </div>
           <div>
-            <label>Company
-              <input name="company" />
+            <label>Company *
+              <input name="company" required />
             </label>
           </div>
           <div>
             <label>Phone (optional)
-              <input name="phone" />
+              <input name="phone" type="tel" />
             </label>
           </div>
           <div>
-            <label>Location
-              <input name="location" />
+            <label>Location *
+              <input name="location" required />
             </label>
           </div>
           <div>
-            <label>Biggest bottleneck
+            <label>Biggest bottleneck *
               <textarea name="bottleneck" rows="4" required></textarea>
             </label>
           </div>
           <div>
-            <label>Budget range
-              <select name="budget">
+            <label>Budget range *
+              <select name="budget" required>
                 <option value="">Select…</option>
                 <option>&lt;$2k</option>
                 <option>$2k–$5k</option>
@@ -172,8 +171,8 @@
             </label>
           </div>
           <div>
-            <label>Preferred start
-              <select name="start">
+            <label>Preferred start *
+              <select name="start" required>
                 <option value="">Select…</option>
                 <option>ASAP</option>
                 <option>Next 30 days</option>
