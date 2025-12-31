@@ -216,6 +216,8 @@
         border: none;
         cursor: pointer;
         padding: 0.5rem;
+        z-index: 1001;
+        position: relative;
       }
 
       .mobile-menu-toggle span {
@@ -234,8 +236,8 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 98;
+        background: rgba(0,0,0,0.6);
+        z-index: 999;
       }
 
       @media (max-width: 1024px) {
@@ -250,11 +252,16 @@
           width: 80%;
           max-width: 400px;
           height: 100vh;
-          background: var(--white);
+          background: linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%);
+          background-image:
+            linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%),
+            repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(31, 71, 136, 0.02) 10px, rgba(31, 71, 136, 0.02) 20px);
           padding: 2rem;
+          padding-top: 5rem;
           transition: right 0.3s;
-          z-index: 99;
+          z-index: 1000;
           overflow-y: auto;
+          box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
         }
 
         nav.active {
