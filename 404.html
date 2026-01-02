@@ -8,21 +8,121 @@
       name="description"
       content="The page you are looking for could not be found." />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Dropdown navigation styles */
+      .nav-dropdown {
+        position: relative;
+      }
+
+      .nav-dropdown > a::after {
+        content: ' ▾';
+        font-size: 0.8em;
+        margin-left: 0.25rem;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        min-width: 220px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 0.5rem 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 0.75rem 1.25rem;
+        color: #2c3e50;
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-size: 0.95rem;
+      }
+
+      .dropdown-menu a:hover {
+        background: #f8f9fa;
+        color: #1e3a5f;
+      }
+
+      /* Mobile dropdown behavior */
+      @media (max-width: 1024px) {
+        .dropdown-menu {
+          position: static;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          box-shadow: none;
+          background: rgba(255, 255, 255, 0.05);
+          margin: 0.5rem 0;
+          display: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+          display: block;
+        }
+
+        .dropdown-menu a {
+          color: white;
+          padding-left: 2rem;
+        }
+
+        .dropdown-menu a:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
     <!-- Header -->
     <header>
-      <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="logo"><a href="index.html" style="color: white;">Tre Coleman</a></div>
-        <nav>
+      <div class="container">
+        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- Navigation -->
+        <nav id="mainNav">
           <ul>
             <li><a href="services.html">Services</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Audits</a>
+              <div class="dropdown-menu">
+                <a href="audit.html">Restaurant Audit</a>
+                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+              </div>
+            </li>
+            <li><a href="advisory.html">Advisory</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Resources</a>
+              <div class="dropdown-menu">
+                <a href="playbook.html">Free Playbook</a>
+                <a href="catering-profit.html">Catering Profit System</a>
+              </div>
+            </li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="audit.html">Take Free Operations Audit</a></li>
-            <li><a href="advisory.html">Advisory</a></li>
-            <li><a href="playbook.html">Free Playbook</a></li>
-            <li><a href="profit-leak-snapshot.html" class="button" target="_blank" rel="noopener">Book a call</a></li>
+            <li><a href="profit-leak-snapshot.html" class="nav-cta">Book Your Snapshot</a></li>
           </ul>
         </nav>
       </div>
@@ -52,6 +152,7 @@
               <li><a href="services.html">Services</a></li>
               <li><a href="advisory.html">Advisory</a></li>
               <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+              <li><a href="catering-profit.html">Catering Course</a></li>
               <li><a href="about.html">About</a></li>
               <li><a href="contact.html">Contact</a></li>
             </ul>
@@ -70,7 +171,43 @@
       </div>
     </footer>
     <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
+      // Mobile menu toggle functionality
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mainNav = document.getElementById('mainNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const navLinks = mainNav.querySelectorAll('a');
+
+      function toggleMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      mobileMenuToggle.addEventListener('click', toggleMenu);
+      mobileOverlay.addEventListener('click', closeMenu);
+      navLinks.forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
+      });
+
+      // Mobile dropdown toggle
+      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
+      dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            toggle.parentElement.classList.toggle('active');
+          }
+        });
+      });
     </script>
   </body>
 </html>
