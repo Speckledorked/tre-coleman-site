@@ -1,0 +1,36 @@
+# Netlify configuration for Tre Coleman site
+
+[build]
+  # Publish directory (root of the site)
+  publish = "."
+
+  # No build command needed for static site
+  command = ""
+
+# Redirect rules
+[[redirects]]
+  # Stripe success redirect
+  from = "/success"
+  to = "/thank-you.html"
+  status = 200
+
+[[redirects]]
+  # Stripe cancel redirect
+  from = "/cancel"
+  to = "/catering-profit.html"
+  status = 200
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Custom 404 page
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

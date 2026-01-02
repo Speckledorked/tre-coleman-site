@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Catering Profit System - Pre-Order Now</title>
+  <meta name="description" content="Scale your catering business without killing your margins. Learn the operational systems that turn revenue into actual profit. Pre-order now for $39.">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.7;
+      color: #2c3e50;
+      background: #ffffff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: #1F4788;
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #1F4788;
+      margin-top: 3rem;
+    }
+
+    h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .price-badge {
+      background: #F4A460;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      display: inline-block;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: #F4A460;
+      color: white;
+      padding: 1.25rem 3rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(244, 164, 96, 0.4);
+      margin: 2rem 0;
+    }
+
+    .cta-button:hover {
+      background: #e09450;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(244, 164, 96, 0.5);
+    }
+
+    .cta-section {
+      text-align: center;
+      padding: 3rem 0;
+      background: #f8f9fa;
+      margin: 3rem 0;
+      border-radius: 12px;
+    }
+
+    .section {
+      margin: 3rem 0;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .problem-list {
+      list-style: none;
+      margin: 2rem 0;
+      padding: 0;
+    }
+
+    .problem-list li {
+      padding: 0.75rem 0 0.75rem 2rem;
+      position: relative;
+      font-size: 1.1rem;
+    }
+
+    .problem-list li:before {
+      content: "✗";
+      position: absolute;
+      left: 0;
+      color: #e74c3c;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+
+    .benefit-list {
+      list-style: none;
+      margin: 1.5rem 0;
+      padding: 0;
+    }
+
+    .benefit-list li {
+      padding: 0.75rem 0 0.75rem 2.5rem;
+      position: relative;
+      font-size: 1.05rem;
+    }
+
+    .benefit-list li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #27ae60;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .module {
+      background: #f8f9fa;
+      padding: 2rem;
+      margin: 2rem 0;
+      border-left: 5px solid #1F4788;
+      border-radius: 6px;
+    }
+
+    .module h3 {
+      color: #1F4788;
+      margin-bottom: 1rem;
+    }
+
+    .deliverables {
+      background: white;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      border-radius: 6px;
+    }
+
+    .deliverables strong {
+      color: #1F4788;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .highlight-box {
+      background: #fff9e6;
+      border-left: 5px solid #F4A460;
+      padding: 2rem;
+      margin: 2rem 0;
+      border-radius: 6px;
+    }
+
+    .highlight-box p {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .faq {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 6px;
+    }
+
+    .faq h4 {
+      color: #1F4788;
+      margin-bottom: 0.75rem;
+      font-size: 1.15rem;
+    }
+
+    .faq p {
+      color: #2c3e50;
+      line-height: 1.7;
+    }
+
+    .fit-list {
+      margin: 1.5rem 0;
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 6px;
+    }
+
+    .fit-list.good {
+      border-left: 5px solid #27ae60;
+    }
+
+    .fit-list.bad {
+      border-left: 5px solid #e74c3c;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 4rem;
+    }
+
+    footer a {
+      color: #F4A460;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      line-height: 1.8;
+    }
+
+    strong {
+      font-weight: 700;
+      color: #1F4788;
+    }
+
+    hr {
+      border: none;
+      border-top: 2px solid #e9ecef;
+      margin: 3rem 0;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+      }
+
+      .cta-button {
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+      }
+
+      .module {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="container">
+      <h1>The Catering Profit System</h1>
+      <p class="subtitle">Scale Your Catering Business Without Killing Your Margins</p>
+      <div class="price-badge">$39 - Early Access Price</div>
+      <p style="margin-top: 1rem; font-size: 1.1rem; opacity: 0.95;">Course launches February 15th, 2026</p>
+      <a href="https://buy.stripe.com/6oUdR28WP2mbbsF76RcAo04" class="cta-button">Pre-Order Now - $39</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+
+    <!-- Problem Section -->
+    <section class="section">
+      <h2>You're Busy. You're Making Money. But You're Not Making <em>Enough</em> Money.</h2>
+
+      <p style="font-size: 1.15rem; margin-bottom: 1.5rem;">Sound familiar?</p>
+
+      <ul class="problem-list">
+        <li>You're pricing jobs but not sure if you're actually profitable</li>
+        <li>Labor costs are all over the place depending on the event</li>
+        <li>Food waste is eating your margins and you don't know how to fix it</li>
+        <li>Delivery logistics are held together with spreadsheets and hope</li>
+        <li>You're growing but cash flow is tight</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p>You're working 60-70 hour weeks and still not seeing the profit you deserve.</p>
+      </div>
+    </section>
+
+    <!-- Why Stuck Section -->
+    <section class="section">
+      <h2>Here's Why Most Catering Businesses Stay Stuck</h2>
+
+      <p>They price based on gut feel, not actual costs.<br>
+      They don't track labor per event.<br>
+      They guess at food quantities and throw away money.<br>
+      They scale volume but not profitability.</p>
+
+      <div class="highlight-box">
+        <p>The result? Busy calendar, empty bank account.</p>
+      </div>
+    </section>
+
+    <!-- What You Need Section -->
+    <section class="section">
+      <h2>What You Actually Need</h2>
+
+      <p>Not another "how to start a catering business" course.<br>
+      Not vague advice about "working on your business."</p>
+
+      <div class="highlight-box">
+        <p>You need the operational systems that turn revenue into actual profit.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- What's Inside Section -->
+    <section class="section">
+      <h2>What's Inside the Catering Profit System</h2>
+
+      <div class="module">
+        <h3>Module 1: Labor Cost Control</h3>
+        <p>Stop guessing at staffing. Calculate exact labor needs per event type, account for travel/setup/breakdown, and build a reliable bench team without overpaying.</p>
+
+        <div class="deliverables">
+          <strong>You get:</strong>
+          <ul class="benefit-list">
+            <li>Event Staffing Calculator (Excel)</li>
+            <li>Labor Cost Tracking Sheet</li>
+            <li>Training Checklist for Event Staff</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <h3>Module 2: Pricing That Actually Works</h3>
+        <p>Price every job with all costs included. No more "I thought we made money on that event" surprises.</p>
+
+        <div class="deliverables">
+          <strong>You get:</strong>
+          <ul class="benefit-list">
+            <li>Full-Cost Pricing Calculator (accounts for EVERYTHING)</li>
+            <li>Client Quote Template</li>
+            <li>Service Tier Comparison Sheet</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <h3>Module 3: Food Cost & Menu Engineering</h3>
+        <p>Hit your target food cost consistently. Eliminate waste. Know which menu items make money and which ones are bleeding you dry.</p>
+
+        <div class="deliverables">
+          <strong>You get:</strong>
+          <ul class="benefit-list">
+            <li>Menu Profitability Spreadsheet</li>
+            <li>Standard Recipe Cards</li>
+            <li>Waste Tracking Log</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <h3>Module 4: Delivery & Logistics Systems</h3>
+        <p>Organize delivery operations so you can scale without chaos. Plan routes, track orders, manage equipment.</p>
+
+        <div class="deliverables">
+          <strong>You get:</strong>
+          <ul class="benefit-list">
+            <li>Delivery Route Planner</li>
+            <li>Event Equipment Checklist</li>
+            <li>Daily Order Tracking Sheet</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module">
+        <h3>Module 5: Cash Flow Management</h3>
+        <p>Know your break-even per event. Set payment terms that protect you. Track profitability monthly so you actually know if you're making money.</p>
+
+        <div class="deliverables">
+          <strong>You get:</strong>
+          <ul class="benefit-list">
+            <li>Break-Even Calculator</li>
+            <li>Payment Terms Template</li>
+            <li>Monthly Profitability Dashboard</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module" style="background: #fff9e6; border-color: #F4A460;">
+        <h3 style="color: #F4A460;">BONUS: 90-Day Implementation Plan</h3>
+        <p>Week-by-week action plan to implement everything without overwhelming your existing operations.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- What You're Getting Section -->
+    <section class="section">
+      <h2>What You're Actually Getting</h2>
+
+      <ul class="benefit-list">
+        <li><strong>5 comprehensive modules</strong> (3+ hours of focused training)</li>
+        <li><strong>15 plug-and-play templates</strong> (pricing calculators, staffing sheets, profitability dashboards)</li>
+        <li><strong>90-day implementation roadmap</strong> (so you don't get overwhelmed)</li>
+        <li><strong>Lifetime access</strong> (watch at your own pace, revisit anytime)</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p>All for $39.</p>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h2 style="color: #1F4788; margin-top: 0;">Ready to Fix Your Catering Profitability?</h2>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem;">Pre-order now and lock in the $39 early access price.</p>
+      <a href="https://buy.stripe.com/6oUdR28WP2mbbsF76RcAo04" class="cta-button">Pre-Order Now - $39</a>
+      <p style="margin-top: 1.5rem; color: #666; font-size: 0.95rem;">Course launches February 15th, 2026</p>
+    </div>
+
+    <!-- Who This Is For Section -->
+    <section class="section">
+      <h2>Who This Is For</h2>
+
+      <div class="fit-list good">
+        <h3 style="color: #27ae60; margin-bottom: 1rem;">✓ This course is for you if:</h3>
+        <ul class="benefit-list">
+          <li>You're running a catering business doing $100K-$500K/year</li>
+          <li>You're getting orders but not sure if you're actually profitable</li>
+          <li>You want to scale without working 80-hour weeks</li>
+          <li>You need systems, not theory</li>
+        </ul>
+      </div>
+
+      <div class="fit-list bad">
+        <h3 style="color: #e74c3c; margin-bottom: 1rem;">✗ This course is NOT for you if:</h3>
+        <ul class="problem-list">
+          <li>You're just starting out (go watch YouTube)</li>
+          <li>You want marketing tactics (this is operations and profitability)</li>
+          <li>You're doing $1M+ and have a full finance team (you're past this)</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- About Instructor Section -->
+    <section class="section">
+      <h2>About Your Instructor</h2>
+
+      <p><strong>Tre Coleman</strong> spent 10+ years managing multi-unit restaurant operations for brands like Potbelly and Hooters - managing 300+ employees and $300K+ in revenue responsibility.</p>
+
+      <p>Now he helps independent hospitality operators (restaurants, food trucks, catering businesses) optimize operations and profitability.</p>
+
+      <div class="highlight-box">
+        <p>This isn't theory. This is what actually works when you're in the trenches.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- What Happens Next Section -->
+    <section class="section">
+      <h2>Here's What Happens Next</h2>
+
+      <ol style="font-size: 1.1rem; line-height: 2; margin-left: 1.5rem;">
+        <li><strong>You pre-order for $39</strong> (locks in your early access price)</li>
+        <li><strong>Course launches February 15th</strong> (you'll get instant access)</li>
+        <li><strong>You implement the systems</strong> (templates are ready to use immediately)</li>
+        <li><strong>You start seeing results</strong> (most operators find $10K-$50K in annual profit leaks)</li>
+      </ol>
+
+      <div class="highlight-box">
+        <p>Course releases in 6 weeks. Secure your spot now.</p>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq">
+        <h4>Q: Why only $39?</h4>
+        <p><strong>A:</strong> This is a lead generation offer. If you want personalized help implementing these systems in YOUR business, I offer a $750 Profit Leak Snapshot and full consulting engagements. But the course gives you everything you need to do it yourself.</p>
+      </div>
+
+      <div class="faq">
+        <h4>Q: What if I don't have time to watch 3+ hours of video?</h4>
+        <p><strong>A:</strong> You don't have to watch it all at once. Each module is broken into 8-15 minute lessons. Watch one per week if that's all you have time for. Lifetime access means you can go at your own pace.</p>
+      </div>
+
+      <div class="faq">
+        <h4>Q: Can I get a refund if it's not what I expected?</h4>
+        <p><strong>A:</strong> Yes. 30-day money-back guarantee. If you watch the course and don't find at least one actionable system you can implement, I'll refund your $39.</p>
+      </div>
+
+      <div class="faq">
+        <h4>Q: When do I get access?</h4>
+        <p><strong>A:</strong> Course launches February 15th, 2026. You'll receive an email with your login credentials on launch day.</p>
+      </div>
+
+      <div class="faq">
+        <h4>Q: Are the templates customizable?</h4>
+        <p><strong>A:</strong> Yes. All templates are Excel/Google Sheets or Word/PDF format. You can modify them for your specific business.</p>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <div class="cta-section">
+      <h2 style="color: #1F4788; margin-top: 0;">Pre-Order The Catering Profit System</h2>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem;">Lock in the $39 early access price before launch.</p>
+      <a href="https://buy.stripe.com/6oUdR28WP2mbbsF76RcAo04" class="cta-button">Pre-Order Now - $39</a>
+      <p style="margin-top: 2rem; color: #666;">Questions? Email <a href="mailto:hello@trecoleman.com" style="color: #1F4788; font-weight: 600;">hello@trecoleman.com</a></p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Tre Coleman Consulting LLC. All rights reserved.</p>
+      <p style="margin-top: 0.5rem;"><a href="https://trecoleman.com">Return to Main Site</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
