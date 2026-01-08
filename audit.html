@@ -306,15 +306,15 @@
         .email-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2rem;
+            padding: 3rem 2rem;
             border-radius: 10px;
             margin-top: 2rem;
             text-align: center;
             display: none;
         }
         .email-section.show { display: block; animation: fadeIn 0.5s ease; }
-        .email-section h3 { margin-bottom: 1rem; font-size: 1.5rem; }
-        .email-section p { margin-bottom: 1.5rem; opacity: 0.9; }
+        .email-section h3 { margin-bottom: 1.5rem; font-size: 1.75rem; color: white; font-weight: 700; }
+        .email-section p { margin-bottom: 1.5rem; opacity: 1; font-size: 1.1rem; line-height: 1.7; color: white; }
         .email-form { max-width: 400px; margin: 0 auto; }
         .email-form input[type="email"] {
             width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
@@ -596,10 +596,10 @@
                     <input type="email" id="emailInput" placeholder="Enter your email address" required>
                     <button id="showResultsBtn" onclick="showResults()">🚀 Show My Results Now</button>
                 </div>
-                <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">
+                <p style="font-size: 1rem; margin-top: 1.5rem; opacity: 1; color: white;">
                     📧 We'll also send you additional optimization tips and follow-up recommendations
                 </p>
-                <p style="font-size: 0.8rem; margin-top: 0.5rem; opacity: 0.7;">
+                <p style="font-size: 0.95rem; margin-top: 0.75rem; opacity: 1; color: rgba(255, 255, 255, 0.95);">
                     🔒 Your email is secure and will only be used for restaurant optimization resources
                 </p>
             </div>
@@ -1381,211 +1381,88 @@ This is a turnaround situation that requires professional help and urgent action
         function getExcellentRecommendations(answers) {
             return `
                 <div class="recommendations">
-                    <h4>🎯 Advanced Optimization Opportunities</h4>
-                    <p><strong>Congratulations! Your restaurant is performing exceptionally well.</strong> Here are advanced strategies to maximize your already strong operations:</p>
-                    <ul>
-                        <li><strong>Predictive analytics</strong> - Use AI for demand forecasting and inventory optimization</li>
-                        <li><strong>Dynamic pricing</strong> - Implement surge pricing for peak periods and promotional pricing for slow times</li>
-                        <li><strong>Franchise/expansion opportunities</strong> - Your systems are ready to scale to additional locations</li>
-                        <li><strong>Staff development program</strong> - Create a management training pipeline to maintain standards</li>
-                        <li><strong>Customer lifetime value optimization</strong> - Implement loyalty programs and personalized marketing</li>
-                        <li><strong>Operational benchmarking</strong> - Share your best practices with industry networks</li>
-                    </ul>
-                    <p><strong>Estimated additional profit potential:</strong> 3-7% through advanced optimization techniques</p>
-                    <p><strong>Consider these premium strategies:</strong></p>
-                    <ul>
-                        <li>Partner with food delivery optimization platforms</li>
-                        <li>Implement IoT sensors for real-time equipment monitoring</li>
-                        <li>Explore catering and private event opportunities</li>
-                        <li>Consider consulting for other restaurants in your area</li>
-                    </ul>
+                    <h3 style="color: #27ae60; margin-bottom: 1.5rem; font-size: 1.75rem;">Strong Operations—But Money's Still Being Left on the Table</h3>
+                    
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">Your operation runs well. But even high-performing businesses have hidden profit leaks.</p>
+                    
+                    <div style="background: #fff9e6; border-left: 4px solid #f39c12; padding: 2rem; margin: 2rem 0; border-radius: 6px;">
+                        <p style="font-size: 1.15rem; line-height: 1.8; margin: 0; color: #2c3e50;"><strong>Estimated opportunity:</strong> $15,000–$40,000+ annually in overlooked optimization areas</p>
+                    </div>
+                    
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">The Profit Leak Snapshot identifies exactly where those opportunities are hiding in your P&Ls, labor data, and sales mix—so you know what to prioritize first.</p>
+                    
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="profit-leak-snapshot.html" class="cta-button" style="display: inline-block; background: #1F4788; color: white; padding: 1.25rem 2.5rem; font-size: 1.25rem; font-weight: 700; text-decoration: none; border-radius: 8px; box-shadow: 0 4px 15px rgba(31, 71, 136, 0.3);">Book Your $750 Profit Leak Snapshot</a>
+                    </div>
                 </div>
             `;
         }
 
         function getGoodRecommendations(answers) {
-            let recs = [];
+            // Identify top 3 problem areas
+            let problems = [];
+            if (answers.foodCost <= 2) problems.push({area: 'Food Cost', cost: '$2,000–$8,000/month'});
+            if (answers.laborCost <= 2 || answers.overtime <= 2) problems.push({area: 'Labor Cost', cost: '$1,500–$6,000/month'});
+            if (answers.turnTime <= 2 || answers.menuMix <= 2) problems.push({area: 'Revenue Leaks', cost: '$3,000–$12,000/month'});
+            if (answers.inventory <= 2) problems.push({area: 'Inventory Waste', cost: '$1,000–$4,000/month'});
+            if (answers.scheduling <= 2) problems.push({area: 'Scheduling Inefficiency', cost: '$2,000–$5,000/month'});
             
-            // Food Cost Analysis - Detailed and targeted
-            if (answers.foodCost <= 2) {
-                recs.push(`
-                    <div class="recommendations priority-high">
-                        <h4>🔥 High Priority: Food Cost Control</h4>
-                        <p><strong>Your food costs are ${answers.foodCost === 1 ? 'critically high (over 35%)' : 'above optimal levels (30-35%)'}</strong> - immediate action needed:</p>
-                        <ul>
-                            <li><strong>Weekly inventory tracking</strong> - Identify waste patterns and theft</li>
-                            <li><strong>Recipe standardization</strong> - Control portions and reduce over-portioning</li>
-                            <li><strong>Vendor negotiation</strong> - Analyze pricing and consolidate suppliers</li>
-                            <li><strong>Waste reduction program</strong> - Track daily waste and implement FIFO rotation</li>
-                            <li><strong>Menu engineering</strong> - Focus on high-margin items and eliminate low-performers</li>
-                        </ul>
-                        <p><strong>Expected impact:</strong> ${answers.foodCost === 1 ? '5-8%' : '2-5%'} reduction in food costs within 60 days (potential savings: $2,000-8,000+ monthly)</p>
-                    </div>
-                `);
-            }
+            const top3 = problems.slice(0, 3);
+            const problemList = top3.map(p => `<li style="margin-bottom: 1rem; font-size: 1.15rem;"><strong>${p.area}:</strong> Costing you an estimated ${p.cost}</li>`).join('');
             
-            // Labor Cost Analysis - Targeted recommendations  
-            if (answers.laborCost <= 2 || answers.overtime <= 2) {
-                const isLaborHigh = answers.laborCost <= 2;
-                const isOvertimeHigh = answers.overtime <= 2;
-                let laborIssue = '';
-                if (isLaborHigh && isOvertimeHigh) {
-                    laborIssue = 'high overall labor costs AND excessive overtime';
-                } else if (isLaborHigh) {
-                    laborIssue = 'high labor cost percentage';
-                } else {
-                    laborIssue = 'excessive overtime expenses';
-                }
-                
-                recs.push(`
-                    <div class="recommendations priority-high">
-                        <h4>⚡ High Priority: Labor Optimization</h4>
-                        <p><strong>You have ${laborIssue}</strong> - focus on scheduling efficiency:</p>
-                        <ul>
-                            <li><strong>Data-driven scheduling</strong> - Use sales forecasting to optimize staff levels</li>
-                            <li><strong>Cross-training program</strong> - Increase flexibility and reduce overstaffing</li>
-                            ${isOvertimeHigh ? '<li><strong>Overtime controls</strong> - Implement approval processes and alerts</li>' : ''}
-                            <li><strong>Peak-hour optimization</strong> - Adjust prep schedules to reduce rush-hour staffing needs</li>
-                            <li><strong>Performance tracking</strong> - Monitor sales per labor hour by shift and employee</li>
-                        </ul>
-                        <p><strong>Expected savings:</strong> ${isLaborHigh && isOvertimeHigh ? '5-10%' : '3-8%'} reduction in labor costs (potential savings: $1,500-6,000+ monthly)</p>
-                    </div>
-                `);
-            }
-            
-            // Revenue Optimization - Based on specific weaknesses
-            if (answers.turnTime <= 2 || answers.menuMix <= 2 || answers.ticketSize <= 2) {
-                let revenueIssues = [];
-                if (answers.turnTime <= 2) revenueIssues.push('slow table turns');
-                if (answers.menuMix <= 2) revenueIssues.push('poor menu optimization');
-                if (answers.ticketSize <= 2) revenueIssues.push('declining average tickets');
-                
-                recs.push(`
-                    <div class="recommendations priority-high">
-                        <h4>💰 High Priority: Revenue Optimization</h4>
-                        <p><strong>Revenue issues identified:</strong> ${revenueIssues.join(', ')}</p>
-                        <ul>
-                            ${answers.turnTime <= 2 ? '<li><strong>Speed of service</strong> - Streamline kitchen processes and server workflows</li>' : ''}
-                            ${answers.menuMix <= 2 ? '<li><strong>Menu engineering</strong> - Promote high-margin items and redesign menu layout</li>' : ''}
-                            ${answers.ticketSize <= 2 ? '<li><strong>Upselling training</strong> - Implement systematic upselling and cross-selling</li>' : ''}
-                            <li><strong>Table management</strong> - Optimize seating algorithms and reservation systems</li>
-                            <li><strong>Peak-hour strategies</strong> - Implement dynamic pricing and promotions</li>
-                        </ul>
-                        <p><strong>Expected impact:</strong> 10-20% increase in revenue per seat (potential increase: $3,000-12,000+ monthly)</p>
-                    </div>
-                `);
-            }
-            
-            // Technology & Systems - If lagging
-            if (answers.integration <= 2 || answers.analytics <= 2) {
-                recs.push(`
-                    <div class="recommendations priority-medium">
-                        <h4>📊 Medium Priority: Technology Upgrade</h4>
-                        <p><strong>Your systems are holding back efficiency.</strong> Technology improvements needed:</p>
-                        <ul>
-                            ${answers.integration <= 2 ? '<li><strong>System integration</strong> - Connect POS, inventory, and scheduling systems</li>' : ''}
-                            ${answers.analytics <= 2 ? '<li><strong>Analytics implementation</strong> - Set up automated reporting and dashboards</li>' : ''}
-                            <li><strong>Real-time monitoring</strong> - Track key metrics (food cost, labor, sales) daily</li>
-                            <li><strong>Automated alerts</strong> - Get notified when metrics exceed targets</li>
-                        </ul>
-                        <p><strong>Expected impact:</strong> 10-15 hours/week time savings + better decision making</p>
-                    </div>
-                `);
-            }
-            
-            // Quality & Consistency - If below standards
-            if (answers.procedures <= 2 || answers.quality <= 2) {
-                recs.push(`
-                    <div class="recommendations priority-medium">
-                        <h4>🎯 Medium Priority: Operational Consistency</h4>
-                        <p><strong>Standardization will improve quality and reduce training time:</strong></p>
-                        <ul>
-                            ${answers.procedures <= 2 ? '<li><strong>Document procedures</strong> - Create step-by-step guides for all key processes</li>' : ''}
-                            ${answers.quality <= 2 ? '<li><strong>Quality checkpoints</strong> - Implement systematic food and service quality controls</li>' : ''}
-                            <li><strong>Staff training program</strong> - Ensure consistent execution across all shifts</li>
-                            <li><strong>Customer feedback system</strong> - Track satisfaction and identify improvement areas</li>
-                        </ul>
-                        <p><strong>Expected impact:</strong> Improved customer satisfaction + reduced training costs</p>
-                    </div>
-                `);
-            }
-            
-            return recs.join('') + `
+            return `
                 <div class="recommendations">
-                    <h4>💡 Overall Assessment</h4>
-                    <p><strong>Your restaurant has solid fundamentals with significant room for improvement.</strong> Focus on the high-priority areas first for maximum impact.</p>
-                    <p><strong>Total estimated profit increase:</strong> 12-25% within 90 days by addressing your specific challenges</p>
-                    <p><strong>Recommended next steps:</strong></p>
-                    <ul>
-                        <li>Week 1-2: Address your highest-priority issue first</li>
-                        <li>Week 3-4: Implement supporting systems and training</li>
-                        <li>Month 2: Monitor results and fine-tune processes</li>
-                        <li>Month 3: Expand improvements to other operational areas</li>
+                    <h3 style="color: #e67e22; margin-bottom: 1.5rem; font-size: 1.75rem;">You're Profitable on Paper—But Money's Leaking Out</h3>
+                    
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">Your audit identified ${top3.length} major profit leaks bleeding your operation dry:</p>
+                    
+                    <ul style="list-style: none; padding-left: 0; margin: 2rem 0;">
+                        ${problemList}
                     </ul>
+                    
+                    <div style="background: #ffe6e6; border-left: 4px solid #e74c3c; padding: 2rem; margin: 2rem 0; border-radius: 6px;">
+                        <p style="font-size: 1.15rem; line-height: 1.8; margin: 0; color: #2c3e50;"><strong>That's $50,000–$250,000+ annually</strong> going out the door instead of into your pocket.</p>
+                    </div>
+                    
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">The Profit Leak Snapshot shows you exactly what's leaking, how much it's costing, and what to fix first.</p>
+                    
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="profit-leak-snapshot.html" class="cta-button" style="display: inline-block; background: #1F4788; color: white; padding: 1.25rem 2.5rem; font-size: 1.25rem; font-weight: 700; text-decoration: none; border-radius: 8px; box-shadow: 0 4px 15px rgba(31, 71, 136, 0.3);">Book Your $750 Profit Leak Snapshot</a>
+                    </div>
                 </div>
             `;
         }
 
         function getPoorRecommendations(answers) {
-            // Analyze specific problem areas for targeted recommendations
-            let criticalIssues = [];
-            if (answers.foodCost <= 2) criticalIssues.push('food cost control');
-            if (answers.laborCost <= 2) criticalIssues.push('labor cost management');
-            if (answers.inventory <= 2) criticalIssues.push('inventory tracking');
-            if (answers.recipes <= 2) criticalIssues.push('recipe standardization');
-            if (answers.scheduling <= 2) criticalIssues.push('staff scheduling');
-            if (answers.turnTime <= 2) criticalIssues.push('service speed');
-            if (answers.menuMix <= 2) criticalIssues.push('menu optimization');
-            if (answers.integration <= 2) criticalIssues.push('system integration');
-            if (answers.procedures <= 2) criticalIssues.push('operational procedures');
-            if (answers.quality <= 2) criticalIssues.push('quality control');
-
+            // Count critical issues
+            let criticalCount = 0;
+            if (answers.foodCost <= 2) criticalCount++;
+            if (answers.laborCost <= 2) criticalCount++;
+            if (answers.inventory <= 2) criticalCount++;
+            if (answers.recipes <= 2) criticalCount++;
+            if (answers.scheduling <= 2) criticalCount++;
+            if (answers.turnTime <= 2) criticalCount++;
+            if (answers.menuMix <= 2) criticalCount++;
+            if (answers.procedures <= 2) criticalCount++;
+            if (answers.quality <= 2) criticalCount++;
+            
             return `
-                <div class="recommendations priority-high">
-                    <h4>🚨 Urgent: Comprehensive Operations Overhaul Required</h4>
-                    <p><strong>Your restaurant has significant operational challenges in ${criticalIssues.length} key areas:</strong> ${criticalIssues.slice(0, 3).join(', ')}${criticalIssues.length > 3 ? `, and ${criticalIssues.length - 3} others` : ''}.</p>
-                    <p><strong>Critical issues identified that need immediate attention:</strong></p>
+                <div class="recommendations">
+                    <h3 style="color: #c0392b; margin-bottom: 1.5rem; font-size: 1.75rem;">This Is a Crisis—Not a Tune-Up</h3>
                     
-                    <h5>🔥 Phase 1 - Crisis Management (First 30 days):</h5>
-                    <ul>
-                        ${answers.foodCost === 1 ? '<li><strong>URGENT - Food cost crisis:</strong> Implement daily cost tracking - you\'re losing significant money</li>' : ''}
-                        ${answers.laborCost === 1 ? '<li><strong>URGENT - Labor cost crisis:</strong> Review all schedules immediately - excessive labor spending</li>' : ''}
-                        ${answers.inventory <= 2 ? '<li><strong>Inventory system:</strong> Start weekly counts immediately to stop waste and theft</li>' : ''}
-                        ${answers.recipes <= 2 ? '<li><strong>Recipe standardization:</strong> Document your top 10 menu items with exact portions</li>' : ''}
-                        ${answers.quality <= 2 ? '<li><strong>Quality control:</strong> Implement basic food safety and consistency checks</li>' : ''}
-                        <li><strong>Cash flow monitoring:</strong> Track daily sales vs. costs to prevent cash flow problems</li>
-                        <li><strong>Staff meeting:</strong> Address operational standards and expectations immediately</li>
-                    </ul>
-
-                    <h5>⚡ Phase 2 - Stabilization (Days 31-60):</h5>
-                    <ul>
-                        ${answers.menuMix <= 2 ? '<li><strong>Menu engineering:</strong> Remove low-profit items and promote high-margin dishes</li>' : ''}
-                        ${answers.turnTime <= 2 ? '<li><strong>Service speed:</strong> Streamline kitchen and service workflows</li>' : ''}
-                        ${answers.scheduling <= 2 ? '<li><strong>Staff scheduling:</strong> Match labor to sales patterns - eliminate overstaffing</li>' : ''}
-                        ${answers.procedures <= 2 ? '<li><strong>Standard procedures:</strong> Create basic operating procedures for key processes</li>' : ''}
-                        <li><strong>Vendor review:</strong> Renegotiate contracts and eliminate unnecessary suppliers</li>
-                        <li><strong>Staff training:</strong> Ensure all team members understand new standards</li>
-                    </ul>
-
-                    <h5>🎯 Phase 3 - Growth Foundation (Days 61-90):</h5>
-                    <ul>
-                        ${answers.integration <= 2 ? '<li><strong>Technology upgrade:</strong> Implement integrated POS and inventory systems</li>' : ''}
-                        ${answers.analytics <= 2 ? '<li><strong>Reporting systems:</strong> Set up automated daily/weekly performance reports</li>' : ''}
-                        <li><strong>Performance monitoring:</strong> Track key metrics daily (food cost %, labor %, sales per seat)</li>
-                        <li><strong>Continuous improvement:</strong> Weekly review meetings to identify and solve problems</li>
-                        <li><strong>Customer feedback:</strong> Implement system to track satisfaction and respond to issues</li>
-                        <li><strong>Financial controls:</strong> Establish budgets and variance reporting</li>
-                    </ul>
-
-                    <p><strong>Expected results with proper implementation:</strong></p>
-                    <ul>
-                        <li><strong>Month 1:</strong> Stop major losses, stabilize operations (5-10% cost reduction)</li>
-                        <li><strong>Month 2:</strong> Improve efficiency and quality (additional 5-8% profit improvement)</li>
-                        <li><strong>Month 3:</strong> Build foundation for growth (additional 5-7% profit improvement)</li>
-                    </ul>
-                    <p><strong>Total potential profit increase: 15-25% within 90 days</strong></p>
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">Your audit identified <strong>${criticalCount} major operational failures</strong> that are hemorrhaging cash right now.</p>
                     
-                    <p style="background: #ffe6e6; padding: 1rem; border-radius: 5px; margin-top: 1rem;"><strong>⚠️ WARNING:</strong> Without immediate action, your restaurant may face serious financial difficulties. These issues compound quickly and can lead to business failure. Consider hiring a hospitality operations consultant immediately to guide the turnaround process.</p>
+                    <div style="background: #ffebee; border-left: 4px solid #c0392b; padding: 2rem; margin: 2rem 0; border-radius: 6px;">
+                        <p style="font-size: 1.25rem; line-height: 1.8; margin: 0; color: #2c3e50; font-weight: 600;">You're losing an estimated <strong>$75,000–$400,000+ annually</strong> to operational breakdowns.</p>
+                    </div>
+                    
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 1rem;"><strong>Without immediate intervention, your operation is at serious risk.</strong></p>
+                    
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">The Profit Leak Snapshot will identify your top 3 most critical leaks, estimate what each one is costing you, and tell you exactly what needs to be fixed first—before this gets worse.</p>
+                    
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <a href="profit-leak-snapshot.html" class="cta-button" style="display: inline-block; background: #c0392b; color: white; padding: 1.25rem 2.5rem; font-size: 1.25rem; font-weight: 700; text-decoration: none; border-radius: 8px; box-shadow: 0 4px 15px rgba(192, 57, 43, 0.4);">Book Your Urgent Snapshot Now</a>
+                    </div>
                 </div>
             `;
         }
