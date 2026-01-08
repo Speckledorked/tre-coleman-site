@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unreasonably Optimistic | Tre Coleman</title>
+    <meta
+      name="description"
+      content="The difference between restaurant owners who turn things around and those who stay stuck isn't intelligence or experience. It's how they relate to uncertainty." />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Unreasonably Optimistic | Tre Coleman" />
+    <meta property="og:description" content="The difference between restaurant owners who turn things around and those who stay stuck isn't intelligence or experience. It's how they relate to uncertainty." />
+    <meta property="og:url" content="https://trecoleman.com/unreasonably-optimistic.html" />
+
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Dropdown navigation styles */
+      .nav-dropdown {
+        position: relative;
+      }
+
+      .nav-dropdown > a::after {
+        content: ' ▾';
+        font-size: 0.8em;
+        margin-left: 0.25rem;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        min-width: 220px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        padding: 0.5rem 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .nav-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 0.75rem 1.25rem;
+        color: #2c3e50;
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-size: 0.95rem;
+      }
+
+      .dropdown-menu a:hover {
+        background: #f8f9fa;
+        color: #1e3a5f;
+      }
+
+      /* Mobile dropdown behavior */
+      @media (max-width: 1024px) {
+        .dropdown-menu {
+          position: static;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          box-shadow: none;
+          background: rgba(255, 255, 255, 0.05);
+          margin: 0.5rem 0;
+          display: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+          display: block;
+        }
+
+        .dropdown-menu a {
+          color: white;
+          padding-left: 2rem;
+        }
+
+        .dropdown-menu a:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+        }
+      }
+
+      /* Blog post styles */
+      article {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+      }
+
+      .post-header {
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+
+      .post-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--primary-colour);
+        line-height: 1.2;
+      }
+
+      .post-meta {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+      }
+
+      .post-content {
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: #2c3e50;
+      }
+
+      .post-content p {
+        margin-bottom: 1.5rem;
+      }
+
+      .post-content h2 {
+        font-size: 1.75rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--primary-colour);
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 2rem;
+        color: var(--primary-colour);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .back-link:hover {
+        color: var(--accent-colour);
+      }
+
+      .cta-section {
+        background: var(--light-bg);
+        padding: 2rem;
+        border-radius: 8px;
+        margin-top: 3rem;
+        text-align: center;
+      }
+
+      .cta-section h3 {
+        color: var(--primary-colour);
+        margin-bottom: 1rem;
+      }
+
+      .cta-section p {
+        margin-bottom: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
+        article {
+          padding: 2rem 1rem;
+        }
+
+        .post-header h1 {
+          font-size: 2rem;
+        }
+
+        .post-content {
+          font-size: 1.05rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- Navigation -->
+        <nav id="mainNav">
+          <ul>
+            <li><a href="services.html">Services</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Audits</a>
+              <div class="dropdown-menu">
+                <a href="audit.html">Restaurant Audit</a>
+                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+              </div>
+            </li>
+            <li><a href="advisory.html">Advisory</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Resources</a>
+              <div class="dropdown-menu">
+                <a href="playbook.html">Free Playbook</a>
+                <a href="catering-profit.html">Catering Profit System</a>
+              </div>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="profit-leak-snapshot.html" class="nav-cta">Book Your Snapshot</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <article>
+      <a href="blog.html" class="back-link">← Back to all posts</a>
+
+      <div class="post-header">
+        <h1>Unreasonably Optimistic</h1>
+        <div class="post-meta">Leadership • 6 min read</div>
+      </div>
+
+      <div class="post-content">
+        <p>I've noticed something about restaurant owners who actually turn things around.</p>
+
+        <p>They're unreasonably optimistic about what they can figure out.</p>
+
+        <p>Not delusional.<br>
+        Not arrogant.</p>
+
+        <p>They don't assume everything will work.<br>
+        They just don't let uncertainty stop them from trying.</p>
+
+        <p>That distinction matters more than most people realize.</p>
+
+        <p>You see it play out in small, everyday decisions. Not dramatic pivots. Not viral success stories. Just quiet forks in the road where one owner hesitates and another moves.</p>
+
+        <p>"We can't afford help right now."<br>
+        But you're losing $8,000 a month because labor scheduling is still guesswork, built on habits instead of data.</p>
+
+        <p>"I don't really get the AI thing."<br>
+        Meanwhile another owner spends 20 minutes setting up automated catering quotes and frees up 15 hours a week they were previously losing to emails and follow-ups.</p>
+
+        <p>"I need to think about it."<br>
+        Six months later, the same problems are still there. Same stress. Same bottlenecks. Just more expensive now.</p>
+
+        <p>The difference between these owners isn't intelligence.<br>
+        It isn't experience.<br>
+        It isn't access to information.</p>
+
+        <p><strong>It's how they relate to uncertainty.</strong></p>
+
+        <p>Most restaurant owners are extremely capable people. They've already done something hard. They've built a business in an industry that doesn't forgive mistakes easily. But that same reality trains them to be cautious. Careful. Reasonable.</p>
+
+        <p>And on paper, that makes sense.</p>
+
+        <p>Margins are thin.<br>
+        Mistakes are costly.<br>
+        Time is scarce.</p>
+
+        <p>So owners wait. They research. They ask around. They look for reassurance that something will work before touching it.</p>
+
+        <p>The problem is that operations don't reward certainty.<br>
+        <strong>They reward motion.</strong></p>
+
+        <p>The owners who turn things around don't wait to fully understand every variable. They're willing to act while the picture is still a little blurry.</p>
+
+        <p>They test before they debate.<br>
+        They adjust instead of freezing.<br>
+        They accept that some attempts won't pan out.</p>
+
+        <p>Half the time, they're wrong.</p>
+
+        <p>A new process doesn't stick.<br>
+        A system doesn't get adopted.<br>
+        An idea sounds good but breaks down in real service.</p>
+
+        <p>They don't romanticize that.<br>
+        They just don't let it stop them.</p>
+
+        <p>Because the other half of the time?<br>
+        That's where the shift happens.</p>
+
+        <p>That's when labor stabilizes because scheduling is finally based on reality, not gut feel.<br>
+        That's when managers stop firefighting because expectations are documented instead of assumed.<br>
+        That's when owners get out of the building without everything unraveling behind them.</p>
+
+        <p><strong>Progress in restaurants rarely comes from one big, perfect decision.</strong></p>
+
+        <p>It comes from a series of imperfect attempts that compound over time.</p>
+
+        <p>Trying a different prep schedule.<br>
+        Testing a tighter invoicing process.<br>
+        Automating one repetitive admin task.<br>
+        Writing down one SOP that used to live only in someone's head.</p>
+
+        <p>None of these feel revolutionary in the moment.<br>
+        Most feel slightly uncomfortable.<br>
+        Some feel unnecessary until they aren't.</p>
+
+        <p>But together, they separate operators who are always reacting from those who are actually building something stable.</p>
+
+        <p>There's a quiet confidence in owners who turn things around. Not because they know everything, but because they trust themselves to figure things out as they go.</p>
+
+        <p>They don't need permission.<br>
+        They don't wait for perfect timing.<br>
+        They don't expect certainty upfront.</p>
+
+        <p>They understand that clarity usually comes <em>after</em> action, not before it.</p>
+
+        <p>Being reasonable feels safe.<br>
+        But in operations, it's often expensive.</p>
+
+        <p>The owners who win aren't reckless.<br>
+        They're just willing to be wrong half the time.</p>
+
+        <p>And they know that's the price of moving forward.</p>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="cta-section">
+        <h3>Ready to Move Forward?</h3>
+        <p>The $750 Profit Leak Snapshot is a 90-minute diagnostic where we review your last 90 days of P&Ls, labor data, and sales mix. I identify your top 3 profit leaks, estimate what each is costing you, and tell you exactly what to fix first.</p>
+        <a href="profit-leak-snapshot.html" class="button">Book Your Snapshot</a>
+      </div>
+    </article>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-section">
+            <h4>Tre Coleman Consulting LLC</h4>
+            <p>Richmond/Charlottesville, VA<br>Serving Nationwide</p>
+            <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="advisory.html">Advisory</a></li>
+              <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+              <li><a href="catering-profit.html">Catering Course</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <ul>
+              <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+              <li><a href="tel:540-807-9045">540.807.9045</a></li>
+              <li><a href="https://www.linkedin.com/in/trecoleman/" target="_blank" rel="noopener">LinkedIn</a></li>
+              <li><a href="https://www.facebook.com/trecolemanconsulting" target="_blank" rel="noopener">Facebook</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle functionality
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mainNav = document.getElementById('mainNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const navLinks = mainNav.querySelectorAll('a');
+
+      function toggleMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      mobileMenuToggle.addEventListener('click', toggleMenu);
+      mobileOverlay.addEventListener('click', closeMenu);
+      navLinks.forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
+      });
+
+      // Mobile dropdown toggle
+      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
+      dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            toggle.parentElement.classList.toggle('active');
+          }
+        });
+      });
+    </script>
+    <script src="/exit-intent-popup.js" defer></script>
+  </body>
+</html>
