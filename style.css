@@ -12,10 +12,10 @@
 /* Root variables - Updated for operator-to-operator aesthetic */
 :root {
   /* Primary colors - Operator navy (matches homepage) */
-  --primary-colour: #1F4788;
+  --primary-colour: #C2703B;
   --primary-dark: #152b45;
   --primary-light: #2d5aa0;
-  --secondary-colour: #2c3e50;
+  --secondary-colour: #3a5a3a;
   --secondary-light: #34495e;
   --accent-colour: #F4A460;
   --accent-dark: #d4895f;
@@ -31,8 +31,8 @@
   --light-text: #718096;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
-  --gradient-secondary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  --gradient-primary: linear-gradient(135deg, #C2703B 0%, #2d5aa0 100%);
+  --gradient-secondary: linear-gradient(135deg, #3a5a3a 0%, #34495e 100%);
   --gradient-accent: linear-gradient(135deg, #F4A460 0%, #ffb574 100%);
 
   /* Shadows - Stronger for operator aesthetic */
