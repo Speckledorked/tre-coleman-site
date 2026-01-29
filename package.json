@@ -1,0 +1,13 @@
+{
+  "name": "tre-coleman-site",
+  "version": "1.0.0",
+  "description": "Tre Coleman website with course delivery system",
+  "scripts": {
+    "build": "echo 'No build required'"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "resend": "^2.0.0",
+    "stripe": "^14.0.0"
+  }
+}
