@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Tre Coleman</title>
+  <meta name="description" content="Log in to access your course content and materials.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #faf8f4 0%, #f5f7fa 100%);
+    }
+
+    .auth-card {
+      background: white;
+      padding: 3rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .auth-card h1 {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+
+    .auth-card .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .auth-form label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #2c3e50;
+      margin-bottom: 0.25rem;
+    }
+
+    .auth-form input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .auth-form input:focus {
+      outline: none;
+      border-color: #1F4788;
+      box-shadow: 0 0 0 3px rgba(31, 71, 136, 0.1);
+    }
+
+    .auth-form button {
+      background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
+      color: white;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+    }
+
+    .auth-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(31, 71, 136, 0.3);
+    }
+
+    .auth-form button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .auth-links {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .auth-links a {
+      color: #1F4788;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .success-message {
+      background: #d1fae5;
+      color: #059669;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      color: #1F4788;
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-link:hover {
+      color: #2d5aa0;
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Log in to access your course content</p>
+
+      <div id="error-message" class="error-message"></div>
+      <div id="success-message" class="success-message"></div>
+
+      <form id="login-form" class="auth-form">
+        <div>
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="submit-btn">Log In</button>
+      </form>
+
+      <div class="auth-links">
+        <p><a href="forgot-password.html">Forgot your password?</a></p>
+        <p style="margin-top: 1rem;">Don't have an account? <a href="register.html">Create one</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check if already logged in
+    const session = localStorage.getItem('session');
+    if (session) {
+      window.location.href = '/course/dashboard.html';
+    }
+
+    const form = document.getElementById('login-form');
+    const errorEl = document.getElementById('error-message');
+    const successEl = document.getElementById('success-message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      errorEl.style.display = 'none';
+      successEl.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Logging in...';
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('/.netlify/functions/auth-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Login failed');
+        }
+
+        // Store session
+        localStorage.setItem('session', JSON.stringify(data.session));
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        successEl.textContent = 'Login successful! Redirecting...';
+        successEl.style.display = 'block';
+
+        // Redirect to course dashboard
+        setTimeout(() => {
+          window.location.href = '/course/dashboard.html';
+        }, 1000);
+
+      } catch (error) {
+        errorEl.textContent = error.message;
+        errorEl.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In';
+      }
+    });
+  </script>
+</body>
+</html>

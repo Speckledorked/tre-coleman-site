@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 1: Labor Cost Control - The Catering Profit System</title>
+  <meta name="description" content="Learn to calculate exact labor needs and build a reliable team without overpaying.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2c3e50; background: #f8f9fa; }
+    .module-header { background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%); color: white; padding: 1.5rem 2rem; }
+    .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; opacity: 0.9; }
+    .back-btn:hover { opacity: 1; }
+    .logout-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+    .module-hero { background: white; padding: 3rem 2rem; border-bottom: 1px solid #e9ecef; }
+    .module-hero-content { max-width: 800px; margin: 0 auto; }
+    .module-number { background: #F4A460; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
+    .module-hero h1 { color: #1F4788; font-size: 2.5rem; margin-bottom: 1rem; }
+    .module-hero p { font-size: 1.2rem; color: #666; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: 1fr 300px; gap: 2rem; }
+    .main-content { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+    .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%); color: white; text-align: center; padding: 2rem; }
+    .video-placeholder h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .lesson-content { padding: 2rem; }
+    .lesson-content h2 { color: #1F4788; margin-bottom: 1rem; }
+    .lesson-content p { margin-bottom: 1rem; color: #444; }
+    .lesson-content ul { margin-left: 1.5rem; margin-bottom: 1rem; color: #444; }
+    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .sidebar-card h3 { color: #1F4788; font-size: 1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .lessons-list { list-style: none; }
+    .lessons-list li { padding: 0.75rem 0; border-bottom: 1px solid #e9ecef; }
+    .lessons-list li:last-child { border-bottom: none; }
+    .lessons-list a { color: #444; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+    .lessons-list a:hover { color: #1F4788; }
+    .lessons-list .active { color: #1F4788; font-weight: 600; }
+    .download-list { list-style: none; }
+    .download-list li { padding: 0.5rem 0; }
+    .download-list a { color: #1F4788; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+    .coming-soon-badge { background: #f8f9fa; color: #666; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-left: auto; }
+    .loading { display: flex; align-items: center; justify-content: center; min-height: 50vh; font-size: 1.2rem; color: #666; }
+    .nav-buttons { display: flex; justify-content: space-between; padding: 1.5rem 2rem; border-top: 1px solid #e9ecef; }
+    .nav-btn { padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .nav-btn.prev { background: #f8f9fa; color: #1F4788; }
+    .nav-btn.next { background: #1F4788; color: white; }
+    @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .sidebar { order: -1; } }
+    @media (max-width: 768px) { .header-content { flex-direction: column; gap: 1rem; } .module-hero h1 { font-size: 2rem; } .container { padding: 1rem; } }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">Loading module...</div>
+  <div id="module-page" style="display: none;">
+    <header class="module-header">
+      <div class="header-content">
+        <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+        <button onclick="CourseAuth.logout()" class="logout-btn">Log Out</button>
+      </div>
+    </header>
+    <section class="module-hero">
+      <div class="module-hero-content">
+        <span class="module-number">MODULE 1</span>
+        <h1>Labor Cost Control</h1>
+        <p>Stop guessing at staffing. Calculate exact labor needs per event type, account for travel/setup/breakdown, and build a reliable bench team without overpaying.</p>
+      </div>
+    </section>
+    <div class="container">
+      <main class="main-content">
+        <div class="video-container">
+          <div class="video-placeholder">
+            <div>
+              <h3>Content Coming March 30th</h3>
+              <p>You'll be notified when this module goes live!</p>
+            </div>
+          </div>
+        </div>
+        <div class="lesson-content">
+          <h2>What You'll Learn</h2>
+          <p>In this module, you'll master the fundamentals of labor cost control for catering operations:</p>
+          <ul>
+            <li>How to calculate exact staffing needs for any event type</li>
+            <li>Accounting for hidden labor costs (travel, setup, breakdown)</li>
+            <li>Building a reliable bench team without overpaying</li>
+            <li>Tracking labor costs per event to optimize future staffing</li>
+          </ul>
+          <p>By the end of this module, you'll have a complete system for managing labor costs that will save you thousands annually.</p>
+        </div>
+        <div class="nav-buttons">
+          <span></span>
+          <a href="module-2.html" class="nav-btn next">Next: Pricing →</a>
+        </div>
+      </main>
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>Lessons</h3>
+          <ul class="lessons-list">
+            <li><a href="#" class="active">&#9654; Introduction to Labor Cost Control</a></li>
+            <li><a href="#">&#9654; Calculating Staffing Needs <span class="coming-soon-badge">Soon</span></a></li>
+            <li><a href="#">&#9654; Hidden Labor Costs <span class="coming-soon-badge">Soon</span></a></li>
+            <li><a href="#">&#9654; Building Your Bench Team <span class="coming-soon-badge">Soon</span></a></li>
+            <li><a href="#">&#9654; Tracking & Optimization <span class="coming-soon-badge">Soon</span></a></li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h3>Downloads</h3>
+          <ul class="download-list">
+            <li><a href="#">&#128196; Event Staffing Calculator <span class="coming-soon-badge">Soon</span></a></li>
+            <li><a href="#">&#128196; Labor Cost Tracking Sheet <span class="coming-soon-badge">Soon</span></a></li>
+            <li><a href="#">&#128196; Training Checklist <span class="coming-soon-badge">Soon</span></a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <script src="auth.js"></script>
+  <script>
+    async function initModule() {
+      CourseAuth.init();
+      if (!CourseAuth.isLoggedIn()) { window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname); return; }
+      const isValid = await CourseAuth.verifySession();
+      if (!isValid) { window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname); return; }
+      const user = CourseAuth.getUser();
+      if (!user.has_course_access) { window.location.href = '/course/no-access.html'; return; }
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('module-page').style.display = 'block';
+    }
+    initModule();
+  </script>
+</body>
+</html>

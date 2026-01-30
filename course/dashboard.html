@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Dashboard - The Catering Profit System</title>
+  <meta name="description" content="Access your course modules and materials.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.7;
+      color: #2c3e50;
+      background: #f8f9fa;
+    }
+
+    .dashboard-header {
+      background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dashboard-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-name {
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .welcome-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      margin-bottom: 2rem;
+    }
+
+    .welcome-section h2 {
+      color: #1F4788;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-section p {
+      color: #666;
+    }
+
+    .launch-notice {
+      background: #fff9e6;
+      border-left: 4px solid #F4A460;
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin-top: 1.5rem;
+    }
+
+    .launch-notice strong {
+      color: #1F4788;
+    }
+
+    .modules-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .module-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .module-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .module-card.locked {
+      opacity: 0.7;
+    }
+
+    .module-card.locked:hover {
+      transform: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .module-header {
+      background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
+      color: white;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .module-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .module-number {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .module-content {
+      padding: 1.5rem;
+    }
+
+    .module-content p {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .module-deliverables {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .module-deliverables h4 {
+      font-size: 0.85rem;
+      color: #1F4788;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .module-deliverables ul {
+      list-style: none;
+      font-size: 0.95rem;
+    }
+
+    .module-deliverables li {
+      padding: 0.35rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+      color: #444;
+    }
+
+    .module-deliverables li:before {
+      content: ">";
+      position: absolute;
+      left: 0;
+      color: #F4A460;
+      font-weight: bold;
+    }
+
+    .module-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .module-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(31, 71, 136, 0.3);
+    }
+
+    .module-btn.locked {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .module-btn.locked:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .bonus-card .module-header {
+      background: linear-gradient(135deg, #F4A460 0%, #e09450 100%);
+    }
+
+    .no-access-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .no-access-modal {
+      background: white;
+      padding: 3rem;
+      border-radius: 12px;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .no-access-modal h2 {
+      color: #1F4788;
+      margin-bottom: 1rem;
+    }
+
+    .no-access-modal p {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+
+    .no-access-modal .cta-btn {
+      display: inline-block;
+      background: #F4A460;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+
+    .no-access-modal .cta-btn:hover {
+      background: #e09450;
+      transform: translateY(-2px);
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .welcome-section {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">Loading your dashboard...</div>
+
+  <div id="dashboard" style="display: none;">
+    <header class="dashboard-header">
+      <h1>The Catering Profit System</h1>
+      <div id="user-info" class="user-info"></div>
+    </header>
+
+    <div class="container">
+      <section class="welcome-section">
+        <h2>Welcome back, <span id="user-name">Student</span>!</h2>
+        <p>Ready to fix those profit leaks? Pick up where you left off or explore a new module.</p>
+
+        <div class="launch-notice">
+          <strong>Course launches March 30th, 2026.</strong> You'll receive an email when all content is live. In the meantime, explore the module previews below!
+        </div>
+      </section>
+
+      <section class="modules-grid">
+        <!-- Module 1 -->
+        <div class="module-card">
+          <div class="module-header">
+            <h3>Labor Cost Control</h3>
+            <span class="module-number">Module 1</span>
+          </div>
+          <div class="module-content">
+            <p>Stop guessing at staffing. Calculate exact labor needs per event type, account for travel/setup/breakdown, and build a reliable bench team.</p>
+            <div class="module-deliverables">
+              <h4>What you'll get</h4>
+              <ul>
+                <li>Event Staffing Calculator (Excel)</li>
+                <li>Labor Cost Tracking Sheet</li>
+                <li>Training Checklist for Event Staff</li>
+              </ul>
+            </div>
+            <a href="module-1.html" class="module-btn locked">Coming March 30th</a>
+          </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="module-card">
+          <div class="module-header">
+            <h3>Pricing That Actually Works</h3>
+            <span class="module-number">Module 2</span>
+          </div>
+          <div class="module-content">
+            <p>Price every job with all costs included. No more "I thought we made money on that event" surprises.</p>
+            <div class="module-deliverables">
+              <h4>What you'll get</h4>
+              <ul>
+                <li>Full-Cost Pricing Calculator</li>
+                <li>Client Quote Template</li>
+                <li>Service Tier Comparison Sheet</li>
+              </ul>
+            </div>
+            <a href="module-2.html" class="module-btn locked">Coming March 30th</a>
+          </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="module-card">
+          <div class="module-header">
+            <h3>Food Cost & Menu Engineering</h3>
+            <span class="module-number">Module 3</span>
+          </div>
+          <div class="module-content">
+            <p>Hit your target food cost consistently. Eliminate waste. Know which menu items make money and which are bleeding you dry.</p>
+            <div class="module-deliverables">
+              <h4>What you'll get</h4>
+              <ul>
+                <li>Menu Profitability Spreadsheet</li>
+                <li>Standard Recipe Cards</li>
+                <li>Waste Tracking Log</li>
+              </ul>
+            </div>
+            <a href="module-3.html" class="module-btn locked">Coming March 30th</a>
+          </div>
+        </div>
+
+        <!-- Module 4 -->
+        <div class="module-card">
+          <div class="module-header">
+            <h3>Delivery & Logistics Systems</h3>
+            <span class="module-number">Module 4</span>
+          </div>
+          <div class="module-content">
+            <p>Organize delivery operations so you can scale without chaos. Plan routes, track orders, manage equipment.</p>
+            <div class="module-deliverables">
+              <h4>What you'll get</h4>
+              <ul>
+                <li>Delivery Route Planner</li>
+                <li>Event Equipment Checklist</li>
+                <li>Daily Order Tracking Sheet</li>
+              </ul>
+            </div>
+            <a href="module-4.html" class="module-btn locked">Coming March 30th</a>
+          </div>
+        </div>
+
+        <!-- Module 5 -->
+        <div class="module-card">
+          <div class="module-header">
+            <h3>Cash Flow Management</h3>
+            <span class="module-number">Module 5</span>
+          </div>
+          <div class="module-content">
+            <p>Know your break-even per event. Set payment terms that protect you. Track profitability monthly so you actually know if you're making money.</p>
+            <div class="module-deliverables">
+              <h4>What you'll get</h4>
+              <ul>
+                <li>Break-Even Calculator</li>
+                <li>Payment Terms Template</li>
+                <li>Monthly Profitability Dashboard</li>
+              </ul>
+            </div>
+            <a href="module-5.html" class="module-btn locked">Coming March 30th</a>
+          </div>
+        </div>
+
+        <!-- Bonus -->
+        <div class="module-card bonus-card">
+          <div class="module-header">
+            <h3>90-Day Implementation Plan</h3>
+            <span class="module-number">BONUS</span>
+          </div>
+          <div class="module-content">
+            <p>Week-by-week action plan to implement everything without overwhelming your existing operations. Start seeing results immediately.</p>
+            <a href="bonus.html" class="module-btn locked">Coming March 30th</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- No Access Modal (hidden by default) -->
+  <div id="no-access-overlay" class="no-access-overlay" style="display: none;">
+    <div class="no-access-modal">
+      <h2>Course Access Required</h2>
+      <p>You don't have access to The Catering Profit System yet. Purchase now to unlock all modules and materials!</p>
+      <a href="/catering-profit.html" class="cta-btn">Get Access - $39</a>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    async function initDashboard() {
+      CourseAuth.init();
+
+      // Check if logged in
+      if (!CourseAuth.isLoggedIn()) {
+        window.location.href = '/login.html?redirect=/course/dashboard.html';
+        return;
+      }
+
+      // Verify session
+      const isValid = await CourseAuth.verifySession();
+      if (!isValid) {
+        window.location.href = '/login.html?redirect=/course/dashboard.html';
+        return;
+      }
+
+      const user = CourseAuth.getUser();
+
+      // Hide loading, show dashboard
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+
+      // Update user info
+      document.getElementById('user-name').textContent = user.name.split(' ')[0];
+      CourseAuth.renderUserInfo('user-info');
+
+      // Check course access
+      if (!user.has_course_access) {
+        document.getElementById('no-access-overlay').style.display = 'flex';
+      }
+    }
+
+    initDashboard();
+  </script>
+</body>
+</html>

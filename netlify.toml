@@ -4,8 +4,16 @@
   # Publish directory (root of the site)
   publish = "."
 
-  # No build command needed for static site
-  command = ""
+  # Install dependencies for functions
+  command = "npm install"
+
+  # Functions directory
+  functions = "netlify/functions"
+
+# Functions configuration
+[functions]
+  # Node.js bundler
+  node_bundler = "esbuild"
 
 # Redirect rules
 [[redirects]]
