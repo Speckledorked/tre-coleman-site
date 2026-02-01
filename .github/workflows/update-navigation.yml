@@ -37,7 +37,7 @@ jobs:
             </li>'''
 
           # Pattern to find where to insert (after Insights dropdown closing </li>)
-          pattern = r'(</ div>\s*</ li>\s*<li><a href="about\.html">About</a></li>)'
+          pattern = r'(</div>\s*</li>\s*<li><a href="about\.html">About</a></li>)'
           replacement = resources_html + '\n' + r'\1'
 
           # Get all HTML files
