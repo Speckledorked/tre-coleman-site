@@ -3,6 +3,9 @@ name: Add Resources Tab to Navigation
 on:
   workflow_dispatch:
 
+  permissions:
+  contents: write
+
 jobs:
   update-navigation:
     runs-on: ubuntu-latest
