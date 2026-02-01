@@ -1,0 +1,65 @@
+name: Fix Audit Pages Navigation
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-audit-navigation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-audit-nav:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fix audit.html and food-truck-audit.html navigation
+        run: |
+          python3 << 'EOF'
+          import re
+
+          files = ['audit.html', 'food-truck-audit.html']
+          
+          for filename in files:
+              print(f"Processing {filename}...")
+              
+              with open(filename, 'r', encoding='utf-8') as f:
+                  content = f.read()
+              
+              # The problem: broken HTML structure where Resources tab was inserted incorrectly
+              # Pattern to find the broken structure:
+              # <li class="nav-dropdown"> (Insights)
+              #   <a>Insights</a>
+              #   <div class="dropdown-menu">...</div>
+              # <li class="nav-dropdown"> (Resources - MISSING CLOSING TAGS)
+              #   ...
+              # </li></div> </li> (closing tags in wrong order)
+              
+              # Find and fix the broken navigation structure
+              broken_pattern = r'(<li class="nav-dropdown">\s*<a href="#" onclick="return false;">Insights</a>\s*<div class="dropdown-menu">.*?</div>)\s*(<li class="nav-dropdown">\s*<a href="#" onclick="return false;">Resources</a>\s*<div class="dropdown-menu">\s*<a href="audit\.html">Restaurant Ops Audit</a>\s*<a href="food-truck-audit\.html">Food Truck Launch Audit</a>\s*</div>\s*</li>)</div>\s*</li>'
+              
+              # Replace with correct structure
+              fixed_structure = r'\1\n            </li>\n            \2'
+              
+              new_content = re.sub(broken_pattern, fixed_structure, content, flags=re.DOTALL)
+              
+              if new_content != content:
+                  with open(filename, 'w', encoding='utf-8') as f:
+                      f.write(new_content)
+                  print(f"✓ Fixed {filename}")
+              else:
+                  print(f"- No changes needed for {filename}")
+          
+          print("\nDone!")
+          EOF
+
+      - name: Commit and push fixes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add audit.html food-truck-audit.html
+          git diff --staged --quiet || git commit -m "Fix navigation structure on audit pages"
+          git diff --staged --quiet || git push
