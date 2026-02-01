@@ -2,11 +2,11 @@ name: Add Resources Tab to Navigation
 
 on:
   workflow_dispatch:
-    push:
-        paths:
-              - '.github/workflows/update-navigation.yml'
+  push:
+    paths:
+      - '.github/workflows/update-navigation.yml'
 
-  permissions:
+permissions:
   contents: write
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
             </li>'''
 
           # Pattern to find where to insert (after Insights dropdown closing </li>)
-          pattern = r'(</div>\s*</li>\s*<li><a href="about\.html">About</a></li>)'
+          pattern = r'(</ div>\s*</ li>\s*<li><a href="about\.html">About</a></li>)'
           replacement = resources_html + '\n' + r'\1'
 
           # Get all HTML files
@@ -48,15 +48,15 @@ jobs:
               try:
                   with open(filename, 'r', encoding='utf-8') as f:
                       content = f.read()
-                  
+
                   # Check if Resources tab already exists
                   if 'Resources</a>' in content:
                       print(f"Skipping {filename} - Resources tab already exists")
                       continue
-                  
+
                   # Try to insert after Insights dropdown
                   new_content = re.sub(pattern, replacement, content)
-                  
+
                   if new_content != content:
                       with open(filename, 'w', encoding='utf-8') as f:
                           f.write(new_content)
@@ -75,5 +75,5 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add *.html
-          git diff --staged --quiet || git commit -m 'Add Resources tab to navigation across all pages'
+          git commit -m "Add Resources tab to navigation across all pages" || exit 0
           git push
