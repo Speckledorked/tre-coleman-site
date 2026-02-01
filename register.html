@@ -241,6 +241,13 @@
           body: JSON.stringify({ name, email, password })
         });
 
+        // Check if response is JSON before parsing
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          console.error('Non-JSON response:', await response.text());
+          throw new Error('Server error. The registration service may not be deployed yet. Please try again later.');
+        }
+
         const data = await response.json();
 
         if (!response.ok) {
