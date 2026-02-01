@@ -1,0 +1,73 @@
+name: Add Resources Tab to Navigation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Update HTML files
+        run: |
+          python3 << 'EOF'
+          import os
+          import re
+
+          # Resources dropdown HTML to add
+          resources_html = '''            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Resources</a>
+              <div class="dropdown-menu">
+                <a href="audit.html">Restaurant Ops Audit</a>
+                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+              </div>
+            </li>'''
+
+          # Pattern to find where to insert (after Insights dropdown closing </li>)
+          pattern = r'(</div>\s*</li>\s*<li><a href="about\.html">About</a></li>)'
+          replacement = resources_html + '\n' + r'\1'
+
+          # Get all HTML files
+          html_files = [f for f in os.listdir('.') if f.endswith('.html')]
+
+          updated_count = 0
+          for filename in html_files:
+              try:
+                  with open(filename, 'r', encoding='utf-8') as f:
+                      content = f.read()
+                  
+                  # Check if Resources tab already exists
+                  if 'Resources</a>' in content:
+                      print(f"Skipping {filename} - Resources tab already exists")
+                      continue
+                  
+                  # Try to insert after Insights dropdown
+                  new_content = re.sub(pattern, replacement, content)
+                  
+                  if new_content != content:
+                      with open(filename, 'w', encoding='utf-8') as f:
+                          f.write(new_content)
+                      print(f"Updated {filename}")
+                      updated_count += 1
+                  else:
+                      print(f"No match found in {filename}")
+              except Exception as e:
+                  print(f"Error processing {filename}: {e}")
+
+          print(f"\nTotal files updated: {updated_count}")
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add *.html
+          git diff --staged --quiet || git commit -m 'Add Resources tab to navigation across all pages'
+          git push
