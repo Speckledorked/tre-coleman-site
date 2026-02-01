@@ -39,12 +39,6 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Ensure Netlify Functions are accessible (passthrough)
-[[redirects]]
-  from = "/.netlify/functions/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
 # Custom 404 page - must be AFTER all other redirects
 # force = false ensures functions and existing resources aren't overridden
 [[redirects]]
