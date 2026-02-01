@@ -2,6 +2,9 @@ name: Add Resources Tab to Navigation
 
 on:
   workflow_dispatch:
+    push:
+        paths:
+              - '.github/workflows/update-navigation.yml'
 
   permissions:
   contents: write
