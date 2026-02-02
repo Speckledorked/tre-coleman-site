@@ -93,67 +93,6 @@
             min-height: 100vh;
         }
 
-        /* --- Simple top navigation (minimal styles to avoid conflicts) --- */
-        .top-nav {
-            background: #1F4788;
-            color: white;
-        }
-        .top-nav .nav-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: .75rem 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .top-nav .brand { font-weight: 700; letter-spacing: .3px; }
-        .top-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; }
-        .top-nav a { color: #fff; text-decoration: none; font-size: 0.9rem; }
-        .top-nav a:hover { text-decoration: underline; }
-        .mobile-menu-toggle { display: none; }
-
-        /* Mobile Navigation */
-        @media (max-width: 1024px) {
-            .top-nav .nav-inner {
-                flex-wrap: wrap;
-                position: relative;
-            }
-            .mobile-menu-toggle {
-                display: block;
-                background: none;
-                border: none;
-                color: white;
-                font-size: 1.5rem;
-                cursor: pointer;
-                padding: 0.5rem;
-                z-index: 1000;
-            }
-            .top-nav ul {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background: #1F4788;
-                padding: 1rem 0;
-                margin-top: 0.5rem;
-                gap: 0;
-            }
-            .top-nav ul.active {
-                display: flex;
-            }
-            .top-nav li {
-                width: 100%;
-                text-align: left;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            .top-nav li a {
-                display: block;
-                padding: 0.75rem 1rem;
-                font-size: 1rem;
-            }
-            .top-nav li:last-child {
-                border-bottom: none;
-            }
-        }
 
         .container {
             max-width: 800px;
@@ -395,35 +334,48 @@
     </style>
 </head>
 <body>
-    <!-- NEW: Top Navigation (clickable links). Update hrefs to your routes. -->
-    <nav class="top-nav" aria-label="Primary">
-        <div class="nav-inner">
-            <div class="brand">Tre' Coleman</div>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">☰</button>
-            <ul id="navMenu">
-                <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="advisory.html">Advisory</a></li>
-                <li class="nav-dropdown">
-                    <a href="#" onclick="return false;">Insights</a>
-                    <div class="dropdown-menu">
-                        <a href="playbook.html">Free Playbook</a>
-                        <a href="catering-profit.html">Catering Profit System</a>
-                        <a href="login.html">Course Login</a>
-                    </div>
-                </li>
-                <li class="nav-dropdown">
-                    <a href="#" onclick="return false;">Resources</a>
-                    <div class="dropdown-menu">
-                        <a href="audit.html">Restaurant Ops Audit</a>
-                        <a href="food-truck-audit.html">Food Truck Launch Audit</a>
-                    </div>
-                </li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <!-- Navigation -->
+        <nav id="mainNav">
+          <ul>
+            <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="advisory.html">Advisory</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Insights</a>
+              <div class="dropdown-menu">
+                <a href="playbook.html">Free Playbook</a>
+                <a href="catering-profit.html">Catering Profit System</a>
+                <a href="login.html">Course Login</a>
+              </div>
+            </li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Resources</a>
+              <div class="dropdown-menu">
+                <a href="audit.html">Restaurant Ops Audit</a>
+                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+              </div>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
     <div class="container">
         <div class="header">
@@ -1467,40 +1419,43 @@ This is a turnaround situation that requires professional help and urgent action
         }
     </script>
     <script>
-        // Mobile menu toggle
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const navMenu = document.getElementById('navMenu');
+      // Mobile menu toggle functionality
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mainNav = document.getElementById('mainNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const navLinks = mainNav.querySelectorAll('a');
 
-        if (mobileMenuToggle) {
-            mobileMenuToggle.addEventListener('click', function() {
-                navMenu.classList.toggle('active');
-            });
+      function toggleMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      }
 
-            // Close menu when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.top-nav')) {
-                    navMenu.classList.remove('active');
-                }
-            });
+      function closeMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
 
-            // Close menu when a link is clicked
-            navMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function() {
-                    navMenu.classList.remove('active');
-                });
-            });
-        }
+      mobileMenuToggle.addEventListener('click', toggleMenu);
+      mobileOverlay.addEventListener('click', closeMenu);
+      navLinks.forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
+      });
 
-        // Mobile dropdown toggle
-        const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
-        dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                if (window.innerWidth <= 1024) {
-                    e.preventDefault();
-                    toggle.parentElement.classList.toggle('active');
-                }
-            });
+      // Mobile dropdown toggle
+      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
+      dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            toggle.parentElement.classList.toggle('active');
+          }
         });
+      });
     </script>
     <script src="/exit-intent-popup.js" defer></script>
   <script src="/header-scroll.js"></script>
