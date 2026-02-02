@@ -18,7 +18,30 @@
         }
 
 
-        .container {
+        /* Override for header container - full width nav */
+        header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        /* Override for footer container */
+        footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+            overflow: visible;
+        }
+
+        /* Content container styling */
+        .content-container {
             max-width: 800px;
             margin: 1rem auto;
             background: white;
@@ -257,7 +280,7 @@
         .calculate-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
 
         @media (max-width: 768px) {
-            .container { margin: 1rem; }
+            .content-container { margin: 1rem; }
             .content { padding: 1rem; }
             .contact-form { flex-direction: column; }
             .header h1 { font-size: 1.5rem; }
@@ -308,7 +331,7 @@
       </div>
     </header>
 
-    <div class="container">
+    <div class="content-container">
         <div class="header">
             <h1>🚚 Food Truck Launch Readiness Audit</h1>
             <p>Identify gaps in your launch plan and avoid costly mistakes. For aspiring operators planning to launch in the next 3-12 months.</p>
