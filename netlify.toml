@@ -39,10 +39,4 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Custom 404 page - must be AFTER all other redirects
-# force = false ensures functions and existing resources aren't overridden
-[[redirects]]
-  from = "/*"
-  to = "/404.html"
-  status = 404
-  force = false
+
