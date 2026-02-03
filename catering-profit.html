@@ -412,19 +412,44 @@
 
     footer {
       background: #2c3e50;
-      color: white;
-      text-align: center;
-      padding: 2rem 0;
+      color: rgba(255,255,255,0.8);
+      padding: 3rem 2rem 2rem;
       margin-top: 4rem;
     }
 
-    footer a {
-      color: #F4A460;
-      text-decoration: none;
+    footer .container {
+      max-width: 1200px;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h4 {
+      color: white;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-section a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: #F4A460;
     }
 
     p {
