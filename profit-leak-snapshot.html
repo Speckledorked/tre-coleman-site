@@ -21,6 +21,8 @@
   <meta name="twitter:description" content="90-minute diagnostic to identify your top 3 profit leaks. Get a custom action plan to fix what's costing you money." />
   <meta name="twitter:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
 
+  <!-- Use relative path for CSS so it loads on GitHub Pages project sites -->
+  <link rel="stylesheet" href="style.css" />
   <!-- Load Stripe script once at top -->
   <script async src="https://js.stripe.com/v3/buy-button.js"></script>
 
@@ -314,56 +316,7 @@
     html {
       scroll-behavior: smooth;
     }
-    /* Site Navigation */
-    .site-header {
-      background: rgba(30, 58, 95, 0.95);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo a {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: white;
-      text-decoration: none;
-    }
-
-    #mainNav ul {
-      display: flex;
-      list-style: none;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    #mainNav a {
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    #mainNav a:hover {
-      color: #d4a574;
-    }
-
-    .nav-cta {
-      background: #d4a574 !important;
-      padding: 0.5rem 1rem !important;
-      border-radius: 6px !important;
-    }
+    /* Dropdown navigation styles - supplement to style.css */
 
     .nav-dropdown {
       position: relative;
@@ -407,105 +360,85 @@
       color: #1e3a5f !important;
     }
 
-    .mobile-menu-toggle {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
+/* Mobile dropdown behavior */
+@media (max-width: 1024px) {
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
 
-    .mobile-menu-toggle span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background: white;
-    }
+  #mainNav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 400px;
+    height: 100vh;
+    background: var(--primary-colour, #1e3a5f);
+    padding: 5rem 2rem 2rem;
+    transition: right 0.3s;
+    z-index: 1001;
+  }
 
-    .mobile-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 1000;
-    }
+  #mainNav.active {
+    right: 0;
+  }
 
-    @media (max-width: 1024px) {
-      .mobile-menu-toggle {
-        display: flex;
-      }
+  #mainNav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
 
-      #mainNav {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        max-width: 400px;
-        height: 100vh;
-        background: #1e3a5f;
-        padding: 5rem 2rem 2rem;
-        transition: right 0.3s;
-        z-index: 1001;
-      }
+  #mainNav li {
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
 
-      #mainNav.active {
-        right: 0;
-      }
+  #mainNav a {
+    display: block;
+    padding: 1rem 0;
+  }
 
-      #mainNav ul {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-      }
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 0.5rem 0;
+    display: none;
+  }
 
-      #mainNav li {
-        width: 100%;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-      }
+  .nav-dropdown.active .dropdown-menu {
+    display: block;
+  }
 
-      #mainNav a {
-        display: block;
-        padding: 1rem 0;
-      }
+  .dropdown-menu a {
+    color: white;
+    padding-left: 2rem;
+  }
 
-      .dropdown-menu {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        background: rgba(255,255,255,0.05);
-        display: none;
-      }
+  .dropdown-menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
 
-      .nav-dropdown.active .dropdown-menu {
-        display: block;
-      }
-
-      .dropdown-menu a {
-        color: white !important;
-        padding-left: 1.5rem;
-      }
-
-      .mobile-overlay.active {
-        display: block;
-      }
-    }
+  .mobile-overlay.active {
+    display: block;
+  }
+}
   </style>
 </head>
+    <script src="analytics.js"></script>
 <body>
   <!-- Mobile Menu Overlay -->
   <div class="mobile-overlay" id="mobileOverlay"></div>
 
-  <!-- Site Navigation -->
-  <header class="site-header">
-    <div class="nav-container">
-      <div class="logo"><a href="index.html">Tre Coleman</a></div>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
       <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
         <span></span>
         <span></span>
@@ -866,5 +799,6 @@
   </script>
 
   <script src="/header-scroll.js"></script>
+    <script src="/exit-intent-popup.js" defer></script>
   </body>
 </html>
