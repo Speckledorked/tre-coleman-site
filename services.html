@@ -60,6 +60,43 @@
 
 /* Mobile dropdown behavior */
 @media (max-width: 1024px) {
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
+
+  #mainNav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 400px;
+    height: 100vh;
+    background: var(--primary-colour, #1e3a5f);
+    padding: 5rem 2rem 2rem;
+    transition: right 0.3s;
+    z-index: 1001;
+  }
+
+  #mainNav.active {
+    right: 0;
+  }
+
+  #mainNav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  #mainNav li {
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  #mainNav a {
+    display: block;
+    padding: 1rem 0;
+  }
+
   .dropdown-menu {
     position: static;
     opacity: 1;
@@ -83,6 +120,10 @@
   .dropdown-menu a:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+  }
+
+  .mobile-overlay.active {
+    display: block;
   }
 }
 </style>
@@ -131,6 +172,68 @@
         </nav>
       </div>
     </header>
+
+    <!-- Live Event Banner -->
+    <section style="background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%); color: white; padding: 3rem 2rem;">
+      <div class="container" style="max-width: 900px;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span style="background: #F4A460; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Live Event - April 2026</span>
+        </div>
+
+        <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1rem; color: white;">Hospitality Ops Live</h2>
+        <p style="text-align: center; font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.95;">A live, operator-only working session in Richmond, Virginia.<br>In-person and virtual options available.</p>
+
+        <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+          <p style="margin-bottom: 1.5rem;">This is a hybrid session for restaurant, catering, and food truck owners across Virginia. Registration and access are handled through Eventbrite.</p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+              <p style="font-weight: 700; margin-bottom: 0.5rem; color: #F4A460;">No vendors.</p>
+              <p style="font-weight: 700; margin-bottom: 0.5rem; color: #F4A460;">No pitches.</p>
+              <p style="font-weight: 700; margin-bottom: 0; color: #F4A460;">No theory.</p>
+            </div>
+            <div>
+              <p style="margin-bottom: 0;">Just real operators working through the issues that quietly compress margins.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <h3 style="color: #F4A460; margin-bottom: 1rem; font-size: 1.1rem;">In two hours, we'll pressure-test what's actually causing margin strain:</h3>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0;">~</span> Labor pressure and scheduling that never quite fits</li>
+            <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0;">~</span> Pricing decisions that feel risky, so they get delayed</li>
+            <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0;">~</span> Food cost creep that hides in plain sight</li>
+            <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0;">~</span> Systems that work on a calm Tuesday but break under stress</li>
+          </ul>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+          <div>
+            <h4 style="color: #F4A460; margin-bottom: 0.75rem;">This session is for:</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="padding: 0.25rem 0;"><span style="color: #27ae60;">+</span> Restaurant owners and operators</li>
+              <li style="padding: 0.25rem 0;"><span style="color: #27ae60;">+</span> Catering owners</li>
+              <li style="padding: 0.25rem 0;"><span style="color: #27ae60;">+</span> Food truck owners and operators</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="color: #F4A460; margin-bottom: 0.75rem;">This session is NOT for:</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li style="padding: 0.25rem 0;"><span style="color: #e74c3c;">-</span> Vendors or agencies</li>
+              <li style="padding: 0.25rem 0;"><span style="color: #e74c3c;">-</span> Consultants or coaches</li>
+              <li style="padding: 0.25rem 0;"><span style="color: #e74c3c;">-</span> Anyone coming to pitch or sell</li>
+            </ul>
+          </div>
+        </div>
+
+        <p style="margin-bottom: 2rem; font-style: italic; opacity: 0.95;">You'll leave with clarity on what's actually hurting profitability right now and a short, focused list of next moves to protect your margins.</p>
+
+        <div style="text-align: center;">
+          <a href="https://www.eventbrite.com/e/1982301120012" target="_blank" rel="noopener" style="display: inline-block; background: #F4A460; color: white; padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 700; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(244, 164, 96, 0.4);">View Details & Get Tickets →</a>
+        </div>
+      </div>
+    </section>
 
     <section>
       <div class="container">

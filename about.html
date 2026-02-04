@@ -64,8 +64,45 @@
       color: #1e3a5f;
     }
 
-    /* Mobile dropdown behavior */
+    /* Mobile navigation behavior */
     @media (max-width: 1024px) {
+      .mobile-menu-toggle {
+        display: flex !important;
+      }
+
+      #mainNav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 400px;
+        height: 100vh;
+        background: var(--primary-colour, #1e3a5f);
+        padding: 5rem 2rem 2rem;
+        transition: right 0.3s;
+        z-index: 1001;
+      }
+
+      #mainNav.active {
+        right: 0;
+      }
+
+      #mainNav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+
+      #mainNav li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      #mainNav a {
+        display: block;
+        padding: 1rem 0;
+      }
+
       .dropdown-menu {
         position: static;
         opacity: 1;
@@ -89,6 +126,10 @@
       .dropdown-menu a:hover {
         background: rgba(255, 255, 255, 0.1);
         color: white;
+      }
+
+      .mobile-overlay.active {
+        display: block;
       }
     }
 
@@ -263,9 +304,9 @@
       </div>
 
               <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); color: white; padding: 4rem 2rem; text-align: center; margin: 4rem auto 0; border-radius: 12px;">
-            <h3 style="margin-bottom: 1rem; font-size: 2rem; font-weight: bold;">Want to see where your profit is leaking?</h3>
-            <p style="margin-bottom: 2rem; font-size: 1.2rem; opacity: 0.95;">Book a 90-minute <a href="profit-leak-snapshot.html" style="color: #ff6b35; text-decoration: underline; font-weight: bold;">Profit Leak Snapshot</a> and I'll show you your top 3 leaks and what to fix first.</p>
-            <a href="profit-leak-snapshot.html" style="display: inline-block; background: #ff6b35; color: white; padding: 1.25rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.2rem; transition: transform 0.2s;">Book Your Snapshot</a>
+            <h3 style="margin-bottom: 1rem; font-size: 2rem; font-weight: bold; color: #F4A460;">Want to see where your profit is leaking?</h3>
+            <p style="margin-bottom: 2rem; font-size: 1.2rem; color: white !important;">Book a 90-minute <a href="profit-leak-snapshot.html" style="color: #F4A460; text-decoration: underline; font-weight: bold;">Profit Leak Snapshot</a> and I'll show you your top 3 leaks and what to fix first.</p>
+            <a href="profit-leak-snapshot.html" style="display: inline-block; background: #F4A460; color: white; padding: 1.25rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.2rem; transition: transform 0.2s;">Book Your Snapshot</a>
         </div>
     </section>
     <!-- What I do: three core pillars -->
@@ -342,17 +383,13 @@
         <a href="contact.html" class="secondary">Tell me your bottleneck</a>
       </div>
     </section>
-  </main>
-  <!-- Footer -->
-  <footer>
-    <div class="container">
 
-          <!-- Credentials Section -->
+    <!-- Credentials Section -->
     <section class="section" style="padding: 3rem 0;">
         <div class="container">
-            <div class="credentials" style="background: #fef9f3; padding: 2.5rem; border-radius: 8px;">
-                <h2>Background</h2>
-                <ul style="line-height: 1.8; font-size: 1.1rem; margin-top: 1.5rem;">
+            <div class="credentials" style="background: #fef9f3; padding: 2.5rem; border-radius: 8px; color: #2c3e50;">
+                <h2 style="color: #1F4788;">Background</h2>
+                <ul style="line-height: 1.8; font-size: 1.1rem; margin-top: 1.5rem; color: #2c3e50;">
                     <li><strong>10+ years</strong> managing multi-unit restaurant operations</li>
                     <li><strong>300+ employees</strong> led across multiple locations</li>
                     <li><strong>$300K+</strong> in revenue waste eliminated for clients</li>
@@ -361,6 +398,11 @@
             </div>
         </div>
     </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
       <div class="footer-grid">
         <div class="footer-section">
           <h4>Tre Coleman Consulting LLC</h4>
