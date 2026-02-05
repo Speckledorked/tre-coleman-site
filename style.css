@@ -12,7 +12,7 @@
 /* Root variables - Updated for operator-to-operator aesthetic */
 :root {
   /* Primary colors - Operator navy (matches homepage) */
-  --primary-colour: #C2703B;
+  --primary-colour: #1F4788;
   --primary-dark: #152b45;
   --primary-light: #2d5aa0;
   --secondary-colour: #3a5a3a;
@@ -31,7 +31,7 @@
   --light-text: #718096;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #C2703B 0%, #2d5aa0 100%);
+  --gradient-primary: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
   --gradient-secondary: linear-gradient(135deg, #3a5a3a 0%, #34495e 100%);
   --gradient-accent: linear-gradient(135deg, #F4A460 0%, #ffb574 100%);
 
@@ -126,7 +126,7 @@ a:hover {
 
 /* Header */
 header {
-  background: #1F4788;
+  background: var(--primary-colour);
   color: white;
   padding: 1.25rem 0;
   position: sticky;

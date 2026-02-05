@@ -266,22 +266,9 @@
       max-width: 400px;
     }
 
-    /* Footer */
+    /* Footer - override to match site color */
     footer {
       background: #1e3a5f;
-      color: white;
-      text-align: center;
-      padding: 2rem 1.5rem;
-    }
-
-    footer a {
-      color: #d4a574;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
     }
 
     /* Mobile Responsive */
@@ -373,7 +360,7 @@
     width: 80%;
     max-width: 400px;
     height: 100vh;
-    background: var(--primary-colour, #1e3a5f);
+    background: var(--primary-colour, #1F4788);
     padding: 5rem 2rem 2rem;
     transition: right 0.3s;
     z-index: 1001;
@@ -429,8 +416,8 @@
   }
 }
   </style>
+  <script src="analytics.js"></script>
 </head>
-    <script src="analytics.js"></script>
 <body>
   <!-- Mobile Menu Overlay -->
   <div class="mobile-overlay" id="mobileOverlay"></div>
@@ -479,8 +466,6 @@
       <p class="tagline">Your operation is profitable on paper, but the money is not showing up in your account. Something is leaking.</p>
 
       <p class="description">The Profit Leak Snapshot is a 90-minute diagnostic session to identify your top 3 profit leaks, estimate what they are costing you, and decide what to fix first.</p>
-
-      <p class="pricing">Investment: <span class="amount">$750</span> (paid at booking)</p>
 
       <div class="cta-buttons">
         <div class="stripe-container">
@@ -597,22 +582,6 @@
       </ul>
       <p style="margin-top: 2rem; font-size: 1.3rem; font-weight: 600; color: #1e3a5f;">You are buying clarity. Clarity drives profit.</p>
     </div>
-  </section>
-
-  <!-- Pricing CTA -->
-  <section class="cta-section">
-    <h2>Pricing</h2>
-    <p style="font-size: 2rem; color: #d4a574; font-weight: 700; margin-bottom: 2rem;">$750 paid at booking</p>
-
-    <div class="stripe-container">
-      <stripe-buy-button
-        buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ"
-        publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW"
-      >
-      </stripe-buy-button>
-    </div>
-
-    <p class="credit-note" style="color: rgba(255,255,255,0.85); margin-top: 2rem;">If you move forward with full implementation support, your $750 credits toward that engagement.</p>
   </section>
 
   <!-- FAQ Section -->
@@ -746,7 +715,7 @@
             <li><a href="services.html">Services</a></li>
             <li><a href="advisory.html">Advisory</a></li>
             <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
-              <li><a href="catering-profit.html">Catering Course</a></li>
+            <li><a href="catering-profit.html">Catering Course</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
