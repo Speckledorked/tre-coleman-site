@@ -57,74 +57,7 @@
   color: #1e3a5f;
 }
 
-/* Mobile navigation behavior */
-@media (max-width: 1024px) {
-  .mobile-menu-toggle {
-    display: flex !important;
-  }
-
-  #mainNav {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 80%;
-    max-width: 400px;
-    height: 100vh;
-    background: var(--primary-colour, #1F4788);
-    padding: 5rem 2rem 2rem;
-    transition: right 0.3s;
-    z-index: 1001;
-  }
-
-  #mainNav.active {
-    right: 0;
-  }
-
-  #mainNav ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-  }
-
-  #mainNav li {
-    width: 100%;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-
-  #mainNav a {
-    display: block;
-    padding: 1rem 0;
-  }
-
-  .dropdown-menu {
-    position: static;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    box-shadow: none;
-    background: rgba(255, 255, 255, 0.05);
-    margin: 0.5rem 0;
-    display: none;
-  }
-
-  .nav-dropdown.active .dropdown-menu {
-    display: block;
-  }
-
-  .dropdown-menu a {
-    color: white;
-    padding-left: 2rem;
-  }
-
-  .dropdown-menu a:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-  }
-
-  .mobile-overlay.active {
-    display: block;
-  }
-}
+/* Mobile nav styles handled by style.css */
     <style>
       .service-hero {
         overflow: hidden;

@@ -863,47 +863,54 @@ button[type="submit"]:active,
    RESPONSIVE DESIGN - Mobile First
    ============================================ */
 
-/* Tablet and below (768px) */
-@media screen and (max-width: 768px) {
+/* Tablet and below (1024px) - matches index.html */
+@media screen and (max-width: 1024px) {
   /* Show mobile menu toggle */
   .mobile-menu-toggle {
     display: flex;
   }
 
   /* Hide navigation by default on mobile */
-  nav {
+  nav, #mainNav {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 280px;
+    width: 80%;
+    max-width: 400px;
     height: 100vh;
-    background-color: var(--primary-colour);
+    background: linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%);
     transition: right 0.3s ease;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
     padding-top: 5rem;
-    z-index: 1000;
+    z-index: 1001;
+    overflow-y: auto;
   }
 
-  nav.active {
+  nav.active, #mainNav.active {
     right: 0;
   }
 
-  nav ul {
+  nav ul, #mainNav ul {
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-    padding: 0 1.5rem;
   }
 
-  nav ul li {
+  nav ul li, #mainNav li {
     width: 100%;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid #eee;
   }
 
-  nav ul li a {
+  nav ul li a, #mainNav a {
     display: block;
     padding: 1rem 0;
-    width: 100%;
+    color: var(--primary-colour, #1F4788);
+    text-shadow: none;
+  }
+
+  nav ul li a:hover, #mainNav a:hover {
+    color: var(--accent-colour, #F4A460);
   }
 
   nav a.button {
@@ -911,32 +918,40 @@ button[type="submit"]:active,
     text-align: center;
   }
 
-  /* Hero section adjustments */
-  .hero {
-    padding: 3rem 0;
+  .mobile-overlay.active {
+    display: block;
   }
 
-  .hero::before {
-    width: 400px;
-    height: 400px;
-    right: -30%;
+  /* Dropdown menu on mobile */
+  .dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    background: rgba(31, 71, 136, 0.05);
+    margin: 0.5rem 0;
+    display: none;
+    border-radius: 4px;
   }
 
-  .hero h1 {
-    font-size: 2rem;
-    line-height: 1.2;
+  .nav-dropdown.active .dropdown-menu {
+    display: block;
   }
 
-  .hero p {
-    font-size: 1.125rem;
+  .dropdown-menu a {
+    color: var(--primary-colour, #1F4788) !important;
+    padding-left: 1.5rem;
   }
 
-  /* Section padding */
-  section {
-    padding: 2rem 0;
+  .dropdown-menu a:hover {
+    background: rgba(31, 71, 136, 0.1);
+    color: var(--accent-colour, #F4A460) !important;
   }
+}
 
-  /* Pillar cards - single column on mobile */
+/* Small mobile (480px and below) */
+@media screen and (max-width: 480px) {
   .pillars {
     grid-template-columns: 1fr;
   }
