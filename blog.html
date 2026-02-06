@@ -57,33 +57,7 @@
         color: #1e3a5f;
       }
 
-      /* Mobile dropdown behavior */
-      @media (max-width: 1024px) {
-        .dropdown-menu {
-          position: static;
-          opacity: 1;
-          visibility: visible;
-          transform: none;
-          box-shadow: none;
-          background: rgba(255, 255, 255, 0.05);
-          margin: 0.5rem 0;
-          display: none;
-        }
-
-        .nav-dropdown.active .dropdown-menu {
-          display: block;
-        }
-
-        .dropdown-menu a {
-          color: white;
-          padding-left: 2rem;
-        }
-
-        .dropdown-menu a:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
-        }
-      }
+      /* Mobile nav styles handled by style.css */
 
       /* Additional styles for blog page */
       .blog-header {
@@ -337,8 +311,6 @@
     </footer>
 
     <script>
-      // Set current year in footer
-      document.getElementById('year').textContent = new Date().getFullYear();
       // Mobile menu toggle functionality
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
