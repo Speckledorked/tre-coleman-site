@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
   <title>The Catering Profit System - Pre-Order Now</title>
   <meta name="description" content="Scale your catering business without killing your margins. Learn the operational systems that turn revenue into actual profit. Pre-order now for $39.">
   <style>
@@ -128,7 +129,97 @@
       background: white;
     }
 
-    /* Mobile nav styles handled by style.css */
+    /* Mobile navigation - 1024px breakpoint */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: none;
+    }
+
+    .mobile-overlay.active {
+      display: block;
+    }
+
+    @media screen and (max-width: 1024px) {
+      .mobile-menu-toggle {
+        display: flex;
+      }
+
+      #mainNav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 400px;
+        height: 100vh;
+        background: linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%);
+        transition: right 0.3s ease;
+        box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+        padding: 2rem;
+        padding-top: 5rem;
+        z-index: 1001;
+        overflow-y: auto;
+      }
+
+      #mainNav.active {
+        right: 0;
+      }
+
+      #mainNav ul {
+        flex-direction: column;
+        gap: 0;
+        align-items: stretch;
+      }
+
+      #mainNav ul li {
+        border-bottom: 1px solid rgba(31, 71, 136, 0.1);
+      }
+
+      #mainNav a {
+        color: #1F4788;
+        display: block;
+        padding: 1rem 0;
+        font-size: 1.1rem;
+      }
+
+      #mainNav a:hover {
+        color: #F4A460;
+      }
+
+      .nav-cta {
+        background: #1F4788 !important;
+        color: white !important;
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      .nav-dropdown .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+        padding-left: 1rem;
+        display: none;
+      }
+
+      .nav-dropdown.active .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu a {
+        padding: 0.75rem 0;
+        font-size: 1rem;
+        color: #1F4788 !important;
+      }
+    }
 
     .container {
       max-width: 800px;
@@ -341,7 +432,7 @@
     }
 
     footer {
-      background: #2c3e50;
+      background: #1F4788;
       color: rgba(255,255,255,0.8);
       padding: 3rem 2rem 2rem;
       margin-top: 4rem;
