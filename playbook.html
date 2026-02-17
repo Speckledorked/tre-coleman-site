@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="style.css" rel="stylesheet">
 <title>90-Day Profit Optimization Playbook</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -47,60 +48,57 @@ li{margin-bottom:10px}
 strong{color:#2c3e50}
 @media print{body{background:white;padding:0}.container{box-shadow:none;padding:40px}h2{page-break-before:always}}
 </style>
-</head>
+</link></head>
 <body>
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
-
 <!-- Site Navigation -->
 <header class="site-header">
-  <div class="nav-container">
-    <div class="logo"><a href="index.html">Tre Coleman</a></div>
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <nav id="mainNav">
-      <ul>
-        <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="advisory.html">Advisory</a></li>
-        <li class="nav-dropdown">
-          <a href="#" onclick="return false;">Insights</a>
-          <div class="dropdown-menu">
-            <a href="catering-profit.html">Catering Profit System</a>
-            <a href="login.html">Course Login</a>
-          </div>
-        </li>
-        <li class="nav-dropdown">
-          <a href="#" onclick="return false;">Resources</a>
-          <div class="dropdown-menu">
-            <a href="audit.html">Restaurant Ops Audit</a>
-            <a href="food-truck-audit.html">Food Truck Launch Audit</a>
-            <a href="playbook.html">90-Day Profit Playbook</a>
-          </div>
-        </li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </div>
+<div class="nav-container">
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
+<button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<nav id="mainNav">
+<ul>
+<li><a class="nav-cta" href="profit-leak-snapshot.html">Snapshot</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Insights</a>
+<div class="dropdown-menu">
+<a href="catering-profit.html">Catering Profit System</a>
+<a href="login.html">Course Login</a><a href="blog.html">Blog</a>
+</div>
+</li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Resources</a>
+<div class="dropdown-menu">
+<a href="audit.html">Restaurant Ops Audit</a>
+<a href="food-truck-audit.html">Food Truck Launch Audit</a>
+<a href="playbook.html">90-Day Profit Playbook</a>
+</div>
+</li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+</div>
 </header>
-
 <!-- Lead Capture Overlay -->
 <div id="leadCaptureOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;">
-  <div style="background:white;padding:40px;border-radius:8px;max-width:500px;width:90%;text-align:center;">
-    <h2 style="color:#2c3e50;margin-bottom:20px;">Get Your Free 90-Day Profit Optimization Playbook</h2>
-    <p style="color:#666;margin-bottom:30px;">Enter your information below to instantly access the complete playbook with AI integrations, SOPs, and profit frameworks.</p>
-    <form id="leadCaptureForm" onsubmit="unlockPlaybook(event)" style="display:flex;flex-direction:column;gap:15px;">
-      <input type="text" id="leadName" placeholder="Your Name" required style="padding:12px;border:2px solid #ddd;border-radius:4px;font-size:16px;">
-      <input type="email" id="leadEmail" placeholder="Your Email" required style="padding:12px;border:2px solid #ddd;border-radius:4px;font-size:16px;">
-      <button type="submit" style="background:#3498db;color:white;padding:15px;border:none;border-radius:4px;font-size:18px;font-weight:bold;cursor:pointer;">Access Playbook Now</button>
-    </form>
-  </div>
+<div style="background:white;padding:40px;border-radius:8px;max-width:500px;width:90%;text-align:center;">
+<h2 style="color:#2c3e50;margin-bottom:20px;">Get Your Free 90-Day Profit Optimization Playbook</h2>
+<p style="color:#666;margin-bottom:30px;">Enter your information below to instantly access the complete playbook with AI integrations, SOPs, and profit frameworks.</p>
+<form id="leadCaptureForm" onsubmit="unlockPlaybook(event)" style="display:flex;flex-direction:column;gap:15px;">
+<input id="leadName" placeholder="Your Name" required="" style="padding:12px;border:2px solid #ddd;border-radius:4px;font-size:16px;" type="text"/>
+<input id="leadEmail" placeholder="Your Email" required="" style="padding:12px;border:2px solid #ddd;border-radius:4px;font-size:16px;" type="email"/>
+<button style="background:#3498db;color:white;padding:15px;border:none;border-radius:4px;font-size:18px;font-weight:bold;cursor:pointer;" type="submit">Access Playbook Now</button>
+</form>
 </div>
-
+</div>
 <script>
 async function unlockPlaybook(event) {
   event.preventDefault();
@@ -132,249 +130,171 @@ async function unlockPlaybook(event) {
   }
 }
 </script>
-
 <div class="container">
-
 <h1>The 90-Day Profit Optimization Playbook for Hospitality Operations</h1>
 <p class="subtitle">AI integrations, SOPs, and profit frameworks that reduce overtime, lift margins, and simplify training—built for restaurants, food trucks, and catering businesses.</p>
-
 <h2>PHASE 1: AI INTEGRATION THAT ACTUALLY STICKS</h2>
-
 <h3>The Problem</h3>
 <p>Most hospitality operators are drowning in busywork. Between building schedules, tracking inventory, pulling reports, managing vendor orders, and handling the daily chaos of operations, you're spending 15-20 hours a week on tasks that don't require your expertise or judgment. You're essentially functioning as an overpaid data entry clerk instead of running your business.</p>
-
 <p>You know AI exists. You've seen the headlines. Maybe you've even tried a few tools. But every time you attempt to implement something, one of three things happens: the tool doesn't integrate with your POS or existing systems, it requires technical knowledge you don't have, or the setup takes so much time that you abandon it halfway through and go back to doing everything manually.</p>
-
 <p>Here's the truth: AI won't replace you. It won't run your restaurant. It won't automatically fix your problems. But used correctly, it can give you back 10-15 hours per week by handling the analytical and creative grunt work that currently eats your evenings and weekends.</p>
-
 <h3>The Fix (AI Application)</h3>
 <p>Stop trying to automate everything and start using AI as a thinking partner. The sweet spot for AI in hospitality operations isn't building your schedule automatically or running your inventory system. It's analyzing the data you already have, creating the content you'd otherwise spend hours writing, and giving you instant answers to questions that normally require manual calculation.</p>
-
 <h4>Use AI to analyze your operational data faster and smarter</h4>
 <p>Instead of spending an hour manually calculating which days are your slowest, which menu items have the worst margins, or where your overtime is concentrated, paste that data into ChatGPT and ask specific questions. The AI will spot patterns, calculate percentages, and highlight trends in seconds.</p>
-
 <h4>Use AI to create operational content you've been putting off</h4>
 <p>AI excels at creating first drafts. Instead of staring at a blank page trying to write an opening checklist from scratch, give ChatGPT a basic prompt and you'll have a solid 80% complete draft in 30 seconds. You just edit it to match your specific operation and you're done.</p>
-
 <h4>Use AI for data-driven scheduling and labor decisions</h4>
 <p>Take your sales forecast for next week and ask: "If my projected sales are $45,000 next week and my labor target is 28%, what's my maximum payroll budget?" The AI does the math instantly. You still build the schedule manually, but you're making decisions based on targets instead of hope.</p>
-
 <div class="box checklist">
 <h3>Quick Win Checklist</h3>
-<p><strong>☐ Ask ChatGPT to analyze one week of sales data</strong><br>Export last week's daily sales totals from your POS. Open ChatGPT, paste the data, and ask: "What patterns do you see in this sales data?" You'll get instant analysis that would take you 20-30 minutes manually.</p>
-<p><strong>☐ Use AI to create one SOP you've been avoiding</strong><br>Give ChatGPT a prompt like "Write a closing checklist for a line cook." In 30 seconds you'll have a draft. Print it, add your specific details, and post it.</p>
-<p><strong>☐ Get a data-driven labor recommendation</strong><br>Ask ChatGPT: "If my sales were $8,500 and I want to hit 28% labor cost, what's my max payroll budget?" Now you have a number instead of a guess.</p>
+<p><strong>☐ Ask ChatGPT to analyze one week of sales data</strong><br/>Export last week's daily sales totals from your POS. Open ChatGPT, paste the data, and ask: "What patterns do you see in this sales data?" You'll get instant analysis that would take you 20-30 minutes manually.</p>
+<p><strong>☐ Use AI to create one SOP you've been avoiding</strong><br/>Give ChatGPT a prompt like "Write a closing checklist for a line cook." In 30 seconds you'll have a draft. Print it, add your specific details, and post it.</p>
+<p><strong>☐ Get a data-driven labor recommendation</strong><br/>Ask ChatGPT: "If my sales were $8,500 and I want to hit 28% labor cost, what's my max payroll budget?" Now you have a number instead of a guess.</p>
 </div>
-
 <div class="box case">
 <h3>Case Example</h3>
 <p>A 2-location casual dining operator was spending 3+ hours weekly building schedules. His labor cost had crept from 29% to 33% over 6 months ($15,000 lost to inefficient scheduling).</p>
 <p>He started using ChatGPT as a scheduling calculator. Before finalizing schedules, he'd ask for labor budget calculations based on his sales forecast. Within 8 weeks, labor cost dropped from 33% to 29%—$7,200/month saved, $86,400 annually. He didn't buy new software. He just used a free tool to make smarter decisions.</p>
 </div>
-
 <h3>Why It Matters</h3>
 <p>If you save 10 hours per week on busywork, that's 520 hours per year. At your hourly value of $50-75, that's $26,000-$39,000 in reclaimed time annually. More importantly, AI helps you catch profit leaks earlier. That overtime spike? You catch it in week one, not month three when it's cost you $12,000.</p>
-
 <h2>PHASE 2: SOPS YOUR TEAM ACTUALLY USES</h2>
-
 <h3>The Problem</h3>
 <p>Your standards exist in your head, not on paper. New hires learn by shadowing whoever trained last, which means your standards mutate over time like a game of telephone. Without documented procedures, training is painfully slow. A new line cook takes 2-3 weeks to get up to speed instead of 5 days.</p>
-
 <p>Without SOPs that your team actually uses, you're not running a business. You're running a very expensive improv show where every shift is a surprise and you're the only one who knows the full script.</p>
-
 <h3>The Fix (AI Application)</h3>
 <p>Focus on three components that cover 80% of what you need: role scorecards, visual checklists, and structured training plans. Use AI to accelerate the creation process so you can knock out SOPs in hours instead of months.</p>
-
 <h4>Role Scorecards: Define what "good" looks like</h4>
 <p>A role scorecard is a one-page document that defines the 5-7 most important responsibilities for a position and what "excellent," "acceptable," and "unacceptable" performance looks like for each. Create one scorecard per position. You can create a basic scorecard in 15 minutes using ChatGPT.</p>
-
 <h4>Visual Checklists: Replace paragraph SOPs with scannable lists</h4>
 <p>Nobody reads 40-page training manuals during a shift. But everyone will use a laminated one-page checklist taped to the wall. Create checklist-based SOPs for repetitive tasks: opening procedures, closing procedures, prep lists, cleaning schedules.</p>
-
 <h4>30-60-90 Day Training Plans: Structure the onboarding process</h4>
 <p>A structured training plan breaks down exactly what a new hire should learn and master in their first 30, 60, and 90 days. This gives new hires a roadmap and gives trainers a structure, reducing inconsistency and wasted time.</p>
-
 <div class="box checklist">
 <h3>Quick Win Checklist</h3>
-<p><strong>☐ Create one visual checklist for your weakest station</strong><br>Use ChatGPT to generate a checklist, then print it, take it to that station, and mark it up while doing the actual procedures. Add your specific details, laminate it, and post it at the station.</p>
-<p><strong>☐ Build a role scorecard for one position</strong><br>Ask ChatGPT to create a scorecard for your highest-variance position. Adjust to match your actual standards, then use it in performance reviews and training.</p>
-<p><strong>☐ Use AI to draft opening/closing checklists</strong><br>Generate both checklists for your most critical position. Edit to match your operation, print them, and post them where people will see them.</p>
+<p><strong>☐ Create one visual checklist for your weakest station</strong><br/>Use ChatGPT to generate a checklist, then print it, take it to that station, and mark it up while doing the actual procedures. Add your specific details, laminate it, and post it at the station.</p>
+<p><strong>☐ Build a role scorecard for one position</strong><br/>Ask ChatGPT to create a scorecard for your highest-variance position. Adjust to match your actual standards, then use it in performance reviews and training.</p>
+<p><strong>☐ Use AI to draft opening/closing checklists</strong><br/>Generate both checklists for your most critical position. Edit to match your operation, print them, and post them where people will see them.</p>
 </div>
-
 <div class="box case">
 <h3>Case Example</h3>
 <p>A food truck operator with two trucks struggled with training inconsistency. He spent one weekend using ChatGPT to create opening/closing checklists and a 30-day training plan. Results: Training time dropped from 2 weeks to 5 days. Quality consistency improved dramatically. His best employee got 15+ hours per month back that were previously spent training.</p>
 </div>
-
 <h3>Why It Matters</h3>
 <p><strong>Time savings:</strong> 5-10 hours per week recovered from answering questions and fixing inconsistent execution. <strong>Faster training:</strong> Cut onboarding time by 30-50%, worth $800-1,200 per new hire. <strong>Lower turnover:</strong> Even a 10% reduction in turnover saves thousands in recruiting and training costs.</p>
-
 <h2>PHASE 3: LABOR COST CONTROL (THE 12% OVERTIME FIX)</h2>
-
 <h3>The Problem</h3>
-<p>Labor cost is the silent killer of restaurant profitability. It just quietly creeps upward, month after month, until you're suddenly at 33% labor cost instead of the 28% you budgeted. By the time you notice it in your quarterly P&L review, you've already bled $15,000-$25,000 in unplanned labor expense.</p>
-
+<p>Labor cost is the silent killer of restaurant profitability. It just quietly creeps upward, month after month, until you're suddenly at 33% labor cost instead of the 28% you budgeted. By the time you notice it in your quarterly P&amp;L review, you've already bled $15,000-$25,000 in unplanned labor expense.</p>
 <p>Overtime is the biggest culprit. What starts as "just one extra hour" turns into a pattern. Suddenly you're paying time-and-a-half for 40-60 hours per week, which is $4,000-$8,000 per month walking straight out of your profit margin.</p>
-
 <h3>The Fix (AI Application)</h3>
 <p>Labor cost control comes down to three fundamentals: knowing your targets, scheduling to hit those targets, and catching deviations before they compound.</p>
-
 <h4>Labor Benchmarking: Know what "good" looks like</h4>
 <p>Break down your labor cost by daypart (breakfast, lunch, dinner) and day of week. Pull your sales and labor data for the last 4 weeks and calculate labor percentage for each segment. You'll quickly see patterns. Monday lunch might run 38% labor while Friday dinner runs 24%. This is normal. The goal is knowing what's typical so you can spot anomalies.</p>
-
 <h4>Scheduling Discipline: Right people, right hours, right shifts</h4>
 <p>Implement a simple scheduling rule: Sales forecast first, labor budget second, then fill shifts. If you're projecting $45,000 in sales and your labor target is 28%, your max payroll is $12,600. Now you know how many total hours you can afford before you start plugging in names.</p>
-
 <h4>Overtime Tracking: Catch it before it compounds</h4>
 <p>Set up a simple overtime tracker. Every week, log who worked overtime, how many hours, and why. After 2-3 weeks you'll see patterns. Is it always the same people? The same shifts? Fix the root cause.</p>
-
 <h4>Cross-Training: Flexibility without overstaffing</h4>
 <p>Train 2-3 employees in backup roles for your highest-risk coverage areas. Your best server learns basic bartending. Your lead line cook learns opening prep. This creates flexibility without carrying extra headcount.</p>
-
 <div class="box checklist">
 <h3>Quick Win Checklist</h3>
-<p><strong>☐ Calculate your current labor % by daypart</strong><br>Pull 4 weeks of data. Calculate labor percentage for each daypart. Create a reference chart showing typical ranges for each.</p>
-<p><strong>☐ Identify your top 3 overtime offenders</strong><br>Rank employees by total OT hours. For each, determine if it's necessary (only one trained) or preventable (poor scheduling). Make a plan to reduce each by 50% within 30 days.</p>
-<p><strong>☐ Set one scheduling rule to reduce OT</strong><br>Implement one rule like "No one scheduled over 38 hours without approval" or "Check weekly totals before approving shift pickups." Enforce it for 2 weeks and track impact.</p>
+<p><strong>☐ Calculate your current labor % by daypart</strong><br/>Pull 4 weeks of data. Calculate labor percentage for each daypart. Create a reference chart showing typical ranges for each.</p>
+<p><strong>☐ Identify your top 3 overtime offenders</strong><br/>Rank employees by total OT hours. For each, determine if it's necessary (only one trained) or preventable (poor scheduling). Make a plan to reduce each by 50% within 30 days.</p>
+<p><strong>☐ Set one scheduling rule to reduce OT</strong><br/>Implement one rule like "No one scheduled over 38 hours without approval" or "Check weekly totals before approving shift pickups." Enforce it for 2 weeks and track impact.</p>
 </div>
-
 <div class="box case">
 <h3>Case Example</h3>
 <p>A 3-location casual dining group saw labor cost creep from 29% to 34% over 8 months. The owner implemented simple tracking and found 75% of OT was concentrated in 8 "go-to" employees ($6,400/month in OT premium). He implemented a scheduling rule: "No one over 38 hours" and cross-trained backup staff. Results over 12 weeks: Labor cost dropped from 34% to 30.5% ($14,000/month improvement). Overtime decreased by 62%.</p>
 </div>
-
 <h3>Why It Matters</h3>
 <p>Every percentage point of labor cost on a $2M operation is $20,000 annually. A 5-point improvement (33% to 28%) is $100,000 back in your pocket. Labor cost doesn't have to be a mystery. It's just math, discipline, and catching small problems before they become big ones.</p>
-
 <h2>PHASE 4: MENU ENGINEERING (THE 8% MARGIN LIFT)</h2>
-
 <h3>The Problem</h3>
 <p>Most restaurant menus are built on gut feel, tradition, and hope. You're carrying menu items that actively hurt your business. That pasta with 58% food cost that three people order per week. The build-your-own option that takes forever to make and only generates $8 in margin.</p>
-
 <p>Without systematic menu engineering, you're working with the menu you inherited or built randomly over time, not the menu your business actually needs to maximize profit. The difference between an engineered menu and a random one is typically 8-12 points of margin and $50,000-$150,000 in annual profit for a $1.5M operation.</p>
-
 <h3>The Fix (AI Application)</h3>
 <p>The framework is simple: categorize every menu item by popularity and profitability (Stars, Plowhorses, Puzzles, Dogs), then make deliberate choices about what to keep, kill, fix, or promote.</p>
-
 <h4>Run a menu mix analysis to categorize your items</h4>
 <p>Gather three data points for every menu item: selling price, food cost, and number sold in the last 30-90 days. Calculate contribution margin (price minus food cost) and popularity ranking. Then categorize: <strong>Stars</strong> (high margin, high popularity), <strong>Plowhorses</strong> (low margin, high popularity), <strong>Puzzles</strong> (high margin, low popularity), <strong>Dogs</strong> (low margin, low popularity).</p>
-
 <h4>Make strategic decisions for each category</h4>
 <p><strong>Stars:</strong> Promote aggressively. Premium menu positions, compelling descriptions, train servers to suggest them. <strong>Plowhorses:</strong> Popular but don't make money—slight price increases, reduce portions, find cheaper ingredients. <strong>Puzzles:</strong> Great margin but nobody orders—better positioning, rewrite descriptions, train servers. <strong>Dogs:</strong> Remove them. They're wasting space and confusing customers.</p>
-
 <h4>Optimize menu psychology and server training</h4>
 <p>Menu placement matters. The golden triangle (top right of right page) gets the most attention. Use AI to improve descriptions. Train servers on suggestive selling with a simple cheat sheet of high-margin items to recommend.</p>
-
 <div class="box checklist">
 <h3>Quick Win Checklist</h3>
-<p><strong>☐ Run menu mix analysis on your top 20 items</strong><br>Export 90 days of sales data. Calculate contribution margin for each item. Classify as Star/Plowhorse/Puzzle/Dog. You'll immediately see which items are carrying your profitability.</p>
-<p><strong>☐ Identify 2 Dogs to remove or re-engineer</strong><br>Pick your 2 worst performers (low margin, low popularity). Either remove them or fix them (price increase, portion reduction, ingredient swap).</p>
-<p><strong>☐ Train servers to upsell 1 high-margin item</strong><br>Pick your most profitable Star or best Puzzle. Create simple talking points. If each server upsells to 3 tables per shift, that's $14,000+ annually from ONE item.</p>
+<p><strong>☐ Run menu mix analysis on your top 20 items</strong><br/>Export 90 days of sales data. Calculate contribution margin for each item. Classify as Star/Plowhorse/Puzzle/Dog. You'll immediately see which items are carrying your profitability.</p>
+<p><strong>☐ Identify 2 Dogs to remove or re-engineer</strong><br/>Pick your 2 worst performers (low margin, low popularity). Either remove them or fix them (price increase, portion reduction, ingredient swap).</p>
+<p><strong>☐ Train servers to upsell 1 high-margin item</strong><br/>Pick your most profitable Star or best Puzzle. Create simple talking points. If each server upsells to 3 tables per shift, that's $14,000+ annually from ONE item.</p>
 </div>
-
 <div class="box case">
 <h3>Case Example</h3>
 <p>A sports bar with 80 menu items ran a complete menu engineering analysis. Results: 8 Stars (48% of contribution margin), 12 Plowhorses, 18 Puzzles, and 42 Dogs (more than half the menu was garbage). Action plan: Removed 35 dogs, repositioned 6 puzzles, trained servers on upselling, adjusted 8 plowhorses. Results over 12 weeks: Overall menu margin increased from 68% to 76% (8-point improvement = $96,000 annually on $1.2M revenue).</p>
 </div>
-
 <h3>Why It Matters</h3>
 <p>A typical menu engineering project improves overall margin by 6-10 points. On a $1.5M operation, that's $90,000-$150,000/year. Plus operational simplification (fewer items = simpler prep, easier training, less inventory), customer clarity (curated menu beats bloated menu), and server confidence (knowing which items to recommend).</p>
-
-<h2>PHASE 5: LOCAL STORE MARKETING & TRAFFIC GENERATION</h2>
-
+<h2>PHASE 5: LOCAL STORE MARKETING &amp; TRAFFIC GENERATION</h2>
 <h3>The Problem</h3>
 <p>Most hospitality operators are passive about traffic generation. Your marketing strategy is essentially "hope people walk by" or "pray someone leaves a good review." Meanwhile, your competitors are actively marketing.</p>
-
 <p>The problem isn't that you don't want more customers. It's that you don't have a repeatable system for generating traffic. You're reactive instead of proactive. A restaurant that relies purely on walk-in traffic grows at maybe 3-5% per year. A restaurant with systematic local marketing grows at 15-25% per year.</p>
-
 <h3>The Fix (AI Application)</h3>
 <p>Local store marketing is about implementing four core strategies: claiming your digital real estate, creating signature events, building an owned audience, and developing higher-margin revenue through catering and private events.</p>
-
 <h4>Google Business Profile: Win the local search game</h4>
 <p>When someone searches "restaurants near me," Google shows a map with three local businesses. If you're not one of those three, you're invisible. Optimize your Google Business Profile completely: claim it, fill out every field, upload 10-15 photos, post weekly updates, respond to every review. Restaurants that do this see 20-40% increases in discovery traffic within 30 days.</p>
-
 <h4>Signature monthly events: Create predictable traffic</h4>
 <p>Create signature events that happen on the same day every month. Taco Tuesday, Trivia Thursday, Wine Wednesday. These become habits for customers. Month 1 you get 15 people. Month 6 you're at capacity. Your slow Tuesday becomes your second-busiest night.</p>
-
 <h4>Email and SMS list building: Own your customers</h4>
 <p>The only customer relationship you truly own is your email and SMS list. Build your list systematically: capture emails at point of sale, website pop-ups, during events, table tents with QR codes. A list of 1,000 local customers who opted in is worth more than 10,000 Instagram followers.</p>
-
 <h4>Catering and private events: Higher margins, predictable revenue</h4>
 <p>Catering and private events have higher margins (20-30% better than dine-in), predictable revenue (booked weeks in advance), and often larger tickets. Start with corporate lunch catering, private buyouts on slow nights, or off-premise catering for events.</p>
-
 <div class="box checklist">
 <h3>Quick Win Checklist</h3>
-<p><strong>☐ Claim and optimize your Google Business Profile</strong><br>Spend 90 minutes filling out every field. Upload at least 10 photos. Set a reminder to post every Monday morning. Within 2 weeks you'll see increased visibility.</p>
-<p><strong>☐ Plan one signature monthly event</strong><br>Pick your slowest day. Design one event concept. Create promotional materials. Run it consistently for 4 months minimum. Turn your slowest day into a predictable $1,500-$3,000 revenue day.</p>
-<p><strong>☐ Build email list collection at POS</strong><br>Train your team to capture emails from 50% of transactions. Set up free Mailchimp. Send 1-2 emails per week with specials and offers. Track performance.</p>
+<p><strong>☐ Claim and optimize your Google Business Profile</strong><br/>Spend 90 minutes filling out every field. Upload at least 10 photos. Set a reminder to post every Monday morning. Within 2 weeks you'll see increased visibility.</p>
+<p><strong>☐ Plan one signature monthly event</strong><br/>Pick your slowest day. Design one event concept. Create promotional materials. Run it consistently for 4 months minimum. Turn your slowest day into a predictable $1,500-$3,000 revenue day.</p>
+<p><strong>☐ Build email list collection at POS</strong><br/>Train your team to capture emails from 50% of transactions. Set up free Mailchimp. Send 1-2 emails per week with specials and offers. Track performance.</p>
 </div>
-
 <div class="box case">
 <h3>Case Example</h3>
 <p>A local catering business stuck at $450,000 annual revenue implemented a 4-part system over 90 days: optimized Google Business Profile, launched monthly tasting events, sent targeted emails to local businesses, created private event packages. Results after one quarter: Google optimization led to 40% increase in discovery calls. Tasting events generated 6-8 catering leads monthly. Corporate catering grew from 2 to 9 regular clients ($8,000/month new revenue). Quarterly revenue: $168,000 (was $112,000 previous year).</p>
 </div>
-
 <h3>Why It Matters</h3>
 <p><strong>Google Business Profile:</strong> 2 hours setup = 20-40% increase in local discovery. <strong>Signature events:</strong> $18,000-$60,000 annually. <strong>Email/SMS list:</strong> 2,000-person list generating $16,000-$32,000 monthly impact. <strong>Catering:</strong> $50,000-$200,000 in annual revenue at higher margins. Year 1 typically shows 15-25% revenue growth from implementing these strategies.</p>
-
 <h2>BONUS: 90-DAY IMPLEMENTATION ROADMAP</h2>
-
 <p>Ready to put these five phases into action? Here's a realistic 90-day roadmap. The strategy: Layer one phase on top of another every 30 days. Don't try to do everything at once.</p>
-
 <h3>Days 1-30: Foundation (AI + Labor Audit + SOPs)</h3>
-
 <h4>Week 1: AI Quick Wins</h4>
 <p>Set up ChatGPT. Export one week of sales data and analyze it. Use AI to create one SOP. Use AI to help build next week's schedule with labor budget calculations.</p>
-
 <h4>Week 2: Labor Cost Baseline</h4>
 <p>Pull 4 weeks of sales and labor data. Calculate labor percentage by daypart. Identify biggest labor cost problems. Set one labor cost target for the next 30 days.</p>
-
 <h4>Week 3: Overtime Tracking System</h4>
 <p>Set up overtime tracker. Implement one scheduling rule to prevent your most common OT trigger. Train managers on the new rule.</p>
-
 <h4>Week 4: SOP Expansion</h4>
 <p>Create 2-3 more critical SOPs using AI. Focus on procedures that cause the most inconsistency. Post them where people will use them.</p>
-
 <p><strong>End of Month 1:</strong> You've used AI 10+ times, have 3-5 SOPs posted, calculated labor baseline, implemented OT reduction rule, and have visibility into where money is leaking.</p>
-
 <h3>Days 31-60: Optimization (Menu Engineering + Labor Tightening)</h3>
-
 <h4>Week 5: Menu Data Collection</h4>
 <p>Export 90 days of item-level sales data. Create menu engineering spreadsheet. Calculate contribution margin. Classify every item as Star/Plowhorse/Puzzle/Dog.</p>
-
 <h4>Week 6: Menu Strategy Decisions</h4>
 <p>Pick 3-5 Dogs to remove. Identify top 2-3 Puzzles for repositioning. Decide which Plowhorses need price increases or portion adjustments.</p>
-
 <h4>Week 7: Server Training + Menu Updates</h4>
 <p>Train servers on upselling top high-margin items. Create simple cheat sheet. Update physical menu if removing Dogs or repositioning Puzzles.</p>
-
 <h4>Week 8: Labor Cost Progress Check</h4>
 <p>Compare this month's numbers to Week 2 baseline. Did labor percentage improve? Did overtime decrease? Diagnose and adjust if needed.</p>
-
 <p><strong>End of Month 2:</strong> Menu analysis complete, 3-5 Dogs removed, 2-3 Puzzles repositioned, servers trained on upselling, labor cost tracking continuing, AI usage is now habit.</p>
-
 <h3>Days 61-90: Growth (Marketing System Launch)</h3>
-
 <h4>Week 9: Google Business Profile Optimization</h4>
 <p>Claim your profile. Spend 2 hours filling out every field. Upload 10+ photos. Set Monday reminder to post weekly.</p>
-
 <h4>Week 10: Email/SMS List Building</h4>
 <p>Train team to capture emails at every transaction. Goal: 50% capture rate. Set up Mailchimp. Create welcome email.</p>
-
 <h4>Week 11: Signature Event Planning</h4>
 <p>Pick slowest day. Design monthly event. Create promotional materials. Run the event. Track attendance and revenue.</p>
-
 <h4>Week 12: Catering/Private Event Setup</h4>
 <p>Create one-page catering menu. Build 3-tier packages. Add "Catering" page to website. Send outreach to 20 local businesses.</p>
-
 <h4>Week 13: System Lock-In</h4>
 <p>Create Marketing Calendar showing all recurring activities. Document AI usage habits. Train managers on systems you've built.</p>
-
 <p><strong>End of Month 3:</strong> Google optimized and posting weekly, email list growing (500-1,500 contacts), first signature event launched, catering packages created, all systems documented, labor cost improved 2-4 points, menu margin improved 4-8 points, AI integrated into weekly workflow.</p>
-
 <h3>What Happens After Day 90?</h3>
 <p>You don't stop. You've built systems that compound month over month. The heavy lifting is done. You've transformed from reactive operator to proactive business owner.</p>
-
 <p><strong>Typical results after completing this 90-day roadmap:</strong></p>
 <ul>
 <li>Labor cost reduced 2-4 percentage points ($40,000-$80,000 annually on $2M operation)</li>
@@ -385,20 +305,14 @@ async function unlockPlaybook(event) {
 <li>10-15 hours per week reclaimed from AI automation and SOPs</li>
 <li>Documented systems that work without daily firefighting</li>
 </ul>
-
 <p><strong>Total conservative annual impact: $150,000-$350,000 in recovered profit and new revenue.</strong></p>
-
 <div class="box cta">
 <h2>READY TO FIND YOUR PROFIT LEAKS?</h2>
 <p>If you made it this far, you've probably identified 5-10 issues in your operation. Maybe it's overtime bleeding $6,000/month. Maybe it's Dogs on your menu killing margin. Maybe it's zero marketing system generating new traffic.</p>
-
 <p>Here's the problem: Knowing what's broken and fixing what's broken are two different things. Most operators read something like this, get excited, then get overwhelmed trying to figure out where to start. Six months later, nothing has changed.</p>
-
 <p>That's exactly why I created the <strong>$750 Profit Leak Snapshot.</strong></p>
-
 <h3>What Is the Profit Leak Snapshot?</h3>
-<p>It's a 90-minute live diagnostic where I review your actual numbers—P&Ls, labor reports, menu performance, sales data—and identify your top 3 profit leaks. Not theoretical problems. Not generic advice. Your specific, quantified, prioritized leaks with dollar amounts attached.</p>
-
+<p>It's a 90-minute live diagnostic where I review your actual numbers—P&amp;Ls, labor reports, menu performance, sales data—and identify your top 3 profit leaks. Not theoretical problems. Not generic advice. Your specific, quantified, prioritized leaks with dollar amounts attached.</p>
 <p><strong>You leave the call with:</strong></p>
 <ul>
 <li>Your top 3 profit leaks clearly identified and named</li>
@@ -406,58 +320,43 @@ async function unlockPlaybook(event) {
 <li>A simple "Fix First" priority order: 1st, 2nd, 3rd</li>
 <li>Clear recommendation on whether deeper implementation work is worth it</li>
 </ul>
-
 <p><strong>Investment: $750</strong></p>
 <p>Most operators find at least one leak worth $10,000-$50,000 annually. The Snapshot pays for itself if I find even one mid-sized issue.</p>
-
 <h3>Why the Snapshot Works</h3>
-<p>You're too close to your own operation. You see the daily chaos but miss the patterns. I've done this hundreds of times. I can look at your P&L and immediately spot the red flags you've been staring at for months without seeing.</p>
-
-<p>It's not magic. It's pattern recognition from 10+ years of multi-unit operations management and analyzing hundreds of restaurant P&Ls.</p>
-
+<p>You're too close to your own operation. You see the daily chaos but miss the patterns. I've done this hundreds of times. I can look at your P&amp;L and immediately spot the red flags you've been staring at for months without seeing.</p>
+<p>It's not magic. It's pattern recognition from 10+ years of multi-unit operations management and analyzing hundreds of restaurant P&amp;Ls.</p>
 <h3>Who This Is For</h3>
 <p>The Snapshot is for operators who:</p>
 <ul>
 <li>Are actually running an operation (not just thinking about opening one)</li>
-<li>Have real P&Ls, labor reports, and sales data to review</li>
+<li>Have real P&amp;Ls, labor reports, and sales data to review</li>
 <li>Know something is wrong but can't pinpoint what</li>
 <li>Are ready to make changes, not just collect information</li>
 <li>Value their time enough to pay $750 to skip months of trial and error</li>
 </ul>
-
 <h3>What Happens Next</h3>
 <p><strong>Option 1: Book Your $750 Profit Leak Snapshot</strong></p>
 <p>Go to <strong>trecoleman.com/profit-leak-snapshot</strong></p>
 <p>Schedule a time, pay the $750, get instructions on what data to send, and we'll meet for 90 minutes to find your leaks.</p>
-
 <p>If you decide afterward that you want ongoing implementation support, your $750 Snapshot investment credits toward your first month of Fractional COO Advisory. If you don't need ongoing help, you walk away with clarity and a roadmap for $750.</p>
-
 <p><strong>Option 2: Start With a Free Self-Assessment</strong></p>
 <p>Not ready to spend $750 yet? Start with the free Restaurant Operations Audit at <strong>trecoleman.com/operations-audit</strong></p>
-
 <h3>Final Thoughts</h3>
 <p>You just read a playbook that most consultants would charge $2,000-$5,000 for. You have frameworks, templates, AI prompts, case examples, and a 90-day implementation roadmap. Everything you need to add $150,000-$350,000 in annual profit is in this document.</p>
-
 <p>But information without action is just entertainment. The operators who win are the ones who actually implement. Not perfectly. Not all at once. Just consistently, one phase at a time, until the systems compound into real results.</p>
-
 <p>If you're ready to stop guessing and start fixing, I'm here to help.</p>
-
 <p><strong>Book your $750 Profit Leak Snapshot: trecoleman.com/profit-leak-snapshot</strong></p>
 <p><strong>Or start with the free audit: trecoleman.com/operations-audit</strong></p>
-
 <p>Either way, stop letting profit walk out the door. Your operation has money hiding in plain sight. Let's find it.</p>
 </div>
-
 <div class="footer">
-<img src="newsletterlogo.png" alt="From the Floor Up" style="max-width: 300px; width: 100%; height: auto; margin-bottom: 1.5rem;">
+<img alt="From the Floor Up" src="newsletterlogo.png" style="max-width: 300px; width: 100%; height: auto; margin-bottom: 1.5rem;"/>
 <p><strong>From the floor to the forecast — I build businesses that win.</strong></p>
-<p><strong>Tre Coleman</strong><br>
-Hospitality Operations Consultant<br>
+<p><strong>Tre Coleman</strong><br/>
+Hospitality Operations Consultant<br/>
 📧 hello@trecoleman.com | 📞 540.807.9045 | 🌐 trecoleman.com</p>
 </div>
-
 </div>
-
 <script>
   const mobileMenuToggle = document.getElementById('mobileMenuToggle');
   const mainNav = document.getElementById('mainNav');
