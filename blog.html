@@ -1,23 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>Insights & Playbooks | Tre Coleman</title>
-    <meta
-      name="description"
-      content="Operator-first insights on AI integration, restaurant operations, and team development. Real strategies that move numbers." />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://trecoleman.com/blog.html" />
-    <meta property="og:title" content="Insights & Playbooks | Tre Coleman" />
-    <meta property="og:description" content="Operator-first insights on AI integration, restaurant operations, and team development. Real strategies that move numbers." />
-    <meta property="og:image" content="https://trecoleman.com/familypic.jpg" />
 
-    <link rel="stylesheet" href="style.css" />
-    <style>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Insights &amp; Playbooks | Tre Coleman</title>
+<meta content="Operator-first insights on AI integration, restaurant operations, and team development. Real strategies that move numbers." name="description"/>
+<!-- Open Graph / Facebook -->
+<meta content="website" property="og:type"/>
+<meta content="https://trecoleman.com/blog.html" property="og:url"/>
+<meta content="Insights &amp; Playbooks | Tre Coleman" property="og:title"/>
+<meta content="Operator-first insights on AI integration, restaurant operations, and team development. Real strategies that move numbers." property="og:description"/>
+<meta content="https://trecoleman.com/familypic.jpg" property="og:image"/>
+<link href="style.css" rel="stylesheet"/>
+<style>
       /* Page-specific styles for blog */
       .blog-grid {
         display: grid;
@@ -184,165 +181,128 @@
         }
       }
     </style>
-    <script src="analytics.js"></script>
-  </head>
-  <body>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-overlay" id="mobileOverlay"></div>
-
-    <!-- Header -->
-    <header>
-      <div class="container">
-        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <!-- Navigation -->
-        <nav id="mainNav">
-          <ul>
-            <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="advisory.html">Advisory</a></li>
-            <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Insights</a>
-              <div class="dropdown-menu">
-                <a href="blog.html">Blog & Playbooks</a>
-                <a href="catering-profit.html">Catering Profit System</a>
-                <a href="login.html">Course Login</a>
-              </div>
-            </li>
-            <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Resources</a>
-              <div class="dropdown-menu">
-                <a href="audit.html">Restaurant Ops Audit</a>
-                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
-                <a href="playbook.html">90-Day Profit Playbook</a>
-              </div>
-            </li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <!-- Blog Hero -->
-    <section class="hero">
-      <div class="container">
-        <h1>Insights & Playbooks</h1>
-        <p>Practical operations frameworks from 10+ years managing multi-unit restaurants. No fluff, just systems that move numbers.</p>
-      </div>
-    </section>
-
-    <main class="container" style="padding: 4rem 1.25rem;">
-      <!-- Categories -->
-      <div class="blog-categories">
-        <a href="#" class="active">All Posts</a>
-        <a href="#">Operations</a>
-        <a href="#">AI Integration</a>
-        <a href="#">Team Development</a>
-        <a href="#">Leadership</a>
-      </div>
-
-      <!-- Blog Grid -->
-      <div class="blog-grid">
-        <!-- Post 1 -->
-        <article class="blog-post">
-          <div class="post-meta">Leadership • 6 min read</div>
-          <h3><a href="unreasonably-optimistic.html">Unreasonably Optimistic</a></h3>
-          <p>The difference between restaurant owners who turn things around and those who stay stuck isn't intelligence or experience. It's how they relate to uncertainty.</p>
-          <a href="unreasonably-optimistic.html" class="read-more">Read more →</a>
-        </article>
-
-        <!-- Post 2 Placeholder -->
-        <article class="blog-post">
-          <div class="post-meta">Operations • 8 min read</div>
-          <h3><a href="#">The Labor Pressure Valve</a></h3>
-          <p>How to build scheduling guardrails that protect your margins without burning out your best managers. A framework for high-volume units.</p>
-          <a href="#" class="read-more">Coming Soon →</a>
-        </article>
-
-        <!-- Post 3 Placeholder -->
-        <article class="blog-post">
-          <div class="post-meta">AI Integration • 5 min read</div>
-          <h3><a href="#">AI for the Frontline</a></h3>
-          <p>Stop trying to automate the guest experience. Use AI to automate the paperwork that keeps your managers off the floor.</p>
-          <a href="#" class="read-more">Coming Soon →</a>
-        </article>
-      </div>
-
-      <!-- Newsletter Signup -->
-      <section class="newsletter-box">
-        <h3>Get Operator-Grade Insights</h3>
-        <p>Weekly strategies for restaurant operators who want systems that actually work. Frameworks you can use Monday morning.</p>
-        <form class="newsletter-form" onsubmit="return false;">
-          <input type="email" placeholder="Enter your email address" required>
-          <button type="submit">Subscribe</button>
-        </form>
-      </section>
-
-      <!-- Free Diagnostic Tools -->
-      <section style="background: #fef9f3; padding: 3rem; border-radius: var(--radius-lg); border: 1px solid rgba(31, 71, 136, 0.1);">
-        <h2 style="margin-bottom: 2rem;">Free Diagnostic Tools</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-          <div>
-            <a href="audit.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-colour); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ Restaurant Profit Audit</a>
-            <p>15-minute assessment to identify your biggest profit leaks and hidden waste.</p>
-          </div>
-          <div>
-            <a href="playbook.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-colour); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ 90-Day Profit Playbook</a>
-            <p>Download the 5-step framework I use with consulting clients to stabilize operations.</p>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-section">
-            <h4>Tre Coleman Consulting LLC</h4>
-            <p>Richmond/Charlottesville, VA<br>Serving Nationwide</p>
-            <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
-          </div>
-
-          <div class="footer-section">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="advisory.html">Advisory</a></li>
-              <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
-              <li><a href="catering-profit.html">Catering Course</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <ul>
-              <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
-              <li><a href="tel:540-807-9045">540.807.9045</a></li>
-              <li><a href="https://www.linkedin.com/in/trecoleman/" target="_blank" rel="noopener">LinkedIn</a></li>
-              <li><a href="https://www.facebook.com/trecolemanconsulting" target="_blank" rel="noopener">Facebook</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <p>Real restaurant experience. Real results.</p>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script>
+<script src="analytics.js"></script>
+</head>
+<body>
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<!-- Header -->
+<header>
+<div class="container">
+<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<!-- Mobile Menu Toggle Button -->
+<button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<!-- Navigation -->
+<nav id="mainNav">
+<ul>
+<li><a class="nav-cta" href="profit-leak-snapshot.html">Snapshot</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Insights</a>
+<div class="dropdown-menu">
+<a href="blog.html">Blog &amp; Playbooks</a>
+<a href="catering-profit.html">Catering Profit System</a>
+<a href="login.html">Course Login</a>
+</div>
+</li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Resources</a>
+<div class="dropdown-menu">
+<a href="audit.html">Restaurant Ops Audit</a>
+<a href="food-truck-audit.html">Food Truck Launch Audit</a>
+<a href="playbook.html">90-Day Profit Playbook</a>
+</div>
+</li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<!-- Blog Hero -->
+<section class="hero">
+<div class="container">
+<h1>Insights &amp; Playbooks</h1>
+<p>Practical operations frameworks from 10+ years managing multi-unit restaurants. No fluff, just systems that move numbers.</p>
+</div>
+</section>
+<main class="container" style="padding: 4rem 1.25rem;">
+<!-- Categories -->
+<div class="blog-categories">
+<a class="active" href="#">All Posts</a>
+<a href="#">Operations</a>
+<a href="#">AI Integration</a>
+<a href="#">Team Development</a>
+<a href="#">Leadership</a>
+</div>
+<!-- Blog Grid -->
+<div class="blog-grid"><article class_="blog-post"><div class_="post-meta">Operations • 7 min read</div><h3><a href="blog/blog_post_1_profit_leaks_rewritten.html">Unmasking the Hidden Costs: How to Identify and Plug Profit Leaks in Your Restaurant</a></h3><p>Every restaurant owner dreams of a thriving business, bustling with happy customers and healthy profits. Yet, for many, the reality is a constant batt...</p><a class_="read-more" href="blog/blog_post_1_profit_leaks_rewritten.html">Read more →</a></article><article class_="blog-post"><div class_="post-meta">Operations • 7 min read</div><h3><a href="blog/blog_post_2_systems_growth_rewritten.html">Beyond the Daily Grind: Implementing Systems for Sustainable Restaurant Growth</a></h3><p>In the fast-paced world of hospitality, restaurant owners and managers often find themselves caught in a relentless cycle of daily tasks – putting out...</p><a class_="read-more" href="blog/blog_post_2_systems_growth_rewritten.html">Read more →</a></article><article class_="blog-post"><div class_="post-meta">Operations • 7 min read</div><h3><a href="blog/blog_post_3_menu_engineering_rewritten.html">Maximizing My Menu's Potential: A Guide to Restaurant Menu Engineering</a></h3><p>Your restaurant’s menu is far more than just a list of dishes and prices; it’s a powerful marketing tool, a reflection of your brand, and, most import...</p><a class_="read-more" href="blog/blog_post_3_menu_engineering_rewritten.html">Read more →</a></article><article class_="blog-post"><div class_="post-meta">Operations • 7 min read</div><h3><a href="blog/blog_post_4_fractional_coo_rewritten.html">The Strategic Advantage: How Fractional COO Services Elevate Restaurant Operations</a></h3><p>For many growing restaurants, the journey from a successful single unit to a multi-location enterprise or a highly efficient, profitable operation oft...</p><a class_="read-more" href="blog/blog_post_4_fractional_coo_rewritten.html">Read more →</a></article><article class_="blog-post"><div class_="post-meta">Operations • 7 min read</div><h3><a href="blog/blog_post_5_catering_profitability_rewritten.html">From Food Truck to Empire: Scaling My Catering Business Profitably</a></h3><p>The catering industry, whether as a standalone business or an extension of a restaurant or food truck, offers immense potential for revenue growth. Ho...</p><a class_="read-more" href="blog/blog_post_5_catering_profitability_rewritten.html">Read more →</a></article></div>
+<!-- Newsletter Signup -->
+<section class="newsletter-box">
+<h3>Get Operator-Grade Insights</h3>
+<p>Weekly strategies for restaurant operators who want systems that actually work. Frameworks you can use Monday morning.</p>
+<form class="newsletter-form" onsubmit="return false;">
+<input placeholder="Enter your email address" required="" type="email"/>
+<button type="submit">Subscribe</button>
+</form>
+</section>
+<!-- Free Diagnostic Tools -->
+<section style="background: #fef9f3; padding: 3rem; border-radius: var(--radius-lg); border: 1px solid rgba(31, 71, 136, 0.1);">
+<h2 style="margin-bottom: 2rem;">Free Diagnostic Tools</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+<div>
+<a href="audit.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-colour); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ Restaurant Profit Audit</a>
+<p>15-minute assessment to identify your biggest profit leaks and hidden waste.</p>
+</div>
+<div>
+<a href="playbook.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-colour); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ 90-Day Profit Playbook</a>
+<p>Download the 5-step framework I use with consulting clients to stabilize operations.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div class="footer-section">
+<h4>Tre Coleman Consulting LLC</h4>
+<p>Richmond/Charlottesville, VA<br/>Serving Nationwide</p>
+<p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+<li><a href="catering-profit.html">Catering Course</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="blog.html">Blog</a></li></ul>
+</div>
+<div class="footer-section">
+<h4>Connect</h4>
+<ul>
+<li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+<li><a href="tel:540-807-9045">540.807.9045</a></li>
+<li><a href="https://www.linkedin.com/in/trecoleman/" rel="noopener" target="_blank">LinkedIn</a></li>
+<li><a href="https://www.facebook.com/trecolemanconsulting" rel="noopener" target="_blank">Facebook</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p>Real restaurant experience. Real results.</p>
+</div>
+</div>
+</footer>
+<!-- Scripts -->
+<script>
       // Sticky header scroll effect
       const header = document.querySelector('header');
       window.addEventListener('scroll', () => {
@@ -386,6 +346,6 @@
         });
       });
     </script>
-    <script src="/exit-intent-popup.js" defer></script>
-  </body>
+<script defer="" src="/exit-intent-popup.js"></script>
+</body>
 </html>

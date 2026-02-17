@@ -1,16 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>Contact | Tre Coleman</title>
-    <meta
-      name="description"
-      content="Tell me your bottleneck. Get a simple first step today." />
-    <!-- Relative CSS path for GitHub Pages -->
-    <link rel="stylesheet" href="style.css" />
-    <style>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Contact | Tre Coleman</title>
+<meta content="Tell me your bottleneck. Get a simple first step today." name="description"/>
+<!-- Relative CSS path for GitHub Pages -->
+<link href="style.css" rel="stylesheet"/>
+<style>
 /* Dropdown navigation styles */
 .nav-dropdown {
   position: relative;
@@ -60,166 +59,159 @@
 
 /* Mobile nav styles handled by style.css */
 </style>
-    <!-- Form submission is handled via a script at the bottom of the page -->
-    <script src="analytics.js"></script>
-  </head>
-    <body>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-overlay" id="mobileOverlay"></div>
-
-    <!-- Header -->
-    <header>
-      <div class="container">
-        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <!-- Navigation -->
-        <nav id="mainNav">
-          <ul>
-              <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="advisory.html">Advisory</a></li>
-              <li class="nav-dropdown">
-                  <a href="#" onclick="return false;">Insights</a>
-                  <div class="dropdown-menu">
-                      <a href="catering-profit.html">Catering Profit System</a>
-                      <a href="login.html">Course Login</a>
-                  </div>
-              </li>
-              <li class="nav-dropdown">
-                  <a href="#" onclick="return false;">Resources</a>
-                  <div class="dropdown-menu">
-                      <a href="audit.html">Restaurant Ops Audit</a>
-                      <a href="food-truck-audit.html">Food Truck Launch Audit</a>
-                      <a href="playbook.html">90-Day Profit Playbook</a>
-                  </div>
-              </li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    
-    <section>
-      <div class="container">
-                <h1 class="mb-2">Book Your Profit Leak Snapshot</h1>        <p class="mb-2">Tell me where the bottleneck is. I’ll share a simple first step you can take this week.</p>
-                <p class="mb-2">90 minutes. 3 profit leaks identified. Clear action plan. $750.</p>        <form id="contactForm" action="https://formsubmit.co/hello@trecoleman.com" method="POST">
-          <div>
-            <label>Name *
-              <input name="name" required />
-            </label>
-          </div>
-          <div>
-            <label>Email *
-              <input type="email" name="email" required />
-            </label>
-          </div>
-          <div>
-            <label>Company *
-              <input name="company" required />
-            </label>
-          </div>
-          <div>
-            <label>Phone (optional)
-              <input name="phone" type="tel" />
-            </label>
-          </div>
-          <div>
-            <label>Location *
-              <input name="location" required />
-            </label>
-          </div>
-                      <div>
-                <label>What are you interested in? *</label>
-                <select name="interest" required>
-                    <option value="Profit Leak Snapshot" selected>$750 Profit Leak Snapshot</option>
-                    <option value="Advisory">Fractional COO / Advisory</option>
-                    <option value="Project">One-Time Project</option>
-                    <option value="General">General Inquiry</option>
-                </select>
-            </div>
-          <div>
-            <label>Biggest bottleneck *
-              <textarea name="bottleneck" rows="4" required></textarea>
-            </label>
-          </div>
-          <div>
-            <label>Budget range *
-              <select name="budget" required>
-                <option value="">Select…</option>
-                <option>&lt;$2k</option>
-                <option>$2k–$5k</option>
-                <option>$5k–$10k</option>
-                <option>$10k+</option>
-              </select>
-            </label>
-          </div>
-          <div>
-            <label>Preferred start *
-              <select name="start" required>
-                <option value="">Select…</option>
-                <option>ASAP</option>
-                <option>Next 30 days</option>
-                <option>Next quarter</option>
-              </select>
-            </label>
-          </div>
-          <!-- Anti-spam & metadata -->
-          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;">
-          <input type="hidden" name="_subject" value="New Lead from TreColeman.co">
-          <input type="hidden" name="_autoresponse" value="Thanks for reaching out — I'll review and reply shortly.">
-          <input type="hidden" name="utm_source">
-          <input type="hidden" name="utm_medium">
-          <input type="hidden" name="utm_campaign">
-          <!-- Disable FormSubmit's reCAPTCHA so users aren't blocked -->
-          <input type="hidden" name="_captcha" value="false">
-          <button type="submit" class="button" style="margin-top:1rem;">Get my plan</button>
-        </form>
-      </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer>
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-section">
-            <h4>Tre Coleman Consulting LLC</h4>
-            <p>Richmond/Charlottesville, VA<br>Serving Nationwide</p>
-            <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
-          </div>
-
-          <div class="footer-section">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="advisory.html">Advisory</a></li>
-              <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
-              <li><a href="catering-profit.html">Catering Course</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <ul>
-              <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
-              <li><a href="tel:540-807-9045">540.807.9045</a></li>
-              <li><a href="https://www.linkedin.com/in/trecoleman/" target="_blank" rel="noopener">LinkedIn</a></li>
-              <li><a href="https://www.facebook.com/trecolemanconsulting" target="_blank" rel="noopener">Facebook</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <script>
+<!-- Form submission is handled via a script at the bottom of the page -->
+<script src="analytics.js"></script>
+</head>
+<body>
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<!-- Header -->
+<header>
+<div class="container">
+<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<!-- Mobile Menu Toggle Button -->
+<button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<!-- Navigation -->
+<nav id="mainNav">
+<ul>
+<li><a class="nav-cta" href="profit-leak-snapshot.html">Snapshot</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Insights</a>
+<div class="dropdown-menu">
+<a href="catering-profit.html">Catering Profit System</a>
+<a href="login.html">Course Login</a><a href="blog.html">Blog</a>
+</div>
+</li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Resources</a>
+<div class="dropdown-menu">
+<a href="audit.html">Restaurant Ops Audit</a>
+<a href="food-truck-audit.html">Food Truck Launch Audit</a>
+<a href="playbook.html">90-Day Profit Playbook</a>
+</div>
+</li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<section>
+<div class="container">
+<h1 class="mb-2">Book Your Profit Leak Snapshot</h1> <p class="mb-2">Tell me where the bottleneck is. I’ll share a simple first step you can take this week.</p>
+<p class="mb-2">90 minutes. 3 profit leaks identified. Clear action plan. $750.</p> <form action="https://formsubmit.co/hello@trecoleman.com" id="contactForm" method="POST">
+<div>
+<label>Name *
+              <input name="name" required=""/>
+</label>
+</div>
+<div>
+<label>Email *
+              <input name="email" required="" type="email"/>
+</label>
+</div>
+<div>
+<label>Company *
+              <input name="company" required=""/>
+</label>
+</div>
+<div>
+<label>Phone (optional)
+              <input name="phone" type="tel"/>
+</label>
+</div>
+<div>
+<label>Location *
+              <input name="location" required=""/>
+</label>
+</div>
+<div>
+<label>What are you interested in? *</label>
+<select name="interest" required="">
+<option selected="" value="Profit Leak Snapshot">$750 Profit Leak Snapshot</option>
+<option value="Advisory">Fractional COO / Advisory</option>
+<option value="Project">One-Time Project</option>
+<option value="General">General Inquiry</option>
+</select>
+</div>
+<div>
+<label>Biggest bottleneck *
+              <textarea name="bottleneck" required="" rows="4"></textarea>
+</label>
+</div>
+<div>
+<label>Budget range *
+              <select name="budget" required="">
+<option value="">Select…</option>
+<option>&lt;$2k</option>
+<option>$2k–$5k</option>
+<option>$5k–$10k</option>
+<option>$10k+</option>
+</select>
+</label>
+</div>
+<div>
+<label>Preferred start *
+              <select name="start" required="">
+<option value="">Select…</option>
+<option>ASAP</option>
+<option>Next 30 days</option>
+<option>Next quarter</option>
+</select>
+</label>
+</div>
+<!-- Anti-spam & metadata -->
+<input autocomplete="off" name="website" style="position:absolute;left:-9999px;" tabindex="-1" type="text"/>
+<input name="_subject" type="hidden" value="New Lead from TreColeman.co"/>
+<input name="_autoresponse" type="hidden" value="Thanks for reaching out — I'll review and reply shortly."/>
+<input name="utm_source" type="hidden"/>
+<input name="utm_medium" type="hidden"/>
+<input name="utm_campaign" type="hidden"/>
+<!-- Disable FormSubmit's reCAPTCHA so users aren't blocked -->
+<input name="_captcha" type="hidden" value="false"/>
+<button class="button" style="margin-top:1rem;" type="submit">Get my plan</button>
+</form>
+</div>
+</section>
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div class="footer-section">
+<h4>Tre Coleman Consulting LLC</h4>
+<p>Richmond/Charlottesville, VA<br/>Serving Nationwide</p>
+<p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+<li><a href="catering-profit.html">Catering Course</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="blog.html">Blog</a></li></ul>
+</div>
+<div class="footer-section">
+<h4>Connect</h4>
+<ul>
+<li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+<li><a href="tel:540-807-9045">540.807.9045</a></li>
+<li><a href="https://www.linkedin.com/in/trecoleman/" rel="noopener" target="_blank">LinkedIn</a></li>
+<li><a href="https://www.facebook.com/trecolemanconsulting" rel="noopener" target="_blank">Facebook</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<script>
       // Set the current year in the footer
       // Mobile menu toggle functionality
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -280,6 +272,6 @@
         });
       });
     </script>
-    <script src="/header-scroll.js"></script>
-  </body>
+<script src="/header-scroll.js"></script>
+</body>
 </html>

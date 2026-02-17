@@ -1,14 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>Free Food Truck Launch Readiness Audit - Tre' Coleman</title>
-    <meta name="description" content="Free food truck launch readiness audit. Check your menu, operations, permits, and marketing before you hit the street. Get your launch score.">
-    <!-- Include the global stylesheet for consistent typography and colours -->
-    <link rel="stylesheet" href="style.css">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Free Food Truck Launch Readiness Audit - Tre' Coleman</title>
+<meta content="Free food truck launch readiness audit. Check your menu, operations, permits, and marketing before you hit the street. Get your launch score." name="description"/>
+<!-- Include the global stylesheet for consistent typography and colours -->
+<link href="style.css" rel="stylesheet"/>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: var(--font-stack);
@@ -338,315 +339,301 @@
     </style>
 </head>
 <body>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-overlay" id="mobileOverlay"></div>
-
-    <!-- Header -->
-    <header>
-      <div class="container">
-        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        <!-- Navigation -->
-        <nav id="mainNav">
-          <ul>
-            <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="advisory.html">Advisory</a></li>
-            <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Insights</a>
-              <div class="dropdown-menu">
-                <a href="catering-profit.html">Catering Profit System</a>
-                <a href="login.html">Course Login</a>
-              </div>
-            </li>
-            <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Resources</a>
-              <div class="dropdown-menu">
-                <a href="audit.html">Restaurant Ops Audit</a>
-                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
-                <a href="playbook.html">90-Day Profit Playbook</a>
-              </div>
-            </li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <div class="content-container">
-        <div class="header">
-            <h1>🚚 Food Truck Launch Readiness Audit</h1>
-            <p>Identify gaps in your launch plan and avoid costly mistakes. For aspiring operators planning to launch in the next 3-12 months.</p>
-        </div>
-
-        <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
-
-        <div class="content">
-            <div class="section active">
-                <h3><span class="section-icon">1</span>Foundation (5 Questions)</h3>
-                <div class="question">
-                    <label>What stage are you at?</label>
-                    <select id="stage">
-                        <option value="">Select stage</option>
-                        <option value="5">Funded, ready to execute within 3-6 months</option>
-                        <option value="4">Concept locked, working on funding</option>
-                        <option value="3">Have a concept, researching feasibility</option>
-                        <option value="1">Just exploring the idea (no concept yet)</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Have you worked in the food industry before?</label>
-                    <select id="experience">
-                        <option value="">Select experience</option>
-                        <option value="5">Yes, I've run my own food business</option>
-                        <option value="4">Yes, managed a restaurant/food business</option>
-                        <option value="3">Yes, worked in restaurants/food service</option>
-                        <option value="1">No, complete beginner</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>What's your target launch date?</label>
-                    <select id="timeline">
-                        <option value="">Select timeline</option>
-                        <option value="5">3-6 months</option>
-                        <option value="4">6-12 months</option>
-                        <option value="2">Within 3 months</option>
-                        <option value="2">12+ months (just planning)</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>What's your funding status?</label>
-                    <select id="funding">
-                        <option value="">Select status</option>
-                        <option value="5">Cash ready to deploy</option>
-                        <option value="4">Loan approved, waiting on disbursement</option>
-                        <option value="3">Loan application in process</option>
-                        <option value="2">Need to apply for funding</option>
-                        <option value="0">No funding plan yet</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>What's your monthly revenue goal Year 1?</label>
-                    <select id="revenueGoal">
-                        <option value="">Select goal</option>
-                        <option value="5">$20K-40K/month</option>
-                        <option value="4">$10K-20K/month</option>
-                        <option value="3">$40K-60K/month</option>
-                        <option value="2">$60K+/month</option>
-                        <option value="0">Haven't calculated this yet</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="section">
-                <h3><span class="section-icon">2</span>Concept & Menu (5 Questions)</h3>
-                <div class="question">
-                    <label>How developed is your concept?</label>
-                    <select id="conceptDev">
-                        <option value="">Select answer</option>
-                        <option value="5">Crystal clear (specific cuisine, signature items, target customer)</option>
-                        <option value="3">Pretty clear (general direction, need refinement)</option>
-                        <option value="2">Somewhat clear (narrowed to 2-3 ideas)</option>
-                        <option value="0">Not clear (still brainstorming)</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Have you tested your concept with customers?</label>
-                    <select id="conceptTest">
-                        <option value="">Select answer</option>
-                        <option value="5">Yes, multiple times (pop-ups, events, catering)</option>
-                        <option value="3">Yes, once or twice informally</option>
-                        <option value="2">Planning to test soon</option>
-                        <option value="0">No testing yet</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>How many menu items are you planning?</label>
-                    <select id="menuSize">
-                        <option value="">Select range</option>
-                        <option value="5">5-10 items (focused menu)</option>
-                        <option value="4">10-15 items (moderate variety)</option>
-                        <option value="2">15-20 items (extensive)</option>
-                        <option value="0">20+ items (very broad)</option>
-                        <option value="1">Haven't decided</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Have you calculated food costs for your menu?</label>
-                    <select id="foodCostCalc">
-                        <option value="">Select answer</option>
-                        <option value="5">Yes, exact COGS per item calculated</option>
-                        <option value="3">Rough estimates only</option>
-                        <option value="2">Not yet, planning to</option>
-                        <option value="0">Don't know how to do this</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>What food cost % are you targeting?</label>
-                    <select id="foodCostTarget">
-                        <option value="">Select target</option>
-                        <option value="5">25-28%</option>
-                        <option value="5">28-32%</option>
-                        <option value="3">32-35%</option>
-                        <option value="0">35%+</option>
-                        <option value="0">No idea</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="section">
-                <h3><span class="section-icon">3</span>Equipment & Logistics (5 Questions)</h3>
-                <div class="question">
-                    <label>Do you have your truck/trailer?</label>
-                    <select id="truckStatus">
-                        <option value="">Select status</option>
-                        <option value="5">Yes, purchased and ready</option>
-                        <option value="4">Yes, under contract/financing</option>
-                        <option value="3">Found one, negotiating</option>
-                        <option value="2">Still searching/researching</option>
-                        <option value="0">No idea where to start</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Do you have a complete equipment list?</label>
-                    <select id="equipmentList">
-                        <option value="">Select answer</option>
-                        <option value="5">Yes, itemized with costs</option>
-                        <option value="3">Yes, general list (need pricing)</option>
-                        <option value="2">Partial list (missing items)</option>
-                        <option value="1">No, need help building this</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Commissary kitchen requirement? (if applicable in your area)</label>
-                    <select id="commissary">
-                        <option value="">Select status</option>
-                        <option value="5">Secured space, ready to go</option>
-                        <option value="5">Not required in my area</option>
-                        <option value="4">Identified options, negotiating</option>
-                        <option value="2">Researching options</option>
-                        <option value="1">Don't know if I need one</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Permitting & licensing knowledge?</label>
-                    <select id="permitting">
-                        <option value="">Select level</option>
-                        <option value="5">Fully researched, know all requirements</option>
-                        <option value="3">Generally understand, some gaps</option>
-                        <option value="2">Somewhat researched, need clarity</option>
-                        <option value="0">Haven't researched yet</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Location strategy?</label>
-                    <select id="locationStrategy">
-                        <option value="">Select plan</option>
-                        <option value="5">Specific plan (routes, events, partnerships)</option>
-                        <option value="3">General plan (downtown, lunch spots, etc.)</option>
-                        <option value="2">Ideas but no validation</option>
-                        <option value="0">No strategy yet</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="section">
-                <h3><span class="section-icon">4</span>Financial Planning (5 Questions)</h3>
-                <div class="question">
-                    <label>Have you created a startup budget?</label>
-                    <select id="startupBudget">
-                        <option value="">Select answer</option>
-                        <option value="5">Yes, detailed line-by-line with quotes</option>
-                        <option value="3">Yes, rough estimates</option>
-                        <option value="2">Started but incomplete</option>
-                        <option value="0">No, need help</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>What's your total startup capital?</label>
-                    <select id="startupCapital">
-                        <option value="">Select range</option>
-                        <option value="5">$50K-75K</option>
-                        <option value="5">$75K-100K</option>
-                        <option value="4">$100K-150K</option>
-                        <option value="3">$30K-50K</option>
-                        <option value="2">$150K+</option>
-                        <option value="0">Haven't calculated yet</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Have you calculated break-even?</label>
-                    <select id="breakEven">
-                        <option value="">Select answer</option>
-                        <option value="5">Yes, know exact daily/weekly sales needed</option>
-                        <option value="3">Rough estimate</option>
-                        <option value="1">Not yet</option>
-                        <option value="0">Don't know how</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Working capital for first 3-6 months?</label>
-                    <select id="workingCapital">
-                        <option value="">Select status</option>
-                        <option value="5">Yes, fully budgeted (rent, supplies, wages, personal)</option>
-                        <option value="3">Partially budgeted (2-3 months)</option>
-                        <option value="0">Only covering startup (no working capital)</option>
-                        <option value="0">Didn't know I needed this</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Financial tracking plan?</label>
-                    <select id="financialTracking">
-                        <option value="">Select plan</option>
-                        <option value="5">POS + accounting software integrated</option>
-                        <option value="4">POS + manual bookkeeping</option>
-                        <option value="2">Spreadsheets only</option>
-                        <option value="0">No plan yet</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="section">
-                <h3><span class="section-icon">💭</span>Final Question</h3>
-                <div class="question">
-                    <label>What's your #1 biggest fear or concern about launching?</label>
-                    <textarea id="biggestFear" placeholder="Type your biggest concern here..." rows="3"></textarea>
-                </div>
-            </div>
-
-            <button class="calculate-btn" onclick="calculateAudit()">📊 Calculate My Launch Readiness Score</button>
-
-            <!-- EMAIL COLLECTION SECTION - SHOWN BEFORE RESULTS -->
-            <div id="emailSection" class="email-section">
-                <h3>🎯 Enter Your Email to See Results</h3>
-                <p><strong>Your audit is complete! You're one step away from your personalized results.</strong></p>
-                <p>Enter your email below to receive your detailed readiness score and customized launch roadmap:</p>
-                <div class="email-form">
-                    <input type="email" id="emailInput" placeholder="Enter your email address" required>
-                    <button id="showResultsBtn" onclick="showResults()">🚀 Show My Results Now</button>
-                </div>
-                <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<!-- Header -->
+<header>
+<div class="container">
+<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<!-- Mobile Menu Toggle Button -->
+<button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<!-- Navigation -->
+<nav id="mainNav">
+<ul>
+<li><a class="nav-cta" href="profit-leak-snapshot.html">Snapshot</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Insights</a>
+<div class="dropdown-menu">
+<a href="catering-profit.html">Catering Profit System</a>
+<a href="login.html">Course Login</a><a href="blog.html">Blog</a>
+</div>
+</li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Resources</a>
+<div class="dropdown-menu">
+<a href="audit.html">Restaurant Ops Audit</a>
+<a href="food-truck-audit.html">Food Truck Launch Audit</a>
+<a href="playbook.html">90-Day Profit Playbook</a>
+</div>
+</li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<div class="content-container">
+<div class="header">
+<h1>🚚 Food Truck Launch Readiness Audit</h1>
+<p>Identify gaps in your launch plan and avoid costly mistakes. For aspiring operators planning to launch in the next 3-12 months.</p>
+</div>
+<div class="progress-bar"><div class="progress" id="progressBar"></div></div>
+<div class="content">
+<div class="section active">
+<h3><span class="section-icon">1</span>Foundation (5 Questions)</h3>
+<div class="question">
+<label>What stage are you at?</label>
+<select id="stage">
+<option value="">Select stage</option>
+<option value="5">Funded, ready to execute within 3-6 months</option>
+<option value="4">Concept locked, working on funding</option>
+<option value="3">Have a concept, researching feasibility</option>
+<option value="1">Just exploring the idea (no concept yet)</option>
+</select>
+</div>
+<div class="question">
+<label>Have you worked in the food industry before?</label>
+<select id="experience">
+<option value="">Select experience</option>
+<option value="5">Yes, I've run my own food business</option>
+<option value="4">Yes, managed a restaurant/food business</option>
+<option value="3">Yes, worked in restaurants/food service</option>
+<option value="1">No, complete beginner</option>
+</select>
+</div>
+<div class="question">
+<label>What's your target launch date?</label>
+<select id="timeline">
+<option value="">Select timeline</option>
+<option value="5">3-6 months</option>
+<option value="4">6-12 months</option>
+<option value="2">Within 3 months</option>
+<option value="2">12+ months (just planning)</option>
+</select>
+</div>
+<div class="question">
+<label>What's your funding status?</label>
+<select id="funding">
+<option value="">Select status</option>
+<option value="5">Cash ready to deploy</option>
+<option value="4">Loan approved, waiting on disbursement</option>
+<option value="3">Loan application in process</option>
+<option value="2">Need to apply for funding</option>
+<option value="0">No funding plan yet</option>
+</select>
+</div>
+<div class="question">
+<label>What's your monthly revenue goal Year 1?</label>
+<select id="revenueGoal">
+<option value="">Select goal</option>
+<option value="5">$20K-40K/month</option>
+<option value="4">$10K-20K/month</option>
+<option value="3">$40K-60K/month</option>
+<option value="2">$60K+/month</option>
+<option value="0">Haven't calculated this yet</option>
+</select>
+</div>
+</div>
+<div class="section">
+<h3><span class="section-icon">2</span>Concept &amp; Menu (5 Questions)</h3>
+<div class="question">
+<label>How developed is your concept?</label>
+<select id="conceptDev">
+<option value="">Select answer</option>
+<option value="5">Crystal clear (specific cuisine, signature items, target customer)</option>
+<option value="3">Pretty clear (general direction, need refinement)</option>
+<option value="2">Somewhat clear (narrowed to 2-3 ideas)</option>
+<option value="0">Not clear (still brainstorming)</option>
+</select>
+</div>
+<div class="question">
+<label>Have you tested your concept with customers?</label>
+<select id="conceptTest">
+<option value="">Select answer</option>
+<option value="5">Yes, multiple times (pop-ups, events, catering)</option>
+<option value="3">Yes, once or twice informally</option>
+<option value="2">Planning to test soon</option>
+<option value="0">No testing yet</option>
+</select>
+</div>
+<div class="question">
+<label>How many menu items are you planning?</label>
+<select id="menuSize">
+<option value="">Select range</option>
+<option value="5">5-10 items (focused menu)</option>
+<option value="4">10-15 items (moderate variety)</option>
+<option value="2">15-20 items (extensive)</option>
+<option value="0">20+ items (very broad)</option>
+<option value="1">Haven't decided</option>
+</select>
+</div>
+<div class="question">
+<label>Have you calculated food costs for your menu?</label>
+<select id="foodCostCalc">
+<option value="">Select answer</option>
+<option value="5">Yes, exact COGS per item calculated</option>
+<option value="3">Rough estimates only</option>
+<option value="2">Not yet, planning to</option>
+<option value="0">Don't know how to do this</option>
+</select>
+</div>
+<div class="question">
+<label>What food cost % are you targeting?</label>
+<select id="foodCostTarget">
+<option value="">Select target</option>
+<option value="5">25-28%</option>
+<option value="5">28-32%</option>
+<option value="3">32-35%</option>
+<option value="0">35%+</option>
+<option value="0">No idea</option>
+</select>
+</div>
+</div>
+<div class="section">
+<h3><span class="section-icon">3</span>Equipment &amp; Logistics (5 Questions)</h3>
+<div class="question">
+<label>Do you have your truck/trailer?</label>
+<select id="truckStatus">
+<option value="">Select status</option>
+<option value="5">Yes, purchased and ready</option>
+<option value="4">Yes, under contract/financing</option>
+<option value="3">Found one, negotiating</option>
+<option value="2">Still searching/researching</option>
+<option value="0">No idea where to start</option>
+</select>
+</div>
+<div class="question">
+<label>Do you have a complete equipment list?</label>
+<select id="equipmentList">
+<option value="">Select answer</option>
+<option value="5">Yes, itemized with costs</option>
+<option value="3">Yes, general list (need pricing)</option>
+<option value="2">Partial list (missing items)</option>
+<option value="1">No, need help building this</option>
+</select>
+</div>
+<div class="question">
+<label>Commissary kitchen requirement? (if applicable in your area)</label>
+<select id="commissary">
+<option value="">Select status</option>
+<option value="5">Secured space, ready to go</option>
+<option value="5">Not required in my area</option>
+<option value="4">Identified options, negotiating</option>
+<option value="2">Researching options</option>
+<option value="1">Don't know if I need one</option>
+</select>
+</div>
+<div class="question">
+<label>Permitting &amp; licensing knowledge?</label>
+<select id="permitting">
+<option value="">Select level</option>
+<option value="5">Fully researched, know all requirements</option>
+<option value="3">Generally understand, some gaps</option>
+<option value="2">Somewhat researched, need clarity</option>
+<option value="0">Haven't researched yet</option>
+</select>
+</div>
+<div class="question">
+<label>Location strategy?</label>
+<select id="locationStrategy">
+<option value="">Select plan</option>
+<option value="5">Specific plan (routes, events, partnerships)</option>
+<option value="3">General plan (downtown, lunch spots, etc.)</option>
+<option value="2">Ideas but no validation</option>
+<option value="0">No strategy yet</option>
+</select>
+</div>
+</div>
+<div class="section">
+<h3><span class="section-icon">4</span>Financial Planning (5 Questions)</h3>
+<div class="question">
+<label>Have you created a startup budget?</label>
+<select id="startupBudget">
+<option value="">Select answer</option>
+<option value="5">Yes, detailed line-by-line with quotes</option>
+<option value="3">Yes, rough estimates</option>
+<option value="2">Started but incomplete</option>
+<option value="0">No, need help</option>
+</select>
+</div>
+<div class="question">
+<label>What's your total startup capital?</label>
+<select id="startupCapital">
+<option value="">Select range</option>
+<option value="5">$50K-75K</option>
+<option value="5">$75K-100K</option>
+<option value="4">$100K-150K</option>
+<option value="3">$30K-50K</option>
+<option value="2">$150K+</option>
+<option value="0">Haven't calculated yet</option>
+</select>
+</div>
+<div class="question">
+<label>Have you calculated break-even?</label>
+<select id="breakEven">
+<option value="">Select answer</option>
+<option value="5">Yes, know exact daily/weekly sales needed</option>
+<option value="3">Rough estimate</option>
+<option value="1">Not yet</option>
+<option value="0">Don't know how</option>
+</select>
+</div>
+<div class="question">
+<label>Working capital for first 3-6 months?</label>
+<select id="workingCapital">
+<option value="">Select status</option>
+<option value="5">Yes, fully budgeted (rent, supplies, wages, personal)</option>
+<option value="3">Partially budgeted (2-3 months)</option>
+<option value="0">Only covering startup (no working capital)</option>
+<option value="0">Didn't know I needed this</option>
+</select>
+</div>
+<div class="question">
+<label>Financial tracking plan?</label>
+<select id="financialTracking">
+<option value="">Select plan</option>
+<option value="5">POS + accounting software integrated</option>
+<option value="4">POS + manual bookkeeping</option>
+<option value="2">Spreadsheets only</option>
+<option value="0">No plan yet</option>
+</select>
+</div>
+</div>
+<div class="section">
+<h3><span class="section-icon">💭</span>Final Question</h3>
+<div class="question">
+<label>What's your #1 biggest fear or concern about launching?</label>
+<textarea id="biggestFear" placeholder="Type your biggest concern here..." rows="3"></textarea>
+</div>
+</div>
+<button class="calculate-btn" onclick="calculateAudit()">📊 Calculate My Launch Readiness Score</button>
+<!-- EMAIL COLLECTION SECTION - SHOWN BEFORE RESULTS -->
+<div class="email-section" id="emailSection">
+<h3>🎯 Enter Your Email to See Results</h3>
+<p><strong>Your audit is complete! You're one step away from your personalized results.</strong></p>
+<p>Enter your email below to receive your detailed readiness score and customized launch roadmap:</p>
+<div class="email-form">
+<input id="emailInput" placeholder="Enter your email address" required="" type="email"/>
+<button id="showResultsBtn" onclick="showResults()">🚀 Show My Results Now</button>
+</div>
+<p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">
                     📧 We'll also send you additional food truck launch tips and follow-up recommendations
                 </p>
-                <p style="font-size: 0.8rem; margin-top: 0.5rem; opacity: 0.7;">
+<p style="font-size: 0.8rem; margin-top: 0.5rem; opacity: 0.7;">
                     🔒 Your email is secure and will only be used for food truck launch resources
                 </p>
-            </div>
-
-            <!-- RESULTS SECTION - ONLY SHOWN AFTER EMAIL SUBMISSION -->
-            <div id="results" class="results"><!-- Results injected here --></div>
-        </div>
-    </div>
-
-    <script>
+</div>
+<!-- RESULTS SECTION - ONLY SHOWN AFTER EMAIL SUBMISSION -->
+<div class="results" id="results"><!-- Results injected here --></div>
+</div>
+</div>
+<script>
         // Store audit data globally
         window.auditData = {};
 
@@ -1471,7 +1458,7 @@ Schedule your strategy session to get started on the right path.
 `;
         }
     </script>
-    <script>
+<script>
       // Mobile menu toggle functionality
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
@@ -1510,42 +1497,39 @@ Schedule your strategy session to get started on the right path.
         });
       });
     </script>
-    <script src="/exit-intent-popup.js" defer></script>
-  <script src="/header-scroll.js"></script>
-
-    <!-- Footer -->
-    <footer>
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-section">
-            <h4>Tre Coleman Consulting LLC</h4>
-            <p>Richmond/Charlottesville, VA<br>Serving Nationwide</p>
-            <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
-          </div>
-
-          <div class="footer-section">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="advisory.html">Advisory</a></li>
-              <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
-              <li><a href="catering-profit.html">Catering Course</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <ul>
-              <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
-              <li><a href="tel:540-807-9045">540.807.9045</a></li>
-              <li><a href="https://www.linkedin.com/in/trecoleman/" target="_blank" rel="noopener">LinkedIn</a></li>
-              <li><a href="https://www.facebook.com/trecolemanconsulting" target="_blank" rel="noopener">Facebook</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </body>
+<script defer="" src="/exit-intent-popup.js"></script>
+<script src="/header-scroll.js"></script>
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div class="footer-section">
+<h4>Tre Coleman Consulting LLC</h4>
+<p>Richmond/Charlottesville, VA<br/>Serving Nationwide</p>
+<p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+<li><a href="catering-profit.html">Catering Course</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="blog.html">Blog</a></li></ul>
+</div>
+<div class="footer-section">
+<h4>Connect</h4>
+<ul>
+<li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+<li><a href="tel:540-807-9045">540.807.9045</a></li>
+<li><a href="https://www.linkedin.com/in/trecoleman/" rel="noopener" target="_blank">LinkedIn</a></li>
+<li><a href="https://www.facebook.com/trecolemanconsulting" rel="noopener" target="_blank">Facebook</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+</body>
 </html>

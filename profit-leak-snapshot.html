@@ -1,32 +1,29 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>Profit Leak Snapshot - 90-Minute Hospitality Operations Diagnostic | Tre Coleman</title>
-  <meta name="description" content="Your restaurant, food truck, or catering operation is profitable on paper, but the money is not showing up in your account. 90-minute diagnostic to identify your top 3 profit leaks. $750.">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://trecoleman.com/profit-leak-snapshot.html" />
-  <meta property="og:title" content="Profit Leak Snapshot - $750 Hospitality Operations Diagnostic | Tre Coleman" />
-  <meta property="og:description" content="90-minute diagnostic to identify your top 3 profit leaks. Get a custom action plan to fix what's costing you money." />
-  <meta property="og:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://trecoleman.com/profit-leak-snapshot.html" />
-  <meta name="twitter:title" content="Profit Leak Snapshot - $750 Hospitality Operations Diagnostic | Tre Coleman" />
-  <meta name="twitter:description" content="90-minute diagnostic to identify your top 3 profit leaks. Get a custom action plan to fix what's costing you money." />
-  <meta name="twitter:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
-
-  <!-- Use relative path for CSS so it loads on GitHub Pages project sites -->
-  <link rel="stylesheet" href="style.css" />
-  <!-- Load Stripe script once at top -->
-  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Profit Leak Snapshot - 90-Minute Hospitality Operations Diagnostic | Tre Coleman</title>
+<meta content="Your restaurant, food truck, or catering operation is profitable on paper, but the money is not showing up in your account. 90-minute diagnostic to identify your top 3 profit leaks. $750." name="description"/>
+<!-- Open Graph / Facebook -->
+<meta content="website" property="og:type"/>
+<meta content="https://trecoleman.com/profit-leak-snapshot.html" property="og:url"/>
+<meta content="Profit Leak Snapshot - $750 Hospitality Operations Diagnostic | Tre Coleman" property="og:title"/>
+<meta content="90-minute diagnostic to identify your top 3 profit leaks. Get a custom action plan to fix what's costing you money." property="og:description">
+<meta content="https://trecoleman.com/images/tre-headshot.jpg" property="og:image">
+<!-- Twitter -->
+<meta content="summary_large_image" name="twitter:card">
+<meta content="https://trecoleman.com/profit-leak-snapshot.html" name="twitter:url"/>
+<meta content="Profit Leak Snapshot - $750 Hospitality Operations Diagnostic | Tre Coleman" name="twitter:title"/>
+<meta content="90-minute diagnostic to identify your top 3 profit leaks. Get a custom action plan to fix what's costing you money." name="twitter:description"/>
+<meta content="https://trecoleman.com/images/tre-headshot.jpg" name="twitter:image"/>
+<!-- Use relative path for CSS so it loads on GitHub Pages project sites -->
+<link href="style.css" rel="stylesheet"/>
+<!-- Load Stripe script once at top -->
+<script async="" src="https://js.stripe.com/v3/buy-button.js"></script>
+<style>
     * {
       margin: 0;
       padding: 0;
@@ -354,325 +351,280 @@
 
 /* Mobile nav styles handled by style.css */
   </style>
-  <script src="analytics.js"></script>
-</head>
+<script src="analytics.js"></script>
+</meta></meta></meta></head>
 <body>
-  <!-- Mobile Menu Overlay -->
-  <div class="mobile-overlay" id="mobileOverlay"></div>
-
-  <!-- Header -->
-  <header>
-    <div class="container">
-      <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
-      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav id="mainNav">
-        <ul>
-          <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="advisory.html">Advisory</a></li>
-          <li class="nav-dropdown">
-            <a href="#" onclick="return false;">Insights</a>
-            <div class="dropdown-menu">
-              <a href="catering-profit.html">Catering Profit System</a>
-              <a href="login.html">Course Login</a>
-            </div>
-          </li>
-          <li class="nav-dropdown">
-            <a href="#" onclick="return false;">Resources</a>
-            <div class="dropdown-menu">
-              <a href="audit.html">Restaurant Ops Audit</a>
-              <a href="food-truck-audit.html">Food Truck Launch Audit</a>
-              <a href="playbook.html">90-Day Profit Playbook</a>
-            </div>
-          </li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Profit Leak Snapshot</h1>
-
-      <p class="tagline">Your operation is profitable on paper, but the money is not showing up in your account. Something is leaking.</p>
-
-      <p class="description">The Profit Leak Snapshot is a 90-minute diagnostic session to identify your top 3 profit leaks, estimate what they are costing you, and decide what to fix first.</p>
-
-      <div class="cta-buttons">
-        <div class="stripe-container">
-          <stripe-buy-button
-            buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ"
-            publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW"
-          >
-          </stripe-buy-button>
-        </div>
-        <a href="mailto:hello@trecoleman.com" class="btn-secondary">Email a question</a>
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<!-- Header -->
+<header>
+<div class="container">
+<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<nav id="mainNav">
+<ul>
+<li><a class="nav-cta" href="profit-leak-snapshot.html">Snapshot</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Insights</a>
+<div class="dropdown-menu">
+<a href="catering-profit.html">Catering Profit System</a>
+<a href="login.html">Course Login</a><a href="blog.html">Blog</a>
+</div>
+</li>
+<li class="nav-dropdown">
+<a href="#" onclick="return false;">Resources</a>
+<div class="dropdown-menu">
+<a href="audit.html">Restaurant Ops Audit</a>
+<a href="food-truck-audit.html">Food Truck Launch Audit</a>
+<a href="playbook.html">90-Day Profit Playbook</a>
+</div>
+</li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="hero">
+<div class="hero-content">
+<h1>Profit Leak Snapshot</h1>
+<p class="tagline">Your operation is profitable on paper, but the money is not showing up in your account. Something is leaking.</p>
+<p class="description">The Profit Leak Snapshot is a 90-minute diagnostic session to identify your top 3 profit leaks, estimate what they are costing you, and decide what to fix first.</p>
+<div class="cta-buttons">
+<div class="stripe-container">
+<stripe-buy-button buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ" publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW">
+</stripe-buy-button>
+</div>
+<a class="btn-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
+</div>
+<p class="credit-note">If you decide to move forward with implementation support, the $750 credits toward your engagement.</p>
+</div>
+</section>
+<!-- What This Is -->
+<section class="section">
+<h2>What this is</h2>
+<p><strong>This is not consulting theater. It is a fast, operator-level diagnosis.</strong></p>
+<p>In 90 minutes, we will:</p>
+<ul>
+<li>Review your last 90 days of key numbers (P&amp;L, labor summary, sales mix basics)</li>
+<li>Pressure-test what you think the problem is</li>
+<li>Identify the top 3 likely profit leaks</li>
+<li>Estimate monthly and annual impact ranges</li>
+<li>Prioritize what to fix first based on impact vs effort</li>
+<li>Call out what not to touch yet</li>
+</ul>
+</section>
+<!-- What You Walk Away With -->
+<section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
+<div style="max-width: 800px; margin: 0 auto;">
+<h2>What you walk away with</h2>
+<p>You will leave the call with:</p>
+<ul>
+<li>Your top 3 profit leaks, clearly named</li>
+<li>A rough $ impact estimate for each leak (monthly and annual ranges)</li>
+<li>A simple Fix First order: first, second, third</li>
+<li>A clear recommendation on whether deeper work is worth it</li>
+</ul>
+<div class="important">
+<strong>Important:</strong> This is a diagnostic. It is designed to create clarity, not deliver a full implementation plan.
       </div>
-
-      <p class="credit-note">If you decide to move forward with implementation support, the $750 credits toward your engagement.</p>
-    </div>
-  </section>
-
-  <!-- What This Is -->
-  <section class="section">
-    <h2>What this is</h2>
-    <p><strong>This is not consulting theater. It is a fast, operator-level diagnosis.</strong></p>
-
-    <p>In 90 minutes, we will:</p>
-    <ul>
-      <li>Review your last 90 days of key numbers (P&L, labor summary, sales mix basics)</li>
-      <li>Pressure-test what you think the problem is</li>
-      <li>Identify the top 3 likely profit leaks</li>
-      <li>Estimate monthly and annual impact ranges</li>
-      <li>Prioritize what to fix first based on impact vs effort</li>
-      <li>Call out what not to touch yet</li>
-    </ul>
-  </section>
-
-  <!-- What You Walk Away With -->
-  <section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h2>What you walk away with</h2>
-      <p>You will leave the call with:</p>
-      <ul>
-        <li>Your top 3 profit leaks, clearly named</li>
-        <li>A rough $ impact estimate for each leak (monthly and annual ranges)</li>
-        <li>A simple Fix First order: first, second, third</li>
-        <li>A clear recommendation on whether deeper work is worth it</li>
-      </ul>
-
-      <div class="important">
-        <strong>Important:</strong> This is a diagnostic. It is designed to create clarity, not deliver a full implementation plan.
-      </div>
-    </div>
-  </section>
-
-  <!-- What This Is Not -->
-  <section class="section">
-    <h2>What this is not</h2>
-    <p>To keep the Snapshot clean and valuable, we do <strong>not</strong>:</p>
-
-    <div class="not-included">
-      <ul>
-        <li>Rebuild schedules or staffing plans</li>
-        <li>Rewrite your menu or fully engineer it</li>
-        <li>Create SOPs</li>
-        <li>Set up software or AI automations</li>
-        <li>Deliver a recording</li>
-        <li>Deliver a written roadmap</li>
-      </ul>
-    </div>
-
-    <p>If you want help implementing the fixes, that is a separate scope.</p>
-  </section>
-
-  <!-- Who This Is For -->
-  <section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h2>Who this is for</h2>
-      <p>This is for operators who are:</p>
-      <ul>
-        <li>Actually running the operation—not just thinking about it</li>
-        <li>Looking at P&Ls that don't match the effort going in</li>
-        <li>Ready to see the numbers behind the problem, not just talk in circles</li>
-        <li>Willing to spend $750 to stop guessing and start fixing</li>
-      </ul>
-
-      <p style="margin-top: 2rem;">If you are exploring options, comparing consultants, or hoping for free advice, this is not the right fit. This is a paid diagnostic for operators who need clarity now.</p>
-    </div>
-  </section>
-
-  <!-- What to Bring -->
-  <section class="section">
-    <h2>What to bring</h2>
-    <p>Have these ready on the call:</p>
-    <ul>
-      <li>Last 3 months of P&L</li>
-      <li>A labor summary (hours, payroll, OT if available)</li>
-      <li>Basic sales mix or top sellers list from your POS (if available)</li>
-    </ul>
-    <p>If you are missing something, we will work with what you have and flag the gaps.</p>
-  </section>
-
-  <!-- Why This Works -->
-  <section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h2>Why this works</h2>
-
-      <!-- Professional Operations Image -->
-      <div style="text-align: center; margin-bottom: 2.5rem;">
-        <img src="facebookbackground.png" alt="Professional restaurant operations management" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);">
-      </div>
-
-      <p>Most hospitality operations do not have one big problem. They have a few small leaks that compound.</p>
-      <p>The Snapshot helps you:</p>
-      <ul>
-        <li>Stop chasing the wrong fix</li>
-        <li>See the cost in dollars, not feelings</li>
-        <li>Make one decision at a time, in the right order</li>
-      </ul>
-      <p style="margin-top: 2rem; font-size: 1.3rem; font-weight: 600; color: #1e3a5f;">You are buying clarity. Clarity drives profit.</p>
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section class="faq">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h2 style="text-align: center; font-size: 2.5rem; color: #1e3a5f; margin-bottom: 3rem;">FAQ</h2>
-
-      <div class="faq-item">
-        <h3>How long is the session?</h3>
-        <p>90 minutes.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3>Do I get a recording or a written plan?</h3>
-        <p>No. This is a live diagnostic and prioritization session.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3>Will you tell me exactly what to do step-by-step?</h3>
-        <p>You will leave with what to fix first and why. Implementation is a separate scope.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3>What if I do not have perfect reports?</h3>
-        <p>Bring what you have. We will diagnose from available data and identify what is missing.</p>
-      </div>
-
-      <div class="faq-item">
-        <h3>Can you help implement the fixes?</h3>
-        <p>Yes, if it makes sense. We can scope that after the Snapshot. If we move into an engagement, the $750 credits toward it.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- What Happens After Your Snapshot -->
-  <section class="section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 5rem 1.5rem;">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h2 style="text-align: center; font-size: 2.5rem; color: #1e3a5f; margin-bottom: 2rem;">What Happens After Your Snapshot?</h2>
-
-      <p style="font-size: 1.2rem; line-height: 1.7; margin-bottom: 2rem;">
+</div>
+</section>
+<!-- What This Is Not -->
+<section class="section">
+<h2>What this is not</h2>
+<p>To keep the Snapshot clean and valuable, we do <strong>not</strong>:</p>
+<div class="not-included">
+<ul>
+<li>Rebuild schedules or staffing plans</li>
+<li>Rewrite your menu or fully engineer it</li>
+<li>Create SOPs</li>
+<li>Set up software or AI automations</li>
+<li>Deliver a recording</li>
+<li>Deliver a written roadmap</li>
+</ul>
+</div>
+<p>If you want help implementing the fixes, that is a separate scope.</p>
+</section>
+<!-- Who This Is For -->
+<section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
+<div style="max-width: 800px; margin: 0 auto;">
+<h2>Who this is for</h2>
+<p>This is for operators who are:</p>
+<ul>
+<li>Actually running the operation—not just thinking about it</li>
+<li>Looking at P&amp;Ls that don't match the effort going in</li>
+<li>Ready to see the numbers behind the problem, not just talk in circles</li>
+<li>Willing to spend $750 to stop guessing and start fixing</li>
+</ul>
+<p style="margin-top: 2rem;">If you are exploring options, comparing consultants, or hoping for free advice, this is not the right fit. This is a paid diagnostic for operators who need clarity now.</p>
+</div>
+</section>
+<!-- What to Bring -->
+<section class="section">
+<h2>What to bring</h2>
+<p>Have these ready on the call:</p>
+<ul>
+<li>Last 3 months of P&amp;L</li>
+<li>A labor summary (hours, payroll, OT if available)</li>
+<li>Basic sales mix or top sellers list from your POS (if available)</li>
+</ul>
+<p>If you are missing something, we will work with what you have and flag the gaps.</p>
+</section>
+<!-- Why This Works -->
+<section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
+<div style="max-width: 800px; margin: 0 auto;">
+<h2>Why this works</h2>
+<!-- Professional Operations Image -->
+<div style="text-align: center; margin-bottom: 2.5rem;">
+<img alt="Professional restaurant operations management" src="facebookbackground.png" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);"/>
+</div>
+<p>Most hospitality operations do not have one big problem. They have a few small leaks that compound.</p>
+<p>The Snapshot helps you:</p>
+<ul>
+<li>Stop chasing the wrong fix</li>
+<li>See the cost in dollars, not feelings</li>
+<li>Make one decision at a time, in the right order</li>
+</ul>
+<p style="margin-top: 2rem; font-size: 1.3rem; font-weight: 600; color: #1e3a5f;">You are buying clarity. Clarity drives profit.</p>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="faq">
+<div style="max-width: 800px; margin: 0 auto;">
+<h2 style="text-align: center; font-size: 2.5rem; color: #1e3a5f; margin-bottom: 3rem;">FAQ</h2>
+<div class="faq-item">
+<h3>How long is the session?</h3>
+<p>90 minutes.</p>
+</div>
+<div class="faq-item">
+<h3>Do I get a recording or a written plan?</h3>
+<p>No. This is a live diagnostic and prioritization session.</p>
+</div>
+<div class="faq-item">
+<h3>Will you tell me exactly what to do step-by-step?</h3>
+<p>You will leave with what to fix first and why. Implementation is a separate scope.</p>
+</div>
+<div class="faq-item">
+<h3>What if I do not have perfect reports?</h3>
+<p>Bring what you have. We will diagnose from available data and identify what is missing.</p>
+</div>
+<div class="faq-item">
+<h3>Can you help implement the fixes?</h3>
+<p>Yes, if it makes sense. We can scope that after the Snapshot. If we move into an engagement, the $750 credits toward it.</p>
+</div>
+</div>
+</section>
+<!-- What Happens After Your Snapshot -->
+<section class="section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 5rem 1.5rem;">
+<div style="max-width: 800px; margin: 0 auto;">
+<h2 style="text-align: center; font-size: 2.5rem; color: #1e3a5f; margin-bottom: 2rem;">What Happens After Your Snapshot?</h2>
+<p style="font-size: 1.2rem; line-height: 1.7; margin-bottom: 2rem;">
         The Profit Leak Snapshot gives you <strong>clarity</strong>—you'll know exactly what's leaking and what to fix first. But here's the reality: <strong>most operators already know their problems</strong>. The hard part isn't diagnosis. It's <strong>execution</strong>.
       </p>
-
-      <p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
+<p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
         You'll leave the Snapshot with a prioritized action plan. Then you face a choice:
       </p>
-
-      <div style="background: white; border-left: 4px solid #1e3a5f; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
-        <ul style="list-style: disc inside; margin-left: 1rem; line-height: 1.8; font-size: 1.1rem;">
-          <li>Try to implement it yourself (which gets buried under daily fires)</li>
-          <li>Hand it off to your team (who may lack the skills or capacity)</li>
-          <li>Hire a full-time COO (expensive, risky, slow)</li>
-          <li><strong>Or partner with a Fractional COO who helps you execute every week</strong></li>
-        </ul>
-      </div>
-
-      <h3 style="color: #1e3a5f; font-size: 1.8rem; margin: 3rem 0 1.5rem;">The Fractional COO Solution</h3>
-
-      <p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
+<div style="background: white; border-left: 4px solid #1e3a5f; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
+<ul style="list-style: disc inside; margin-left: 1rem; line-height: 1.8; font-size: 1.1rem;">
+<li>Try to implement it yourself (which gets buried under daily fires)</li>
+<li>Hand it off to your team (who may lack the skills or capacity)</li>
+<li>Hire a full-time COO (expensive, risky, slow)</li>
+<li><strong>Or partner with a Fractional COO who helps you execute every week</strong></li>
+</ul>
+</div>
+<h3 style="color: #1e3a5f; font-size: 1.8rem; margin: 3rem 0 1.5rem;">The Fractional COO Solution</h3>
+<p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
         If you want <strong>ongoing strategic partnership</strong> to execute on your Snapshot recommendations—weekly calls, unlimited access, KPI accountability, hands-on problem-solving—the <strong>Fractional COO service</strong> is the next step.
       </p>
-
-      <div style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 2rem 0;">
-        <p style="font-size: 1.2rem; font-weight: 600; color: #1e3a5f; margin-bottom: 1rem;">What you get:</p>
-        <ul style="list-style: none; margin: 1.5rem 0;">
-          <li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-            <span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
+<div style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 2rem 0;">
+<p style="font-size: 1.2rem; font-weight: 600; color: #1e3a5f; margin-bottom: 1rem;">What you get:</p>
+<ul style="list-style: none; margin: 1.5rem 0;">
+<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
+<span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
             Weekly 45-60 minute strategy calls
           </li>
-          <li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-            <span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
+<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
+<span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
             Unlimited Slack/email access between calls
           </li>
-          <li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-            <span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
-            KPI tracking & weekly reviews
+<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
+<span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
+            KPI tracking &amp; weekly reviews
           </li>
-          <li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-            <span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
-            Hands-on project support & accountability
+<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
+<span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
+            Hands-on project support &amp; accountability
           </li>
-          <li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-            <span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
-            90-day strategic planning & quarterly reviews
+<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
+<span style="position: absolute; left: 0; color: #d4a574; font-weight: bold; font-size: 1.2rem;">✓</span>
+            90-day strategic planning &amp; quarterly reviews
           </li>
-        </ul>
-        <p style="font-size: 1.3rem; font-weight: 700; color: #1e3a5f; margin: 2rem 0 1rem;">Investment: $2,000/month (3-month minimum)</p>
-        <p style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 2rem;">
-          <strong>Bonus:</strong> If you start within 30 days of your Snapshot, your <span style="color: #d4a574; font-weight: 600;">$750 Snapshot fee gets credited toward your first month</span>—making your first month just $1,250.
+</ul>
+<p style="font-size: 1.3rem; font-weight: 700; color: #1e3a5f; margin: 2rem 0 1rem;">Investment: $2,000/month (3-month minimum)</p>
+<p style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 2rem;">
+<strong>Bonus:</strong> If you start within 30 days of your Snapshot, your <span style="color: #d4a574; font-weight: 600;">$750 Snapshot fee gets credited toward your first month</span>—making your first month just $1,250.
         </p>
-        <div style="text-align: center; margin-top: 2rem;">
-          <a href="advisory.html" style="background: #1e3a5f; color: white; padding: 1rem 2.5rem; border-radius: 8px; font-size: 1.2rem; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.3s ease;">Learn About Fractional COO →</a>
-        </div>
-      </div>
-
-      <p style="font-size: 1.05rem; line-height: 1.7; margin-top: 2rem; font-style: italic; color: #2c3e50;">
-        <strong>Bottom line:</strong> The Snapshot shows you the leaks. The Fractional COO partnership helps you plug them—with weekly accountability, strategic guidance, and hands-on execution support.
+<div style="text-align: center; margin-top: 2rem;">
+<a href="advisory.html" style="background: #1e3a5f; color: white; padding: 1rem 2.5rem; border-radius: 8px; font-size: 1.2rem; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.3s ease;">Learn About Fractional COO →</a>
+</div>
+</div>
+<p style="font-size: 1.05rem; line-height: 1.7; margin-top: 2rem; font-style: italic; color: #2c3e50;">
+<strong>Bottom line:</strong> The Snapshot shows you the leaks. The Fractional COO partnership helps you plug them—with weekly accountability, strategic guidance, and hands-on execution support.
       </p>
-    </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section class="cta-section">
-    <h2>Ready to stop the bleeding?</h2>
-
-    <div class="cta-buttons">
-      <div class="stripe-container">
-        <stripe-buy-button
-          buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ"
-          publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW"
-        >
-        </stripe-buy-button>
-      </div>
-      <a href="mailto:hello@trecoleman.com" class="btn-secondary">Email a question</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-section">
-          <h4>Tre Coleman Consulting LLC</h4>
-          <p>Richmond/Charlottesville, VA<br>Serving Nationwide</p>
-          <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
-        </div>
-
-        <div class="footer-section">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="advisory.html">Advisory</a></li>
-            <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
-            <li><a href="catering-profit.html">Catering Course</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-section">
-          <h4>Connect</h4>
-          <ul>
-            <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
-            <li><a href="tel:540-807-9045">540.807.9045</a></li>
-            <li><a href="https://www.linkedin.com/in/trecoleman/" target="_blank" rel="noopener">LinkedIn</a></li>
-            <li><a href="https://www.facebook.com/trecolemanconsulting" target="_blank" rel="noopener">Facebook</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="cta-section">
+<h2>Ready to stop the bleeding?</h2>
+<div class="cta-buttons">
+<div class="stripe-container">
+<stripe-buy-button buy-button-id="buy_btn_1Shuc43ZIXWMSTgNISDxIDUQ" publishable-key="pk_live_51ShcUO3ZIXWMSTgNe4nWbpqfRdovBlmtoUgTUAkxi80SWKKbUWvMt3CZOZqCjrLMulWDYaVhvMAKk9xIHvU462pX00fW49sqGW">
+</stripe-buy-button>
+</div>
+<a class="btn-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
+</div>
+</section>
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div class="footer-section">
+<h4>Tre Coleman Consulting LLC</h4>
+<p>Richmond/Charlottesville, VA<br/>Serving Nationwide</p>
+<p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+</div>
+<div class="footer-section">
+<h4>Quick Links</h4>
+<ul>
+<li><a href="services.html">Services</a></li>
+<li><a href="advisory.html">Advisory</a></li>
+<li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+<li><a href="catering-profit.html">Catering Course</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="contact.html">Contact</a></li>
+<li><a href="blog.html">Blog</a></li></ul>
+</div>
+<div class="footer-section">
+<h4>Connect</h4>
+<ul>
+<li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+<li><a href="tel:540-807-9045">540.807.9045</a></li>
+<li><a href="https://www.linkedin.com/in/trecoleman/" rel="noopener" target="_blank">LinkedIn</a></li>
+<li><a href="https://www.facebook.com/trecolemanconsulting" rel="noopener" target="_blank">Facebook</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+<script>
 
     // Mobile menu
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
@@ -703,8 +655,7 @@
       });
     });
   </script>
-
-  <script src="/header-scroll.js"></script>
-    <script src="/exit-intent-popup.js" defer></script>
-  </body>
+<script src="/header-scroll.js"></script>
+<script defer="" src="/exit-intent-popup.js"></script>
+</body>
 </html>
