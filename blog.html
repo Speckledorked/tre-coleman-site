@@ -249,10 +249,11 @@
         <div style="background: var(--primary-colour); color: white; padding: 2rem; border-radius: 6px; text-align: center;">
           <h3 style="color: white; margin-bottom: 1rem;">Get Operator-Grade Insights</h3>
           <p style="margin-bottom: 1.5rem;">Weekly strategies for restaurant operators who want systems that actually work. No fluff, just frameworks you can use Monday morning.</p>
-          <div style="display: flex; gap: 1rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
-            <input type="email" placeholder="Enter your email" style="flex: 1; padding: 0.75rem; border: none; border-radius: 4px; min-width: 250px;">
-            <button class="button" style="background: var(--accent-colour); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer;">Subscribe</button>
-          </div>
+          <form id="newsletter-form" style="display: flex; gap: 1rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+            <input type="email" id="newsletter-email" placeholder="Enter your email" required style="flex: 1; padding: 0.75rem; border: none; border-radius: 4px; min-width: 250px;">
+            <button type="submit" id="newsletter-btn" style="background: var(--accent-colour); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer; font-weight: 600;">Subscribe</button>
+          </form>
+          <p id="newsletter-message" style="margin-top: 1rem; font-size: 0.95rem; display: none;"></p>
         </div>
       </section>
       <!-- Free Diagnostic Tools -->
@@ -366,6 +367,46 @@
             console.log('Filtering by:', this.textContent);
           });
         });
+      });
+
+      // Newsletter subscribe form
+      const newsletterForm = document.getElementById('newsletter-form');
+      const newsletterMsg = document.getElementById('newsletter-message');
+      const newsletterBtn = document.getElementById('newsletter-btn');
+
+      newsletterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        newsletterMsg.style.display = 'none';
+        newsletterBtn.disabled = true;
+        newsletterBtn.textContent = 'Subscribing...';
+
+        const email = document.getElementById('newsletter-email').value.trim();
+
+        try {
+          const response = await fetch('/.netlify/functions/newsletter-subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || 'Subscribe failed');
+          }
+
+          newsletterMsg.textContent = "You're in. Watch your inbox.";
+          newsletterMsg.style.color = '#d1fae5';
+          newsletterMsg.style.display = 'block';
+          newsletterForm.reset();
+        } catch (error) {
+          newsletterMsg.textContent = error.message;
+          newsletterMsg.style.color = '#fca5a5';
+          newsletterMsg.style.display = 'block';
+        } finally {
+          newsletterBtn.disabled = false;
+          newsletterBtn.textContent = 'Subscribe';
+        }
       });
     </script>
     <script src="/header-scroll.js"></script>
