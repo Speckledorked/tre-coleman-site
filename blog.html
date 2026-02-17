@@ -3,162 +3,190 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <title>Blog | Tre Coleman</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>Insights & Playbooks | Tre Coleman</title>
     <meta
       name="description"
       content="Operator-first insights on AI integration, restaurant operations, and team development. Real strategies that move numbers." />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://trecoleman.com/blog.html" />
+    <meta property="og:title" content="Insights & Playbooks | Tre Coleman" />
+    <meta property="og:description" content="Operator-first insights on AI integration, restaurant operations, and team development. Real strategies that move numbers." />
+    <meta property="og:image" content="https://trecoleman.com/familypic.jpg" />
+
     <link rel="stylesheet" href="style.css" />
     <style>
-      /* Dropdown navigation styles */
-      .nav-dropdown {
-        position: relative;
-      }
-
-      .nav-dropdown > a::after {
-        content: ' ▾';
-        font-size: 0.8em;
-        margin-left: 0.25rem;
-      }
-
-      .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: white;
-        min-width: 220px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        border-radius: 8px;
-        padding: 0.5rem 0;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
-        z-index: 1000;
-      }
-
-      .nav-dropdown:hover .dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-
-      .dropdown-menu a {
-        display: block;
-        padding: 0.75rem 1.25rem;
-        color: #2c3e50;
-        text-decoration: none;
-        transition: background 0.2s ease;
-        font-size: 0.95rem;
-      }
-
-      .dropdown-menu a:hover {
-        background: #f8f9fa;
-        color: #1e3a5f;
-      }
-
-      /* Mobile nav styles handled by style.css */
-
-      /* Additional styles for blog page */
-      .blog-header {
-        background-color: var(--light-bg);
-        padding: 3rem 0;
-        text-align: center;
-      }
-      .blog-header h1 {
-        font-size: 2.25rem;
-        margin-bottom: 1rem;
-        color: var(--primary-colour);
-      }
-      .blog-header p {
-        font-size: 1.125rem;
-        max-width: 42rem;
-        margin: 0 auto 2rem;
-      }
+      /* Page-specific styles for blog */
       .blog-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 2rem;
         margin-top: 2rem;
       }
+      
       .blog-post {
-        background: #f9f9f9;
-        border-radius: 6px;
-        padding: 1.5rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease;
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 2rem;
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition-base);
+        border: 1px solid rgba(31, 71, 136, 0.05);
+        display: flex;
+        flex-direction: column;
       }
+      
       .blog-post:hover {
-        transform: translateY(-2px);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
       }
+      
       .blog-post .post-meta {
-        font-size: 0.9rem;
-        color: #666;
+        font-size: 0.875rem;
+        color: var(--medium-text);
         margin-bottom: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
+      
       .blog-post h3 {
-        color: var(--primary-colour);
-        margin-bottom: 0.75rem;
-        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
       }
+      
       .blog-post h3 a {
         color: var(--primary-colour);
         text-decoration: none;
       }
+      
       .blog-post h3 a:hover {
-        color: var(--accent-colour);
+        color: var(--primary-light);
       }
+      
       .blog-post p {
-        margin-bottom: 1rem;
-        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
       }
+      
       .blog-post .read-more {
-        font-weight: 600;
+        font-weight: 700;
         color: var(--accent-colour);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
       }
+
       .blog-categories {
         display: flex;
         gap: 0.75rem;
         flex-wrap: wrap;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
         justify-content: center;
       }
+      
       .blog-categories a {
-        background: var(--primary-colour);
-        color: white;
-        padding: 0.5rem 1rem;
+        background: var(--white);
+        color: var(--primary-colour);
+        padding: 0.5rem 1.25rem;
         border-radius: 20px;
         font-size: 0.9rem;
+        font-weight: 600;
         text-decoration: none;
-        transition: background 0.2s ease;
+        transition: all 0.2s ease;
+        border: 1px solid var(--primary-colour);
       }
+      
       .blog-categories a:hover,
       .blog-categories a.active {
-        background: var(--accent-colour);
+        background: var(--primary-colour);
+        color: var(--white);
       }
-      .coming-soon {
+      
+      .coming-soon-box {
         text-align: center;
-        background: var(--light-bg);
-        padding: 2rem;
-        border-radius: 6px;
-        margin: 2rem 0;
+        background: #fef9f3;
+        padding: 3rem 2rem;
+        border-radius: var(--radius-lg);
+        margin: 4rem 0;
+        border: 1px dashed var(--accent-colour);
       }
-      .coming-soon h3 {
-        color: var(--primary-colour);
+      
+      .newsletter-box {
+        background: var(--primary-colour);
+        color: var(--white);
+        padding: 3rem 2rem;
+        border-radius: var(--radius-lg);
+        text-align: center;
+        margin: 4rem 0;
+        box-shadow: var(--shadow-lg);
+      }
+      
+      .newsletter-box h3 {
+        color: var(--white);
         margin-bottom: 1rem;
       }
+      
+      .newsletter-box p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .newsletter-form {
+        display: flex;
+        gap: 1rem;
+        max-width: 500px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+      }
+      
+      .newsletter-form input {
+        flex: 1;
+        padding: 0.875rem 1.25rem;
+        border: none;
+        border-radius: var(--radius-sm);
+        min-width: 250px;
+        font-family: inherit;
+      }
+      
+      .newsletter-form button {
+        background: var(--accent-colour);
+        color: var(--white);
+        border: none;
+        padding: 0.875rem 2rem;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.3s ease;
+      }
+      
+      .newsletter-form button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
       @media (max-width: 768px) {
-        .blog-grid {
-          grid-template-columns: 1fr;
-        }
-        .blog-categories {
+        .newsletter-form {
           flex-direction: column;
-          align-items: center;
+        }
+        .newsletter-form input, 
+        .newsletter-form button {
+          width: 100%;
         }
       }
     </style>
+    <script src="analytics.js"></script>
   </head>
-    <body>
+  <body>
     <!-- Mobile Menu Overlay -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
@@ -183,6 +211,7 @@
             <li class="nav-dropdown">
               <a href="#" onclick="return false;">Insights</a>
               <div class="dropdown-menu">
+                <a href="blog.html">Blog & Playbooks</a>
                 <a href="catering-profit.html">Catering Profit System</a>
                 <a href="login.html">Course Login</a>
               </div>
@@ -202,76 +231,74 @@
       </div>
     </header>
 
-    <!-- Blog Header -->
-    <section class="hero" style="padding: 4rem 0 2rem;">
-        <div class="container">
-            <h1>Insights & Playbooks</h1>
-            <p class="hero-subheadline" style="font-size: 1.25rem; margin-top: 1rem; color: #666; opacity: 0.9;">Practical operations frameworks from 10+ years managing multi-unit restaurants</p>
-        </div>
+    <!-- Blog Hero -->
+    <section class="hero">
+      <div class="container">
+        <h1>Insights & Playbooks</h1>
+        <p>Practical operations frameworks from 10+ years managing multi-unit restaurants. No fluff, just systems that move numbers.</p>
+      </div>
     </section>
-    <main class="container">
+
+    <main class="container" style="padding: 4rem 1.25rem;">
       <!-- Categories -->
-      <section class="section">
-        <div class="blog-categories">
-          <a href="#" class="active">All Posts</a>
-          <a href="#">AI Integration</a>
-          <a href="#">Operations</a>
-          <a href="#">Team Development</a>
-          <a href="#">Marketing</a>
-          <a href="#">Leadership</a>
-        </div>
-      </section>
+      <div class="blog-categories">
+        <a href="#" class="active">All Posts</a>
+        <a href="#">Operations</a>
+        <a href="#">AI Integration</a>
+        <a href="#">Team Development</a>
+        <a href="#">Leadership</a>
+      </div>
 
-      <!-- Featured Posts -->
-      <section class="section">
-        <div class="blog-grid">
-          <!-- Post 1: Unreasonably Optimistic -->
-          <article class="blog-post">
-            <div class="post-meta">Leadership • 6 min read</div>
-            <h3><a href="unreasonably-optimistic.html">Unreasonably Optimistic</a></h3>
-            <p>The difference between restaurant owners who turn things around and those who stay stuck isn't intelligence or experience. It's how they relate to uncertainty. Operations don't reward certainty—they reward motion.</p>
-            <a href="unreasonably-optimistic.html" class="read-more">Read more →</a>
-          </article>
-        </div>
-      </section>
+      <!-- Blog Grid -->
+      <div class="blog-grid">
+        <!-- Post 1 -->
+        <article class="blog-post">
+          <div class="post-meta">Leadership • 6 min read</div>
+          <h3><a href="unreasonably-optimistic.html">Unreasonably Optimistic</a></h3>
+          <p>The difference between restaurant owners who turn things around and those who stay stuck isn't intelligence or experience. It's how they relate to uncertainty.</p>
+          <a href="unreasonably-optimistic.html" class="read-more">Read more →</a>
+        </article>
 
-      <!-- Coming Soon Section -->
-      <section class="coming-soon">
-        <h3>More Insights Coming Soon</h3>
-        <p>New posts every week covering the strategies and systems that actually move restaurant numbers.</p>
-        <div style="margin-top: 1.5rem;">
-          <a href="contact.html" class="button">Get notified of new posts</a>
-        </div>
-      </section>
+        <!-- Post 2 Placeholder -->
+        <article class="blog-post">
+          <div class="post-meta">Operations • 8 min read</div>
+          <h3><a href="#">The Labor Pressure Valve</a></h3>
+          <p>How to build scheduling guardrails that protect your margins without burning out your best managers. A framework for high-volume units.</p>
+          <a href="#" class="read-more">Coming Soon →</a>
+        </article>
+
+        <!-- Post 3 Placeholder -->
+        <article class="blog-post">
+          <div class="post-meta">AI Integration • 5 min read</div>
+          <h3><a href="#">AI for the Frontline</a></h3>
+          <p>Stop trying to automate the guest experience. Use AI to automate the paperwork that keeps your managers off the floor.</p>
+          <a href="#" class="read-more">Coming Soon →</a>
+        </article>
+      </div>
 
       <!-- Newsletter Signup -->
-      <section class="section">
-        <div style="background: var(--primary-colour); color: white; padding: 2rem; border-radius: 6px; text-align: center;">
-          <h3 style="color: white; margin-bottom: 1rem;">Get Operator-Grade Insights</h3>
-          <p style="margin-bottom: 1.5rem;">Weekly strategies for restaurant operators who want systems that actually work. No fluff, just frameworks you can use Monday morning.</p>
-          <div style="display: flex; gap: 1rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
-            <input type="email" placeholder="Enter your email" style="flex: 1; padding: 0.75rem; border: none; border-radius: 4px; min-width: 250px;">
-            <button class="button" style="background: var(--accent-colour); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer;">Subscribe</button>
+      <section class="newsletter-box">
+        <h3>Get Operator-Grade Insights</h3>
+        <p>Weekly strategies for restaurant operators who want systems that actually work. Frameworks you can use Monday morning.</p>
+        <form class="newsletter-form" onsubmit="return false;">
+          <input type="email" placeholder="Enter your email address" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </section>
+
+      <!-- Free Diagnostic Tools -->
+      <section style="background: #fef9f3; padding: 3rem; border-radius: var(--radius-lg); border: 1px solid rgba(31, 71, 136, 0.1);">
+        <h2 style="margin-bottom: 2rem;">Free Diagnostic Tools</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+          <div>
+            <a href="audit.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-colour); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ Restaurant Profit Audit</a>
+            <p>15-minute assessment to identify your biggest profit leaks and hidden waste.</p>
+          </div>
+          <div>
+            <a href="playbook.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-colour); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ 90-Day Profit Playbook</a>
+            <p>Download the 5-step framework I use with consulting clients to stabilize operations.</p>
           </div>
         </div>
-      </section>
-      <!-- Free Diagnostic Tools -->
-      <section class="section" style="padding: 3rem 0;">
-          <div class="container">
-              <div class="tools-section" style="background: #fef9f3; padding: 2.5rem; border-radius: 8px;">
-                  <h2>Free Diagnostic Tools</h2>
-                  <ul style="list-style: none; padding: 0; margin-top: 1.5rem;">
-                      <li style="margin: 1.5rem 0;">
-                          <a href="audit.html" style="font-weight: 600; font-size: 1.1rem; color: var(--primary-navy); text-decoration: none;">→ Restaurant Profit Audit</a>
-                          <p style="margin: 0.5rem 0 0 1.5rem; color: #666; line-height: 1.6;">15-minute assessment to identify your biggest profit leaks</p>
-                      </li>
-                      <li style="margin: 1.5rem 0;">
-                          <a href="playbook.html" style="font-weight: 600; font-size: 1.1rem; color: var(--primary-navy); text-decoration: none;">→ Free Operations Playbook</a>
-                          <p style="margin: 0.5rem 0 0 1.5rem; color: #666; line-height: 1.6;">Download the 5-step framework I use with consulting clients</p>
-                      </li>
-                  </ul>
-              </div>
-          </div>
       </section>
     </main>
 
@@ -307,64 +334,55 @@
             </ul>
           </div>
         </div>
+
+        <div class="footer-bottom">
+          <p>Real restaurant experience. Real results.</p>
+        </div>
       </div>
     </footer>
 
+    <!-- Scripts -->
     <script>
-      // Mobile menu toggle functionality
+      // Sticky header scroll effect
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
-      const navLinks = mainNav.querySelectorAll('a');
 
-      function toggleMenu() {
-        mobileMenuToggle.classList.toggle('active');
+      function toggleMobileMenu() {
         mainNav.classList.toggle('active');
         mobileOverlay.classList.toggle('active');
+        mobileMenuToggle.classList.toggle('active');
         document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
       }
 
-      function closeMenu() {
-        mobileMenuToggle.classList.remove('active');
-        mainNav.classList.remove('active');
-        mobileOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
+      mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+      mobileOverlay.addEventListener('click', toggleMobileMenu);
 
-      mobileMenuToggle.addEventListener('click', toggleMenu);
-      mobileOverlay.addEventListener('click', closeMenu);
-      navLinks.forEach(link => link.addEventListener('click', closeMenu));
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
-      });
-
-      // Mobile dropdown toggle
-      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
-      dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
+      // Handle dropdown clicks on mobile
+      document.querySelectorAll('.nav-dropdown > a').forEach(dropdown => {
+        dropdown.addEventListener('click', function(e) {
           if (window.innerWidth <= 1024) {
             e.preventDefault();
-            toggle.parentElement.classList.toggle('active');
+            this.parentElement.classList.toggle('active');
           }
         });
       });
 
-      // Simple category filtering
-      document.addEventListener('DOMContentLoaded', function() {
-        const categoryLinks = document.querySelectorAll('.blog-categories a');
-        
-        categoryLinks.forEach(link => {
-          link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Update active state
-            categoryLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            
-            // In a real implementation, you'd filter posts here
-            // For now, just visual feedback
-            console.log('Filtering by:', this.textContent);
-          });
+      // Close mobile menu when clicking a regular link
+      document.querySelectorAll('nav a:not(.nav-dropdown > a)').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 1024) {
+            toggleMobileMenu();
+          }
         });
       });
     </script>
