@@ -40,7 +40,19 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: 'No customer email' };
     }
 
-    console.log(`Processing purchase for: ${customerEmail}`);
+    // If a course price ID is configured, verify this payment is for the course.
+    // This prevents ad-hoc service payments from triggering course access.
+    const coursePriceId = process.env.STRIPE_COURSE_PRICE_ID;
+    if (coursePriceId) {
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
+      const isCoursePayment = lineItems.data.some(item => item.price?.id === coursePriceId);
+      if (!isCoursePayment) {
+        console.log(`Payment from ${customerEmail} is not for the course (session ${session.id}). Skipping course access.`);
+        return { statusCode: 200, body: 'Non-course payment acknowledged' };
+      }
+    }
+
+    console.log(`Processing course purchase for: ${customerEmail}`);
 
     try {
       // Check if user already exists
