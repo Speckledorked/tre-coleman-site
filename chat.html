@@ -146,10 +146,12 @@
 <a href="audit.html">Restaurant Ops Audit</a>
 <a href="food-truck-audit.html">Food Truck Launch Audit</a>
 <a href="playbook.html">90-Day Profit Playbook</a>
+                        <a href="virginia-neighbors.html">Virginia Neighbors Directory</a>
 </div>
 </li>
 <li><a href="about.html">About</a></li>
 <li><a href="contact.html">Contact</a></li>
+              
 </ul>
 </nav>
 </div>
@@ -206,6 +208,7 @@
 <li><a href="catering-profit.html">Catering Course</a></li>
 <li><a href="about.html">About</a></li>
 <li><a href="contact.html">Contact</a></li>
+              <li><a href="virginia-neighbors.html">Virginia Neighbors</a></li>
 <li><a href="blog.html">Blog</a></li></ul>
 </div>
 <div class="footer-section">
@@ -248,8 +251,6 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
       });
-      // Password used to unlock premium chat. Change this to whatever you like.
-      const premiumPassword = 'trepremium';
       // Utility to update which sections are visible
       function updateView() {
         const hasPremium = localStorage.getItem('premium') === 'true';
@@ -271,15 +272,29 @@
         e.preventDefault();
         document.getElementById('login-form').style.display = 'block';
       });
-      // Handle login button click
-      document.getElementById('login-btn').addEventListener('click', function () {
+      // Handle login button click — password validated server-side
+      document.getElementById('login-btn').addEventListener('click', async function () {
         const inputPassword = document.getElementById('premium-password').value;
-        if (inputPassword === premiumPassword) {
-          localStorage.setItem('premium', 'true');
-          document.getElementById('login-error').style.display = 'none';
-          updateView();
-        } else {
+        const btn = this;
+        btn.disabled = true;
+        try {
+          const res = await fetch('/.netlify/functions/chat-auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: inputPassword })
+          });
+          const data = await res.json();
+          if (data.ok) {
+            localStorage.setItem('premium', 'true');
+            document.getElementById('login-error').style.display = 'none';
+            updateView();
+          } else {
+            document.getElementById('login-error').style.display = 'block';
+          }
+        } catch {
           document.getElementById('login-error').style.display = 'block';
+        } finally {
+          btn.disabled = false;
         }
       });
       // Handle logout button click
