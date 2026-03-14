@@ -91,7 +91,21 @@ exports.handler = async (event) => {
   // POST — submit a new listing
   if (event.httpMethod === 'POST') {
     try {
-      const result = await airtableRequest('POST', AIRTABLE_BASE_URL, event.body);
+      const VALID_CATEGORIES = [
+        'Restaurant & Food', 'Food Truck', 'Catering', 'Contractor & Trades',
+        'Retail', 'Marketing & Design', 'Real Estate', 'Landscaping',
+        'Cleaning Services', 'Health & Wellness', 'Legal & Financial',
+        'Auto & Transportation', 'Technology', 'Other'
+      ];
+      let payload;
+      try { payload = JSON.parse(event.body); } catch { payload = {}; }
+      if (payload.records && payload.records[0] && payload.records[0].fields) {
+        const cat = payload.records[0].fields.Category;
+        if (!VALID_CATEGORIES.includes(cat)) {
+          payload.records[0].fields.Category = 'Other';
+        }
+      }
+      const result = await airtableRequest('POST', AIRTABLE_BASE_URL, JSON.stringify(payload));
       return {
         statusCode: result.statusCode,
         headers: CORS_HEADERS,

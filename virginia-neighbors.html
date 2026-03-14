@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title>Virginia Neighbors – Local Business Directory</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="analytics.js"></script>
   <style>
     :root {
+      /* Page-specific vars */
       --navy: #1F4788;
       --navy-dark: #152b45;
       --navy-light: #2d5aa0;
@@ -22,17 +25,120 @@
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
       --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      /* Aliases used by site header/footer */
+      --primary-navy: #1F4788;
+      --accent-gold: #F4A460;
+      --white: #ffffff;
+      --bg-cream: #FAFAF8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
     h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
 
-    nav { background: var(--navy); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
-    .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.2rem; color: #fff; }
-    .nav-logo span { color: var(--gold); }
-    .btn-nav { background: var(--gold); color: var(--navy-dark); border: none; border-radius: 6px; padding: 9px 18px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-    .btn-nav:hover { background: var(--gold-light); transform: translateY(-1px); }
+    /* ── Site-standard header ─────────────────────────────────────── */
+    header {
+      background: rgba(31, 71, 136, 0.85);
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    header.scrolled {
+      background: rgba(31, 71, 136, 0.98);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    header .hdr-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      text-decoration: none;
+    }
+    header nav ul { display: flex; list-style: none; gap: 2rem; align-items: center; }
+    header nav a { text-decoration: none; color: var(--white); font-weight: 600; transition: color 0.3s; }
+    header nav a:hover { color: var(--accent-gold); }
+    .nav-cta {
+      background: var(--accent-gold) !important;
+      color: var(--white) !important;
+      padding: 0.65rem 1.5rem !important;
+      border-radius: 6px !important;
+      font-weight: 600 !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+      transition: all 0.3s ease !important;
+    }
+    .nav-cta:hover { transform: translateY(-2px) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a::after { content: ' ▾'; font-size: 0.8em; margin-left: 0.25rem; }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 0;
+      background: white; min-width: 220px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-radius: 8px; padding: 0.5rem 0;
+      opacity: 0; visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease; z-index: 1000;
+    }
+    .nav-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu a { display: block; padding: 0.75rem 1.25rem; color: var(--text-dark); text-decoration: none; transition: background 0.2s ease; font-size: 0.95rem; }
+    .dropdown-menu a:hover { background: #f8f9fa; color: var(--primary-navy); }
+    .mobile-menu-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer;
+      padding: 0.5rem; z-index: 3; position: relative;
+    }
+    .mobile-menu-toggle span { display: block; width: 25px; height: 3px; background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.3s; }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1; }
+    @media (max-width: 1024px) {
+      .mobile-menu-toggle { display: flex; }
+      header nav {
+        position: fixed; top: 0; right: -100%;
+        width: 80%; max-width: 400px; height: 100vh;
+        background: linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%);
+        padding: 2rem; padding-top: 5rem;
+        transition: right 0.3s; z-index: 2;
+        overflow-y: auto; box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+      }
+      header nav.active { right: 0; }
+      header nav ul { flex-direction: column; align-items: flex-start; gap: 0; }
+      header nav li { width: 100%; border-bottom: 1px solid #eee; }
+      header nav a { display: block; padding: 1.25rem 0; color: var(--primary-navy); font-size: 1.1rem; }
+      .nav-cta { background: var(--accent-gold) !important; color: white !important; text-align: center; margin-bottom: 1.5rem; border-radius: 6px !important; }
+      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; background: rgba(0,0,0,0.03); margin: 0.5rem 0; display: none; }
+      .nav-dropdown.active .dropdown-menu { display: block; }
+    }
 
+    /* ── Site-standard footer ─────────────────────────────────────── */
+    footer {
+      background: #152b45;
+      color: var(--white);
+      padding: 5rem 0 2rem;
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 4rem;
+      margin-bottom: 4rem;
+    }
+    .footer-section h4 { color: var(--accent-gold); margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif; }
+    .footer-section ul { list-style: none; }
+    .footer-section li { margin-bottom: 0.75rem; }
+    .footer-section a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
+    .footer-section a:hover { color: var(--accent-gold); }
+    .footer-section p { color: rgba(255,255,255,0.8); line-height: 1.6; }
+    .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+
+    /* ── Page-specific styles ─────────────────────────────────────── */
     .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
     .hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: rgba(244,164,96,0.07); pointer-events: none; }
     .hero-eyebrow { display: inline-block; background: rgba(244,164,96,0.15); color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; border: 1px solid rgba(244,164,96,0.3); }
@@ -95,7 +201,7 @@
     .btn-submit { background: var(--gold); color: var(--navy-dark); border: none; border-radius: 8px; padding: 14px 32px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
     .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
 
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
     .modal-overlay.open { display: flex; }
     .modal { background: var(--card-bg); border-radius: 16px; padding: 36px 32px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
     .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
@@ -118,10 +224,6 @@
     .success-msg h3 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 8px; }
     .success-msg p { color: var(--text-mid); font-size: 0.88rem; line-height: 1.5; }
 
-    footer { background: var(--navy-dark); padding: 28px 24px; text-align: center; }
-    footer p { color: rgba(255,255,255,0.45); font-size: 0.78rem; }
-    footer a { color: var(--gold); text-decoration: none; }
-
     @media (max-width: 600px) {
       .categories-grid { grid-template-columns: repeat(3, 1fr); }
       .listings-grid { grid-template-columns: 1fr; }
@@ -133,10 +235,43 @@
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo">Virginia <span>Neighbors</span></div>
-  <button class="btn-nav" onclick="openModal()">List Your Business</button>
-</nav>
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- Site-standard Header -->
+<header id="siteHeader">
+  <div class="hdr-inner">
+    <a class="logo" href="index.html">Tre Coleman</a>
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="mainNav">
+      <ul>
+        <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="advisory.html">Advisory</a></li>
+        <li class="nav-dropdown">
+          <a href="#" onclick="return false;">Insights</a>
+          <div class="dropdown-menu">
+            <a href="blog.html">Blog & Playbooks</a>
+            <a href="catering-profit.html">Catering Profit System</a>
+            <a href="login.html">Course Login</a>
+          </div>
+        </li>
+        <li class="nav-dropdown">
+          <a href="#" onclick="return false;">Resources</a>
+          <div class="dropdown-menu">
+            <a href="audit.html">Restaurant Ops Audit</a>
+            <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+            <a href="playbook.html">90-Day Profit Playbook</a>
+          </div>
+        </li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
 <div class="hero">
   <div class="hero-eyebrow">Virginia Local Business Directory</div>
@@ -184,8 +319,41 @@
   </div>
 </div>
 
+<!-- Site-standard Footer -->
 <footer>
-  <p>Virginia Neighbors &middot; A community directory &middot; Powered by <a href="https://trecoleman.com" target="_blank">Tre Coleman Consulting</a></p>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-section">
+        <h4>Tre Coleman Consulting LLC</h4>
+        <p>Richmond/Charlottesville, VA<br>Serving Nationwide</p>
+        <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="advisory.html">Advisory</a></li>
+          <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+          <li><a href="catering-profit.html">Catering Course</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+          <li><a href="tel:540-807-9045">540.807.9045</a></li>
+          <li><a href="https://www.linkedin.com/in/trecoleman/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.facebook.com/trecolemanconsulting" target="_blank" rel="noopener">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Real restaurant experience. Real results.</p>
+    </div>
+  </div>
 </footer>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
@@ -209,18 +377,18 @@
         <label class="form-label">Category <span>*</span></label>
         <select class="form-select" id="f_category">
           <option value="">Select a category...</option>
-          <option>Restaurant & Food</option>
+          <option>Restaurant &amp; Food</option>
           <option>Food Truck</option>
           <option>Catering</option>
-          <option>Contractor & Trades</option>
+          <option>Contractor &amp; Trades</option>
           <option>Retail</option>
-          <option>Marketing & Design</option>
+          <option>Marketing &amp; Design</option>
           <option>Real Estate</option>
           <option>Landscaping</option>
           <option>Cleaning Services</option>
-          <option>Health & Wellness</option>
-          <option>Legal & Financial</option>
-          <option>Auto & Transportation</option>
+          <option>Health &amp; Wellness</option>
+          <option>Legal &amp; Financial</option>
+          <option>Auto &amp; Transportation</option>
           <option>Technology</option>
           <option>Other</option>
         </select>
@@ -273,6 +441,13 @@
 <script>
   const API = '/.netlify/functions/airtable-proxy';
 
+  const VALID_CATEGORIES = [
+    'Restaurant & Food', 'Food Truck', 'Catering', 'Contractor & Trades',
+    'Retail', 'Marketing & Design', 'Real Estate', 'Landscaping',
+    'Cleaning Services', 'Health & Wellness', 'Legal & Financial',
+    'Auto & Transportation', 'Technology', 'Other'
+  ];
+
   const CATEGORIES = [
     { label: "Restaurant & Food", icon: "🍽️" },
     { label: "Food Truck", icon: "🚚" },
@@ -295,11 +470,9 @@
 
   async function fetchListings() {
     try {
-      let records = [];
-      let offset = null;
       const res = await fetch(API);
       const data = await res.json();
-      records = data.records || [];
+      const records = data.records || [];
 
       allListings = records.map(r => ({
         id: r.id,
@@ -327,14 +500,19 @@
 
   function renderCategories() {
     const grid = document.getElementById('categoriesGrid');
-    grid.innerHTML = CATEGORIES.map(cat => {
-      const count = allListings.filter(l => l.category === cat.label).length;
-      return `<div class="cat-card ${activeCategory === cat.label ? 'active' : ''}" onclick="selectCategory('${cat.label}')">
-        <span class="cat-icon">${cat.icon}</span>
-        <div class="cat-label">${cat.label}</div>
-        <div class="cat-count">${count} listing${count !== 1 ? 's' : ''}</div>
-      </div>`;
-    }).join('');
+    grid.innerHTML = CATEGORIES
+      .map(cat => {
+        const count = allListings.filter(l => l.category === cat.label).length;
+        return { cat, count };
+      })
+      .filter(({ count }) => count > 0)
+      .map(({ cat, count }) =>
+        `<div class="cat-card ${activeCategory === cat.label ? 'active' : ''}" onclick="selectCategory('${cat.label.replace(/'/g, "\\'")}')">
+          <span class="cat-icon">${cat.icon}</span>
+          <div class="cat-label">${cat.label}</div>
+          <div class="cat-count">${count} listing${count !== 1 ? 's' : ''}</div>
+        </div>`
+      ).join('');
   }
 
   function selectCategory(cat) {
@@ -407,12 +585,16 @@
 
   async function handleSubmit() {
     const get = id => document.getElementById(id).value.trim();
-    const name = get('f_name'), business = get('f_business'), category = get('f_category');
+    const name = get('f_name'), business = get('f_business');
+    let category = get('f_category');
     const description = get('f_description'), location = get('f_location'), email = get('f_email');
 
     if (!name||!business||!category||!description||!location||!email) {
       alert('Please fill in all required fields.'); return;
     }
+
+    // Normalize unknown categories to "Other"
+    if (!VALID_CATEGORIES.includes(category)) category = 'Other';
 
     const btn = document.getElementById('submitBtn');
     btn.disabled = true; btn.textContent = 'Submitting...';
@@ -457,6 +639,42 @@
   }
 
   fetchListings();
+
+  // ── Site-standard header/mobile menu script ──────────────────────
+  const siteHeader = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    siteHeader.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const mainNav = document.getElementById('mainNav');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+
+  function toggleMobileMenu() {
+    mainNav.classList.toggle('active');
+    mobileOverlay.classList.toggle('active');
+    document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+  }
+
+  mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+  mobileOverlay.addEventListener('click', toggleMobileMenu);
+
+  document.querySelectorAll('.nav-dropdown > a').forEach(dropdown => {
+    dropdown.addEventListener('click', function(e) {
+      if (window.innerWidth <= 1024) {
+        e.preventDefault();
+        this.parentElement.classList.toggle('active');
+      }
+    });
+  });
+
+  document.querySelectorAll('#mainNav a:not(.nav-dropdown > a)').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 1024 && mainNav.classList.contains('active')) {
+        toggleMobileMenu();
+      }
+    });
+  });
 </script>
 </body>
 </html>
