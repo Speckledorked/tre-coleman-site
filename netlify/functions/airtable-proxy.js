@@ -7,7 +7,7 @@ const AIRTABLE_BASE_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE}`;
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, OPTIONS',
   'Content-Type': 'application/json'
 };
 
@@ -117,6 +117,32 @@ exports.handler = async (event) => {
         headers: CORS_HEADERS,
         body: JSON.stringify({ error: err.message })
       };
+    }
+  }
+
+  // PATCH — increment a click counter on a listing record
+  if (event.httpMethod === 'PATCH') {
+    try {
+      const CLICK_FIELDS = ['Phone Clicks', 'Email Clicks', 'Website Clicks'];
+      let payload;
+      try { payload = JSON.parse(event.body); } catch { payload = {}; }
+      const { recordId, field } = payload;
+
+      if (!recordId || !CLICK_FIELDS.includes(field)) {
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Invalid recordId or field' }) };
+      }
+
+      // Read current value, then write back incremented
+      const getResult = await airtableRequest('GET', `${AIRTABLE_BASE_URL}/${recordId}`, null);
+      const record = JSON.parse(getResult.body);
+      const current = (record.fields && record.fields[field]) || 0;
+
+      const patchResult = await airtableRequest('PATCH', `${AIRTABLE_BASE_URL}/${recordId}`,
+        JSON.stringify({ fields: { [field]: current + 1 } })
+      );
+      return { statusCode: patchResult.statusCode, headers: CORS_HEADERS, body: patchResult.body };
+    } catch (err) {
+      return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: err.message }) };
     }
   }
 

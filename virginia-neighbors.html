@@ -574,9 +574,9 @@
         <div class="listing-desc">${l.description}</div>
         <div class="listing-meta">
           ${l.location?`<div class="listing-meta-item"><span class="meta-icon">📍</span>${l.location}</div>`:''}
-          ${l.phone?`<div class="listing-meta-item"><span class="meta-icon">📞</span><a href="tel:${l.phone}">${l.phone}</a></div>`:''}
-          ${l.email?`<div class="listing-meta-item"><span class="meta-icon">✉️</span><a href="mailto:${l.email}">${l.email}</a></div>`:''}
-          ${l.website?`<div class="listing-meta-item"><span class="meta-icon">🌐</span><a href="${l.website}" target="_blank">${l.website.replace('https://','')}</a></div>`:''}
+          ${l.phone?`<div class="listing-meta-item"><span class="meta-icon">📞</span><a href="tel:${l.phone}" onclick="trackClick('${l.id}','Phone Clicks')">${l.phone}</a></div>`:''}
+          ${l.email?`<div class="listing-meta-item"><span class="meta-icon">✉️</span><a href="mailto:${l.email}" onclick="trackClick('${l.id}','Email Clicks')">${l.email}</a></div>`:''}
+          ${l.website?`<div class="listing-meta-item"><span class="meta-icon">🌐</span><a href="${l.website}" target="_blank" onclick="trackClick('${l.id}','Website Clicks')">${l.website.replace('https://','')}</a></div>`:''}
         </div>
         ${socials?`<div class="listing-socials">${socials}</div>`:''}
       </div>`;
@@ -636,6 +636,14 @@
   }
   function closeModalOutside(e) {
     if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  function trackClick(recordId, field) {
+    fetch(API, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recordId, field })
+    }).catch(() => {}); // fire-and-forget
   }
 
   fetchListings();
