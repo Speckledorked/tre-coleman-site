@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virginia Neighbors – Local Business Directory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1F4788;
+      --navy-dark: #152b45;
+      --navy-light: #2d5aa0;
+      --gold: #F4A460;
+      --gold-dark: #d4895f;
+      --gold-light: #ffb574;
+      --bg: #FAFAF8;
+      --card-bg: #ffffff;
+      --text-dark: #2c2c2c;
+      --text-mid: #5a5a5a;
+      --text-light: #718096;
+      --border: #e2e8f0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
+    h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
+
+    nav { background: var(--navy); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+    .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.2rem; color: #fff; }
+    .nav-logo span { color: var(--gold); }
+    .btn-nav { background: var(--gold); color: var(--navy-dark); border: none; border-radius: 6px; padding: 9px 18px; font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-nav:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: rgba(244,164,96,0.07); pointer-events: none; }
+    .hero-eyebrow { display: inline-block; background: rgba(244,164,96,0.15); color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; border: 1px solid rgba(244,164,96,0.3); }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.1; letter-spacing: -0.02em; }
+    .hero h1 span { color: var(--gold); }
+    .hero-sub { color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 480px; margin: 0 auto 32px; line-height: 1.6; }
+    .hero-search { max-width: 500px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-search input { width: 100%; padding: 15px 20px 15px 48px; border-radius: 10px; border: none; font-family: 'Open Sans', sans-serif; font-size: 0.95rem; color: var(--text-dark); outline: none; box-shadow: var(--shadow-lg); }
+    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; pointer-events: none; }
+
+    .section { padding: 48px 24px; max-width: 1100px; margin: 0 auto; }
+    .section-title { font-size: 1.4rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+    .section-sub { color: var(--text-mid); font-size: 0.88rem; margin-bottom: 28px; }
+    .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+    .cat-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 12px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .cat-card:hover { border-color: var(--navy); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .cat-card.active { border-color: var(--navy); background: var(--navy); color: #fff; }
+    .cat-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+    .cat-label { font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; }
+    .cat-count { font-size: 0.68rem; color: var(--text-light); margin-top: 3px; }
+    .cat-card.active .cat-count { color: rgba(255,255,255,0.6); }
+
+    .filters-bar { background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .filter-label { font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+    .filter-select { border: 1.5px solid var(--border); border-radius: 7px; padding: 7px 12px; font-family: 'Open Sans', sans-serif; font-size: 0.85rem; color: var(--text-dark); background: var(--bg); outline: none; cursor: pointer; }
+    .filter-clear { margin-left: auto; font-size: 0.8rem; color: var(--navy); cursor: pointer; font-weight: 600; text-decoration: underline; white-space: nowrap; }
+    .results-count { font-size: 0.82rem; color: var(--text-light); }
+
+    .listings-section { padding: 32px 24px 64px; max-width: 1100px; margin: 0 auto; }
+    .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .listing-card { background: var(--card-bg); border-radius: 14px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: all 0.2s; position: relative; }
+    .listing-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .listing-card.featured { border-color: var(--gold); border-width: 2px; }
+    .listing-badge { position: absolute; top: 16px; right: 16px; background: rgba(244,164,96,0.15); color: var(--gold-dark); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 20px; border: 1px solid rgba(244,164,96,0.3); }
+    .featured-badge { position: absolute; top: 16px; left: 16px; background: var(--gold); color: var(--navy-dark); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 20px; }
+    .listing-name { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 2px; padding-right: 80px; }
+    .listing-biz { font-size: 0.85rem; color: var(--text-mid); margin-bottom: 10px; font-weight: 600; }
+    .listing-desc { font-size: 0.82rem; color: var(--text-mid); line-height: 1.5; margin-bottom: 14px; }
+    .listing-meta { display: flex; flex-direction: column; gap: 5px; }
+    .listing-meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--text-mid); }
+    .meta-icon { font-size: 0.85rem; flex-shrink: 0; }
+    .listing-meta-item a { color: var(--navy); text-decoration: none; font-weight: 600; }
+    .listing-meta-item a:hover { text-decoration: underline; }
+    .listing-socials { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+    .social-link { font-size: 0.72rem; font-weight: 600; color: var(--navy); background: rgba(31,71,136,0.07); padding: 4px 10px; border-radius: 5px; text-decoration: none; transition: all 0.15s; }
+    .social-link:hover { background: var(--navy); color: #fff; }
+
+    .loading { text-align: center; padding: 64px 24px; color: var(--text-light); }
+    .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty-state { text-align: center; padding: 64px 24px; color: var(--text-light); }
+    .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 1.1rem; color: var(--text-mid); margin-bottom: 6px; }
+
+    .submit-section { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); padding: 64px 24px; text-align: center; }
+    .submit-inner { max-width: 560px; margin: 0 auto; }
+    .submit-section h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .submit-section p { color: rgba(255,255,255,0.7); margin-bottom: 28px; line-height: 1.6; }
+    .btn-submit { background: var(--gold); color: var(--navy-dark); border: none; border-radius: 8px; padding: 14px 32px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--card-bg); border-radius: 16px; padding: 36px 32px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-light); }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 0.78rem; font-weight: 700; font-family: 'Montserrat', sans-serif; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .form-label span { color: #e53e3e; }
+    .form-input { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px; font-family: 'Open Sans', sans-serif; font-size: 0.9rem; color: var(--text-dark); outline: none; background: var(--bg); transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--navy); background: #fff; }
+    .form-select { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px; font-family: 'Open Sans', sans-serif; font-size: 0.9rem; color: var(--text-dark); outline: none; background: var(--bg); cursor: pointer; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-note { font-size: 0.75rem; color: var(--text-light); margin-top: 16px; line-height: 1.5; }
+    .btn-primary { width: 100%; background: var(--navy); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+    .btn-primary:hover { background: var(--navy-light); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .success-msg { display: none; text-align: center; padding: 20px; }
+    .success-msg.show { display: block; }
+    .success-icon { font-size: 3rem; margin-bottom: 12px; }
+    .success-msg h3 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 8px; }
+    .success-msg p { color: var(--text-mid); font-size: 0.88rem; line-height: 1.5; }
+
+    footer { background: var(--navy-dark); padding: 28px 24px; text-align: center; }
+    footer p { color: rgba(255,255,255,0.45); font-size: 0.78rem; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .listings-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .modal { padding: 24px 20px; }
+      .hero { padding: 48px 20px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Virginia <span>Neighbors</span></div>
+  <button class="btn-nav" onclick="openModal()">List Your Business</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Virginia Local Business Directory</div>
+  <h1>Find a <span>Neighbor</span> You Can Trust</h1>
+  <p class="hero-sub">Local businesses, real people. Browse services across Virginia and connect directly.</p>
+  <div class="hero-search">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search by name, business, or keyword..." oninput="renderListings()" />
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Browse by Category</div>
+  <p class="section-sub">Select a category to filter the directory</p>
+  <div class="categories-grid" id="categoriesGrid"></div>
+</div>
+
+<div class="filters-bar" id="filtersBar" style="display:none;">
+  <span class="filter-label">Filter by</span>
+  <select class="filter-select" id="locationFilter" onchange="renderListings()">
+    <option value="">All Locations</option>
+  </select>
+  <span class="results-count" id="resultsCount"></span>
+  <span class="filter-clear" onclick="clearFilters()">Clear filters</span>
+</div>
+
+<div class="listings-section">
+  <div id="loadingState" class="loading">
+    <div class="spinner"></div>
+    <p>Loading directory...</p>
+  </div>
+  <div class="listings-grid" id="listingsGrid" style="display:none;"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty-icon">🏘️</div>
+    <h3>No listings found</h3>
+    <p>Try a different category, location, or search term.</p>
+  </div>
+</div>
+
+<div class="submit-section">
+  <div class="submit-inner">
+    <h2>List Your Business</h2>
+    <p>Are you a local Virginia business owner? Get listed in the directory and connect with neighbors who need your services.</p>
+    <button class="btn-submit" onclick="openModal()">Submit Your Listing &rarr;</button>
+  </div>
+</div>
+
+<footer>
+  <p>Virginia Neighbors &middot; A community directory &middot; Powered by <a href="https://trecoleman.com" target="_blank">Tre Coleman Consulting</a></p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">List Your Business</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="formWrap">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Name <span>*</span></label>
+          <input class="form-input" type="text" id="f_name" placeholder="First Last" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Business Name <span>*</span></label>
+          <input class="form-input" type="text" id="f_business" placeholder="Your Business LLC" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category <span>*</span></label>
+        <select class="form-select" id="f_category">
+          <option value="">Select a category...</option>
+          <option>Restaurant & Food</option>
+          <option>Food Truck</option>
+          <option>Catering</option>
+          <option>Contractor & Trades</option>
+          <option>Retail</option>
+          <option>Marketing & Design</option>
+          <option>Real Estate</option>
+          <option>Landscaping</option>
+          <option>Cleaning Services</option>
+          <option>Health & Wellness</option>
+          <option>Legal & Financial</option>
+          <option>Auto & Transportation</option>
+          <option>Technology</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">What do you do? <span>*</span></label>
+        <input class="form-input" type="text" id="f_description" placeholder="Brief description of your services..." />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">City / County <span>*</span></label>
+          <input class="form-input" type="text" id="f_location" placeholder="e.g. Louisa, Richmond" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-input" type="tel" id="f_phone" placeholder="540-000-0000" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Email <span>*</span></label>
+          <input class="form-input" type="email" id="f_email" placeholder="you@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Website</label>
+          <input class="form-input" type="url" id="f_website" placeholder="https://yourbiz.com" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Facebook</label>
+          <input class="form-input" type="url" id="f_facebook" placeholder="https://facebook.com/yourbiz" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Instagram</label>
+          <input class="form-input" type="url" id="f_instagram" placeholder="https://instagram.com/yourbiz" />
+        </div>
+      </div>
+      <button class="btn-primary" id="submitBtn" onclick="handleSubmit()">Submit for Review &rarr;</button>
+      <p class="form-note">Listings are reviewed before going live. Free to join.</p>
+    </div>
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">✅</div>
+      <h3>Submission Received!</h3>
+      <p>Thanks for submitting. Your listing will be reviewed and added once approved.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const AIRTABLE_TOKEN = 'patIV04TadgdE50j1.11f9282393071b16663f6c3a8bd98bfbce601ac9f41b7a432a4d26781c5d74ca';
+  const BASE_ID = 'appk7mBGffiWhowPC';
+  const TABLE = 'Listings';
+  const API = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE)}`;
+  const HEADERS = { 'Authorization': `Bearer ${AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' };
+
+  const CATEGORIES = [
+    { label: "Restaurant & Food", icon: "🍽️" },
+    { label: "Food Truck", icon: "🚚" },
+    { label: "Catering", icon: "🥂" },
+    { label: "Contractor & Trades", icon: "🔨" },
+    { label: "Retail", icon: "🛍️" },
+    { label: "Marketing & Design", icon: "📣" },
+    { label: "Real Estate", icon: "🏡" },
+    { label: "Landscaping", icon: "🌿" },
+    { label: "Cleaning Services", icon: "🧹" },
+    { label: "Health & Wellness", icon: "💪" },
+    { label: "Legal & Financial", icon: "⚖️" },
+    { label: "Auto & Transportation", icon: "🚗" },
+    { label: "Technology", icon: "💻" },
+    { label: "Other", icon: "📌" },
+  ];
+
+  let allListings = [];
+  let activeCategory = null;
+
+  async function fetchListings() {
+    try {
+      let records = [];
+      let offset = null;
+      do {
+        const url = new URL(API);
+        url.searchParams.set('filterByFormula', '{Approved}=1');
+        url.searchParams.set('pageSize', '100');
+        if (offset) url.searchParams.set('offset', offset);
+        const res = await fetch(url, { headers: HEADERS });
+        const data = await res.json();
+        records = records.concat(data.records || []);
+        offset = data.offset || null;
+      } while (offset);
+
+      allListings = records.map(r => ({
+        id: r.id,
+        name: r.fields['Name'] || '',
+        business: r.fields['Business'] || '',
+        category: r.fields['Category'] || '',
+        description: r.fields['Description'] || '',
+        location: r.fields['Location'] || '',
+        phone: r.fields['Phone'] || '',
+        email: r.fields['Email'] || '',
+        website: r.fields['Website'] || '',
+        facebook: r.fields['Facebook'] || '',
+        instagram: r.fields['Instagram'] || '',
+        featured: r.fields['Featured'] || false,
+      }));
+
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('listingsGrid').style.display = 'grid';
+      renderCategories();
+      renderListings();
+    } catch(err) {
+      document.getElementById('loadingState').innerHTML = '<p style="color:#e53e3e;">Failed to load listings. Please refresh.</p>';
+    }
+  }
+
+  function renderCategories() {
+    const grid = document.getElementById('categoriesGrid');
+    grid.innerHTML = CATEGORIES.map(cat => {
+      const count = allListings.filter(l => l.category === cat.label).length;
+      return `<div class="cat-card ${activeCategory === cat.label ? 'active' : ''}" onclick="selectCategory('${cat.label}')">
+        <span class="cat-icon">${cat.icon}</span>
+        <div class="cat-label">${cat.label}</div>
+        <div class="cat-count">${count} listing${count !== 1 ? 's' : ''}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function selectCategory(cat) {
+    activeCategory = activeCategory === cat ? null : cat;
+    renderCategories();
+    populateLocationFilter();
+    renderListings();
+    document.getElementById('filtersBar').style.display = activeCategory ? 'flex' : 'none';
+    if (activeCategory) document.querySelector('.listings-section').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function populateLocationFilter() {
+    const sel = document.getElementById('locationFilter');
+    const current = sel.value;
+    const pool = activeCategory ? allListings.filter(l => l.category === activeCategory) : allListings;
+    const locs = [...new Set(pool.map(l => l.location).filter(Boolean))].sort();
+    sel.innerHTML = '<option value="">All Locations</option>' + locs.map(l => `<option value="${l}" ${l===current?'selected':''}>${l}</option>`).join('');
+  }
+
+  function clearFilters() {
+    activeCategory = null;
+    document.getElementById('locationFilter').value = '';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('filtersBar').style.display = 'none';
+    renderCategories();
+    renderListings();
+  }
+
+  function renderListings() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const location = document.getElementById('locationFilter').value;
+    const grid = document.getElementById('listingsGrid');
+    const empty = document.getElementById('emptyState');
+
+    let pool = [...allListings];
+    if (activeCategory) pool = pool.filter(l => l.category === activeCategory);
+    if (location) pool = pool.filter(l => l.location === location);
+    if (search) pool = pool.filter(l => (l.name+l.business+l.description+l.category+l.location).toLowerCase().includes(search));
+    pool.sort((a,b) => (b.featured?1:0)-(a.featured?1:0));
+
+    document.getElementById('resultsCount').textContent = `${pool.length} result${pool.length!==1?'s':''}`;
+
+    if (pool.length === 0) { grid.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display = 'none';
+
+    const catMap = Object.fromEntries(CATEGORIES.map(c => [c.label, c.icon]));
+
+    grid.innerHTML = pool.map(l => {
+      const icon = catMap[l.category] || '';
+      const socials = [
+        l.facebook ? `<a class="social-link" href="${l.facebook}" target="_blank">Facebook</a>` : '',
+        l.instagram ? `<a class="social-link" href="${l.instagram}" target="_blank">Instagram</a>` : '',
+      ].filter(Boolean).join('');
+      return `<div class="listing-card ${l.featured?'featured':''}">
+        ${l.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
+        <span class="listing-badge" style="${l.featured?'top:44px;':''}">${icon} ${l.category}</span>
+        <div class="listing-name" style="${l.featured?'padding-top:28px;':''}">${l.name}</div>
+        <div class="listing-biz">${l.business}</div>
+        <div class="listing-desc">${l.description}</div>
+        <div class="listing-meta">
+          ${l.location?`<div class="listing-meta-item"><span class="meta-icon">📍</span>${l.location}</div>`:''}
+          ${l.phone?`<div class="listing-meta-item"><span class="meta-icon">📞</span><a href="tel:${l.phone}">${l.phone}</a></div>`:''}
+          ${l.email?`<div class="listing-meta-item"><span class="meta-icon">✉️</span><a href="mailto:${l.email}">${l.email}</a></div>`:''}
+          ${l.website?`<div class="listing-meta-item"><span class="meta-icon">🌐</span><a href="${l.website}" target="_blank">${l.website.replace('https://','')}</a></div>`:''}
+        </div>
+        ${socials?`<div class="listing-socials">${socials}</div>`:''}
+      </div>`;
+    }).join('');
+  }
+
+  async function handleSubmit() {
+    const get = id => document.getElementById(id).value.trim();
+    const name = get('f_name'), business = get('f_business'), category = get('f_category');
+    const description = get('f_description'), location = get('f_location'), email = get('f_email');
+
+    if (!name||!business||!category||!description||!location||!email) {
+      alert('Please fill in all required fields.'); return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Submitting...';
+
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify({ records: [{ fields: {
+          Name: name,
+          Business: business,
+          Category: category,
+          Description: description,
+          Location: location,
+          Phone: get('f_phone'),
+          Email: email,
+          Website: get('f_website'),
+          Facebook: get('f_facebook'),
+          Instagram: get('f_instagram'),
+          Approved: false,
+        }}]})
+      });
+      if (!res.ok) throw new Error();
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successMsg').classList.add('show');
+    } catch(err) {
+      alert('Something went wrong. Please try again.');
+      btn.disabled = false; btn.textContent = 'Submit for Review →';
+    }
+  }
+
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  fetchListings();
+</script>
+</body>
+</html>
