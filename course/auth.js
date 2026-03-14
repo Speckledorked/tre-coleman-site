@@ -16,7 +16,7 @@ const CourseAuth = {
     return this.session && this.session.access_token;
   },
 
-  hasCoruseAccess() {
+  hasCourseAccess() {
     return this.user && this.user.has_course_access;
   },
 
