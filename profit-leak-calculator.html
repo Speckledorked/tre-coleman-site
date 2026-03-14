@@ -367,7 +367,7 @@
       const canProceedStep2 = segment && FIELDS[segment].filter(f => !["seatingCapacity", "avgEventSize"].includes(f.key)).some(f => parseFloat(vals[f.key]) > 0);
 
       function handleReveal() {
-        if (!email.includes("@")) return;
+        if (email && !email.includes("@")) return;
         const r = calcScore(segment, vals);
         setResult(r);
         setStep(3);
