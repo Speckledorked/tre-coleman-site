@@ -1,43 +1,32 @@
 /course/downloads/module-1/*.xlsx
   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-  Content-Disposition: attachment
 
 /course/downloads/module-2/*.xlsx
   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-  Content-Disposition: attachment
 
 /course/downloads/module-3/*.xlsx
   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-  Content-Disposition: attachment
 
 /course/downloads/module-4/*.xlsx
   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-  Content-Disposition: attachment
 
 /course/downloads/module-5/*.xlsx
   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-  Content-Disposition: attachment
 
 /course/downloads/bonus/*.xlsx
   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-  Content-Disposition: attachment
 
 /course/downloads/module-2/*.docx
   Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-  Content-Disposition: attachment
 
 /course/downloads/module-4/*.docx
   Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-  Content-Disposition: attachment
 
 /course/downloads/module-5/*.docx
   Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-  Content-Disposition: attachment
 
 /course/downloads/bonus/*.docx
   Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-  Content-Disposition: attachment
 
 /course/downloads/bonus/*.pdf
   Content-Type: application/pdf
-  Content-Disposition: attachment
