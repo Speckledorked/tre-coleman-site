@@ -41,19 +41,19 @@
 
 # MIME types for course downloads
 [[headers]]
-  for = "/*.xlsx"
+  for = "/**/*.xlsx"
   [headers.values]
     Content-Type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     Content-Disposition = "attachment"
 
 [[headers]]
-  for = "/*.docx"
+  for = "/**/*.docx"
   [headers.values]
     Content-Type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     Content-Disposition = "attachment"
 
 [[headers]]
-  for = "/*.pdf"
+  for = "/**/*.pdf"
   [headers.values]
     Content-Type = "application/pdf"
     Content-Disposition = "attachment"
