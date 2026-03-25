@@ -7,6 +7,18 @@
 <link href="favicon.svg" rel="icon" type="image/svg+xml"/>
 <title>Free Hospitality Operations Audit - Tre' Coleman</title>
 <meta content="Get a free hospitality operations audit. Identify bottlenecks in labor, training, systems, and menu engineering for restaurants, food trucks, catering, and ghost kitchens. Practical next steps included." name="description"/>
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://trecoleman.com/audit.html" />
+    <meta property="og:title" content="Free Restaurant Operations Audit | Tre Coleman" />
+    <meta property="og:description" content="Get a free hospitality operations audit. Identify bottlenecks in labor, training, systems, and menu engineering for restaurants, food trucks, catering, and ghost kitchens. Practical next steps included." />
+    <meta property="og:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://trecoleman.com/audit.html" />
+    <meta name="twitter:title" content="Free Restaurant Operations Audit | Tre Coleman" />
+    <meta name="twitter:description" content="Get a free hospitality operations audit. Identify bottlenecks in labor, training, systems, and menu engineering for restaurants, food trucks, catering, and ghost kitchens. Practical next steps included." />
+    <meta name="twitter:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
 <!-- Include the global stylesheet for consistent typography and colours -->
 <link href="style.css" rel="stylesheet"/>
 <style>
@@ -65,7 +77,7 @@
             font-family: var(--font-stack);
             line-height: 1.6;
             color: var(--dark-text);
-            background: var(--light-bg);
+            background: var(--bg-cream);
             min-height: 100vh;
         }
 
@@ -151,14 +163,14 @@
             }
         }
 
-        .progress-bar { height: 6px; background: var(--secondary-colour); margin: 0; }
-        .progress { height: 100%; background: var(--accent-colour); width: 0%; transition: width 0.3s ease; }
+        .progress-bar { height: 6px; background: #2d5aa0; margin: 0; }
+        .progress { height: 100%; background: var(--accent-gold); width: 0%; transition: width 0.3s ease; }
 
         .content { padding: 2rem; }
         .section { margin-bottom: 2rem; padding: 1.5rem; border-radius: 10px; border: 2px solid #ecf0f1; transition: all 0.3s ease; }
-        .section.active { border-color: var(--primary-colour); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); }
+        .section.active { border-color: var(--primary-navy); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); }
         .section h3 {
-            color: var(--primary-colour);
+            color: var(--primary-navy);
             margin-bottom: 1rem;
             font-size: 1.3rem;
             display: flex;
@@ -201,7 +213,7 @@
             padding: 1rem;
             background: #f8f9fa;
             border-radius: 8px;
-            border-left: 4px solid var(--primary-colour);
+            border-left: 4px solid var(--primary-navy);
         }
         .question label {
             display: block;
@@ -258,13 +270,13 @@
             width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
         }
         .email-form button {
-            background: var(--accent-colour); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; transition: all 0.3s ease;
+            background: var(--accent-gold); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; transition: all 0.3s ease;
         }
         .email-form button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
         .email-form button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
 
         .results {
-            background: var(--light-bg);
+            background: var(--bg-cream);
             padding: 2rem; border-radius: 10px; margin-top: 2rem; display: none;
         }
         .results.show { display: block; animation: fadeIn 0.5s ease; }
@@ -279,14 +291,14 @@
         .score-good { background: linear-gradient(135deg, #f39c12, #e67e22); }
         .score-poor { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
-        .recommendations { background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--primary-colour); margin-bottom: 1.5rem; }
-        .recommendations h4 { color: var(--primary-colour); margin-bottom: 1rem; }
+        .recommendations { background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--primary-navy); margin-bottom: 1.5rem; }
+        .recommendations h4 { color: var(--primary-navy); margin-bottom: 1rem; }
         .recommendations ul { margin-left: 1.5rem; margin-bottom: 1rem; }
         .recommendations li { margin-bottom: 0.5rem; }
-        .priority-high { background: #fff5f5; border-left-color: var(--accent-colour); }
-        .priority-high h4 { color: var(--accent-colour); }
-        .priority-medium { background: #fffbf0; border-left-color: var(--secondary-colour); }
-        .priority-medium h4 { color: var(--secondary-colour); }
+        .priority-high { background: #fff5f5; border-left-color: var(--accent-gold); }
+        .priority-high h4 { color: var(--accent-gold); }
+        .priority-medium { background: #fffbf0; border-left-color: #2d5aa0; }
+        .priority-medium h4 { color: #2d5aa0; }
 
         .cta {
             background: linear-gradient(135deg, #1a5080 0%, #2a6ba0 100%);
@@ -316,10 +328,10 @@
         .contact-form button {
             background: #1F4788; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background 0.3s ease;
         }
-        .contact-form button:hover { background: var(--secondary-colour); }
+        .contact-form button:hover { background: #2d5aa0; }
 
         .calculate-btn {
-            background: var(--accent-colour);
+            background: var(--accent-gold);
             color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 2rem; transition: all 0.3s ease;
         }
         .calculate-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
@@ -678,7 +690,7 @@
                     <p>Get a personalized 30-minute consultation to discuss your specific challenges and opportunities.</p>
                     <div style="text-align: center; margin: 1.5rem 0;">
                         <a href="profit-leak-snapshot.html" target="_blank" rel="noopener" 
-                           style="background: var(--accent-colour); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: all 0.3s ease;">
+                           style="background: var(--accent-gold); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: all 0.3s ease;">
                            📅 Schedule Free Consultation
                         </a>
                     </div>
@@ -1453,7 +1465,7 @@ This is a turnaround situation that requires professional help and urgent action
 <div class="footer-grid">
 <div class="footer-section">
 <h4>Tre Coleman Consulting LLC</h4>
-<p>Richmond/Charlottesville, VA<br/>Serving Nationwide</p>
+<p>Virginia-based restaurant operations consultant.<br/>Serving operators nationwide.</p>
 <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
 </div>
 <div class="footer-section">
@@ -1477,6 +1489,10 @@ This is a turnaround situation that requires professional help and urgent action
 <li><a href="https://www.facebook.com/trecolemanconsulting" rel="noopener" target="_blank">Facebook</a></li>
 </ul>
 </div>
+</div>
+
+<div class="footer-bottom">
+  <p>Serving restaurant, catering, and food truck owners across the U.S. | Based in Virginia.</p>
 </div>
 </div>
 </footer>

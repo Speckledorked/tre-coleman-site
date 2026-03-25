@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <title>Profit Leak Calculator – Tre Coleman</title>
+  <!-- Auth gate: load auth.js and redirect immediately if no session -->
+  <script src="/course/auth.js"></script>
+  <script>
+    CourseAuth.init();
+    if (!CourseAuth.isLoggedIn()) {
+      window.location.replace('/login.html?redirect=' + encodeURIComponent(window.location.pathname));
+    }
+  </script>
+  <style>#root { display: none; }</style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -390,7 +400,7 @@
           )}
           {step > 0 && (
             <div className="hero" style={{padding: "28px 32px 24px"}}>
-              <h1 style={{fontSize: "1.4rem", marginBottom: 0}}>Profit Leak <span>Score Calculator</span></h1>
+              <h2 style={{fontSize: "1.4rem", marginBottom: 0}}>Profit Leak <span>Score Calculator</span></h2>
             </div>
           )}
 
@@ -539,13 +549,20 @@
           })()}
 
           <div className="footer">
-            <p>Tre Coleman Consulting &middot; Internal Use Only</p>
+            <p>Tre Coleman Consulting &middot; Restaurant Operations Consultant</p>
+            <p style={{fontSize: "0.8rem", opacity: 0.7, marginTop: "0.25rem"}}>Serving restaurant, catering, and food truck owners across the U.S. | Based in Virginia.</p>
           </div>
         </div>
       );
     }
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+  <script>
+    // Full server-side session verification; redirects on failure, shows page on success
+    CourseAuth.protectPage().then(function(ok) {
+      if (ok) document.getElementById('root').style.display = '';
+    });
   </script>
 </body>
 </html>
