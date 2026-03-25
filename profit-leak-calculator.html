@@ -3,20 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
   <title>Profit Leak Calculator – Tre Coleman</title>
-    <meta name="description" content="Calculate how much your restaurant, food truck, or catering business is losing to profit leaks in labor, food cost, and operations." />
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://trecoleman.com/profit-leak-calculator.html" />
-    <meta property="og:title" content="Profit Leak Calculator | Tre Coleman" />
-    <meta property="og:description" content="Calculate how much your restaurant, food truck, or catering business is losing to profit leaks in labor, food cost, and operations." />
-    <meta property="og:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://trecoleman.com/profit-leak-calculator.html" />
-    <meta name="twitter:title" content="Profit Leak Calculator | Tre Coleman" />
-    <meta name="twitter:description" content="Calculate how much your restaurant, food truck, or catering business is losing to profit leaks in labor, food cost, and operations." />
-    <meta name="twitter:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
+  <!-- Auth gate: load auth.js and redirect immediately if no session -->
+  <script src="/course/auth.js"></script>
+  <script>
+    CourseAuth.init();
+    if (!CourseAuth.isLoggedIn()) {
+      window.location.replace('/login.html?redirect=' + encodeURIComponent(window.location.pathname));
+    }
+  </script>
+  <style>#root { display: none; }</style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -560,6 +557,12 @@
     }
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+  <script>
+    // Full server-side session verification; redirects on failure, shows page on success
+    CourseAuth.protectPage().then(function(ok) {
+      if (ok) document.getElementById('root').style.display = '';
+    });
   </script>
 </body>
 </html>
