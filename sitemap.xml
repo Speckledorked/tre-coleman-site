@@ -76,6 +76,26 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://trecoleman.com/virginia-neighbors.html</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://trecoleman.com/unreasonably-optimistic.html</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://trecoleman.com/profit-leak-calculator.html</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://trecoleman.com/chat.html</loc>
+    <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://trecoleman.com/privacy.html</loc>
     <priority>0.3</priority>
     <changefreq>yearly</changefreq>
