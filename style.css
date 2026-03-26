@@ -13,15 +13,18 @@
 :root {
   /* Primary colors - Operator navy (matches homepage) */
   --primary-colour: #1F4788;
+  --primary-navy: #1F4788;
   --primary-dark: #152b45;
   --primary-light: #2d5aa0;
   --secondary-colour: #3a5a3a;
   --secondary-light: #34495e;
   --accent-colour: #F4A460;
+  --accent-gold: #F4A460;
   --accent-dark: #d4895f;
 
   /* Background colors */
   --light-bg: #FAFAF8;
+  --bg-cream: #FAFAF8;
   --card-bg: #ffffff;
   --light-gray: #e9ecef;
 
