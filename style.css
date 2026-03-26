@@ -30,8 +30,11 @@
 
   /* Text colors */
   --dark-text: #2c2c2c;
+  --text-dark: #2c2c2c;
   --medium-text: #5a5a5a;
+  --text-medium: #5a5a5a;
   --light-text: #718096;
+  --white: #ffffff;
 
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%);
