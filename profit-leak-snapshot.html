@@ -268,30 +268,41 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+      .hero {
+        min-height: auto;
+        padding: 3rem 1.25rem;
+      }
+
       .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
 
       .hero .tagline {
-        font-size: 1.3rem;
+        font-size: 1.15rem;
       }
 
       .hero .description {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .hero .pricing .amount {
+        font-size: 2rem;
       }
 
       .section h2,
       .cta-section h2 {
-        font-size: 2rem;
+        font-size: 1.75rem;
       }
 
       .section p,
       .section ul li {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
       .cta-buttons {
         flex-direction: column;
+        gap: 1rem;
       }
     }
 
@@ -394,7 +405,7 @@
 <p class="tagline">Your operation is profitable on paper, but the money is not showing up in your account. Something is leaking.</p>
 <p class="description">The Profit Leak Snapshot is a 90-minute diagnostic session to identify your top 3 profit leaks, estimate what they are costing you, and decide what to fix first.</p>
 <div class="cta-buttons">
-<a class="cta-button" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
+<a class="btn-primary" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
 <a class="btn-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
 </div>
 <p class="credit-note">If you decide to move forward with implementation support, the $350 credits toward your engagement.</p>
@@ -578,7 +589,7 @@
 <section class="cta-section">
 <h2>Ready to stop the bleeding?</h2>
 <div class="cta-buttons">
-<a class="cta-button" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
+<a class="btn-primary" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
 <a class="btn-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
 </div>
 </section>
