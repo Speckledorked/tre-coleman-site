@@ -6,8 +6,9 @@
  * Removed corporate consultant vibes.
  */
 
-/* Import operator-focused fonts */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap');
+/* Fonts are loaded via <link> in each page's <head> — see
+   tools/fix_font_loading.py. Do not reintroduce an @import here:
+   it serialises the font request behind this stylesheet. */
 
 /* Root variables - Updated for operator-to-operator aesthetic */
 :root {

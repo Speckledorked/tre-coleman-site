@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# Paid course assets — binary files that cannot carry a meta robots tag.
+Disallow: /course/downloads/
+Disallow: /*.zip$
+Disallow: /lead%20system.pdf
+
 Sitemap: https://trecoleman.com/sitemap.xml

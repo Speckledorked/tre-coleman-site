@@ -39,6 +39,31 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
+# Keep the Zoho domain-verification token out of the index.
+# It is a bare token file, not HTML, so it cannot carry a <meta name="robots">
+# tag — an X-Robots-Tag header is the only way to mark it noindex without
+# altering the file contents and breaking Zoho verification.
+[[headers]]
+  for = "/zohoverify/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Paid course assets must never appear in search results. These are binary
+# files that cannot carry a meta robots tag.
+[[headers]]
+  for = "/course/downloads/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# The course archive at the site root is the complete paid product and is
+# currently downloadable without payment. This header keeps it out of search
+# results, but it does NOT restrict access — the file still needs to be
+# deleted from the repo (its 26 files already exist under course/downloads/).
+[[headers]]
+  for = "/*.zip"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
 # MIME types for course downloads
 [[headers]]
   for = "/**/*.xlsx"
