@@ -38,6 +38,8 @@ PAGES = [
     ("/catering-profit.html",         "catering-profit.html",       "0.7", "monthly"),
     ("/playbook.html",                "playbook.html",              "0.7", "monthly"),
     ("/blog.html",                    "blog.html",                  "0.7", "weekly"),
+    ("/blog/restaurant-consultant-cost.html",
+     "blog/restaurant-consultant-cost.html",                        "0.7", "yearly"),
     ("/blog/restaurant-profit-leaks.html",
      "blog/restaurant-profit-leaks.html",                "0.6", "yearly"),
     ("/blog/restaurant-systems-for-growth.html",
