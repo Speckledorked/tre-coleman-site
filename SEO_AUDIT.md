@@ -9,6 +9,56 @@
 
 ---
 
+## ⚑ Implementation status — updated 2026-08-16
+
+Most of this audit has since been implemented. **The findings below are preserved as originally written** — they describe the site as it was on the audit date, and are the record of why each change was made. This section tracks what has actually shipped.
+
+### Done
+
+| Area | What changed |
+|---|---|
+| **Indexing** | Sitemap 19 → 28 URLs with git-derived `<lastmod>`; blog posts added; `404.html` self-canonical removed and `noindex`ed; `X-Robots-Tag` on `/zohoverify/*` and `/course/downloads/*` |
+| **Images** | 12 assets converted to right-sized WebP: **19.2 MB → 600 KB (−97%)**. `services.html` alone went from 11.1 MB to 240 KB. Descriptive filenames, `width`/`height`/`loading`/`decoding` on all 11 `<img>` tags, preload on the homepage LCP background |
+| **Third-party** | 7 hot-linked Unsplash heroes replaced with the site's own self-hosted WebP; Crisp Chat loader removed from 17 pages; font `@import` replaced with `preconnect` + `<link>` on 27 pages |
+| **Social** | 1200×630 OG card created; `og:image`/`twitter:image` repointed on 28 pages (was a 200×200 headshot against a `summary_large_image` declaration) |
+| **Internal linking** | Canonical nav on all 28 pages with a Services dropdown; footer Services column; blog→service contextual links. **The four service pages went from 1 inbound internal link each to 50+** |
+| **Structured data** | 3 → 40 valid JSON-LD blocks. `BlogPosting` with visible bylines and git-derived dates, `BreadcrumbList` with visible breadcrumbs, `Service` per page, `FAQPage`, `ContactPage`, `Course`, `WebSite`, named `areaServed` |
+| **Metadata** | Titles and descriptions rewritten on 23 pages, all now 47–59 and 118–156 characters |
+| **New pages** | `food-truck-consulting.html`, `catering-consulting.html`, `virginia-restaurant-consulting.html`; `contact.html` expanded from ~60 to ~400 words of unique copy |
+| **Content** | `blog/restaurant-consultant-cost.html` published (item #1 in §4.5); blog URLs migrated to real slugs with 301s |
+| **Accessibility** | `<main>` on 22 pages, skip links on all 42, `:focus-visible`, `prefers-reduced-motion`, footer heading levels, nav ARIA, emoji out of H1s |
+| **Analytics** | Per-form conversion events, `phone_click`/`email_click`, exit-intent A/B variant tracking |
+| **Tooling** | Two regex-based nav workflows retired in favour of `tools/` generators — see `tools/README.md` |
+
+### Bugs found and fixed along the way
+
+Three that were not in the original audit, all discovered while implementing it:
+
+1. **`exit-intent-popup.js` had a fatal syntax error** (duplicate `const selectedOffer`), so the lead-capture popup had **never run** on any of the 17 pages loading it. Confirmed against git as pre-existing.
+2. Both of its autoresponders quoted **$750** for the Snapshot; every other page says $350.
+3. Its playbook download pointed at a PDF that does not exist on the site, so every submission 404'd.
+
+### One correction to this audit
+
+**T34 was wrong.** It described `profit-leak-calculator.html` as an orphaned lead magnet and suggested removing its `noindex`. The page is in fact **auth-gated** — `profit-leak-calculator.html:10-14` redirects to login — so `noindex` is correct. The real defect was narrower: it had no inbound link from anywhere, so paying members could not reach it either. It is now linked from the course dashboard and remains `noindex`.
+
+### Still open — needs you
+
+| Item | Why it is blocked |
+|---|---|
+| **Verify Google Search Console** | **[EXTERNAL]** — still the single highest-value action. Nothing here is measurable without it |
+| **Delete the course ZIP** | The complete $67 product is downloadable at the site root. All 26 files are duplicated under `course/downloads/`, so removal is safe — `git rm "Catering Profit Course-20260315T205458Z-3-001.zip"`. A permission guard blocked the deletion |
+| **Gate `/course/downloads/`** | Currently client-side `localStorage` only; direct URLs bypass it. Needs a real auth change |
+| **Substantiate published claims** | The ~18 figures listed at the end of this document are unchanged and still need documentation |
+| **Named testimonials** | **[EXTERNAL]** — the site still has one anonymous testimonial. `Review` schema stays correctly absent until there are named, permissioned ones |
+| **GBP, citations, reviews, outreach** | **[EXTERNAL]** — all of §5.4 |
+| **Remaining 9 articles** | §4.5 items 2–10. Several depend on your operating experience — #10 in particular cannot be written by anyone else without fabricating |
+| **Rewrite the 5 original posts** | They read as generic industry content. Needs your voice and real numbers |
+| **Extract shared inline CSS** | Deliberately skipped: ~8h of work across 40 pages with real regression risk and modest payoff. Worth doing when the site next gets a design pass |
+| **Server-render `virginia-neighbors.html`** | Mitigated with static copy, but the listings still need JS. A proper fix needs a build step |
+
+---
+
 ## 1. Executive summary
 
 ### Overall SEO score: **6 / 10**
