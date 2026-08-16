@@ -15,16 +15,6 @@
  * 2. Ensure there is no conflicting element with ids
  *    `exitIntentOverlay` or `exitIntentModal` in your markup.
  */
-// Crisp Chat Integration
-window.$crisp=[];
-window.CRISP_WEBSITE_ID="be57159b-af24-45a1-8e47-1207df3715lf";
-(function(){
-  var d=document,s=d.createElement("script");
-  s.src="https://client.crisp.chat/l.js";
-  s.async=1;
-  d.getElementsByTagName("head")[0].appendChild(s);
-})();
-
 
 (function () {
   const SESSION_KEY = 'tre_exit_intent_shown';
@@ -252,34 +242,30 @@ window.CRISP_WEBSITE_ID="be57159b-af24-45a1-8e47-1207df3715lf";
       offerDiv.appendChild(form);
       return offerDiv;
     }
-        // Define offers
-            // Define offers
+    // Define offers
     const auditOffer = {
       title: 'Free Operations Audit',
       subject: 'New Operations Audit (Exit Intent)',
       nextUrl: 'https://trecoleman.com/audit.html?submitted=1',
-      autoResponse: "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. Want to dive deeper? Book a $750 Profit Leak Snapshot: https://trecoleman.com/profit-leak-snapshot.html",
+      autoResponse: "Thanks for completing the operations audit! We'll review your submission and follow up soon with a personalized consultation. Want to dive deeper? Book a $350 Profit Leak Snapshot: https://trecoleman.com/profit-leak-snapshot.html",
       primary: emphasiseAudit
     };
 
     const playbookOffer = {
       title: 'Free 90-Day Playbook',
       subject: 'New Playbook Request (Exit Intent)',
-      nextUrl: 'https://trecoleman.com/5_Phase_AI_Lead_System_FULL_Detailed_TreColeman.pdf',
-      autoResponse: "Thanks for requesting the playbook! I'll be in touch soon.\n\nReady to identify your profit leaks? Book a $750 Profit Leak Snapshot: https://trecoleman.com/profit-leak-snapshot.html",
+      // Was pointing at 5_Phase_AI_Lead_System_FULL_Detailed_TreColeman.pdf,
+      // which does not exist on the site — every submission 404'd. Sending
+      // people to the 90-Day Playbook page instead, which is what the offer
+      // above actually promises.
+      nextUrl: 'https://trecoleman.com/playbook.html',
+      autoResponse: "Thanks for requesting the playbook! I'll be in touch soon.\n\nReady to identify your profit leaks? Book a $350 Profit Leak Snapshot: https://trecoleman.com/profit-leak-snapshot.html",
       primary: !emphasiseAudit
     };
 
     // Append only the selected offer based on the emphasised variant
     const selectedOffer = emphasiseAudit ? auditOffer : playbookOffer;
     offersContainer.appendChild(createOffer(selectedOffer));
-    
-// Append only the selected offer based on the emphasised variant
-
-    
-     
-        const selectedOffer = emphasiseAudit ? auditOffer : playbookOffer;
-        offersContainer.appendChild(createOffer(selectedOffer));
 
     // Build modal structure
     modal.appendChild(closeBtn);
