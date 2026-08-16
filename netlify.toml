@@ -80,4 +80,37 @@
   [headers.values]
     Content-Type = "application/pdf"
 
+# ---------------------------------------------------------------------------
+# Blog URL migration (see tools/migrate_blog_urls.py)
+# The posts originally shipped with generated filenames. These 301s keep any
+# existing link, bookmark or index entry resolving to the new slug.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/blog/blog_post_1_profit_leaks_rewritten.html"
+  to = "/blog/restaurant-profit-leaks.html"
+  status = 301
+  force = true
 
+[[redirects]]
+  from = "/blog/blog_post_2_systems_growth_rewritten.html"
+  to = "/blog/restaurant-systems-for-growth.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/blog_post_3_menu_engineering_rewritten.html"
+  to = "/blog/menu-engineering-guide.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/blog_post_4_fractional_coo_rewritten.html"
+  to = "/blog/fractional-coo-for-restaurants.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/blog/blog_post_5_catering_profitability_rewritten.html"
+  to = "/blog/scaling-a-catering-business.html"
+  status = 301
+  force = true

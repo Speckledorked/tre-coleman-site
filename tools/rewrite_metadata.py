@@ -127,30 +127,30 @@ REWRITES = {
         "Why the operators who turn things around aren't the most experienced "
         "— they're the ones who keep moving before they feel certain.",
     ),
-    "blog/blog_post_1_profit_leaks_rewritten.html": (
+    "blog/restaurant-profit-leaks.html": (
         "How to Find &amp; Fix Restaurant Profit Leaks | Tre Coleman",
         "Where independent restaurants quietly lose margin — labor, item mix, "
         "waste, and cash flow — and the checks that surface each one.",
     ),
-    "blog/blog_post_2_systems_growth_rewritten.html": (
+    "blog/restaurant-systems-for-growth.html": (
         "Restaurant Systems That Support Real Growth | Tre Coleman",
         "Move past daily firefighting. The SOPs, scheduling structure, and "
         "financial tracking that let an operation grow without the owner in "
         "the room.",
     ),
-    "blog/blog_post_3_menu_engineering_rewritten.html": (
+    "blog/menu-engineering-guide.html": (
         "Menu Engineering Guide for Restaurant Owners | Tre Coleman",
         "How to map contribution margin against popularity, find the items "
         "quietly costing you money, and redesign your menu around what "
         "actually pays.",
     ),
-    "blog/blog_post_4_fractional_coo_rewritten.html": (
+    "blog/fractional-coo-for-restaurants.html": (
         "What a Fractional COO Does for Restaurants | Tre Coleman",
         "What a fractional COO actually handles week to week, when an "
         "operation is ready for one, and how it compares to a full-time hire "
         "on cost.",
     ),
-    "blog/blog_post_5_catering_profitability_rewritten.html": (
+    "blog/scaling-a-catering-business.html": (
         "How to Scale a Catering Business Profitably | Tre Coleman",
         "More catering volume without pricing, staffing, and logistics "
         "systems means more revenue and less profit. Here's the order to "

@@ -31,23 +31,23 @@ SITE = "https://trecoleman.com"
 OG_CARD = f"{SITE}/images/og-card.jpg"
 
 ARTICLES = {
-    "blog/blog_post_1_profit_leaks_rewritten.html": (
+    "blog/restaurant-profit-leaks.html": (
         "Unmasking the Hidden Costs: How to Identify and Plug Profit Leaks in Your Restaurant",
         "Operations",
     ),
-    "blog/blog_post_2_systems_growth_rewritten.html": (
+    "blog/restaurant-systems-for-growth.html": (
         "Beyond the Daily Grind: Implementing Systems for Sustainable Restaurant Growth",
         "Operations",
     ),
-    "blog/blog_post_3_menu_engineering_rewritten.html": (
+    "blog/menu-engineering-guide.html": (
         "Maximizing My Menu's Potential: A Guide to Restaurant Menu Engineering",
         "Operations",
     ),
-    "blog/blog_post_4_fractional_coo_rewritten.html": (
+    "blog/fractional-coo-for-restaurants.html": (
         "The Strategic Advantage: How Fractional COO Services Elevate Restaurant Operations",
         "Operations",
     ),
-    "blog/blog_post_5_catering_profitability_rewritten.html": (
+    "blog/scaling-a-catering-business.html": (
         "From Food Truck to Empire: Scaling My Catering Business Profitably",
         "Operations",
     ),

@@ -40,7 +40,11 @@
       sessionStorage.setItem(VARIANT_KEY, variant);
     }
     const emphasiseAudit = variant === 'audit';
-    
+
+    // Report the impression with its variant, so the A/B test above can
+    // actually be read in analytics rather than just running silently.
+    if (window.treTrackExitIntent) window.treTrackExitIntent('shown', variant);
+
 
     // Base colours – update these to match your palette
     const primaryColour = '#2c5f2d';
@@ -168,6 +172,7 @@
     closeBtn.className = 'close-btn';
     closeBtn.innerHTML = '&times;';
     closeBtn.addEventListener('click', function () {
+      if (window.treTrackExitIntent) window.treTrackExitIntent('dismissed', variant);
       document.body.removeChild(overlay);
     });
 
