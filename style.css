@@ -1171,3 +1171,55 @@ button[type="submit"]:active,
   display: block;
   opacity: 1;
 }
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+/* Skip link — visually hidden until it receives keyboard focus, so keyboard
+   and screen-reader users can jump past the nav on every page. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1200;
+  background: var(--primary-navy);
+  color: var(--white);
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-sm, 6px) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* Visible focus ring for keyboard users on every interactive element.
+   Previously only form inputs had a focus style, so links and buttons gave
+   keyboard users no indication of where they were on the page. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--accent-gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Respect the OS-level "reduce motion" setting. The site uses transforms and
+   transitions throughout; for users who get motion sickness from them, this
+   reduces everything to a near-instant change without breaking any state
+   that depends on transitionend. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

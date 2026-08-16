@@ -14,8 +14,9 @@
     }
   }
 
-  // Add scroll listener
-  window.addEventListener('scroll', handleScroll);
+  // Passive: this handler never calls preventDefault, and saying so lets the
+  // browser keep scrolling on the compositor instead of waiting on JS.
+  window.addEventListener('scroll', handleScroll, { passive: true });
 
   // Check initial position
   handleScroll();

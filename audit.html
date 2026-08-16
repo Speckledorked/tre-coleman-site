@@ -120,7 +120,7 @@
         .header {
             position: relative;
             background: linear-gradient(135deg, rgba(26, 80, 128, 0.95) 0%, rgba(42, 107, 160, 0.95) 100%),
-                        url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1920&h=600&fit=crop') center/cover no-repeat;
+                        url('images/hero-restaurant-operations.webp') center/cover no-repeat;
             color: white;
             padding: 2.5rem 2rem;
             text-align: center;
@@ -350,6 +350,8 @@
   <script src="analytics.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <!-- Header -->
@@ -378,14 +380,14 @@
             </li>
             <li><a href="advisory.html">Advisory</a></li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Insights</a>
+              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Insights</a>
               <div class="dropdown-menu">
                 <a href="blog.html">Blog &amp; Playbooks</a>
                 <a href="catering-profit.html">Catering Profit System</a>
               </div>
             </li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Resources</a>
+              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Resources</a>
               <div class="dropdown-menu">
                 <a href="audit.html">Restaurant Ops Audit</a>
                 <a href="food-truck-audit.html">Food Truck Launch Audit</a>
@@ -399,9 +401,10 @@
         </nav>
 </div>
 </header>
+<main id="main-content">
 <div class="content-container">
 <div class="header">
-<h1>🍽️ Hospitality Operations Audit</h1>
+<h1><span aria-hidden="true">🍽️</span> Hospitality Operations Audit</h1>
 <p>Discover hidden profit leaks and optimization opportunities in your restaurant</p>
 </div>
 <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
@@ -1464,7 +1467,8 @@ This is a turnaround situation that requires professional help and urgent action
         toggle.addEventListener('click', (e) => {
           if (window.innerWidth <= 1024) {
             e.preventDefault();
-            toggle.parentElement.classList.toggle('active');
+            const open = toggle.parentElement.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
           }
         });
       });
@@ -1472,16 +1476,17 @@ This is a turnaround situation that requires professional help and urgent action
 <script defer="" src="/exit-intent-popup.js"></script>
 <script src="/header-scroll.js"></script>
 <!-- Footer -->
+</main>
 <footer>
 <div class="container">
 <div class="footer-grid">
 <div class="footer-section">
-<h4>Tre Coleman Consulting LLC</h4>
+<h2>Tre Coleman Consulting LLC</h2>
 <p>Virginia-based restaurant operations consultant.<br/>Serving operators nationwide.</p>
 <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
 </div>
 <div class="footer-section">
-            <h4>Services</h4>
+            <h2>Services</h2>
             <ul>
               <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
               <li><a href="menu-engineering.html">Menu Engineering</a></li>
@@ -1493,7 +1498,7 @@ This is a turnaround situation that requires professional help and urgent action
           </div>
 
           <div class="footer-section">
-            <h4>Quick Links</h4>
+            <h2>Quick Links</h2>
             <ul>
               <li><a href="services.html">All Services</a></li>
               <li><a href="about.html">About</a></li>
@@ -1505,7 +1510,7 @@ This is a turnaround situation that requires professional help and urgent action
             </ul>
           </div>
 <div class="footer-section">
-<h4>Connect</h4>
+<h2>Connect</h2>
 <ul>
 <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
 <li><a href="tel:540-807-9045">540.807.9045</a></li>

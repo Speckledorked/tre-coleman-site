@@ -147,6 +147,8 @@
   <link rel="canonical" href="https://trecoleman.com/blog/blog_post_3_menu_engineering_rewritten.html" />
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <!-- Header -->
@@ -173,14 +175,14 @@
             </li>
             <li><a href="../advisory.html">Advisory</a></li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Insights</a>
+              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Insights</a>
               <div class="dropdown-menu">
                 <a href="../blog.html">Blog &amp; Playbooks</a>
                 <a href="../catering-profit.html">Catering Profit System</a>
               </div>
             </li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Resources</a>
+              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Resources</a>
               <div class="dropdown-menu">
                 <a href="../audit.html">Restaurant Ops Audit</a>
                 <a href="../food-truck-audit.html">Food Truck Launch Audit</a>
@@ -194,6 +196,7 @@
         </nav>
 </div>
 </header>
+<main id="main-content">
 <article>
 <a class="back-link" href="../blog.html">&#8592; Back to all posts</a>
 <div class="post-header">
@@ -254,16 +257,17 @@
 </div>
 </article>
 <!-- Footer -->
+</main>
 <footer>
 <div class="container">
 <div class="footer-grid">
 <div class="footer-section">
-<h4>Tre Coleman Consulting LLC</h4>
+<h2>Tre Coleman Consulting LLC</h2>
 <p>Virginia-based restaurant operations consultant.<br/>Serving operators nationwide.</p>
 <p style="margin-top: 1rem;">&#169; 2026 All Rights Reserved</p>
 </div>
 <div class="footer-section">
-            <h4>Services</h4>
+            <h2>Services</h2>
             <ul>
               <li><a href="../profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
               <li><a href="../menu-engineering.html">Menu Engineering</a></li>
@@ -275,7 +279,7 @@
           </div>
 
           <div class="footer-section">
-            <h4>Quick Links</h4>
+            <h2>Quick Links</h2>
             <ul>
               <li><a href="../services.html">All Services</a></li>
               <li><a href="../about.html">About</a></li>
@@ -287,7 +291,7 @@
             </ul>
           </div>
 <div class="footer-section">
-<h4>Connect</h4>
+<h2>Connect</h2>
 <ul>
 <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
 <li><a href="tel:540-807-9045">540.807.9045</a></li>
@@ -334,7 +338,8 @@
         toggle.addEventListener('click', (e) => {
           if (window.innerWidth <= 1024) {
             e.preventDefault();
-            toggle.parentElement.classList.toggle('active');
+            const open = toggle.parentElement.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
           }
         });
       });
