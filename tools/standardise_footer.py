@@ -27,11 +27,14 @@ SERVICES = [
     ("sops-training.html", "SOPs &amp; Training"),
     ("lsm.html", "Local Store Marketing"),
     ("ai-integration.html", "AI Integration"),
+    ("food-truck-consulting.html", "Food Truck Consulting"),
+    ("catering-consulting.html", "Catering Consulting"),
     ("advisory.html", "Fractional COO"),
 ]
 
 QUICK = [
     ("services.html", "All Services"),
+    ("virginia-restaurant-consulting.html", "Consulting in Virginia"),
     ("about.html", "About"),
     ("blog.html", "Blog"),
     ("catering-profit.html", "Catering Course"),

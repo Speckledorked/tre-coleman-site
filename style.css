@@ -1173,6 +1173,36 @@ button[type="submit"]:active,
 }
 
 /* ==========================================================================
+   Breadcrumbs
+   ========================================================================== */
+
+.breadcrumbs {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem 1.25rem 0;
+  font-size: 0.875rem;
+  color: var(--medium-text);
+}
+
+.breadcrumbs a {
+  color: var(--primary-navy);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs span[aria-hidden] {
+  margin: 0 0.4rem;
+  color: var(--light-text);
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--medium-text);
+}
+
+/* ==========================================================================
    Accessibility
    ========================================================================== */
 

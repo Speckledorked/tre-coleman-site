@@ -7,16 +7,14 @@
     <!-- The hero is a CSS background, so the preload scanner cannot find it.
          This preload is what keeps it from being a slow LCP element. -->
     <link rel="preload" as="image" href="images/hero-restaurant-operations.webp" fetchpriority="high">
-    <title>Restaurant Operations Consultant | Tre Coleman</title>
-    <meta
-      name="description"
-      content="I help independent restaurants, food trucks, and catering companies find and fix profit leaks in operations, labor, menu, and systems. Based in Virginia, working with operators nationwide." />
+    <title>Restaurant Operations Consultant in Virginia | Tre Coleman</title>
+    <meta name="description" content="Independent restaurant, food truck, and catering operators: find and fix the profit leaks in labor, menu, and systems. Virginia-based, working nationwide." />
 
     <!-- Open Graph / Facebook -->
       <link rel="canonical" href="https://trecoleman.com/" />
 <meta property="og:type" content="website" />
     <meta property="og:url" content="https://trecoleman.com/" />
-    <meta property="og:title" content="Restaurant Operations Consultant for Independent Operators | Tre Coleman" />
+    <meta property="og:title" content="Restaurant Operations Consultant in Virginia | Tre Coleman" />
     <meta property="og:description" content="I help independent restaurants, food trucks, and catering companies find and fix profit leaks in operations, labor, menu, and systems. Based in Virginia, working with operators nationwide." />
     <meta property="og:image" content="https://trecoleman.com/images/og-card.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -26,7 +24,7 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://trecoleman.com/" />
-    <meta name="twitter:title" content="Restaurant Operations Consultant for Independent Operators | Tre Coleman" />
+    <meta name="twitter:title" content="Restaurant Operations Consultant in Virginia | Tre Coleman" />
     <meta name="twitter:description" content="I help independent restaurants, food trucks, and catering companies find and fix profit leaks in operations, labor, menu, and systems. Based in Virginia, working with operators nationwide." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
 
@@ -556,10 +554,15 @@
             "addressRegion": "VA",
             "addressCountry": "US"
           },
-          "areaServed": {
-            "@type": "Country",
-            "name": "United States"
-          },
+          "areaServed": [
+            { "@type": "Country", "name": "United States" },
+            { "@type": "State", "name": "Virginia" },
+            { "@type": "City", "name": "Charlottesville", "containedInPlace": { "@type": "State", "name": "Virginia" } },
+            { "@type": "City", "name": "Richmond", "containedInPlace": { "@type": "State", "name": "Virginia" } },
+            { "@type": "City", "name": "Fredericksburg", "containedInPlace": { "@type": "State", "name": "Virginia" } },
+            { "@type": "City", "name": "Harrisonburg", "containedInPlace": { "@type": "State", "name": "Virginia" } },
+            { "@type": "City", "name": "Louisa", "containedInPlace": { "@type": "State", "name": "Virginia" } }
+          ],
           "knowsAbout": [
             "Restaurant Operations Consulting",
             "Food Truck Operations Consulting",
@@ -687,7 +690,20 @@
     }
     </script>
     <script src="analytics.js"></script>
-  </head>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://trecoleman.com/#website",
+  "url": "https://trecoleman.com/",
+  "name": "Tre Coleman Consulting",
+  "publisher": {
+    "@id": "https://trecoleman.com/#business"
+  },
+  "inLanguage": "en-US"
+}
+</script>
+</head>
   <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
 
@@ -718,18 +734,20 @@
                 <a href="sops-training.html">SOPs &amp; Training Systems</a>
                 <a href="lsm.html">Local Store Marketing</a>
                 <a href="ai-integration.html">AI Integration</a>
+                <a href="food-truck-consulting.html">Food Truck Consulting</a>
+                <a href="catering-consulting.html">Catering Consulting</a>
               </div>
             </li>
             <li><a href="advisory.html">Advisory</a></li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Insights</a>
+              <a href="#" onclick="return false;">Insights</a>
               <div class="dropdown-menu">
                 <a href="blog.html">Blog &amp; Playbooks</a>
                 <a href="catering-profit.html">Catering Profit System</a>
               </div>
             </li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Resources</a>
+              <a href="#" onclick="return false;">Resources</a>
               <div class="dropdown-menu">
                 <a href="audit.html">Restaurant Ops Audit</a>
                 <a href="food-truck-audit.html">Food Truck Launch Audit</a>
@@ -973,6 +991,8 @@
               <li><a href="sops-training.html">SOPs &amp; Training</a></li>
               <li><a href="lsm.html">Local Store Marketing</a></li>
               <li><a href="ai-integration.html">AI Integration</a></li>
+              <li><a href="food-truck-consulting.html">Food Truck Consulting</a></li>
+              <li><a href="catering-consulting.html">Catering Consulting</a></li>
               <li><a href="advisory.html">Fractional COO</a></li>
             </ul>
           </div>
@@ -981,6 +1001,7 @@
             <h2>Quick Links</h2>
             <ul>
               <li><a href="services.html">All Services</a></li>
+              <li><a href="virginia-restaurant-consulting.html">Consulting in Virginia</a></li>
               <li><a href="about.html">About</a></li>
               <li><a href="blog.html">Blog</a></li>
               <li><a href="catering-profit.html">Catering Course</a></li>

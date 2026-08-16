@@ -37,6 +37,8 @@ NAV = """<nav id="mainNav">
                 <a href="{p}sops-training.html">SOPs &amp; Training Systems</a>
                 <a href="{p}lsm.html">Local Store Marketing</a>
                 <a href="{p}ai-integration.html">AI Integration</a>
+                <a href="{p}food-truck-consulting.html">Food Truck Consulting</a>
+                <a href="{p}catering-consulting.html">Catering Consulting</a>
               </div>
             </li>
             <li><a href="{p}advisory.html">Advisory</a></li>
