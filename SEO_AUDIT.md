@@ -40,7 +40,11 @@ Three that were not in the original audit, all discovered while implementing it:
 
 ### One correction to this audit
 
-**T34 was wrong.** It described `profit-leak-calculator.html` as an orphaned lead magnet and suggested removing its `noindex`. The page is in fact **auth-gated** — `profit-leak-calculator.html:10-14` redirects to login — so `noindex` is correct. The real defect was narrower: it had no inbound link from anywhere, so paying members could not reach it either. It is now linked from the course dashboard and remains `noindex`.
+**T34 was wrong, and its "orphan" framing was wrong too.** The finding described `profit-leak-calculator.html` as an orphaned lead magnet and recommended removing its `noindex` to promote it.
+
+It is neither orphaned nor a lead magnet. It is an **internal tool** the owner built for their own use. Being unlinked, unlisted, and `noindex` is the intended state, not a defect — that combination is exactly what keeps an unlisted URL unlisted. **No action is needed on this page.**
+
+For the record, an intermediate revision of this document claimed the page was meaningfully exposed because its login gate is client-side and only checks for any session. Both observations are technically accurate and practically irrelevant: every route they describe requires already knowing the URL, and there is no path to discovering it. The page holds scoring formulas, not credentials or customer data. That claim was overstated and is withdrawn.
 
 ### Still open — needs you
 
@@ -396,7 +400,7 @@ No page uses `<main>` or `role="main"`; no page has a skip-to-content link. `<ar
 *Fix:* Expand to 400–600 words: what happens after you submit, response time, who this is for and who it isn't, service areas (named Virginia markets — see §5), phone and email in crawlable text (currently only in the footer), and 3–4 FAQs. Add `ContactPage` schema.
 *Safe to automate:* **No** — needs real copy and **[VERIFY]** on response-time claims.
 
-**T34 — `profit-leak-calculator.html` is a 3,044-word orphan. Medium.**
+**T34 — `profit-leak-calculator.html` is a 3,044-word orphan. Medium.** *(Superseded — see the correction in the status section at the top. This page is an internal tool; unlinked and `noindex` is correct and no action is needed. The analysis below is retained only as the original record.)*
 `noindex`, **zero inbound links from anywhere**, React + Babel-standalone loaded from CDN (`:17-19`), no meta description. It's a genuinely useful interactive tool that no user or crawler can reach.
 *Fix:* Decide deliberately. Either **(a)** make it a lead magnet — remove `noindex`, add a wrapper page with real indexable copy explaining the calculator, link it from the nav Resources dropdown alongside the two audits, gate results behind an email capture; or **(b)** delete it. Option (a) is the better business call: an interactive profit calculator is exactly the kind of asset that earns links from restaurant-industry sites. If you keep it, replace Babel-standalone with a pre-compiled bundle — in-browser JSX compilation is a significant runtime cost.
 *Safe to automate:* **No** — strategic decision.
@@ -804,7 +808,7 @@ Measurement targets below are **directional planning figures, not forecasts.** N
 | 2.8 | Build `/catering-consulting` service page | **High** | 6h | Copy | Page indexed, first impressions |
 | 2.9 | Add page-specific `FAQPage` schema to 5 service pages | Medium | 3h | Copy | FAQ rich results |
 | 2.10 | Differentiate the 4 templated service pages (T35) | Medium | 6h | Copy | Reduced template similarity |
-| 2.11 | Decide `profit-leak-calculator.html`: promote or delete (T34) | Medium | 2–8h | Decision | If promoted: indexed + linked |
+| 2.11 | ~~Decide `profit-leak-calculator.html`: promote or delete (T34)~~ | — | — | — | Withdrawn: internal tool, current state is correct |
 | 2.12 | Collect 3–5 named testimonials with written permission | **High** | **[EXTERNAL]** | Client outreach | Testimonials live; `Review` schema becomes valid |
 | 2.13 | Migrate blog URLs to clean slugs + 301s in `netlify.toml` | Medium | 3h | Do before links accumulate | 301s verified, no 404s in GSC |
 
@@ -1011,7 +1015,7 @@ Review weekly for the first month after the Weeks 1–2 fixes (to catch anything
 - [ ] Migrate blog URLs to clean slugs with 301 redirects *(§4.5)*
 - [ ] Add `FAQPage` schema to each service page *(§5.2)*
 - [ ] Differentiate the 4 near-duplicate service page templates *(T35)*
-- [ ] Decide `profit-leak-calculator.html`: promote as a lead magnet, or delete *(T34)*
+- [x] ~~Decide `profit-leak-calculator.html`: promote as a lead magnet, or delete~~ — withdrawn; it is an internal tool and needs no change *(T34)*
 - [ ] Expand `audit.html` and `food-truck-audit.html` with 400–600 words of real content *(T37)*
 - [ ] Publish articles 6–8; repurpose each to LinkedIn and the newsletter
 - [ ] Add exit-intent tracking events with A/B variant labels *(A9)*
