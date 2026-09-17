@@ -6,8 +6,9 @@
  * Removed corporate consultant vibes.
  */
 
-/* Import operator-focused fonts */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap');
+/* Fonts are loaded via <link> in each page's <head> — see
+   tools/fix_font_loading.py. Do not reintroduce an @import here:
+   it serialises the font request behind this stylesheet. */
 
 /* Root variables - Updated for operator-to-operator aesthetic */
 :root {
@@ -1169,4 +1170,86 @@ button[type="submit"]:active,
 .mobile-overlay.active {
   display: block;
   opacity: 1;
+}
+
+/* ==========================================================================
+   Breadcrumbs
+   ========================================================================== */
+
+.breadcrumbs {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem 1.25rem 0;
+  font-size: 0.875rem;
+  color: var(--medium-text);
+}
+
+.breadcrumbs a {
+  color: var(--primary-navy);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs span[aria-hidden] {
+  margin: 0 0.4rem;
+  color: var(--light-text);
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--medium-text);
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+/* Skip link — visually hidden until it receives keyboard focus, so keyboard
+   and screen-reader users can jump past the nav on every page. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1200;
+  background: var(--primary-navy);
+  color: var(--white);
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-sm, 6px) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* Visible focus ring for keyboard users on every interactive element.
+   Previously only form inputs had a focus style, so links and buttons gave
+   keyboard users no indication of where they were on the page. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--accent-gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Respect the OS-level "reduce motion" setting. The site uses transforms and
+   transitions throughout; for users who get motion sickness from them, this
+   reduces everything to a near-instant change without breaking any state
+   that depends on transitionend. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

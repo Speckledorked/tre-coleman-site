@@ -13,13 +13,16 @@
     <meta property="og:url" content="https://trecoleman.com/privacy.html" />
     <meta property="og:title" content="Privacy Policy | Tre Coleman" />
     <meta property="og:description" content="Learn how we collect and use data when you interact with Tre Coleman's website and services." />
-    <meta property="og:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
+    <meta property="og:image" content="https://trecoleman.com/images/og-card.jpg" />
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://trecoleman.com/privacy.html" />
     <meta name="twitter:title" content="Privacy Policy | Tre Coleman" />
     <meta name="twitter:description" content="Learn how we collect and use data when you interact with Tre Coleman's website and services." />
-    <meta name="twitter:image" content="https://trecoleman.com/images/tre-headshot.jpg" />
+    <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 <link href="style.css" rel="stylesheet"/>
 <style>
       /* Dropdown navigation styles */
@@ -74,6 +77,8 @@
   <script src="analytics.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <!-- Header -->
@@ -88,33 +93,44 @@
 </button>
 <!-- Navigation -->
 <nav id="mainNav">
-<ul>
-<li><a class="nav-cta" href="profit-leak-snapshot.html">Snapshot</a></li>
-<li><a href="services.html">Services</a></li>
-<li><a href="advisory.html">Advisory</a></li>
-<li class="nav-dropdown">
-<a href="#" onclick="return false;">Insights</a>
-<div class="dropdown-menu">
-<a href="catering-profit.html">Catering Profit System</a>
-<a href="login.html">Course Login</a><a href="blog.html">Blog</a>
-</div>
-</li>
-<li class="nav-dropdown">
-<a href="#" onclick="return false;">Resources</a>
-<div class="dropdown-menu">
-<a href="audit.html">Restaurant Ops Audit</a>
-<a href="food-truck-audit.html">Food Truck Launch Audit</a>
-<a href="playbook.html">90-Day Profit Playbook</a>
-                        <a href="virginia-neighbors.html">Virginia Neighbors Directory</a>
-</div>
-</li>
-<li><a href="about.html">About</a></li>
-<li><a href="contact.html">Contact</a></li>
-              
-</ul>
-</nav>
+          <ul>
+            <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
+            <li class="nav-dropdown">
+              <a href="services.html">Services</a>
+              <div class="dropdown-menu">
+                <a href="services.html">All Services</a>
+                <a href="menu-engineering.html">Menu Engineering</a>
+                <a href="sops-training.html">SOPs &amp; Training Systems</a>
+                <a href="lsm.html">Local Store Marketing</a>
+                <a href="ai-integration.html">AI Integration</a>
+                <a href="food-truck-consulting.html">Food Truck Consulting</a>
+                <a href="catering-consulting.html">Catering Consulting</a>
+              </div>
+            </li>
+            <li><a href="advisory.html">Advisory</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Insights</a>
+              <div class="dropdown-menu">
+                <a href="blog.html">Blog &amp; Playbooks</a>
+                <a href="catering-profit.html">Catering Profit System</a>
+              </div>
+            </li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Resources</a>
+              <div class="dropdown-menu">
+                <a href="audit.html">Restaurant Ops Audit</a>
+                <a href="food-truck-audit.html">Food Truck Launch Audit</a>
+                <a href="playbook.html">90-Day Profit Playbook</a>
+                <a href="virginia-neighbors.html">Virginia Neighbors Directory</a>
+              </div>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
 </div>
 </header>
+<main id="main-content">
 <section>
 <div class="container">
 <h1 class="mb-2">Privacy Policy</h1>
@@ -129,8 +145,9 @@
           email. You can review their privacy policy on their website.
         </p>
 <p class="mb-2">
-          We also embed a scheduling widget from <a href="https://calendly.com" rel="noopener" target="_blank">Calendly</a> for your convenience.
-          Any information you provide directly in the Calendly widget is processed by Calendly subject to their own privacy policy.
+          Bookings and payments are handled by <a href="https://stripe.com" rel="noopener" target="_blank">Stripe</a>. When you click a booking
+          link you are taken to Stripe's own checkout, where any details you enter are processed by Stripe subject to their privacy policy. We
+          never see or store your card details.
         </p>
 <p class="mb-2">
           We may collect anonymous usage data (such as page visits) to improve this site. We use no advertising cookies or trackers.
@@ -141,28 +158,44 @@
 </div>
 </section>
 <!-- Footer -->
+</main>
 <footer>
 <div class="container">
 <div class="footer-grid">
 <div class="footer-section">
-<h4>Tre Coleman Consulting LLC</h4>
+<h2>Tre Coleman Consulting LLC</h2>
 <p>Virginia-based restaurant operations consultant.<br/>Serving operators nationwide.</p>
 <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
 </div>
 <div class="footer-section">
-<h4>Quick Links</h4>
-<ul>
-<li><a href="services.html">Services</a></li>
-<li><a href="advisory.html">Advisory</a></li>
-<li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
-<li><a href="catering-profit.html">Catering Course</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="contact.html">Contact</a></li>
+            <h2>Services</h2>
+            <ul>
+              <li><a href="profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+              <li><a href="menu-engineering.html">Menu Engineering</a></li>
+              <li><a href="sops-training.html">SOPs &amp; Training</a></li>
+              <li><a href="lsm.html">Local Store Marketing</a></li>
+              <li><a href="ai-integration.html">AI Integration</a></li>
+              <li><a href="food-truck-consulting.html">Food Truck Consulting</a></li>
+              <li><a href="catering-consulting.html">Catering Consulting</a></li>
+              <li><a href="advisory.html">Fractional COO</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h2>Quick Links</h2>
+            <ul>
+              <li><a href="services.html">All Services</a></li>
+              <li><a href="virginia-restaurant-consulting.html">Consulting in Virginia</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="blog.html">Blog</a></li>
+              <li><a href="catering-profit.html">Catering Course</a></li>
               <li><a href="virginia-neighbors.html">Virginia Neighbors</a></li>
-<li><a href="blog.html">Blog</a></li></ul>
-</div>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="login.html">Course Login</a></li>
+            </ul>
+          </div>
 <div class="footer-section">
-<h4>Connect</h4>
+<h2>Connect</h2>
 <ul>
 <li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
 <li><a href="tel:540-807-9045">540.807.9045</a></li>
