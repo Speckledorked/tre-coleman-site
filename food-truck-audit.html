@@ -352,7 +352,34 @@
         }
 
         /* Mobile nav styles handled by style.css */
-    </style>
+    
+    .audit-intro {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 0.5rem;
+    }
+    .audit-intro h2 {
+      color: var(--primary-navy);
+      font-size: 1.6rem;
+      margin: 2rem 0 0.75rem;
+      line-height: 1.3;
+    }
+    .audit-intro h2:first-child { margin-top: 0; }
+    .audit-intro h3 {
+      color: var(--primary-navy);
+      font-size: 1.15rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+    .audit-intro p {
+      line-height: 1.75;
+      margin-bottom: 1rem;
+      color: var(--dark-text);
+    }
+    @media (max-width: 768px) {
+      .audit-intro { padding: 2rem 1.25rem 0.5rem; }
+      .audit-intro h2 { font-size: 1.35rem; }
+    }
+</style>
   <script src="analytics.js"></script>
 </head>
 <body>
@@ -415,6 +442,70 @@
 <h1><span aria-hidden="true">🚚</span> Food Truck Launch Readiness Audit</h1>
 <p>Identify gaps in your launch plan and avoid costly mistakes. For aspiring operators planning to launch in the next 3-12 months.</p>
 </div>
+<section class="audit-intro">
+  <h2>What this audit measures</h2>
+  <p>
+    A food truck fails differently from a restaurant. There is no second seating to
+    recover a bad lunch, no back-of-house to absorb a prep mistake, and the revenue
+    ceiling for the day is set before you open by which event you took. Most trucks
+    that struggle were not badly run — they were badly scoped before they opened.
+  </p>
+  <p>
+    This audit walks the areas that decide whether a truck is viable, and scores
+    how ready yours is. It takes about ten minutes. If you have not launched yet,
+    that is the ideal time to run it: almost everything here is cheaper to change
+    on paper than after a buildout.
+  </p>
+
+  <h3>Menu and production</h3>
+  <p>
+    The most common pre-launch mistake is a menu designed for a kitchen and
+    executed on a line built for four people and a flat-top. Every extra item adds
+    prep, holding space and ticket time, and a truck has very little of all three.
+    Shorter menus are not a compromise here; they are the format working properly.
+  </p>
+
+  <h3>Pricing and margin</h3>
+  <p>
+    Event pricing is where trucks quietly lose their year. A festival fee, travel,
+    prep the day before, staffing, and the day afterwards you cannot book all have
+    to be covered by one service. Pricing against the truck parked next to you,
+    rather than against your own cost, is how a fully booked season ends flat.
+  </p>
+
+  <h3>Operations and logistics</h3>
+  <p>
+    Commissary access, water and power, generator capacity, storage, and the
+    realities of setup and breakdown. These are the constraints that turn a good
+    concept into a long day, and they are far easier to plan for than to retrofit.
+  </p>
+
+  <h3>Permits and compliance</h3>
+  <p>
+    Requirements vary by locality and change, so this section flags whether you
+    have confirmed them rather than telling you what they are. Verify your
+    specific jurisdiction's health department and fire marshal requirements
+    directly — a truck that cannot legally trade at an event is the most expensive
+    kind of unprepared.
+  </p>
+
+  <h3>Marketing and bookings</h3>
+  <p>
+    A truck's revenue depends on being somewhere people already are, and on those
+    people knowing you will be there. The questions cover how you fill a calendar,
+    how customers find your location, and whether anything brings them back beyond
+    having walked past.
+  </p>
+
+  <h2>What you get at the end</h2>
+  <p>
+    A readiness score and a view of which areas are weakest. It is a
+    self-assessment, not a business plan — but it is a reliable way to find the
+    gap worth closing before it costs you a season. If you are already trading and
+    want the numbers looked at properly, see
+    <a href="food-truck-consulting.html">food truck consulting</a>.
+  </p>
+</section>
 <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
 <div class="content">
 <div class="section active">

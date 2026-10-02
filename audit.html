@@ -346,7 +346,34 @@
             .contact-form { flex-direction: column; }
             .header h1 { font-size: 1.5rem; }
         }
-    </style>
+    
+    .audit-intro {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 0.5rem;
+    }
+    .audit-intro h2 {
+      color: var(--primary-navy);
+      font-size: 1.6rem;
+      margin: 2rem 0 0.75rem;
+      line-height: 1.3;
+    }
+    .audit-intro h2:first-child { margin-top: 0; }
+    .audit-intro h3 {
+      color: var(--primary-navy);
+      font-size: 1.15rem;
+      margin: 1.5rem 0 0.5rem;
+    }
+    .audit-intro p {
+      line-height: 1.75;
+      margin-bottom: 1rem;
+      color: var(--dark-text);
+    }
+    @media (max-width: 768px) {
+      .audit-intro { padding: 2rem 1.25rem 0.5rem; }
+      .audit-intro h2 { font-size: 1.35rem; }
+    }
+</style>
   <script src="analytics.js"></script>
 </head>
 <body>
@@ -409,6 +436,70 @@
 <h1><span aria-hidden="true">🍽️</span> Hospitality Operations Audit</h1>
 <p>Discover hidden profit leaks and optimization opportunities in your restaurant</p>
 </div>
+<section class="audit-intro">
+  <h2>What this audit measures</h2>
+  <p>
+    Most operations that are busy but not profitable are not losing money in one
+    dramatic place. They are losing it in five ordinary ones at the same time,
+    each small enough to rationalise on its own. This audit walks the five, scores
+    where you sit, and tells you which to fix first.
+  </p>
+  <p>
+    It takes about ten minutes and needs no preparation beyond rough familiarity
+    with your own numbers. Estimates are fine — the point is to find the gap worth
+    investigating, not to produce an accounting record.
+  </p>
+
+  <h3>Food cost management</h3>
+  <p>
+    Food cost is the number most operators can quote and the fewest can act on,
+    because the headline percentage hides where it comes from. A kitchen at 32%
+    with tight portioning has a different problem from one at 32% with heavy
+    waste and loose receiving. The questions separate the two.
+  </p>
+
+  <h3>Labour efficiency</h3>
+  <p>
+    Labour is the fastest-moving line you control week to week, which makes it the
+    most expensive one to manage by instinct. One extra overtime hour per shift
+    across five days compounds into real money before you have sold a single
+    additional plate. This section looks at whether your schedule is built from
+    sales patterns or from habit.
+  </p>
+
+  <h3>Revenue optimisation</h3>
+  <p>
+    Revenue problems usually present as traffic problems and turn out to be mix
+    problems. If your average check has been flat while costs rose, the issue is
+    rarely how many people came in — it is what they ordered once they did, and
+    whether anything on the menu or the floor guided that choice.
+  </p>
+
+  <h3>Technology and systems</h3>
+  <p>
+    The question here is not whether you have modern tools. It is whether the
+    operation can run a correct shift without you in the building. Systems that
+    live only in an owner's head are not systems; they are a constraint on how
+    large the business can get and how far away you can be.
+  </p>
+
+  <h3>Quality and consistency</h3>
+  <p>
+    Consistency is what converts a first visit into a habit, and it is the first
+    thing to degrade when the other four are under strain. Variability between
+    shifts is usually a symptom rather than a cause, which is why it is scored
+    last and read alongside everything above it.
+  </p>
+
+  <h2>What you get at the end</h2>
+  <p>
+    A score per dimension and a ranked view of where the weakest link sits. It is
+    a self-assessment, not a diagnosis — it tells you which area deserves a proper
+    look at your actual numbers. If you would rather skip to that,
+    the <a href="profit-leak-snapshot.html">Profit Leak Snapshot</a> reviews four
+    weeks of P&amp;Ls, labour reports and item mix directly.
+  </p>
+</section>
 <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
 <div class="content">
 <div class="section active">
