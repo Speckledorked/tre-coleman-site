@@ -41,3 +41,35 @@ jobs:
             exit 1
           fi
           echo "sitemap.xml is current"
+
+      - name: Confirm the generators agree with the tree
+        # Four times in one day a generator silently discarded what a later
+        # pass had added: standardise_nav.py stripped the dropdown ARIA
+        # attributes, build_articles.py stripped every Related reading block,
+        # and build_articles.py twice restored article titles that had been
+        # shortened afterwards for length. Each one shipped, because nothing
+        # compared what the generators produce against what is committed.
+        #
+        # Running them and failing on any diff makes the tree the contract: if
+        # a generator and the committed file disagree, one of them is wrong and
+        # CI says so before a reader sees it. The scripts are idempotent, so on
+        # an honest tree this produces no change.
+        #
+        # Deliberately not run here: build_sitemap.py (checked separately above,
+        # since its lastmod comes from git history) and the one-shot migrations.
+        run: |
+          python3 tools/build_articles.py > /dev/null
+          python3 tools/add_related_reading.py > /dev/null
+          python3 tools/fix_article_seams.py > /dev/null
+          python3 tools/standardise_nav.py > /dev/null
+          python3 tools/standardise_footer.py > /dev/null
+          python3 tools/fix_contrast.py > /dev/null
+          if ! git diff --quiet; then
+            echo "::error::A generator disagrees with the committed tree."
+            echo "Run the generators locally and commit the result, or update"
+            echo "the generator so it produces what is committed."
+            git --no-pager diff --stat
+            git --no-pager diff | head -200
+            exit 1
+          fi
+          echo "generators agree with the tree"

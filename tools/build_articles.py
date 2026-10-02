@@ -567,7 +567,7 @@ ARTICLES = [
     },
     {
         "slug": "blog/fractional-coo-vs-consultant.html",
-        "title": "Fractional COO vs Restaurant Consultant: Which Do You Need? | Tre Coleman",
+        "title": "Fractional COO vs Restaurant Consultant | Tre Coleman",
         "h1": "Fractional COO vs Restaurant Consultant: Which Do You Need?",
         "description": "Project consulting and ongoing fractional leadership "
                        "solve different problems. How to tell which one your "

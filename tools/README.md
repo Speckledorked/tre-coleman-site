@@ -11,6 +11,31 @@ caused). Editing 40 hand-written HTML files by regex is how the site ended up
 with six different nav variants; running one generator that owns the whole
 block is how it stays at one.
 
+## CI runs the generators and fails on any diff
+
+`.github/workflows/check-site.yml` runs six of them and fails if the tree
+changes. **That is the contract: if a generator and the committed file
+disagree, one of them is wrong.**
+
+It exists because the same bug happened four times in one day, and every
+instance shipped:
+
+| Generator | What it silently discarded |
+|---|---|
+| `standardise_nav.py` | The dropdown `role="button"` / `aria-haspopup` attributes |
+| `build_articles.py` | Every Related reading block |
+| `build_articles.py` | Four article titles that had been shortened afterwards for length |
+
+Its first run found a fifth, older one: `standardise_nav.py`'s template had no
+`chat.html` entry while 35 pages carried the link, so running the nav generator
+would have deleted "AI Operations Assistant" from the whole site. Nothing would
+have noticed until someone looked.
+
+**When this check fails, read the diff before fixing it.** It does not tell you
+which side is wrong. Either the tree drifted and the generator is right, or the
+page is right and the generator needs updating — which is the usual answer when
+the change was a deliberate edit made after generation.
+
 ## Order matters: the nav generator owns the nav
 
 `standardise_nav.py` rewrites the whole `<nav>` block, so anything another
@@ -63,6 +88,7 @@ tells you which ones it skipped rather than inventing one.
 | `migrate_blog_urls.py` | One-shot: renamed blog files to slugs, added 301s |
 | `fix_contrast.py` | Raises colour pairings measured below WCAG AA |
 | `wire_course_downloads.py` | Adds `downloads.js` to the course pages with download links |
+| `fix_article_seams.py` | Closes the seam where the five original posts' new openings meet the old draft |
 
 ## Requirements
 

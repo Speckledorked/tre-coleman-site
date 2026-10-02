@@ -56,6 +56,7 @@ NAV = """<nav id="mainNav">
                 <a href="{p}food-truck-audit.html">Food Truck Launch Audit</a>
                 <a href="{p}playbook.html">90-Day Profit Playbook</a>
                 <a href="{p}virginia-neighbors.html">Virginia Neighbors Directory</a>
+                <a href="{p}chat.html">AI Operations Assistant</a>
               </div>
             </li>
             <li><a href="{p}about.html">About</a></li>
