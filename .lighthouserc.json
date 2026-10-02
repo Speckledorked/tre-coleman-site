@@ -19,17 +19,50 @@
     },
     "assert": {
       "assertions": {
-        "categories:performance": ["error", { "minScore": 0.9 }],
-        "categories:accessibility": ["error", { "minScore": 0.9 }],
-        "categories:seo": ["error", { "minScore": 1 }],
-        "categories:best-practices": ["warn", { "minScore": 0.9 }],
-
-        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
-        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
-        "total-blocking-time": ["error", { "maxNumericValue": 200 }],
-
-        "color-contrast": "warn",
-        "heading-order": "warn",
+        "categories:performance": [
+          "error",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "categories:accessibility": [
+          "error",
+          {
+            "minScore": 0.95
+          }
+        ],
+        "categories:seo": [
+          "error",
+          {
+            "minScore": 1
+          }
+        ],
+        "categories:best-practices": [
+          "warn",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "largest-contentful-paint": [
+          "error",
+          {
+            "maxNumericValue": 2500
+          }
+        ],
+        "cumulative-layout-shift": [
+          "error",
+          {
+            "maxNumericValue": 0.1
+          }
+        ],
+        "total-blocking-time": [
+          "error",
+          {
+            "maxNumericValue": 200
+          }
+        ],
+        "color-contrast": "error",
+        "heading-order": "error",
         "image-alt": "error",
         "link-name": "error",
         "meta-description": "error",
@@ -37,7 +70,6 @@
         "html-has-lang": "error",
         "is-crawlable": "error",
         "unsized-images": "error",
-
         "uses-responsive-images": "off",
         "uses-text-compression": "off",
         "uses-long-cache-ttl": "off",
@@ -45,9 +77,13 @@
         "unminified-javascript": "off",
         "unused-css-rules": "off",
         "errors-in-console": "off",
-        "csp-xss": "off"
+        "csp-xss": "off",
+        "link-in-text-block": "error",
+        "label": "error"
       }
     },
-    "upload": { "target": "temporary-public-storage" }
+    "upload": {
+      "target": "temporary-public-storage"
+    }
   }
 }

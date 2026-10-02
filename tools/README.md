@@ -146,21 +146,22 @@ Exclusions are in `.lycheeignore`. LinkedIn, Facebook and Stripe are excluded
 because they return 403/999 to automated checkers — the host refusing a bot,
 not a broken link.
 
-### Known gaps, as measured
+### Measured baseline
 
-Last run, all seven pages: **Performance 100, SEO 100, Best Practices 96**,
-LCP 0.4–0.6s, CLS 0.
+All seven pages: **Performance 100, Accessibility 100, SEO 100, Best
+Practices 96**, LCP 0.4–0.6s, CLS 0.
 
-Accessibility is 90–100. What remains:
+Because accessibility is at 100 everywhere, `color-contrast`, `heading-order`,
+`link-in-text-block` and `label` are hard failures rather than warnings, and the
+category floor is 0.95. A regression fails CI rather than being logged.
 
-| Page | Score | Remaining |
-|---|---|---|
-| `services.html` | 90 | gold-on-white contrast in page-level CSS; one h1→h3 jump |
-| `profit-leak-snapshot.html` | 95 | gold-on-white contrast in page-level CSS |
-| `blog/*` | 95 | a prose link not matched by the underline rule |
+Best Practices sits at 96 because of a console error that only occurs behind a
+TLS-intercepting proxy; it does not reproduce in CI or production.
+
+### The gold
 
 The brand gold `#F4A460` is **2.03:1** against white and fails WCAG AA badly in
-both directions. `--accent-gold-text: #A85F28` is the same hue at **4.85:1** and
-should be used for anything carrying text; keep `--accent-gold` for borders,
-rules and markers only. The pages above still define the old value in their own
-inline CSS.
+both directions. Use `--accent-gold-text: #A85F28` — the same hue at **4.85:1** —
+for anything carrying text, whether as the text colour or as a background under
+white text. Keep `--accent-gold` for borders, rules, bullet markers and focus
+outlines, where contrast rules do not apply.

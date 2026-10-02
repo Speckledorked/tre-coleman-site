@@ -1334,6 +1334,7 @@ textarea:focus-visible,
    breadcrumbs and card links to their own styling. */
 main p a:not([class]),
 main li a:not([class]),
+.post-meta a,
 .post-content p a:not([class]),
 .post-content li a:not([class]),
 .audit-intro a:not([class]) {
