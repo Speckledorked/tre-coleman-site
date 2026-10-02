@@ -100,7 +100,7 @@ Currently presented on `index.html` under "Results from the Field", labelled
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
 | 19 | "Pre-order now for $67" | `catering-profit.html` | Is this still a pre-order? Is $67 current? | documented / keep (2026-10-02) |
-| 20 | Course launch date "May 31st, 2026" | `catering-profit.html` | Date has passed — needs updating or removing | unreviewed |
+| 20 | Course launch date "May 31st, 2026" | `catering-profit.html` | Date has passed — needs updating or removing | resolved (2026-10-02) — Tre' confirmed pre-launch; page now uses "founding member" framing with no date |
 
 ---
 
