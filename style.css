@@ -1341,3 +1341,62 @@ main li a:not([class]),
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* Tables in article bodies.
+
+   Nothing in this stylesheet styled a <table>, because until the catering
+   pricing article none of the content used one. Browser defaults give no
+   borders and no padding, which makes a pricing grid genuinely hard to read.
+
+   Scoped to .post-content so it applies to article bodies and leaves the
+   layout tables in the course pages alone.
+
+   No horizontal-scroll wrapper, because measurement said one was not needed:
+   at 390px the widest table is 358px inside a 358px container with zero
+   clipped cells, and the page scrollWidth equals its clientWidth at 390, 640
+   and 1280. The cells wrap instead, which stays readable. Re-measure before
+   adding a column — a sixth would likely change that answer. */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+}
+
+.post-content table caption {
+  caption-side: bottom;
+  padding-top: 0.75rem;
+  color: var(--text-medium);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.post-content th,
+.post-content td {
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--light-gray);
+  vertical-align: top;
+}
+
+.post-content thead th {
+  background: var(--primary-navy);
+  color: #ffffff;
+  font-weight: 600;
+  border-bottom: none;
+}
+
+.post-content thead th:first-child { border-top-left-radius: 6px; }
+.post-content thead th:last-child  { border-top-right-radius: 6px; }
+
+.post-content tbody tr:nth-child(even) { background: var(--bg-cream); }
+.post-content tbody tr:last-child td   { border-bottom: none; }
+
+/* First column is the row label in every table here, so it carries the weight. */
+.post-content tbody td:first-child { font-weight: 600; }
+
+@media (max-width: 640px) {
+  .post-content table { font-size: 0.875rem; }
+  .post-content th,
+  .post-content td { padding: 0.55rem 0.6rem; }
+}

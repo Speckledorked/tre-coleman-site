@@ -344,11 +344,16 @@ def check_robots():
 # 6. Regressions this site has actually had
 # --------------------------------------------------------------------------
 
+# A blanket r"\$750" used to live here. It was removed once a legitimate $750
+# appeared: "$500-$750" is the minimum-order range for a staffed buffet, both in
+# the course material and in the catering pricing article. check_prices already
+# does this properly, matching a figure only when it sits within 40 characters
+# of the word "Snapshot", so the blunt rule was the weaker of two checks doing
+# the same job.
 STALE = [
     (r"images\.unsplash\.com", "hot-linked Unsplash image (unlicensed, slow)"),
     (r"client\.crisp\.chat", "Crisp chat loader (removed; was misconfigured)"),
     (r"blog_post_\d_", "old blog filename — use the slug"),
-    (r"\$750", "stale Snapshot price — it is $350"),
     (r"familypic\.jpg|hero\.png|calm%20ops|catering%20add", "pre-WebP image path"),
     (r"@import\s+url\(.*fonts\.googleapis", "render-blocking font @import"),
 ]

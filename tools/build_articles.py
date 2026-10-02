@@ -3,8 +3,17 @@
 Generate the remaining framework articles from the content plan in
 SEO_AUDIT.md section 4.5.
 
-Covers items #3, #5, #6, #7 and #8. These are the pieces that can be written
-from operations fundamentals plus the pricing already published on this site.
+Covers items #2, #3, #5, #6, #7 and #8. These are the pieces that can be
+written from operations fundamentals plus the pricing already published on this
+site.
+
+Item #2 is grounded in the owner's own Catering Profit System Module 2
+material — the full-cost calculator, the quick-reference card and the service
+tier sheet under course/downloads/module-2/. The article teaches the method and
+the cost structure; the calculator and the templates stay inside the paid
+course. Nothing in it is invented: every range, benchmark and formula is drawn
+from those files, which label the per-head figures as industry ranges rather
+than measured results, and the article says so too.
 
 Items #9 and #10 are deliberately absent: #9 (ghost kitchens) was declined,
 and #10 depends on the owner's own operating history, which cannot be written
@@ -35,6 +44,260 @@ PUBLISHED = "2026-10-02"
 PRETTY_DATE = "October 2, 2026"
 
 ARTICLES = [
+    {
+        "slug": "blog/how-to-price-catering-jobs.html",
+        "title": "How to Price Catering Jobs for Profit | Tre Coleman",
+        "h1": "How to Price Catering Jobs So You Actually Make Money",
+        "description": "The full cost stack behind a catering quote, the "
+                       "break-even formula most operators get backwards, and "
+                       "the margin benchmarks that show which events pay.",
+        "read": "11 min read",
+        "body": """
+<p>
+  Ask a caterer how they priced a job and you will usually hear some version of the same
+  method: work out roughly what the food costs, multiply by three, check it feels about
+  right against what the last person charged, send the quote.
+</p>
+<p>
+  That method is not wrong so much as incomplete. Food is the cost that is easiest to see
+  and it is rarely the one that decides whether the event made money. The jobs that quietly
+  lose money are almost never the ones where the food cost was misjudged. They are the ones
+  where four servers stayed two hours longer than planned, the van made a second trip, and
+  nobody charged for either.
+</p>
+<p>
+  What follows is the structure for pricing an event against <em>every</em> cost it
+  actually incurs, and then the benchmarks for telling whether the number you arrived at
+  was any good.
+</p>
+
+<h2>The three cost buckets, and the one everyone skips</h2>
+<p>
+  Every catered event has exactly three categories of direct cost. Quote against all three
+  and the arithmetic works. Quote against one and you are guessing.
+</p>
+
+<h3>1. Food cost</h3>
+<p>
+  The obvious one, and the one most operators already track reasonably well. Per person,
+  across every component: appetizers, salads, entrees, sides, bread, dessert, non-alcoholic
+  beverages, alcohol if you are supplying it, condiments and extras.
+</p>
+<p>
+  Two line items in this bucket are routinely left out. <strong>Disposables and
+  servingware</strong> — chafers, sternos, serving utensils, plates, napkins, cutlery —
+  are a real per-head cost even when they feel like overhead. And a <strong>waste
+  buffer</strong>: you do not cook for exactly one hundred people, you cook for one hundred
+  with margin for error, and that margin is a cost. Ten percent on top of raw food cost is
+  a reasonable starting assumption until you have tracked your own.
+</p>
+
+<h3>2. Labor cost</h3>
+<p>
+  Priced by role, by hour, for the hours actually worked — not the hours the event runs.
+  An event with a 6pm start does not have a 6pm labor clock. Prep begins hours earlier and
+  breakdown runs after the last guest leaves.
+</p>
+<p>
+  The roles that belong in the calculation: kitchen lead, line cooks, prep cooks, servers,
+  bartender, event captain, dishwasher, and drivers. Drivers in particular get missed,
+  because the driving happens outside the event and so feels like it is not part of it.
+</p>
+<p>
+  Count the hours honestly. If your team is on site at 1pm for a 6pm event and clears by
+  10:30pm, that is eight and a half hours per person, not four. Pricing against the guest-
+  facing window is the single most common way a quote comes in under cost.
+</p>
+
+<h3>3. Overhead and other direct costs</h3>
+<p>
+  This is the bucket that gets skipped, and it is the one that moves a marginal event into
+  a loss. Everything an event consumes that is neither food nor payroll:
+</p>
+<ul>
+  <li>Transportation and mileage</li>
+  <li>Equipment rental</li>
+  <li>Linen and decor rental</li>
+  <li>Fuel and propane</li>
+  <li>Parking and tolls</li>
+  <li>Permits and per-event insurance</li>
+  <li>Packaging and to-go containers</li>
+  <li>Ice</li>
+  <li>A miscellaneous buffer, because something always comes up</li>
+</ul>
+<p>
+  None of these are large on their own. Together they routinely come to several hundred
+  dollars on a hundred-guest event — which, on a job quoted at a twenty percent margin, is
+  most of the profit.
+</p>
+
+<h2>The formula</h2>
+<p>
+  Once the three buckets are totalled, pricing is arithmetic rather than judgement.
+</p>
+<p>
+  <strong>Break-even price per person</strong> = (food + labor + overhead) &divide; guest
+  count. This is the floor. Quoting below it means paying for the privilege of working.
+</p>
+<p>
+  <strong>Target price per person</strong> = break-even &divide; (1 &minus; target margin).
+</p>
+<p>
+  That second formula is where most operators go wrong, because the instinct is to
+  <em>add</em> the margin rather than divide by its inverse. If your break-even is $20 per
+  head and you want a 25% margin, adding 25% gives you $25 — and $5 of profit on $25 of
+  revenue is a 20% margin, not 25%. Dividing gives the right answer: $20 &divide; 0.75 =
+  <strong>$26.67</strong>.
+</p>
+<p>
+  The gap looks small per head. On a 150-guest wedding it is $250 of margin you intended to
+  earn and did not.
+</p>
+
+<h2>Sanity-checking against per-head ranges</h2>
+<p>
+  A calculated price should land somewhere defensible. These are typical industry ranges
+  per person by event type and service level — useful for a quick read on a call, not a
+  substitute for costing the actual job. Your market, your menu and your cost base will
+  move them.
+</p>
+<table>
+  <thead>
+    <tr><th>Event type</th><th>Drop-off</th><th>Buffet</th><th>Full-service</th><th>Plated</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Corporate lunch</td><td>$12&ndash;$18</td><td>$20&ndash;$30</td><td>$30&ndash;$45</td><td>$40&ndash;$60</td></tr>
+    <tr><td>Corporate dinner</td><td>$15&ndash;$22</td><td>$25&ndash;$40</td><td>$40&ndash;$60</td><td>$55&ndash;$85</td></tr>
+    <tr><td>Wedding (casual)</td><td>&mdash;</td><td>$25&ndash;$40</td><td>$40&ndash;$65</td><td>$60&ndash;$90</td></tr>
+    <tr><td>Wedding (formal)</td><td>&mdash;</td><td>&mdash;</td><td>$55&ndash;$80</td><td>$75&ndash;$125+</td></tr>
+    <tr><td>Birthday / anniversary</td><td>$12&ndash;$18</td><td>$20&ndash;$35</td><td>$30&ndash;$50</td><td>$45&ndash;$70</td></tr>
+    <tr><td>Holiday party</td><td>$15&ndash;$22</td><td>$25&ndash;$40</td><td>$35&ndash;$55</td><td>$50&ndash;$80</td></tr>
+    <tr><td>Nonprofit / fundraiser</td><td>$12&ndash;$18</td><td>$20&ndash;$32</td><td>$30&ndash;$50</td><td>$45&ndash;$65</td></tr>
+    <tr><td>Sports / outdoor</td><td>$8&ndash;$14</td><td>$15&ndash;$25</td><td>$25&ndash;$40</td><td>&mdash;</td></tr>
+  </tbody>
+</table>
+<p>
+  If your calculated price sits well below the band for that event type, you have probably
+  missed a cost. If it sits well above, either your cost base needs attention or you are
+  selling something the band does not describe &mdash; which is a positioning question, not
+  a pricing one.
+</p>
+
+<h2>Minimums are a pricing tool, not a courtesy</h2>
+<p>
+  Small events are where margin goes to die, because the fixed costs do not shrink with the
+  guest count. A twelve-person full-service event needs an event captain the same as a
+  sixty-person one.
+</p>
+<p>
+  Reasonable minimum thresholds look roughly like this:
+</p>
+<table>
+  <thead><tr><th>Service type</th><th>Minimum</th><th>Minimum guests</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>Drop-off delivery</td><td>$150&ndash;$250</td><td>10</td><td>Below this the delivery costs more than the job earns. Offer pickup instead.</td></tr>
+    <tr><td>Buffet with staff</td><td>$500&ndash;$750</td><td>25</td><td>You need a minimum staff count to execute at all.</td></tr>
+    <tr><td>Full-service</td><td>$1,500&ndash;$2,000</td><td>50</td><td>A captain plus a full team makes small events unprofitable.</td></tr>
+    <tr><td>Plated service</td><td>$2,500&ndash;$3,000</td><td>50</td><td>Kitchen complexity requires scale.</td></tr>
+    <tr><td>Bar service (add-on)</td><td>$300&ndash;$500</td><td>25</td><td>Bartender plus setup needs volume to justify.</td></tr>
+  </tbody>
+</table>
+<p>
+  Publishing minimums also does useful qualifying work before a call. The enquiries that
+  fall away were the ones that were going to cost you money.
+</p>
+
+<h2>Was it actually a good job? The benchmarks</h2>
+<p>
+  After the event, the quote only matters relative to what the job consumed. As a
+  percentage of revenue:
+</p>
+<table>
+  <thead><tr><th>Cost category</th><th>Target</th><th>Warning zone</th><th>Action needed</th></tr></thead>
+  <tbody>
+    <tr><td>Food cost</td><td>28&ndash;35%</td><td>35&ndash;40%</td><td>40%+</td></tr>
+    <tr><td>Labor cost</td><td>25&ndash;35%</td><td>35&ndash;40%</td><td>40%+</td></tr>
+    <tr><td>Overhead / other</td><td>8&ndash;12%</td><td>12&ndash;15%</td><td>15%+</td></tr>
+    <tr><td>Total cost</td><td>65&ndash;75%</td><td>75&ndash;85%</td><td>85%+</td></tr>
+    <tr><td>Profit margin</td><td>20&ndash;35%</td><td>15&ndash;20%</td><td>Below 15%</td></tr>
+  </tbody>
+</table>
+<p>
+  Run this per event rather than per month. A monthly average hides the pattern that
+  matters &mdash; which <em>kind</em> of event loses money. Most caterers who track this for
+  a quarter discover one event type they have been subsidising, usually the one they take
+  on because it feels like it keeps the team busy.
+</p>
+
+<h2>Build tiers so the upsell is structural</h2>
+<p>
+  A single price invites negotiation. Three or four tiers change the question from "can you
+  do it cheaper" to "which of these do I want", which is a far better conversation to be
+  having.
+</p>
+<p>
+  Tiers work when each one is genuinely different in what it costs you to deliver &mdash;
+  drop-off, buffet with staff, full-service with a captain, plated with a tasting. And
+  because the higher tiers carry more of the work you are actually good at, they can carry
+  a higher target margin: something like 20% at the entry tier rising to 35% at the top is
+  a reasonable shape.
+</p>
+<p>
+  The practical effect is that the upsell stops being a sales technique and becomes a
+  description of what is included. "We can add an event captain to coordinate everything so
+  you do not have to" is not a pitch; it is the difference between two tiers.
+</p>
+
+<h2>Premiums you should be charging and probably are not</h2>
+<ul>
+  <li><strong>Late booking.</strong> Events booked inside seven days disrupt purchasing and
+      staffing. A 15&ndash;25% premium is normal and defensible.</li>
+  <li><strong>Weekends and holidays.</strong> Peak dates have an opportunity cost, because
+      taking one means turning another away. 10&ndash;20%, communicated upfront.</li>
+  <li><strong>Deposits.</strong> Not a premium, but a cash-flow tool: 50% to book, balance
+      due about a week before. If you are funding food purchases out of your own working
+      capital until after the event, that is a problem the deposit structure solves.</li>
+</ul>
+
+<h2>The four mistakes that cost the most</h2>
+<ol>
+  <li><strong>Pricing labor against the event window.</strong> Prep and breakdown are hours
+      you pay for. Count them.</li>
+  <li><strong>Adding the margin instead of dividing by its inverse.</strong> A quiet
+      five-point error on every quote you send.</li>
+  <li><strong>Treating overhead as a rounding error.</strong> Mileage, rentals, propane,
+      ice and packaging are most of the profit on a thin job.</li>
+  <li><strong>Having no minimums.</strong> Small events do not scale down; they just lose
+      less revenue against the same fixed cost.</li>
+</ol>
+
+<h2>Where to start</h2>
+<p>
+  Take the last three events you catered &mdash; ideally one that felt good, one that felt
+  marginal and one you are not sure about. Rebuild each one against all three cost buckets
+  with honest labor hours, and work out the actual margin.
+</p>
+<p>
+  The point is not the three numbers. It is the pattern they reveal: nearly every catering
+  operation has one event type, or one service style, or one guest-count band that is
+  quietly funded by the others. You cannot fix that until you can see it, and you cannot
+  see it from a monthly P&amp;L.
+</p>
+<p>
+  If that sounds like work you would rather do once, properly, with the structure already
+  built: <a href="../catering-profit.html">The Catering Profit System</a> includes the
+  full-cost calculator this method is built on, the quick-reference card, and the service
+  tier template. And if you would rather someone looked at your actual numbers,
+  <a href="../catering-consulting.html">catering consulting</a> explains how that works.
+</p>
+""",
+        "cta_h": "Want to know which events are funding the others?",
+        "cta_p": "The Profit Leak Snapshot is 90 minutes on your actual numbers "
+                 "&mdash; costed by event rather than averaged by month, so the "
+                 "job type quietly losing money has somewhere to show up. You "
+                 "leave with your top three leaks and the order to fix them in. "
+                 "$350, credited toward whatever follows.",
+    },
     {
         "slug": "blog/busy-but-not-profitable.html",
         "title": "Why Your Restaurant Is Busy But Not Profitable | Tre Coleman",
@@ -172,7 +435,7 @@ ARTICLES = [
     },
     {
         "slug": "blog/restaurant-labor-cost.html",
-        "title": "How to Lower Restaurant Labor Cost Without Cutting Service | Tre Coleman",
+        "title": "How to Lower Restaurant Labor Cost | Tre Coleman",
         "h1": "How to Lower Restaurant Labor Cost Without Cutting Service",
         "description": "Labor is the fastest-moving cost you control. How to "
                        "build a schedule from sales patterns instead of habit, "
@@ -425,7 +688,7 @@ ARTICLES = [
     },
     {
         "slug": "blog/restaurant-profit-and-loss.html",
-        "title": "The Restaurant P&L, Line by Line (What to Read First) | Tre Coleman",
+        "title": "The Restaurant P&L, Line by Line | Tre Coleman",
         "h1": "The Restaurant P&amp;L, Line by Line",
         "description": "A plain-English walk through a restaurant profit and "
                        "loss statement: what each line means, which ones you "
@@ -578,7 +841,7 @@ ARTICLES = [
     },
     {
         "slug": "blog/restaurant-sop-templates.html",
-        "title": "Restaurant SOPs: What to Document First (and What to Skip) | Tre Coleman",
+        "title": "Restaurant SOPs: What to Document First | Tre Coleman",
         "h1": "Restaurant SOPs: What to Document First",
         "description": "Most restaurant SOP projects fail because they start by "
                        "documenting everything. How to pick the few procedures "

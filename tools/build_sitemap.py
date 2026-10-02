@@ -60,6 +60,8 @@ PAGES = [
      "blog/fractional-coo-for-restaurants.html",              "0.6", "yearly"),
     ("/blog/scaling-a-catering-business.html",
      "blog/scaling-a-catering-business.html",      "0.6", "yearly"),
+    ("/blog/how-to-price-catering-jobs.html",
+     "blog/how-to-price-catering-jobs.html",       "0.6", "yearly"),
     ("/unreasonably-optimistic.html", "unreasonably-optimistic.html", "0.6", "yearly"),
     ("/virginia-neighbors.html",      "virginia-neighbors.html",    "0.6", "monthly"),
     ("/chat.html",                    "chat.html",                  "0.5", "monthly"),
