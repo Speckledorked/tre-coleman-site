@@ -379,6 +379,275 @@ def check_js():
             err(path, f"JS syntax error: {first[min(2, len(first)-1)].strip()}")
 
 
+
+# --------------------------------------------------------------------------
+# 7. Link graph — the audit's single biggest finding was four service pages
+#    with one inbound link each. Nothing stops that recurring.
+# --------------------------------------------------------------------------
+
+def _inbound_counts():
+    counts = {p: 0 for p in html_files()}
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for href in set(re.findall(r'href="([^"#][^"]*\.html)"', s)):
+            if href.startswith(("http://", "https://", "//")):
+                continue
+            base = "" if href.startswith("/") else os.path.dirname(path)
+            target = os.path.normpath(os.path.join(
+                base, urllib.parse.unquote(href.lstrip("/"))))
+            if target in counts and target != path:
+                counts[target] += 1
+    return counts
+
+
+def check_orphans():
+    """Indexable pages nothing links to, and link equity sent to noindex pages."""
+    counts = _inbound_counts()
+    for path, n in sorted(counts.items()):
+        s = open(path, encoding="utf-8", errors="replace").read()
+        if is_noindex(s, path):
+            if n > 20:
+                warn(path, f"noindex page has {n} inbound links — that equity "
+                           "is going nowhere")
+            continue
+        if n == 0:
+            err(path, "orphan: no internal page links to it")
+        elif n < 3 and path != "index.html":
+            warn(path, f"only {n} inbound internal link(s)")
+
+
+def check_duplicate_meta():
+    """Two pages sharing a title or description compete with each other."""
+    titles, descs = {}, {}
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        if is_noindex(s, path):
+            continue
+        head = head_of(s)
+        t = re.search(r"<title>(.*?)</title>", head, re.S)
+        if t:
+            key = t.group(1).strip()
+            if key in titles:
+                err(path, f"duplicate <title>, same as {titles[key]}")
+            titles[key] = path
+        m = re.search(r'name="description"[^>]*content="([^"]*)"', head) or \
+            re.search(r'content="([^"]*)"[^>]*name="description"', head)
+        if m:
+            key = m.group(1).strip()
+            if key in descs:
+                err(path, f"duplicate meta description, same as {descs[key]}")
+            descs[key] = path
+
+
+def check_canonical_targets():
+    """A canonical must point at the page's own URL.
+
+    This is the exact bug a generated article shipped with: it inherited the
+    template's canonical and declared itself to be a different article.
+    """
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        if is_noindex(s, path):
+            continue
+        m = re.search(r'rel="canonical"[^>]*href="([^"]+)"', head_of(s)) or \
+            re.search(r'href="([^"]+)"[^>]*rel="canonical"', head_of(s))
+        if not m:
+            continue
+        canon = m.group(1)
+        expected = SITE + "/" + ("" if path == "index.html" else path)
+        if canon.rstrip("/") != expected.rstrip("/"):
+            err(path, f"canonical points at {canon}, expected {expected}")
+
+        for prop in ("og:url", "twitter:url"):
+            u = re.search(rf'{prop}"[^>]*content="([^"]+)"', head_of(s)) or \
+                re.search(rf'content="([^"]+)"[^>]*{prop}"', head_of(s))
+            if u and u.group(1).rstrip("/") != canon.rstrip("/"):
+                err(path, f"{prop} ({u.group(1)}) disagrees with canonical")
+
+
+# --------------------------------------------------------------------------
+# 8. Weight budgets — services.html once shipped 11 MB of images
+# --------------------------------------------------------------------------
+
+MAX_IMAGE_KB = 400
+MAX_PAGE_KB = 900
+
+
+def check_weight():
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        total = len(s.encode())
+        refs = set(re.findall(r'src="([^"]+)"', s)) | \
+               set(re.findall(r"url\('([^']+)'\)", s))
+        for ref in refs:
+            if ref.startswith(("http", "data:", "//")):
+                continue
+            f = os.path.normpath(os.path.join(
+                os.path.dirname(path), urllib.parse.unquote(ref)))
+            if not os.path.isfile(f):
+                continue
+            kb = os.path.getsize(f) / 1024
+            if kb > MAX_IMAGE_KB and not f.endswith((".js", ".css")):
+                err(path, f"{os.path.basename(f)} is {kb:.0f} KB "
+                          f"(budget {MAX_IMAGE_KB} KB)")
+            total += os.path.getsize(f)
+        if total / 1024 > MAX_PAGE_KB:
+            warn(path, f"page weight {total/1024:.0f} KB including local assets "
+                       f"(budget {MAX_PAGE_KB} KB)")
+
+
+def check_unused_images():
+    referenced = set()
+    for path in html_files() + ["style.css"]:
+        if not os.path.exists(path):
+            continue
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for ref in re.findall(r'[src=url(]["\']?([^"\')\s]+\.(?:png|jpe?g|webp|svg|gif))',
+                              s, re.I):
+            referenced.add(os.path.basename(urllib.parse.unquote(ref)))
+    for img in glob.glob("*.png") + glob.glob("*.jpg") + glob.glob("images/*"):
+        if not os.path.isfile(img):
+            continue
+        if os.path.basename(img) not in referenced:
+            kb = os.path.getsize(img) / 1024
+            if kb > 100:
+                warn(img, f"unreferenced, {kb:.0f} KB — deployed but unused")
+
+
+# --------------------------------------------------------------------------
+# 9. Config consistency
+# --------------------------------------------------------------------------
+
+def check_env_documented():
+    """Every process.env.X used by a function must appear in .env.example.
+
+    COURSE-SYSTEM-SETUP.md documented 6 of 9 variables; the 3 it missed are
+    exactly the 3 that were lost when the Netlify project went away.
+    """
+    used = set()
+    for f in glob.glob("netlify/functions/*.js"):
+        s = open(f, encoding="utf-8", errors="replace").read()
+        used |= set(re.findall(r"process\.env\.([A-Z0-9_]+)", s))
+    if not used:
+        return
+    if not os.path.exists(".env.example"):
+        err(".env.example", f"missing — {len(used)} env vars are undocumented")
+        return
+    documented = set(re.findall(r"^([A-Z0-9_]+)=", 
+                                open(".env.example", encoding="utf-8").read(), re.M))
+    for v in sorted(used - documented):
+        err(".env.example", f"{v} is used by a function but not documented")
+    for v in sorted(documented - used):
+        warn(".env.example", f"{v} is documented but no function reads it")
+
+
+def check_redirects():
+    """Redirect targets in netlify.toml must exist."""
+    if not os.path.exists("netlify.toml"):
+        return
+    toml = open("netlify.toml", encoding="utf-8").read()
+    for block in re.findall(r"\[\[redirects\]\](.*?)(?=\[\[|\Z)", toml, re.S):
+        to = re.search(r'to\s*=\s*"([^"]+)"', block)
+        frm = re.search(r'from\s*=\s*"([^"]+)"', block)
+        if not to:
+            continue
+        target = to.group(1).split("?")[0].lstrip("/")
+        if not target or target.startswith("http"):
+            continue
+        if not os.path.exists(target):
+            err("netlify.toml", f"redirect target does not exist: {to.group(1)}")
+        if frm and frm.group(1).lstrip("/") == target:
+            err("netlify.toml", f"redirect loop: {frm.group(1)}")
+
+
+def check_prices():
+    """The Snapshot price must be $350 wherever it is named.
+
+    A stale "$750 Profit Leak Snapshot" sat in the exit-intent popup for
+    months. Only prices stated in the same breath as the Snapshot are checked —
+    the site legitimately mentions other figures ($500K revenue bands, a $500
+    credit offer, a $500 hypothetical in an article).
+    """
+    for path in html_files() + ["exit-intent-popup.js"]:
+        if not os.path.exists(path):
+            continue
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for m in re.finditer(r"\$(\d{2,4})[^.\n]{0,40}?(Profit Leak )?Snapshot", s, re.I):
+            if m.group(1) != "350":
+                err(path, f"Snapshot priced at ${m.group(1)} — it is $350")
+        for m in re.finditer(r"Snapshot[^.\n]{0,40}?\$(\d{2,4})", s, re.I):
+            if m.group(1) != "350":
+                err(path, f"Snapshot priced at ${m.group(1)} — it is $350")
+
+
+# --------------------------------------------------------------------------
+# 10. HTML correctness and accessibility
+# --------------------------------------------------------------------------
+
+def check_ids_and_a11y():
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+
+        ids = re.findall(r'\sid="([^"]+)"', s)
+        dupes = {i for i in ids if ids.count(i) > 1}
+        for d in sorted(dupes):
+            err(path, f"duplicate id=\"{d}\" — breaks JS and assistive tech")
+
+        for tag in re.findall(r"<a\b[^>]*target=\"_blank\"[^>]*>", s):
+            if "noopener" not in tag:
+                err(path, "target=\"_blank\" without rel=\"noopener\"")
+
+        if re.search(r'<(?:script|link|img)[^>]+(?:src|href)="http://', s):
+            err(path, "http:// resource on an https site (mixed content)")
+
+        for tag in re.findall(r"<input\b[^>]*>", s):
+            t = re.search(r'type="([^"]+)"', tag)
+            if t and t.group(1) in ("hidden", "submit", "button"):
+                continue
+            has_id = re.search(r'\sid="([^"]+)"', tag)
+            labelled = ("aria-label" in tag or "placeholder" in tag)
+            if has_id and f'for="{has_id.group(1)}"' in s:
+                labelled = True
+            # <label>Name <input ...></label> — implicit association, valid HTML
+            at = s.find(tag)
+            if at != -1:
+                before = s[max(0, at - 400):at]
+                if before.rfind("<label") > before.rfind("</label>"):
+                    labelled = True
+            if not labelled:
+                warn(path, "form input with no label, aria-label or placeholder")
+
+        levels = [int(m) for m in re.findall(r"<h([1-6])\b", s)]
+        for a, b in zip(levels, levels[1:]):
+            if b - a > 1:
+                warn(path, f"heading jumps h{a} to h{b}")
+                break
+
+
+def check_faq_visible():
+    """FAQPage markup must correspond to text a user can see."""
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        if "FAQPage" not in s:
+            continue
+        body = s.split("</head>")[-1]
+        visible = re.sub(r"<[^>]+>", " ", body)
+        visible = re.sub(r"\s+", " ", visible).lower()
+        for raw in re.findall(r'<script type="application/ld\+json">(.*?)</script>',
+                              s, re.S):
+            try:
+                obj = json.loads(raw)
+            except json.JSONDecodeError:
+                continue
+            if obj.get("@type") != "FAQPage":
+                continue
+            for q in obj.get("mainEntity", []):
+                name = re.sub(r"\s+", " ", (q.get("name") or "")).lower()
+                probe = name[:40].strip()
+                if probe and probe not in visible:
+                    err(path, f'FAQPage question not visible on the page: "'
+                              f'{q.get("name", "")[:50]}..."')
+
 CHECKS = [
     ("secrets", check_secrets, "live credentials in tracked files"),
     ("gitignore", check_gitignore, ".env is ignored"),
@@ -391,6 +660,16 @@ CHECKS = [
     ("robots", check_robots, "robots.txt sane"),
     ("stale", check_stale, "references to removed assets and old prices"),
     ("js", check_js, "JavaScript parses"),
+    ("orphans", check_orphans, "every indexable page has inbound links"),
+    ("dup-meta", check_duplicate_meta, "no two pages share a title or description"),
+    ("canonical", check_canonical_targets, "canonical/og:url point at the page itself"),
+    ("weight", check_weight, "image and page weight budgets"),
+    ("unused-img", check_unused_images, "images deployed but never referenced"),
+    ("env-docs", check_env_documented, "every process.env var is in .env.example"),
+    ("redirects", check_redirects, "netlify.toml redirect targets exist"),
+    ("prices", check_prices, "no stale product prices"),
+    ("html-a11y", check_ids_and_a11y, "duplicate ids, noopener, mixed content, labels"),
+    ("faq-visible", check_faq_visible, "FAQPage markup matches visible text"),
 ]
 
 
