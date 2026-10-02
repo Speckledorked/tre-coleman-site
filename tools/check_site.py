@@ -344,11 +344,16 @@ def check_robots():
 # 6. Regressions this site has actually had
 # --------------------------------------------------------------------------
 
+# A blanket r"\$750" used to live here. It was removed once a legitimate $750
+# appeared: "$500-$750" is the minimum-order range for a staffed buffet, both in
+# the course material and in the catering pricing article. check_prices already
+# does this properly, matching a figure only when it sits within 40 characters
+# of the word "Snapshot", so the blunt rule was the weaker of two checks doing
+# the same job.
 STALE = [
     (r"images\.unsplash\.com", "hot-linked Unsplash image (unlicensed, slow)"),
     (r"client\.crisp\.chat", "Crisp chat loader (removed; was misconfigured)"),
     (r"blog_post_\d_", "old blog filename — use the slug"),
-    (r"\$750", "stale Snapshot price — it is $350"),
     (r"familypic\.jpg|hero\.png|calm%20ops|catering%20add", "pre-WebP image path"),
     (r"@import\s+url\(.*fonts\.googleapis", "render-blocking font @import"),
 ]
@@ -617,6 +622,40 @@ def check_redirects():
             err("netlify.toml", f"redirect loop: {frm.group(1)}")
 
 
+def course_file_text(path):
+    """Readable text out of a .xlsx or .docx, for the checks that scan content.
+
+    Both are zip archives of XML, so the text can be pulled without openpyxl,
+    which keeps this file dependency-free.
+
+    A spreadsheet stores its strings one of two ways and this repository
+    contains both: a shared table in xl/sharedStrings.xml, or inline in the
+    worksheet itself. The first version of this read only sharedStrings.xml and
+    silently extracted nothing from the files openpyxl had rewritten — it
+    reported a clean pass over a spreadsheet it had not read a word of. Read
+    the worksheets too, and the shape stops mattering.
+    """
+    import xml.sax.saxutils
+    import zipfile
+    ext = os.path.splitext(path)[1].lower()
+    if ext not in (".xlsx", ".docx"):
+        return ""
+    try:
+        with zipfile.ZipFile(path) as z:
+            if ext == ".docx":
+                wanted = [n for n in z.namelist() if n == "word/document.xml"]
+            else:
+                wanted = [n for n in z.namelist()
+                          if n == "xl/sharedStrings.xml"
+                          or (n.startswith("xl/worksheets/") and n.endswith(".xml"))]
+            if not wanted:
+                return ""
+            raw = " ".join(z.read(n).decode("utf-8", "replace") for n in wanted)
+    except (zipfile.BadZipFile, OSError):
+        return ""
+    return xml.sax.saxutils.unescape(re.sub(r"<[^>]+>", " ", raw))
+
+
 def check_prices():
     """The Snapshot price must be $350 wherever it is named.
 
@@ -624,11 +663,22 @@ def check_prices():
     months. Only prices stated in the same breath as the Snapshot are checked —
     the site legitimately mentions other figures ($500K revenue bands, a $500
     credit offer, a $500 hypothetical in an article).
+
+    The course downloads are scanned too, and that is not hypothetical: the same
+    stale $750 was sitting in two spreadsheets buyers download, quoting a price
+    the site has not charged in months. This check only read HTML, which is
+    exactly why it survived there. A binary deliverable is still content.
     """
-    for path in html_files() + ["exit-intent-popup.js"]:
+    paths = html_files() + ["exit-intent-popup.js"]
+    paths += [p for p in glob.glob("course/downloads/**/*", recursive=True)
+              if os.path.isfile(p)]
+    for path in paths:
         if not os.path.exists(path):
             continue
-        s = open(path, encoding="utf-8", errors="replace").read()
+        if os.path.splitext(path)[1].lower() in (".xlsx", ".docx"):
+            s = course_file_text(path)
+        else:
+            s = open(path, encoding="utf-8", errors="replace").read()
         for m in re.finditer(r"\$(\d{2,4})[^.\n]{0,40}?(Profit Leak )?Snapshot", s, re.I):
             if m.group(1) != "350":
                 err(path, f"Snapshot priced at ${m.group(1)} — it is $350")

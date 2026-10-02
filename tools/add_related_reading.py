@@ -11,7 +11,7 @@ so each one is a link a reader might actually follow:
 
   profitability   busy-but-not-profitable (pillar), profit-leaks, p-and-l,
                   labor-cost, menu-engineering-guide
-  catering        scaling-a-catering-business
+  catering        scaling-a-catering-business, how-to-price-catering-jobs
   systems         systems-for-growth, sop-templates
   leadership      fractional-coo-for-restaurants, fractional-coo-vs-consultant,
                   consultant-cost
@@ -25,6 +25,8 @@ import os
 import re
 
 TITLES = {
+    "how-to-price-catering-jobs.html":
+        "How to Price Catering Jobs So You Actually Make Money",
     "busy-but-not-profitable.html":
         "Why Your Restaurant Is Busy But Not Profitable",
     "restaurant-profit-leaks.html":
@@ -102,9 +104,14 @@ RELATED = {
         "restaurant-profit-leaks.html",
     ],
     "scaling-a-catering-business.html": [
+        "how-to-price-catering-jobs.html",
         "restaurant-labor-cost.html",
-        "menu-engineering-guide.html",
         "restaurant-profit-and-loss.html",
+    ],
+    "how-to-price-catering-jobs.html": [
+        "scaling-a-catering-business.html",
+        "menu-engineering-guide.html",
+        "busy-but-not-profitable.html",
     ],
 }
 
@@ -147,10 +154,6 @@ def main():
             continue
         with open(path, encoding="utf-8") as fh:
             html = fh.read()
-        if 'class="related-reading"' in html:
-            print(f"  skip (already done) {path}")
-            continue
-
         items = "\n".join(
             f'<li><a href="{s}">{TITLES[s]}</a></li>'
             for s in siblings if s != slug and s in TITLES
@@ -159,6 +162,19 @@ def main():
             '<nav class="related-reading" aria-label="Related articles">\n'
             "<h2>Related reading</h2>\n<ul>\n" + items + "\n</ul>\n</nav>\n"
         )
+
+        # An existing block is replaced, not skipped. Skipping made the script
+        # idempotent in the weakest sense: it stopped editing a file, which also
+        # meant a change to RELATED never reached a page that already had a
+        # block. The new catering article was invisible to its own cluster for
+        # exactly that reason.
+        if 'class="related-reading"' in html:
+            before = html
+            html = re.sub(
+                r'<nav class="related-reading".*?</nav>\n?', "", html, flags=re.S
+            )
+            if html == before:
+                print(f"  WARN could not replace existing block in {path}")
 
         # Place it after the article body, before the closing CTA.
         marker = '<div class="cta-section">'
