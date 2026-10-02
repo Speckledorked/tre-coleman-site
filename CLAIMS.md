@@ -25,10 +25,10 @@ Status key — `documented` · `needs softening` · `remove` · `unreviewed`
 
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
-| 1 | "10+ years managing multi-unit restaurant operations" | `about.html`, `index.html`, `blog.html` | | unreviewed |
-| 2 | "300+ employees led across multiple locations" | `about.html`, `index.html` | | unreviewed |
-| 3 | "$300K+ in revenue waste eliminated for clients" | `about.html` | | unreviewed |
-| 4 | "National Hospitality Brands" | `index.html` | | unreviewed |
+| 1 | "10+ years managing multi-unit restaurant operations" | `about.html`, `index.html`, `blog.html` | | softened (2026-10-02) |
+| 2 | "300+ employees led across multiple locations" | `about.html`, `index.html` | | softened (2026-10-02) |
+| 3 | "$300K+ in revenue waste eliminated for clients" | `about.html` | | softened (2026-10-02) |
+| 4 | "National Hospitality Brands" | `index.html` | | softened (2026-10-02) |
 
 > On #4 — naming the brands (with permission) is far stronger than the vague
 > phrase. Specificity is the whole credibility mechanism here.
@@ -37,12 +37,12 @@ Status key — `documented` · `needs softening` · `remove` · `unreviewed`
 
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
-| 5 | "Cut admin time 40-60%" | `ai-integration.html` meta + body | | unreviewed |
-| 6 | "New hires productive 40% faster with AI" | `ai-integration.html` | | unreviewed |
-| 7 | "3-5 hours per week saved per manager" | `ai-integration.html` | | unreviewed |
-| 8 | "50% faster onboarding — 2-3 weeks instead of 4-6" | `sops-training.html` | | unreviewed |
-| 9 | "12-18% increase in average check size within 90 days" | `menu-engineering.html` | | unreviewed |
-| 10 | "15-25% increase in traffic during slow periods" | `lsm.html` | | unreviewed |
+| 5 | "Cut admin time 40-60%" | `ai-integration.html` meta + body | | softened (2026-10-02) |
+| 6 | "New hires productive 40% faster with AI" | `ai-integration.html` | | softened (2026-10-02) |
+| 7 | "3-5 hours per week saved per manager" | `ai-integration.html` | | softened (2026-10-02) |
+| 8 | "50% faster onboarding — 2-3 weeks instead of 4-6" | `sops-training.html` | | softened (2026-10-02) |
+| 9 | "12-18% increase in average check size within 90 days" | `menu-engineering.html` | | softened (2026-10-02) |
+| 10 | "15-25% increase in traffic during slow periods" | `lsm.html` | | softened (2026-10-02) |
 
 ## ROI claims
 
@@ -51,15 +51,15 @@ Status key — `documented` · `needs softening` · `remove` · `unreviewed`
 
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
-| 11 | "Typical ROI: 8-12x return within the first quarter" | `menu-engineering.html` | | unreviewed |
-| 12 | "Typical ROI: 4-6x return within the first 90 days" | `sops-training.html` | | unreviewed |
+| 11 | "Typical ROI: 8-12x return within the first quarter" | `menu-engineering.html` | | softened (2026-10-02) |
+| 12 | "Typical ROI: 4-6x return within the first 90 days" | `sops-training.html` | | softened (2026-10-02) |
 
 ## Diagnostic claims
 
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
-| 13 | "Most operators find $5,000–$20,000 in annual leaks in a single session" | `index.html` FAQ **and FAQPage schema** | | unreviewed |
-| 14 | "Losing $10K–$50K a year to profit leaks" | `index.html` hero, `virginia-neighbors.html` | | unreviewed |
+| 13 | "Most operators find $5,000–$20,000 in annual leaks in a single session" | `index.html` FAQ **and FAQPage schema** | | softened (2026-10-02) |
+| 14 | "Losing $10K–$50K a year to profit leaks" | `index.html` hero, `virginia-neighbors.html` | | softened (2026-10-02) |
 
 > #13 is inside your `FAQPage` structured data, so it is eligible to appear as
 > a rich result. A claim Google may surface directly deserves the firmest
@@ -89,7 +89,7 @@ Currently presented on `index.html` under "Results from the Field", labelled
 
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
-| 18 | "Unlimited support" / "Unlimited Slack/Text Access" | `advisory.html` meta, `blog/fractional-coo-for-restaurants.html` | | unreviewed |
+| 18 | "Unlimited support" / "Unlimited Slack/Text Access" | `advisory.html` meta, `blog/fractional-coo-for-restaurants.html` | | softened (2026-10-02) |
 
 > "Unlimited" is an absolute claim on a $2,000/month service. Either define the
 > boundaries in the service description or soften to something like "on-call
@@ -99,7 +99,7 @@ Currently presented on `index.html` under "Results from the Field", labelled
 
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
-| 19 | "Pre-order now for $67" | `catering-profit.html` | Is this still a pre-order? Is $67 current? | unreviewed |
+| 19 | "Pre-order now for $67" | `catering-profit.html` | Is this still a pre-order? Is $67 current? | documented / keep (2026-10-02) |
 | 20 | Course launch date "May 31st, 2026" | `catering-profit.html` | Date has passed — needs updating or removing | unreviewed |
 
 ---

@@ -1221,7 +1221,7 @@ Review weekly for the first month after the Weeks 1–2 fixes (to catch anything
 - [ ] Send a GA4 event with revenue from `stripe-webhook.js` on completed purchase *(A2)*
 - [ ] **Resolve the Crisp Chat widget in `exit-intent-popup.js:18-25`** — fix the malformed Website ID or remove it; it currently loads on 17 pages and likely fails *(T41)* **[VERIFY]**
 - [ ] Correct `privacy.html:132` — it documents a Calendly widget that doesn't exist and omits Crisp, which does *(T41)*
-- [ ] Audit every quantitative claim on the site *(see verification list below)* **[VERIFY]**
+- [x] Audit every quantitative claim on the site *(see verification list below)* — done 2026-10-02; copy edits applied, 3 items still need Tre’s input (case studies, testimonial, course launch status)
 
 ### P2 — Growth and authority
 
@@ -1268,30 +1268,30 @@ Review weekly for the first month after the Weeks 1–2 fixes (to catch anything
 
 Every item below is currently published on the live site. None can be verified from the repository. Under FTC endorsement and advertising-substantiation rules, performance claims need documentation you can produce on request — and in a market where your buyers have been pitched by many consultants, an unsupported number is a credibility liability as much as a legal one.
 
-| Claim | Where | What's needed |
+| Claim | Where | What's needed | Status |
 |---|---|---|
-| "10+ years managing multi-unit restaurant operations" | `about.html:341`, `index.html`, `blog.html` | Employment history |
-| "300+ employees led across multiple locations" | `about.html:341`, `index.html` | Documentation |
-| "$300K+ in revenue waste eliminated for clients" | `about.html:341` | Client documentation |
-| "National Hospitality Brands" | `index.html` | Which brands? Naming them (with permission) is far stronger than the vague phrase |
-| "Cut admin time 40-60%" | `ai-integration.html` meta + body | Measured client results |
-| "New hires productive 40% faster with AI" | `ai-integration.html:417` | Measured results |
-| "50% faster onboarding — 2-3 weeks instead of 4-6" | `sops-training.html:318,419` | Measured results |
-| "12-18% increase in average check size within 90 days" | `menu-engineering.html:420` | Measured results |
-| "15-25% increase in traffic during slow periods" | `lsm.html:420` | Measured results |
-| "Typical ROI: 8-12x within the first quarter" | `menu-engineering.html:429` | Substantiation — ROI claims attract the most scrutiny |
-| "Typical ROI: 4-6x within the first 90 days" | `sops-training.html:428` | Substantiation |
-| "Most operators find $5,000–$20,000 in annual leaks in a single session" | `index.html` FAQ + schema | Sample size — this is in your FAQPage schema, so it's eligible for rich results |
-| "Losing $10K–$50K a year to profit leaks" | `index.html` hero, `virginia-neighbors.html` | Industry source citation, or reframe as an estimate |
-| Three case studies: "Overtime dropped 22% / ~$18,000 annual savings"; "Average event margin up 11 points"; "Onboarding cut from 3 weeks to 8 days" | `index.html` "Results from the Field" | Client permission for anonymised use. These are your strongest assets — worth documenting properly |
-| "Unlimited support" | `advisory.html` meta description | An absolute claim on a $2,000/mo service. Define the boundaries or soften the wording |
-| "— Multi-Unit Franchisee, Virginia" | `index.html:825` | Permission to attribute by name — anonymous testimonials convert poorly and block valid `Review` schema |
-| "Pre-order now for $67" | `catering-profit.html` | Is this still a pre-order? Is $67 current? |
-| Address: Louisa, VA vs. Lake Monticello, VA | `index.html:549` vs. `about.html:322` | **Must be resolved before any local SEO work** |
-| Phone `540.807.9045` | Footer sitewide, schema `index.html:543` | Confirm this is the number that will go on GBP |
-| Unsplash photo licensing (7 hot-linked images) | 7 files, §2.4 T23 | Commercial-use rights |
-| Crisp Website ID `…1207df3715lf` | `exit-intent-popup.js:20` | `l` is not a hex character; UUIDs are hex. Confirm in the Crisp dashboard whether the widget actually initialises on the 17 pages that load it |
-| "We also embed a scheduling widget from Calendly" | `privacy.html:132` | No Calendly embed exists in the repository. Either the policy is inaccurate, or an integration was removed and the disclosure wasn't |
+| "10+ years managing multi-unit restaurant operations" | `about.html:341`, `index.html`, `blog.html` | Employment history | ✅ Softened 2026-10-02 — now "10+ years in hospitality operations, including multi-unit management" |
+| "300+ employees led across multiple locations" | `about.html:341`, `index.html` | Documentation | ✅ Replaced 2026-10-02 — now "Led teams of 60–80+ across five national-brand locations" |
+| "$300K+ in revenue waste eliminated for clients" | `about.html:341` | Client documentation | ✅ Softened 2026-10-02 — no number claimed |
+| "National Hospitality Brands" | `index.html` | Which brands? Naming them (with permission) is far stronger than the vague phrase | ✅ Named 2026-10-02 — "Hooters · Red Robin · Outback · Chili's · Buffalo Wild Wings" (Potbelly removed) |
+| "Cut admin time 40-60%" | `ai-integration.html` meta + body | Measured client results | ✅ Reframed as pilot target 2026-10-02 |
+| "New hires productive 40% faster with AI" | `ai-integration.html:417` | Measured results | ✅ Softened 2026-10-02 — ramp time measured per rollout |
+| "50% faster onboarding — 2-3 weeks instead of 4-6" | `sops-training.html:318,419` | Measured results | ✅ Reframed as program target 2026-10-02 |
+| "12-18% increase in average check size within 90 days" | `menu-engineering.html:420` | Measured results | ✅ Reframed as engagement target 2026-10-02 |
+| "15-25% increase in traffic during slow periods" | `lsm.html:420` | Measured results | ✅ Reframed as campaign target 2026-10-02 |
+| "Typical ROI: 8-12x within the first quarter" | `menu-engineering.html:429` | Substantiation — ROI claims attract the most scrutiny | ✅ "ROI target" 2026-10-02 |
+| "Typical ROI: 4-6x within the first 90 days" | `sops-training.html:428` | Substantiation | ✅ "ROI target" 2026-10-02 |
+| "Most operators find $5,000–$20,000 in annual leaks in a single session" | `index.html` FAQ + schema | Sample size — this is in your FAQPage schema, so it's eligible for rich results | ✅ Reworded 2026-10-02 in FAQPage schema + visible FAQ (identical); leans on $5K guarantee |
+| "Losing $10K–$50K a year to profit leaks" | `index.html` hero, `virginia-neighbors.html` | Industry source citation, or reframe as an estimate | ✅ Reframed as estimate 2026-10-02 |
+| Three case studies: "Overtime dropped 22% / ~$18,000 annual savings"; "Average event margin up 11 points"; "Onboarding cut from 3 weeks to 8 days" | `index.html` "Results from the Field" | Client permission for anonymised use. These are your strongest assets — worth documenting properly | ⏳ UNRESOLVED — needs client documentation + permission for anonymised use |
+| "Unlimited support" | `advisory.html` meta description | An absolute claim on a $2,000/mo service. Define the boundaries or soften the wording | ✅ "Direct access between sessions" 2026-10-02 |
+| "— Multi-Unit Franchisee, Virginia" | `index.html:825` | Permission to attribute by name — anonymous testimonials convert poorly and block valid `Review` schema | ⏳ UNRESOLVED — outreach to testimonial-giver drafted, awaiting reply |
+| "Pre-order now for $67" | `catering-profit.html` | Is this still a pre-order? Is $67 current? | ⏳ UNRESOLVED — needs Tre’s call: course live vs pre-launch |
+| Address: Louisa, VA vs. Lake Monticello, VA | `index.html:549` vs. `about.html:322` | **Must be resolved before any local SEO work** | — |
+| Phone `540.807.9045` | Footer sitewide, schema `index.html:543` | Confirm this is the number that will go on GBP | — |
+| Unsplash photo licensing (7 hot-linked images) | 7 files, §2.4 T23 | Commercial-use rights | — |
+| Crisp Website ID `…1207df3715lf` | `exit-intent-popup.js:20` | `l` is not a hex character; UUIDs are hex. Confirm in the Crisp dashboard whether the widget actually initialises on the 17 pages that load it | — |
+| "We also embed a scheduling widget from Calendly" | `privacy.html:132` | No Calendly embed exists in the repository. Either the policy is inaccurate, or an integration was removed and the disclosure wasn't | — |
 
 **A note on tone, not compliance:** these numbers are specific and plausible — they read like real operator results, not marketing invention. That's exactly why they're worth substantiating properly. A consultant who can produce the documentation behind "overtime dropped 22%" is in a completely different credibility bracket from one who can't, and that difference shows up in close rates long before it shows up in rankings.
 
