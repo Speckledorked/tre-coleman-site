@@ -13,6 +13,12 @@ Fixes three problems the audit found:
 
 Titles target ~50-60 characters, descriptions ~140-160.
 
+This only rewrites `name="description"`. It does not touch og:description or
+twitter:description, and for a long time nothing did — so on 26 pages the text
+Google showed and the text a shared link showed had drifted apart, with the
+social one still carrying the superseded copy. Run
+`tools/sync_social_descriptions.py` after this; CI runs it too.
+
 Run from the repository root:
 
     python3 tools/rewrite_metadata.py

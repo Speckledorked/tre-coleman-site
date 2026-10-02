@@ -9,14 +9,14 @@
 <meta content="article" property="og:type"/>
 <meta property="og:title" content="Menu Engineering Guide for Restaurant Owners | Tre Coleman" />
 <meta content="https://trecoleman.com/blog/menu-engineering-guide.html" property="og:url"/>
-<meta content="Your menu is your most powerful profit tool. Learn how menu engineering helps you identify stars, eliminate dogs, and boost your restaurant's bottom line." property="og:description"/>
+<meta content="How to map contribution margin against popularity, find the items quietly costing you money, and redesign your menu around what actually pays." property="og:description"/>
 <meta content="https://trecoleman.com/images/og-card.jpg" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="Tre Coleman — restaurant operations consulting for restaurants, food trucks, and catering companies" property="og:image:alt"/>
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Menu Engineering Guide for Restaurant Owners | Tre Coleman" />
-<meta name="twitter:description" content="Your menu is your most powerful profit tool. Learn how menu engineering helps you identify stars, eliminate dogs, and boost your restaurant" />
+<meta name="twitter:description" content="How to map contribution margin against popularity, find the items quietly costing you money, and redesign your menu around what actually pays." />
 <meta name="twitter:url" content="https://trecoleman.com/blog/menu-engineering-guide.html" />
 <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,7 +242,7 @@
           <ul>
             <li><a href="../profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
             <li class="nav-dropdown">
-              <a href="../services.html">Services</a>
+              <a href="../services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
                 <a href="../services.html">All Services</a>
                 <a href="../menu-engineering.html">Menu Engineering</a>
@@ -287,7 +287,7 @@
 </div>
 <div class="post-content">
 <h2>Introduction</h2>
-<p>Your menu is a pricing document that most operators treat as a list. Two or three items on it are almost certainly losing money at current cost, and they are usually still there because nobody has run the numbers since the last supplier increase. Yet, many restaurant owners overlook its strategic potential, allowing sentimentality or tradition to dictate its contents rather than data-driven insights. An underperforming menu can be a significant <strong>profit leak</strong>, silently eroding your margins and hindering your business’s growth.</p>
+<p>Your menu is a pricing document that most operators treat as a list. Two or three items on it are almost certainly losing money at current cost, and they are usually still there because nobody has run the numbers since the last supplier increase. Many restaurant owners also overlook its strategic potential, allowing sentimentality or tradition to dictate its contents rather than data-driven insights. An underperforming menu can be a significant <strong>profit leak</strong>, silently eroding your margins and hindering your business’s growth.</p>
 <p>With my operator-first approach to hospitality consulting, I understand that a menu must be both appealing to customers and profitable for the business. I emphasize that effective <strong>menu engineering</strong> is not just about culinary creativity, but about strategic analysis and design. This article will guide you through the principles of menu engineering, helping you identify your menu’s strengths and weaknesses, and providing actionable strategies to optimize it for maximum profitability, aligning with my practical, results-oriented philosophy.</p>
 <h2>What is Menu Engineering?</h2>
 <p>Menu engineering is a systematic approach to analyzing the profitability and popularity of each menu item, and then using that information to strategically design your menu. The goal is to encourage customers to order high-profit items while minimizing the impact of low-profit items. It moves beyond intuition, relying on concrete data to make informed decisions about pricing, placement, and promotion of your dishes.</p>
@@ -404,7 +404,10 @@
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
-      const navLinks = mainNav.querySelectorAll('a');
+      // Dropdown parents are excluded: on mobile they expand a submenu
+      // rather than navigate, so closing the menu on their click hid
+      // the submenu they had just opened.
+      const navLinks = mainNav.querySelectorAll('a:not(.nav-dropdown > a)');
 
       function toggleMenu() {
         mobileMenuToggle.classList.toggle('active');
@@ -440,5 +443,6 @@
     </script>
 <script defer src="../analytics.js"></script>
 <script defer src="/exit-intent-popup.js"></script>
+<script src="/nav-aria.js" defer></script>
 </body>
 </html>

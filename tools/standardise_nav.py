@@ -30,7 +30,7 @@ NAV = """<nav id="mainNav">
           <ul>
             <li><a href="{p}profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
             <li class="nav-dropdown">
-              <a href="{p}services.html">Services</a>
+              <a href="{p}services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
                 <a href="{p}services.html">All Services</a>
                 <a href="{p}menu-engineering.html">Menu Engineering</a>
@@ -56,6 +56,7 @@ NAV = """<nav id="mainNav">
                 <a href="{p}food-truck-audit.html">Food Truck Launch Audit</a>
                 <a href="{p}playbook.html">90-Day Profit Playbook</a>
                 <a href="{p}virginia-neighbors.html">Virginia Neighbors Directory</a>
+                <a href="{p}chat.html">AI Operations Assistant</a>
               </div>
             </li>
             <li><a href="{p}about.html">About</a></li>

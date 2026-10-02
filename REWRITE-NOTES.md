@@ -13,9 +13,14 @@ So the problem is no longer "these are generic." It is that each post is two
 documents stitched together, and the seam is visible in the first fifteen
 seconds of reading.
 
+> **The seams are now closed** — see `tools/fix_article_seams.py`. That was the
+> mechanical half, and it needed no new writing. Everything below about voice,
+> filler and missing numbers is still open and still yours, because it cannot
+> be done without your material.
+
 ---
 
-## The seam, in all five
+## The seam, in all five — DONE
 
 In each case the **bold** text is the new opening and what follows is the old
 draft picking up where it left off.
@@ -34,7 +39,7 @@ distinction mattered: a sixth finding — a stray space before a comma in
 `</strong>` tag during extraction, and is not in the file. It has been removed
 from this list.
 
-Three of the five are mechanically broken rather than merely redundant:
+Three of the five were mechanically broken rather than merely redundant:
 
 - **`restaurant-profit-leaks`** says the same thing twice in two voices. The
   second sentence is a weaker restatement of the first and can simply go.
@@ -123,8 +128,18 @@ measured, say so in the text.** An unattributed percentage reads as a result.
 4. **`fractional-coo-for-restaurants`** — scope it against the comparison piece.
 5. **`menu-engineering-guide`** — label the figures, otherwise leave alone.
 
-## The one thing to do first
+## What is left
 
-Fix the five seams. It is twenty minutes, it needs no new writing, and it stops
-every post contradicting its own first paragraph. Everything else can follow at
-whatever pace suits.
+The seams are closed. What remains in every one of the five is the **second
+paragraph**: an "I understand this struggle / in this article I'll delve into"
+preamble that says nothing, in a voice that is not yours, and which carries the
+two claims needing verification — *"over a decade"* and *"multi-unit"*.
+
+That paragraph is the single highest-value remaining edit, and it is the one
+that cannot be done for you: replacing it means choosing between cutting it
+outright and turning it into one sentence of real evidence. Either is a
+judgement about what you are willing to claim.
+
+After that, in order: the generic markers listed per post above, then the
+missing numbers — `restaurant-systems-for-growth` still contains not one figure
+in 907 words on a subject that is entirely about measurable capacity.

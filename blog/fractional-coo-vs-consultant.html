@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../favicon.svg" rel="icon" type="image/svg+xml"/>
-<title>Fractional COO vs Restaurant Consultant: Which Do You Need? | Tre Coleman</title>
+<title>Fractional COO vs Restaurant Consultant | Tre Coleman</title>
 <meta content="Project consulting and ongoing fractional leadership solve different problems. How to tell which one your operation actually needs — including when it's neither." name="description"/>
 <meta content="article" property="og:type"/>
 <meta content="Fractional COO vs Restaurant Consultant: Which Do You Need?" property="og:title"/>
@@ -243,7 +243,7 @@
           <ul>
             <li><a href="../profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
             <li class="nav-dropdown">
-              <a href="../services.html">Services</a>
+              <a href="../services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
                 <a href="../services.html">All Services</a>
                 <a href="../menu-engineering.html">Menu Engineering</a>
@@ -465,7 +465,10 @@
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
-      const navLinks = mainNav.querySelectorAll('a');
+      // Dropdown parents are excluded: on mobile they expand a submenu
+      // rather than navigate, so closing the menu on their click hid
+      // the submenu they had just opened.
+      const navLinks = mainNav.querySelectorAll('a:not(.nav-dropdown > a)');
 
       function toggleMenu() {
         mobileMenuToggle.classList.toggle('active');
@@ -501,5 +504,6 @@
     </script>
 <script defer src="../analytics.js"></script>
 <script defer src="/exit-intent-popup.js"></script>
+<script src="/nav-aria.js" defer></script>
 </body>
 </html>

@@ -9,14 +9,14 @@
 <meta content="article" property="og:type"/>
 <meta property="og:title" content="What a Fractional COO Does for Restaurants | Tre Coleman" />
 <meta content="https://trecoleman.com/blog/fractional-coo-for-restaurants.html" property="og:url"/>
-<meta content="Gain executive-level operational expertise without the overhead. Discover how a Fractional COO provides strategic guidance and accountability for your restaurant's growth." property="og:description"/>
+<meta content="What a fractional COO actually handles week to week, when an operation is ready for one, and how it compares to a full-time hire on cost." property="og:description"/>
 <meta content="https://trecoleman.com/images/og-card.jpg" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="Tre Coleman — restaurant operations consulting for restaurants, food trucks, and catering companies" property="og:image:alt"/>
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="What a Fractional COO Does for Restaurants | Tre Coleman" />
-<meta name="twitter:description" content="Gain executive-level operational expertise without the overhead. Discover how a Fractional COO provides strategic guidance and accountability for your restaurant" />
+<meta name="twitter:description" content="What a fractional COO actually handles week to week, when an operation is ready for one, and how it compares to a full-time hire on cost." />
 <meta name="twitter:url" content="https://trecoleman.com/blog/fractional-coo-for-restaurants.html" />
 <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,7 +242,7 @@
           <ul>
             <li><a href="../profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
             <li class="nav-dropdown">
-              <a href="../services.html">Services</a>
+              <a href="../services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
                 <a href="../services.html">All Services</a>
                 <a href="../menu-engineering.html">Menu Engineering</a>
@@ -287,7 +287,7 @@
 </div>
 <div class="post-content">
 <h2>Introduction</h2>
-<p>There is a point where the constraint on a restaurant stops being the food, the location or the marketing, and becomes the number of decisions one person can make well in a week. The demands of daily operations become overwhelming, strategic planning takes a backseat, and you, the owner—once the visionary—find yourself bogged down in tactical execution. This is where the need for executive-level operational leadership becomes critical, but the cost of a full-time Chief Operating Officer (COO) can be prohibitive for many small to medium-sized hospitality businesses.</p>
+<p>There is a point where the constraint on a restaurant stops being the food, the location or the marketing, and becomes the number of decisions one person can make well in a week. Strategic planning takes a backseat, and you, the owner—once the visionary—find yourself bogged down in tactical execution. This is where the need for executive-level operational leadership becomes critical, but the cost of a full-time Chief Operating Officer (COO) can be prohibitive for many small to medium-sized hospitality businesses.</p>
 <p>This challenge is precisely what <strong>Fractional COO services</strong> address. As an operator-first consultant with extensive multi-unit restaurant management experience, I offer this strategic solution to bridge the gap between operational chaos and sustainable growth. A Fractional COO provides executive-level expertise, strategic guidance, and accountability on a part-time basis, allowing restaurants to access top-tier talent without the full-time salary and benefits commitment. This article will explore the transformative benefits of engaging a Fractional COO for your restaurant, aligning with my mission to help operators build businesses that win.</p>
 <h2>What is a Fractional COO?</h2>
 <p>A Fractional COO is an experienced operations executive who works with your business on a part-time or contract basis. Unlike a traditional consultant who might offer recommendations and then leave, I integrate with your team, help implement strategies, and provide ongoing oversight and accountability. I bring a wealth of experience in streamlining processes, optimizing performance, and driving profitability, acting as a strategic partner in your business’s growth.</p>
@@ -393,7 +393,10 @@
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
-      const navLinks = mainNav.querySelectorAll('a');
+      // Dropdown parents are excluded: on mobile they expand a submenu
+      // rather than navigate, so closing the menu on their click hid
+      // the submenu they had just opened.
+      const navLinks = mainNav.querySelectorAll('a:not(.nav-dropdown > a)');
 
       function toggleMenu() {
         mobileMenuToggle.classList.toggle('active');
@@ -429,5 +432,6 @@
     </script>
 <script defer src="../analytics.js"></script>
 <script defer src="/exit-intent-popup.js"></script>
+<script src="/nav-aria.js" defer></script>
 </body>
 </html>
