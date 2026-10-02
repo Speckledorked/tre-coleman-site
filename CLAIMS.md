@@ -27,7 +27,7 @@ Status key — `documented` · `needs softening` · `remove` · `unreviewed`
 |---|---|---|---|---|
 | 1 | "10+ years managing multi-unit restaurant operations" | `about.html`, `index.html`, `blog.html` | Resume: summary claims "over a decade"; Potbelly District Manager Oct 2020–Nov 2024 across multiple store locations | documented (2026-10-02, verified from resume screenshots) |
 | 2 | "300+ employees led across multiple locations" | `about.html`, `index.html` | No headcount on resume | softened (2026-10-02) — now "District Manager leading multiple store locations" / tile "Multi-Unit District Manager" |
-| 3 | "$300K+ in revenue waste eliminated for clients" | `about.html` | Resume shows $300k revenue (not waste eliminated, not for clients) | softened (2026-10-02) — no number claimed |
+| 3 | "$300K+ in revenue waste eliminated for clients" | `about.html` | Resume: "combined $300k revenue across multiple store locations" (Potbelly DM) | reworded (2026-10-02) — now "$300K+ in revenue across multiple store locations"; the "waste eliminated for clients" framing had no backing |
 | 4 | "National Hospitality Brands" | `index.html` | Resume: Potbelly (District Manager); Hooters confirmed by Tre' | softened (2026-10-02) — now "Potbelly · Hooters" |
 
 > On #4 — naming the brands (with permission) is far stronger than the vague
