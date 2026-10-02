@@ -121,8 +121,7 @@ For the record, an intermediate revision of this document claimed the page was m
 | Item | Why it is blocked |
 |---|---|
 | **Verify Google Search Console** | **[EXTERNAL]** — still the single highest-value action. Nothing here is measurable without it |
-| **Delete the course ZIP** | The complete $67 product is downloadable at the site root. All 26 files are duplicated under `course/downloads/`, so removal is safe — `git rm "Catering Profit Course-20260315T205458Z-3-001.zip"`. A permission guard blocked the deletion |
-| **Gate `/course/downloads/`** | Currently client-side `localStorage` only; direct URLs bypass it. Needs a real auth change |
+| **Gate `/course/downloads/`** | Currently client-side `localStorage` only; direct URLs bypass it entirely — all 26 files answer 200 to an unauthenticated request. The root ZIP is now deleted, so the one-click copy of the whole product is gone, but the files themselves are still open. A real fix needs a Netlify Function checking a session, which is blocked on the Supabase env vars |
 | **Substantiate published claims** | The ~18 figures listed at the end of this document are unchanged and still need documentation |
 | **Named testimonials** | **[EXTERNAL]** — the site still has one anonymous testimonial. `Review` schema stays correctly absent until there are named, permissioned ones |
 | **GBP, citations, reviews, outreach** | **[EXTERNAL]** — all of §5.4 |
