@@ -8,6 +8,20 @@ const supabase = createClient(
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Where to point links in outbound email.
+//
+// Netlify sets URL to the site's primary address: the custom domain once one is
+// attached, and the *.netlify.app address until then. Hardcoding
+// https://trecoleman.com meant that while the custom domain was not attached,
+// every link in every transactional email landed on a host that fails TLS — a
+// customer could buy the course and be unable to reach it. The fallback keeps
+// behaviour unchanged if URL is ever unset.
+//
+// The from: addresses stay on trecoleman.com: that is where Resend's DKIM
+// record lives, and it is verified independently of where the site is served.
+const SITE = process.env.URL || 'https://trecoleman.com';
+
+
 exports.handler = async (event) => {
   // Only allow POST
   if (event.httpMethod !== 'POST') {
@@ -86,7 +100,7 @@ exports.handler = async (event) => {
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h1 style="color: #1F4788;">Welcome, ${name}!</h1>
             <p>Your account has been created successfully.</p>
-            <p>You can now <a href="https://trecoleman.com/login.html" style="color: #F4A460;">log in to your account</a>.</p>
+            <p>You can now <a href="${SITE}/login.html" style="color: #F4A460;">log in to your account</a>.</p>
             <p style="margin-top: 30px; color: #666;">— Tre Coleman</p>
           </div>
         `

@@ -3,6 +3,20 @@ const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Where to point links in outbound email.
+//
+// Netlify sets URL to the site's primary address: the custom domain once one is
+// attached, and the *.netlify.app address until then. Hardcoding
+// https://trecoleman.com meant that while the custom domain was not attached,
+// every link in every transactional email landed on a host that fails TLS — a
+// customer could buy the course and be unable to reach it. The fallback keeps
+// behaviour unchanged if URL is ever unset.
+//
+// The from: addresses stay on trecoleman.com: that is where Resend's DKIM
+// record lives, and it is verified independently of where the site is served.
+const SITE = process.env.URL || 'https://trecoleman.com';
+
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -43,11 +57,24 @@ exports.handler = async (event) => {
     );
 
     // Check if user exists
-    const { data: users } = await supabase
+    const { data: users, error: lookupError } = await supabase
       .from('users')
       .select('id, name')
       .eq('email', email.toLowerCase())
       .limit(1);
+
+    // The error used to be discarded, which made a broken lookup
+    // indistinguishable from "no such user": both left `users` empty and both
+    // returned the generic success below. Every password reset would have
+    // failed silently while telling the sender it had worked.
+    if (lookupError) {
+      console.error('User lookup failed during password reset', lookupError);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Could not start a password reset. Please try again.' })
+      };
+    }
 
     // Always return success to prevent email enumeration
     if (!users || users.length === 0) {
@@ -66,7 +93,7 @@ exports.handler = async (event) => {
       type: 'recovery',
       email,
       options: {
-        redirectTo: 'https://trecoleman.com/reset-password.html'
+        redirectTo: `${SITE}/reset-password.html`
       }
     });
 

@@ -9,6 +9,20 @@ const supabase = createClient(
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Where to point links in outbound email.
+//
+// Netlify sets URL to the site's primary address: the custom domain once one is
+// attached, and the *.netlify.app address until then. Hardcoding
+// https://trecoleman.com meant that while the custom domain was not attached,
+// every link in every transactional email landed on a host that fails TLS — a
+// customer could buy the course and be unable to reach it. The fallback keeps
+// behaviour unchanged if URL is ever unset.
+//
+// The from: addresses stay on trecoleman.com: that is where Resend's DKIM
+// record lives, and it is verified independently of where the site is served.
+const SITE = process.env.URL || 'https://trecoleman.com';
+
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
@@ -85,7 +99,7 @@ exports.handler = async (event) => {
               <p>Thank you for purchasing <strong>The Catering Profit System</strong>!</p>
               <p>Your account has been updated with full course access. You can log in now to start learning:</p>
               <p style="margin: 30px 0;">
-                <a href="https://trecoleman.com/login.html" style="background: #F4A460; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Access Your Course</a>
+                <a href="${SITE}/login.html" style="background: #F4A460; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Access Your Course</a>
               </p>
               <p><strong>Course launches March 30th, 2026.</strong> You'll receive another email when the content is live!</p>
               <p style="margin-top: 30px; color: #666;">Let's fix those profit leaks!</p>
@@ -144,7 +158,7 @@ exports.handler = async (event) => {
               </div>
 
               <p style="margin: 30px 0;">
-                <a href="https://trecoleman.com/login.html" style="background: #F4A460; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Log In Now</a>
+                <a href="${SITE}/login.html" style="background: #F4A460; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Log In Now</a>
               </p>
 
               <p><strong>Course launches March 30th, 2026.</strong> You'll receive another email when the content is live!</p>

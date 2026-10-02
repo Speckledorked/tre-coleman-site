@@ -30,6 +30,70 @@ Most of this audit has since been implemented. **The findings below are preserve
 | **Analytics** | Per-form conversion events, `phone_click`/`email_click`, exit-intent A/B variant tracking |
 | **Tooling** | Two regex-based nav workflows retired in favour of `tools/` generators — see `tools/README.md` |
 
+### Everything the functions need is live, and verified
+
+With the Airtable token replaced and all nine environment variables set, all
+eight functions were probed against production. The probes were chosen to touch
+nothing: wrong passwords, malformed input, missing required fields, an unsigned
+webhook, an address at `example.invalid`. No record was written and no email
+was sent.
+
+| Function | Probe | Result |
+|---|---|---|
+| `airtable-proxy` | GET | **200 with live records** — the new token works |
+| `chat-auth` | wrong password | 401, not 500, so `CHAT_PASSWORD` is set |
+| `auth-login` | bogus credentials | 401 from Supabase itself |
+| `auth-verify` | no token | 401 |
+| `course-download` | garbage token | 401 from `getUser` |
+| `newsletter-subscribe` | invalid email | 400 |
+| `auth-register` | missing fields | 400 |
+| `auth-forgot-password` | missing email | 400 |
+| `stripe-webhook` | unsigned | 400, signature check active |
+
+Worth being exact about what that proves. `AIRTABLE_TOKEN`, `CHAT_PASSWORD`,
+`SUPABASE_URL` and `SUPABASE_ANON_KEY` are confirmed working, because each was
+exercised by a request that reached the service and came back with a real
+answer. `SUPABASE_SERVICE_KEY`, `RESEND_API_KEY` and the three Stripe values
+are **not** confirmed: every safe probe returns before they are used, and
+proving them needs a real signup, a real reset and a real purchase.
+
+### Two faults found while verifying, both fixed
+
+**1. Every link in every outbound email pointed at a dead host.** The three
+functions that send email hardcoded `https://trecoleman.com`, which currently
+fails TLS because the custom domain is not attached to the Netlify project. So
+a customer could buy the course and receive a confirmation whose "log in"
+button went nowhere, and a password reset pointed `redirectTo` at a dead page.
+They now read Netlify's own `URL`, which is the `*.netlify.app` address today
+and becomes the custom domain by itself the moment one is attached, with the
+old value as the fallback.
+
+The `from:` addresses stay on `trecoleman.com`. That is where Resend's DKIM
+record lives, and it is verified independently of where the site is served —
+checked directly: the DNS zone is intact, Zoho MX answers, SPF and the Resend
+DKIM record are both present. **Email sends fine; only the links were broken.**
+
+**2. Three functions discarded the error from their profile lookup.** The
+pattern was `const { data: profile } = await ...`, with no `error`. The
+consequences differ by function and the middle one is the worst:
+
+- `auth-forgot-password` — a failed lookup is indistinguishable from "no such
+  user", because both leave the result empty and both fall into the generic
+  "if an account exists" reply. Every password reset would have failed in
+  silence while telling the sender it had worked.
+- `auth-login` and `auth-verify` — a failed lookup leaves `profile` undefined,
+  and the fallback reports `has_course_access: false`. A paying customer would
+  be told they had not bought the course. `auth-verify` runs on every course
+  page load, so this is the path a buyer hits constantly.
+
+All three now distinguish "no row matched" (`PGRST116`, legitimate) from a real
+failure, and return 500 on the latter rather than a confident wrong answer.
+
+`check_site.py` also learned the difference between a variable you must set and
+one Netlify provides: `URL` has to be explained in `.env.example` but must not
+appear as a settable line, because a hand-entered value would override the real
+one.
+
 ### The paid course files are now actually gated
 
 Both halves of this are done, and the second half only became possible once the
@@ -207,7 +271,8 @@ For the record, an intermediate revision of this document claimed the page was m
 
 | Item | Why it is blocked |
 |---|---|
-| **Verify Google Search Console** | **[EXTERNAL]** — still the single highest-value action. Nothing here is measurable without it |
+| **Attach `trecoleman.com` to the Netlify project** | **[EXTERNAL]** — with Netlify support. The apex A records already point at Netlify, but the domain is not bound to the project: Netlify answers 404 for that hostname and serves only its `*.netlify.app` certificate, so HTTPS fails. `www` separately still CNAMEs to GitHub Pages. Until this lands the site is reachable only at its `*.netlify.app` address, and everything below that depends on a live domain waits on it |
+| **Verify Google Search Console** | **[EXTERNAL]** — still the single highest-value action, and now gated behind the domain above. Nothing here is measurable without it |
 | **Substantiate published claims** | The ~18 figures listed at the end of this document are unchanged and still need documentation |
 | **Named testimonials** | **[EXTERNAL]** — the site still has one anonymous testimonial. `Review` schema stays correctly absent until there are named, permissioned ones |
 | **GBP, citations, reviews, outreach** | **[EXTERNAL]** — all of §5.4 |
