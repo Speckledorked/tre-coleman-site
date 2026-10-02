@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>The Restaurant P&L, Line by Line | Tre Coleman</title>
+<meta content="A plain-English walk through a restaurant profit and loss statement: what each line means, which ones you control weekly, and the order to read them in." name="description"/>
+<meta content="article" property="og:type"/>
+<meta content="The Restaurant P&L, Line by Line" property="og:title"/>
+<meta content="https://trecoleman.com/blog/restaurant-profit-and-loss.html" property="og:url"/>
+<meta content="A plain-English walk through a restaurant profit and loss statement: what each line means, which ones you control weekly, and the order to read them in." property="og:description"/>
+<meta content="https://trecoleman.com/images/og-card.jpg" property="og:image"/>
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Tre Coleman — restaurant operations consulting for restaurants, food trucks, and catering companies" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Restaurant P&L, Line by Line" />
+<meta name="twitter:description" content="A plain-English walk through a restaurant profit and loss statement: what each line means, which ones you control weekly, and the order to read them in." />
+<meta name="twitter:url" content="https://trecoleman.com/blog/restaurant-profit-and-loss.html" />
+<meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
+<link rel="canonical" href="https://trecoleman.com/blog/restaurant-profit-and-loss.html" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Restaurant P&L, Line by Line",
+  "url": "https://trecoleman.com/blog/restaurant-profit-and-loss.html",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://trecoleman.com/blog/restaurant-profit-and-loss.html"
+  },
+  "datePublished": "2026-10-02",
+  "dateModified": "2026-10-02",
+  "author": {
+    "@id": "https://trecoleman.com/#person"
+  },
+  "publisher": {
+    "@id": "https://trecoleman.com/#business"
+  },
+  "image": "https://trecoleman.com/images/og-card.jpg",
+  "inLanguage": "en-US",
+  "description": "A plain-English walk through a restaurant profit and loss statement: what each line means, which ones you control weekly, and the order to read them in."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://trecoleman.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://trecoleman.com/blog.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "The Restaurant P&L, Line by Line",
+      "item": "https://trecoleman.com/blog/restaurant-profit-and-loss.html"
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="../style.css" rel="stylesheet"/>
+<style>
+      article {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+      }
+
+      .post-header {
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+
+      .post-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--primary-navy);
+        line-height: 1.2;
+      }
+
+      .post-meta {
+        color: #4a5568;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+      }
+
+      .post-content {
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: #2c3e50;
+      }
+
+      .post-content p {
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+      }
+
+      .post-content h2 {
+        font-size: 1.75rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--primary-navy);
+      }
+
+      .post-content h3 {
+        font-size: 1.35rem;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--primary-navy);
+      }
+
+      .post-content ul,
+      .post-content ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+      }
+
+      .post-content li {
+        margin-bottom: 0.75rem;
+        line-height: 1.7;
+      }
+
+      .post-content blockquote {
+        border-left: 4px solid var(--accent-gold);
+        padding: 1rem 1.5rem;
+        margin: 2rem 0;
+        background: var(--bg-cream);
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+      }
+
+      .post-content blockquote p {
+        margin-bottom: 0;
+        color: var(--primary-navy);
+      }
+
+      .post-content strong {
+        font-weight: 700;
+        color: #1a202c;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 2rem;
+        color: var(--primary-navy);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .back-link:hover {
+        color: var(--accent-gold);
+      }
+
+      .cta-section {
+        background: var(--bg-cream);
+        padding: 2rem;
+        border-radius: 8px;
+        margin-top: 3rem;
+        text-align: center;
+      }
+
+      .cta-section h3 {
+        color: var(--primary-navy);
+        margin-bottom: 1rem;
+      }
+
+      .cta-section p {
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+      }
+
+      @media (max-width: 768px) {
+        article {
+          padding: 2rem 1rem;
+        }
+
+        .post-header h1 {
+          font-size: 2rem;
+        }
+
+        .post-content {
+          font-size: 1.05rem;
+        }
+      }
+    
+      .related-reading {
+        margin-top: 3rem;
+        padding-top: 1.75rem;
+        border-top: 2px solid var(--bg-cream);
+      }
+      .related-reading h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        color: var(--primary-navy);
+      }
+      .related-reading ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .related-reading li {
+        margin-bottom: 0.6rem;
+        line-height: 1.5;
+      }
+      .related-reading a {
+        color: var(--primary-navy);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        font-weight: 600;
+      }
+      .related-reading a:hover { color: var(--accent-gold-text); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<!-- Header -->
+<header>
+<div class="container">
+<div class="logo"><a href="../index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<nav id="mainNav">
+          <ul>
+            <li><a href="../profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
+            <li class="nav-dropdown">
+              <a href="../services.html">Services</a>
+              <div class="dropdown-menu">
+                <a href="../services.html">All Services</a>
+                <a href="../menu-engineering.html">Menu Engineering</a>
+                <a href="../sops-training.html">SOPs &amp; Training Systems</a>
+                <a href="../lsm.html">Local Store Marketing</a>
+                <a href="../ai-integration.html">AI Integration</a>
+                <a href="../food-truck-consulting.html">Food Truck Consulting</a>
+                <a href="../catering-consulting.html">Catering Consulting</a>
+              </div>
+            </li>
+            <li><a href="../advisory.html">Advisory</a></li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Insights</a>
+              <div class="dropdown-menu">
+                <a href="../blog.html">Blog &amp; Playbooks</a>
+                <a href="../catering-profit.html">Catering Profit System</a>
+              </div>
+            </li>
+            <li class="nav-dropdown">
+              <a href="#" onclick="return false;">Resources</a>
+              <div class="dropdown-menu">
+                <a href="../audit.html">Restaurant Ops Audit</a>
+                <a href="../food-truck-audit.html">Food Truck Launch Audit</a>
+                <a href="../playbook.html">90-Day Profit Playbook</a>
+                <a href="../virginia-neighbors.html">Virginia Neighbors Directory</a>
+                <a href="../chat.html">AI Operations Assistant</a>
+              </div>
+            </li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+          </ul>
+        </nav>
+</div>
+</header>
+<main id="main-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a> <span aria-hidden="true">›</span> <a href="../blog.html">Blog</a> <span aria-hidden="true">›</span> <span aria-current="page">The Restaurant P&L, Line by Line</span></nav>
+<article>
+<a class="back-link" href="../blog.html">&#8592; Back to all posts</a>
+<div class="post-header">
+<h1>The Restaurant P&amp;L, Line by Line</h1>
+<div class="post-meta">By <a rel="author" href="../about.html">Tre Coleman</a> &bull; <time datetime="2026-10-02">October 2, 2026</time> &bull; Operations &bull; 10 min read</div>
+</div>
+<div class="post-content">
+<p>
+  Most operators can find their P&amp;L and far fewer use it. That is not an intelligence
+  problem — it is that the document was designed for accountants, arrives weeks after the
+  period it describes, and does not tell you what to do.
+</p>
+<p>
+  It is still the single most useful management document you have, provided you read it in
+  the right order and ignore most of it most of the time.
+</p>
+
+<h2>Read it in this order</h2>
+<p>
+  Not top to bottom. Start with the lines you can change this week, then widen out.
+</p>
+<ol>
+  <li>Prime cost (food + labour)</li>
+  <li>The components of prime cost separately</li>
+  <li>Controllable operating expenses</li>
+  <li>Occupancy and fixed costs</li>
+  <li>The bottom line</li>
+</ol>
+<p>
+  The bottom line comes last deliberately. It is the output of everything above it, and
+  staring at it tells you nothing about which input to touch.
+</p>
+
+<h2>Sales</h2>
+<p>
+  The top line, and the least interesting number on the page. Sales tells you volume; it
+  tells you nothing about whether that volume was worth having.
+</p>
+<p>
+  What is worth extracting here is the split — by day-part, by channel, by category. A
+  month where sales held steady but the mix moved from entrées to appetisers is a month
+  where your margin fell while your top line did not. That movement is invisible on the
+  sales line alone.
+</p>
+
+<h2>Cost of goods sold</h2>
+<p>
+  What you spent on the product you sold. Expressed as a percentage of sales, this is your
+  food cost — but the percentage is a summary, and summaries hide the thing you need.
+</p>
+<p>
+  A stable food cost percentage can conceal an unprofitable item selling well, offset by a
+  profitable one selling badly. The percentage is for spotting <em>movement</em>; item
+  mix is for finding <em>cause</em>. If this line moves and you cannot explain it, the
+  explanation is in your sales mix report, not here. That is the work covered in
+  <a href="menu-engineering-guide.html">menu engineering</a>.
+</p>
+<p>
+  One practical note: this line is only trustworthy if your inventory counts are real. A
+  P&amp;L built on estimated inventory produces a food cost that bounces month to month
+  for reasons that have nothing to do with the kitchen.
+</p>
+
+<h2>Labour</h2>
+<p>
+  Usually your largest controllable cost and the one that moves fastest. Worth separating
+  into at least three parts:
+</p>
+<ul>
+  <li><strong>Hourly</strong> — the part that should flex with sales</li>
+  <li><strong>Salaried management</strong> — fixed in the short term</li>
+  <li><strong>Taxes and benefits</strong> — often 10–15% on top of wages, and frequently
+      forgotten when operators estimate labour cost in their heads</li>
+</ul>
+<p>
+  That third component is why mental arithmetic about labour is usually optimistic. If you
+  are reasoning about an extra shift, you are reasoning about more than the hourly rate.
+  <a href="restaurant-labor-cost.html">Getting labour under control</a> goes into how to
+  schedule against sales rather than habit.
+</p>
+
+<h2>Prime cost: the number that matters most</h2>
+<p>
+  Food plus labour. If you track one figure weekly, track this one.
+</p>
+<p>
+  It matters because the two lines trade against each other. A kitchen can cut food cost
+  by prepping everything in-house and spend the saving twice over in labour. Another can
+  cut labour by buying prepped product and watch food cost climb. Looking at either in
+  isolation lets a real problem hide behind an apparent improvement.
+</p>
+<p>
+  Prime cost is also the number you can act on at a weekly cadence, which the rest of the
+  P&amp;L mostly cannot be.
+</p>
+
+<h2>Controllable operating expenses</h2>
+<p>
+  Everything you spend to run the place that is not product or people: supplies, repairs,
+  utilities, marketing, credit card fees, delivery commissions.
+</p>
+<p>
+  Individually small, collectively significant, and the category where costs accumulate
+  quietly because no single line ever justifies attention. The useful discipline is to
+  review this section properly once a quarter rather than skim it monthly. Subscriptions
+  that no longer earn their place live here, as do delivery commissions that have grown
+  into a major cost since anyone last looked at them.
+</p>
+
+<h2>Occupancy and fixed costs</h2>
+<p>
+  Rent, insurance, licences, loan payments, depreciation. Mostly outside your control
+  inside a given year, which is exactly why they deserve a different kind of attention.
+</p>
+<p>
+  Because they are fixed, their <em>percentage</em> moves with sales. Occupancy climbing
+  as a percentage while rent has not changed means sales fell. That makes this section a
+  useful cross-check on the top line rather than something you act on directly.
+</p>
+
+<h2>Net profit</h2>
+<p>
+  What is left. It is a result, not a lever, and the common mistake is to manage it
+  directly — cutting whatever is nearest when it looks thin, which is usually marketing or
+  the labour that protects the guest experience, and usually makes next quarter worse.
+</p>
+
+<h2>What to actually do with it each month</h2>
+<ul>
+  <li>Compare against the <strong>same period last year</strong>, not last month. Most
+      food-service businesses are seasonal, and month-over-month comparisons mostly
+      measure the calendar.</li>
+  <li>Look for <strong>movement</strong>, not absolutes. A two-point shift in prime cost
+      matters more than whether you hit a benchmark someone else set.</li>
+  <li>Pick <strong>one line</strong> to work on until the next statement. P&amp;Ls arrive
+      monthly; meaningful operational change takes longer than that.</li>
+  <li>Keep a note of <strong>what you changed and when</strong>, so the next statement can
+      tell you whether it worked.</li>
+</ul>
+<p>
+  If your P&amp;L does not separate food and labour clearly enough to do this, that is
+  worth fixing with your bookkeeper before anything else. A statement you cannot read at
+  this granularity is an accounting record rather than a management tool.
+</p>
+</div>
+<nav class="related-reading" aria-label="Related articles">
+<h2>Related reading</h2>
+<ul>
+<li><a href="busy-but-not-profitable.html">Why Your Restaurant Is Busy But Not Profitable</a></li>
+<li><a href="restaurant-labor-cost.html">How to Lower Restaurant Labor Cost</a></li>
+<li><a href="menu-engineering-guide.html">Menu Engineering Guide for Restaurant Owners</a></li>
+</ul>
+</nav>
+<div class="cta-section">
+<h3>Want a second read on yours?</h3>
+<p>The Profit Leak Snapshot works through four weeks of your P&amp;Ls, labor reports and item mix together, which is where the causes actually show up. You leave with your top three leaks priced in dollars. $350.</p>
+<a class="button" href="../profit-leak-snapshot.html">Book Your Snapshot</a>
+</div>
+</article>
+<!-- Footer -->
+</main>
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div class="footer-section">
+<h2>Tre Coleman Consulting LLC</h2>
+<p>Virginia-based restaurant operations consultant.<br/>Serving operators nationwide.</p>
+<p style="margin-top: 1rem;">&#169; 2026 All Rights Reserved</p>
+</div>
+<div class="footer-section">
+            <h2>Services</h2>
+            <ul>
+              <li><a href="../profit-leak-snapshot.html">Profit Leak Snapshot</a></li>
+              <li><a href="../menu-engineering.html">Menu Engineering</a></li>
+              <li><a href="../sops-training.html">SOPs &amp; Training</a></li>
+              <li><a href="../lsm.html">Local Store Marketing</a></li>
+              <li><a href="../ai-integration.html">AI Integration</a></li>
+              <li><a href="../food-truck-consulting.html">Food Truck Consulting</a></li>
+              <li><a href="../catering-consulting.html">Catering Consulting</a></li>
+              <li><a href="../advisory.html">Fractional COO</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h2>Quick Links</h2>
+            <ul>
+              <li><a href="../services.html">All Services</a></li>
+              <li><a href="../virginia-restaurant-consulting.html">Consulting in Virginia</a></li>
+              <li><a href="../about.html">About</a></li>
+              <li><a href="../blog.html">Blog</a></li>
+              <li><a href="../catering-profit.html">Catering Course</a></li>
+              <li><a href="../virginia-neighbors.html">Virginia Neighbors</a></li>
+              <li><a href="../contact.html">Contact</a></li>
+              <li><a href="../login.html">Course Login</a></li>
+              <li><a href="../privacy.html">Privacy Policy</a></li>
+            </ul>
+          </div>
+<div class="footer-section">
+<h2>Connect</h2>
+<ul>
+<li><a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a></li>
+<li><a href="tel:540-807-9045">540.807.9045</a></li>
+<li><a href="https://www.linkedin.com/in/trecoleman/" rel="noopener" target="_blank">LinkedIn</a></li>
+<li><a href="https://www.facebook.com/trecolemanconsulting" rel="noopener" target="_blank">Facebook</a></li>
+</ul>
+</div>
+</div>
+
+<div class="footer-bottom">
+  <p>Serving restaurant, catering, and food truck owners across the U.S. | Based in Virginia.</p>
+</div>
+</div>
+</footer>
+<script>
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mainNav = document.getElementById('mainNav');
+      const mobileOverlay = document.getElementById('mobileOverlay');
+      const navLinks = mainNav.querySelectorAll('a');
+
+      function toggleMenu() {
+        mobileMenuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        mobileOverlay.classList.toggle('active');
+        document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+      }
+
+      function closeMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mainNav.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      mobileMenuToggle.addEventListener('click', toggleMenu);
+      mobileOverlay.addEventListener('click', closeMenu);
+      navLinks.forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) closeMenu();
+      });
+
+      const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');
+      dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            const open = toggle.parentElement.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          }
+        });
+      });
+    </script>
+<script defer src="../analytics.js"></script>
+<script defer src="/exit-intent-popup.js"></script>
+</body>
+</html>

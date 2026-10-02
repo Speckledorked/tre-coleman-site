@@ -27,56 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 <link href="style.css" rel="stylesheet"/>
-<style>
-/* Dropdown navigation styles */
-.nav-dropdown {
-  position: relative;
-}
 
-.nav-dropdown > a::after {
-  content: ' ▾';
-  font-size: 0.8em;
-  margin-left: 0.25rem;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  min-width: 220px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 0.5rem 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-
-.nav-dropdown:hover .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 0.75rem 1.25rem;
-  color: #2c3e50;
-  text-decoration: none;
-  transition: background 0.2s ease;
-  font-size: 0.95rem;
-}
-
-.dropdown-menu a:hover {
-  background: #f8f9fa;
-  color: #1e3a5f;
-}
-
-/* Mobile nav styles handled by style.css */
-    </style>
     <style>
       .service-hero {
         overflow: hidden;
@@ -276,6 +227,47 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://trecoleman.com/menu-engineering.html#faq",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need a POS that exports item-level sales data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Effectively yes. Menu engineering maps contribution margin against popularity, and popularity has to come from somewhere. Almost every modern POS exports an item sales mix report. If yours cannot, we can work from a manual count over two to three weeks — less precise, but enough to find the obvious outliers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will this mean raising my prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not across the board. Blanket increases are the blunt version of this work and they cost you traffic. The usual outcome is a smaller menu, repositioned items, and selective price moves only where guests have demonstrated willingness to pay. Several items often come down."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my menu changes seasonally?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "That makes the framework more useful, not less. The point is a repeatable method you run each time the menu turns over, rather than a one-off verdict on this season's dishes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from a chef consultant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A chef consultant works on the food. This works on the economics of the food — what each item contributes after cost, how the layout steers ordering, and which dishes are quietly subsidised by the rest. The recipes stay yours."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -321,6 +313,7 @@
                 <a href="food-truck-audit.html">Food Truck Launch Audit</a>
                 <a href="playbook.html">90-Day Profit Playbook</a>
                 <a href="virginia-neighbors.html">Virginia Neighbors Directory</a>
+                <a href="chat.html">AI Operations Assistant</a>
               </div>
             </li>
             <li><a href="about.html">About</a></li>
@@ -517,6 +510,19 @@
 </div>
 </section>
 <!-- Section 7: CTA -->
+<section class="section-bg-cream">
+<div class="container">
+<h2 class="mb-2">Common Questions</h2>
+<h3>Do I need a POS that exports item-level sales data?</h3>
+<p class="mb-2">Effectively yes. Menu engineering maps contribution margin against popularity, and popularity has to come from somewhere. Almost every modern POS exports an item sales mix report. If yours cannot, we can work from a manual count over two to three weeks — less precise, but enough to find the obvious outliers.</p>
+<h3>Will this mean raising my prices?</h3>
+<p class="mb-2">Not across the board. Blanket increases are the blunt version of this work and they cost you traffic. The usual outcome is a smaller menu, repositioned items, and selective price moves only where guests have demonstrated willingness to pay. Several items often come down.</p>
+<h3>What if my menu changes seasonally?</h3>
+<p class="mb-2">That makes the framework more useful, not less. The point is a repeatable method you run each time the menu turns over, rather than a one-off verdict on this season's dishes.</p>
+<h3>How is this different from a chef consultant?</h3>
+<p class="mb-2">A chef consultant works on the food. This works on the economics of the food — what each item contributes after cost, how the layout steers ordering, and which dishes are quietly subsidised by the rest. The recipes stay yours.</p>
+</div>
+</section>
 <section>
 <div class="container">
 <div class="cta-section">
@@ -568,6 +574,7 @@
               <li><a href="virginia-neighbors.html">Virginia Neighbors</a></li>
               <li><a href="contact.html">Contact</a></li>
               <li><a href="login.html">Course Login</a></li>
+              <li><a href="privacy.html">Privacy Policy</a></li>
             </ul>
           </div>
 <div class="footer-section">

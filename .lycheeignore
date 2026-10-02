@@ -1,0 +1,14 @@
+# Hosts that block or rate-limit automated checkers. A 403 or 999 from these
+# is the host refusing a bot, not a broken link.
+https://www.linkedin.com/.*
+https://www.facebook.com/.*
+https://book.stripe.com/.*
+https://buy.stripe.com/.*
+
+# Local dev server used by the Lighthouse job
+^http://localhost.*
+^http://127\.0\.0\.1.*
+
+# The site's own domain. It is checked as local files; resolving it over the
+# network would test whatever is currently deployed, not this commit.
+^https://trecoleman\.com.*

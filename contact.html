@@ -28,56 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 <link href="style.css" rel="stylesheet"/>
-<style>
-/* Dropdown navigation styles */
-.nav-dropdown {
-  position: relative;
-}
 
-.nav-dropdown > a::after {
-  content: ' ▾';
-  font-size: 0.8em;
-  margin-left: 0.25rem;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  min-width: 220px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 0.5rem 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-
-.nav-dropdown:hover .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 0.75rem 1.25rem;
-  color: #2c3e50;
-  text-decoration: none;
-  transition: background 0.2s ease;
-  font-size: 0.95rem;
-}
-
-.dropdown-menu a:hover {
-  background: #f8f9fa;
-  color: #1e3a5f;
-}
-
-/* Mobile nav styles handled by style.css */
-</style>
 <!-- Form submission is handled via a script at the bottom of the page -->
 <script src="analytics.js"></script>
 <script type="application/ld+json">
@@ -157,6 +108,7 @@
                 <a href="food-truck-audit.html">Food Truck Launch Audit</a>
                 <a href="playbook.html">90-Day Profit Playbook</a>
                 <a href="virginia-neighbors.html">Virginia Neighbors Directory</a>
+                <a href="chat.html">AI Operations Assistant</a>
               </div>
             </li>
             <li><a href="about.html">About</a></li>
@@ -219,33 +171,33 @@
 <h2 class="mb-1">Tell me about your operation</h2>
 <form action="https://formsubmit.co/hello@trecoleman.com" id="contactForm" method="POST">
 <div>
-<label>Name *
-              <input name="name" required=""/>
+<label for="f-name">Name *
+              <input name="name" id="f-name" required=""/>
 </label>
 </div>
 <div>
-<label>Email *
-              <input name="email" required="" type="email"/>
+<label for="f-email">Email *
+              <input name="email" id="f-email" required="" type="email"/>
 </label>
 </div>
 <div>
-<label>Company *
-              <input name="company" required=""/>
+<label for="f-company">Company *
+              <input name="company" id="f-company" required=""/>
 </label>
 </div>
 <div>
-<label>Phone (optional)
-              <input name="phone" type="tel"/>
+<label for="f-phone">Phone (optional)
+              <input name="phone" id="f-phone" type="tel"/>
 </label>
 </div>
 <div>
-<label>Location *
-              <input name="location" required=""/>
+<label for="f-location">Location *
+              <input name="location" id="f-location" required=""/>
 </label>
 </div>
 <div>
-<label>What are you interested in? *</label>
-<select name="interest" required="">
+<label for="f-interest">What are you interested in? *</label>
+<select name="interest" id="f-interest" required="">
 <option selected="" value="Profit Leak Snapshot">$350 Profit Leak Snapshot</option>
 <option value="Advisory">Fractional COO / Advisory</option>
 <option value="Project">One-Time Project</option>
@@ -253,13 +205,13 @@
 </select>
 </div>
 <div>
-<label>Biggest bottleneck *
-              <textarea name="bottleneck" required="" rows="4"></textarea>
+<label for="f-bottleneck">Biggest bottleneck *
+              <textarea name="bottleneck" id="f-bottleneck" required="" rows="4"></textarea>
 </label>
 </div>
 <div>
-<label>Budget range *
-              <select name="budget" required="">
+<label for="f-budget">Budget range *
+              <select name="budget" id="f-budget" required="">
 <option value="">Select…</option>
 <option>&lt;$2k</option>
 <option>$2k–$5k</option>
@@ -269,8 +221,8 @@
 </label>
 </div>
 <div>
-<label>Preferred start *
-              <select name="start" required="">
+<label for="f-start">Preferred start *
+              <select name="start" id="f-start" required="">
 <option value="">Select…</option>
 <option>ASAP</option>
 <option>Next 30 days</option>
@@ -279,7 +231,7 @@
 </label>
 </div>
 <!-- Anti-spam & metadata -->
-<input autocomplete="off" name="website" style="position:absolute;left:-9999px;" tabindex="-1" type="text"/>
+<input aria-hidden="true" aria-label="Leave this field empty" autocomplete="off" name="website" style="position:absolute;left:-9999px;" tabindex="-1" type="text"/>
 <input name="_subject" type="hidden" value="New Lead from TreColeman.co"/>
 <input name="_autoresponse" type="hidden" value="Thanks for reaching out — I'll review and reply shortly."/>
 <input name="utm_source" type="hidden"/>
@@ -326,6 +278,7 @@
               <li><a href="virginia-neighbors.html">Virginia Neighbors</a></li>
               <li><a href="contact.html">Contact</a></li>
               <li><a href="login.html">Course Login</a></li>
+              <li><a href="privacy.html">Privacy Policy</a></li>
             </ul>
           </div>
 <div class="footer-section">

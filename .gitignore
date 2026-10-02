@@ -1,0 +1,26 @@
+# Secrets — this repository is PUBLIC. Nothing here may ever be committed.
+# A real Airtable token was committed to this repo's history once already;
+# the absence of this file is how that happened.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# Netlify CLI local state (contains the linked site id)
+.netlify/
+
+# Dependencies
+node_modules/
+
+# Build and editor noise
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+
+# Lighthouse CI output
+.lighthouseci/
