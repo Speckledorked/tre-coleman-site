@@ -79,6 +79,31 @@ back on the public internet silently, and now fails the build instead.
 one-line check is in the `netlify.toml` comment: a signed-out request for a
 course file must answer 401, and a 200 means the rewrite is not matching.
 
+### The gate's first deploy failed, and the checker did not notice
+
+Worth recording, because the failure mode is more interesting than the bug.
+
+A `sed` used to confirm the new `course-gate` check actually fired left a
+duplicate `force` key in `netlify.toml` — and, because the expression had no
+stopping condition, also rewrote `force = true` to `force = false` in every
+block below the one it was aiming at, including the five blog 301s. Netlify
+rejected the document, the build failed, and all three deploy checks went red.
+
+`check_site.py` said **PASSED** throughout. Every netlify.toml check it had read
+the file with regular expressions, and a regex looking for `force = true` is
+perfectly happy to find it on the line above a contradicting `force = false`.
+
+`tomllib` rejects the same file in one line. So there is now a `netlify-toml`
+check that parses the document before anything else looks at it, and it also
+catches a redirect with no target, an impossible status code, and a splat that
+is not at the end of a path — Netlify only wildcards at the end, so the `/*.md`
+rule in the first version of this change would have matched nothing. The
+markdown files are listed individually instead.
+
+Two things carried forward: **edit `netlify.toml` with a parser or by hand,
+never with a stream editor**, and a checker that validates a config format
+without parsing it is not validating it.
+
 ### Source files were being served, and are not any more
 
 Found while working on the above: because the publish directory is the

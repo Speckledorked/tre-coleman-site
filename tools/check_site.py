@@ -799,7 +799,59 @@ def check_course_gate():
                       "they will hit the gate without a token")
 
 
+def check_netlify_toml():
+    """netlify.toml must actually parse as TOML.
+
+    Everything else here reads netlify.toml with regular expressions, which
+    cannot tell a valid document from a broken one. That gap shipped a
+    duplicate `force` key to Netlify: the build failed, every deploy check went
+    red, and this checker said PASSED, because a regex looking for
+    `force = true` is perfectly happy to find it on the line above a
+    contradicting `force = false`.
+
+    tomllib rejects that in one line, so it runs first and the regex checks
+    below it are only reached on a document that parses.
+
+    It also catches what the regex checks structurally cannot: a key repeated
+    inside one block, a table defined twice, an unterminated string.
+    """
+    if not os.path.exists("netlify.toml"):
+        return
+    try:
+        import tomllib
+    except ImportError:          # Python < 3.11
+        warn("netlify.toml", "tomllib unavailable; TOML not validated")
+        return
+    try:
+        with open("netlify.toml", "rb") as fh:
+            config = tomllib.load(fh)
+    except tomllib.TOMLDecodeError as exc:
+        err("netlify.toml", f"does not parse as TOML — Netlify will fail the "
+                            f"deploy: {exc}")
+        return
+
+    # A redirect needs somewhere to go, and a status Netlify understands.
+    for i, rule in enumerate(config.get("redirects", []), start=1):
+        if "from" not in rule:
+            err("netlify.toml", f"redirect #{i} has no `from`")
+        if "to" not in rule:
+            err("netlify.toml", f"redirect #{i} ({rule.get('from', '?')}) "
+                                f"has no `to`")
+        status = rule.get("status", 301)
+        if not isinstance(status, int) or not 200 <= status <= 599:
+            err("netlify.toml", f"redirect {rule.get('from', '?')} has an "
+                                f"invalid status: {status!r}")
+
+        # Netlify expands a splat only at the end of a path. `/*.md` looks like
+        # an extension glob and is not one — it matches nothing.
+        frm = rule.get("from", "")
+        if "*" in frm and not frm.endswith("*"):
+            err("netlify.toml", f"`{frm}` has a splat that is not at the end; "
+                                f"Netlify will not treat it as a wildcard")
+
+
 CHECKS = [
+    ("netlify-toml", check_netlify_toml, "netlify.toml parses and its redirects are sane"),
     ("secrets", check_secrets, "live credentials in tracked files"),
     ("gitignore", check_gitignore, ".env is ignored"),
     ("json-ld", check_json_ld, "schema parses and describes its own page"),

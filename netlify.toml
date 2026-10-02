@@ -106,7 +106,6 @@
   to = "/.netlify/functions/course-download?file=:splat"
   status = 200
   force = true
-  force = false
 
 # ---------------------------------------------------------------------------
 # Source files are not website.
@@ -121,42 +120,77 @@
 # /netlify/* is the source directory. Function invocations go to
 # /.netlify/functions/* with a leading dot, which is a different path and is
 # not affected.
+#
+# Netlify only treats a splat as a wildcard at the END of a path, so these are
+# directory prefixes and exact filenames rather than an extension glob.
 # ---------------------------------------------------------------------------
 [[redirects]]
   from = "/netlify/*"
   to = "/404.html"
   status = 404
-  force = false
+  force = true
 
 [[redirects]]
   from = "/tools/*"
   to = "/404.html"
   status = 404
-  force = false
+  force = true
 
 [[redirects]]
   from = "/drafts/*"
   to = "/404.html"
   status = 404
-  force = false
-
-[[redirects]]
-  from = "/*.md"
-  to = "/404.html"
-  status = 404
-  force = false
+  force = true
 
 [[redirects]]
   from = "/package.json"
   to = "/404.html"
   status = 404
-  force = false
+  force = true
 
+# The working documents. Listed rather than globbed, for the splat reason
+# above. tools/README.md and drafts/ are already covered by their directories.
 [[redirects]]
-  from = "/package-lock.json"
+  from = "/SEO_AUDIT.md"
   to = "/404.html"
   status = 404
-  force = false
+  force = true
+
+[[redirects]]
+  from = "/CLAIMS.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/TESTIMONIALS.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/COURSE-SYSTEM-SETUP.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/NAV-FOOTER-STANDARDIZATION-GUIDE.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/images/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
 
 # ---------------------------------------------------------------------------
 # Blog URL migration (see tools/migrate_blog_urls.py)
@@ -167,28 +201,28 @@
   from = "/blog/blog_post_1_profit_leaks_rewritten.html"
   to = "/blog/restaurant-profit-leaks.html"
   status = 301
-  force = false
+  force = true
 
 [[redirects]]
   from = "/blog/blog_post_2_systems_growth_rewritten.html"
   to = "/blog/restaurant-systems-for-growth.html"
   status = 301
-  force = false
+  force = true
 
 [[redirects]]
   from = "/blog/blog_post_3_menu_engineering_rewritten.html"
   to = "/blog/menu-engineering-guide.html"
   status = 301
-  force = false
+  force = true
 
 [[redirects]]
   from = "/blog/blog_post_4_fractional_coo_rewritten.html"
   to = "/blog/fractional-coo-for-restaurants.html"
   status = 301
-  force = false
+  force = true
 
 [[redirects]]
   from = "/blog/blog_post_5_catering_profitability_rewritten.html"
   to = "/blog/scaling-a-catering-business.html"
   status = 301
-  force = false
+  force = true
