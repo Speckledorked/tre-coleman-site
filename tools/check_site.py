@@ -533,11 +533,26 @@ def check_unused_images():
 # 9. Config consistency
 # --------------------------------------------------------------------------
 
+# Netlify injects these at build and runtime. A function may read one, but it
+# must never appear as a settable line in .env.example: writing it by hand in
+# the Netlify UI overrides the real value, which is the opposite of the point.
+# https://docs.netlify.com/configure-builds/environment-variables/
+PLATFORM_ENV = {
+    "URL", "DEPLOY_URL", "DEPLOY_PRIME_URL", "CONTEXT", "SITE_NAME", "SITE_ID",
+    "COMMIT_REF", "BRANCH", "HEAD", "REPOSITORY_URL", "NETLIFY", "BUILD_ID",
+}
+
+
 def check_env_documented():
     """Every process.env.X used by a function must appear in .env.example.
 
     COURSE-SYSTEM-SETUP.md documented 6 of 9 variables; the 3 it missed are
     exactly the 3 that were lost when the Netlify project went away.
+
+    A platform variable is exempt from needing a settable line, but not from
+    needing an explanation: it still has to be named somewhere in the file, so
+    the next person reading it learns the function depends on something they
+    will not find in the Netlify UI.
     """
     used = set()
     for f in glob.glob("netlify/functions/*.js"):
@@ -548,12 +563,26 @@ def check_env_documented():
     if not os.path.exists(".env.example"):
         err(".env.example", f"missing — {len(used)} env vars are undocumented")
         return
-    documented = set(re.findall(r"^([A-Z0-9_]+)=", 
-                                open(".env.example", encoding="utf-8").read(), re.M))
+    text = open(".env.example", encoding="utf-8").read()
+    documented = set(re.findall(r"^([A-Z0-9_]+)=", text, re.M))
+
     for v in sorted(used - documented):
+        if v in PLATFORM_ENV:
+            # Netlify supplies it; it only has to be explained, not set.
+            if not re.search(rf"\b{re.escape(v)}\b", text):
+                err(".env.example", f"{v} is read by a function and provided by "
+                                    f"Netlify, but is not explained anywhere")
+            continue
         err(".env.example", f"{v} is used by a function but not documented")
+
     for v in sorted(documented - used):
         warn(".env.example", f"{v} is documented but no function reads it")
+
+    # A platform variable with a settable line is the failure this guards
+    # against: it would be overridden by hand and stop tracking reality.
+    for v in sorted(documented & PLATFORM_ENV):
+        err(".env.example", f"{v} is set by Netlify — it must not appear as a "
+                            f"settable line, or a hand-entered value overrides it")
 
 
 def check_redirects():

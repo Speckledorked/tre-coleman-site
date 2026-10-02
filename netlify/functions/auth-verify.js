@@ -55,11 +55,23 @@ exports.handler = async (event) => {
       process.env.SUPABASE_SERVICE_KEY
     );
 
-    const { data: profile } = await serviceSupabase
+    const { data: profile, error: profileError } = await serviceSupabase
       .from('users')
       .select('name, has_course_access')
       .eq('id', user.id)
       .single();
+
+    // See auth-login: anything but "no row matched" means the lookup failed,
+    // and reporting has_course_access: false on a failed lookup locks a buyer
+    // out of what they paid for. Every page in the course calls this on load.
+    if (profileError && profileError.code !== 'PGRST116') {
+      console.error('Profile lookup failed for', user.id, profileError);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Verification failed' })
+      };
+    }
 
     return {
       statusCode: 200,

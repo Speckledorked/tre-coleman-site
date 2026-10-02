@@ -60,11 +60,25 @@ exports.handler = async (event) => {
       process.env.SUPABASE_SERVICE_KEY
     );
 
-    const { data: profile } = await serviceSupabase
+    const { data: profile, error: profileError } = await serviceSupabase
       .from('users')
       .select('name, has_course_access, stripe_customer_id')
       .eq('id', data.user.id)
       .single();
+
+    // PGRST116 is "no row matched", which is a legitimate state for a user who
+    // has signed up but has no profile row yet. Any other error means the
+    // lookup itself failed, and the fallbacks below would then quietly report
+    // has_course_access: false — telling a paying customer they have not
+    // bought the course. Fail loudly instead.
+    if (profileError && profileError.code !== 'PGRST116') {
+      console.error('Profile lookup failed for', data.user.id, profileError);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Login failed. Please try again.' })
+      };
+    }
 
     return {
       statusCode: 200,
