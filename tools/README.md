@@ -62,6 +62,7 @@ tells you which ones it skipped rather than inventing one.
 | `build_new_pages.py` | Generates the service and location pages |
 | `migrate_blog_urls.py` | One-shot: renamed blog files to slugs, added 301s |
 | `fix_contrast.py` | Raises colour pairings measured below WCAG AA |
+| `wire_course_downloads.py` | Adds `downloads.js` to the course pages with download links |
 
 ## Requirements
 
@@ -119,6 +120,25 @@ Every check corresponds to a defect this site has actually had.
 | `js` | JavaScript that does not parse — the duplicate `const` that left the exit-intent popup dead for months |
 | `fragments` | A `href="#foo"` with no `id="foo"` on the page — twenty pages shipped a skip link pointing at nothing |
 | `contrast` | Colour pairings below WCAG AA, including the two kinds axe cannot see (see below) |
+| `netlify-toml` | A `netlify.toml` that does not parse, a redirect with no target or a bad status, and a splat that is not at the end of the path |
+| `course-gate` | The paid course files losing their gate — a missing rewrite, a missing `force = true`, a missing function, or a page whose download links load without `downloads.js` |
+
+### Why netlify.toml is parsed, not grepped
+
+Every other netlify.toml check here reads the file with regular expressions,
+which cannot tell a valid document from a broken one. That gap shipped a
+duplicate `force` key: the Netlify build failed, every deploy check went red,
+and `check_site.py` said PASSED — because a regex looking for `force = true` is
+perfectly happy to find it on the line above a contradicting `force = false`.
+
+`tomllib` rejects it in one line, so the `netlify-toml` check runs first and
+everything after it only sees a document that parses.
+
+The duplicate came from a `sed` used to test that another check worked, which
+also rewrote `force = true` to `force = false` in every block below the one it
+was aiming at — including the five blog 301s. **Edit netlify.toml with a parser
+or by hand, never with a stream editor**, and re-run the checker afterwards
+rather than trusting the edit.
 
 ### Known limitations
 

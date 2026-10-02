@@ -14,8 +14,9 @@
 [functions]
   # Node.js bundler
   node_bundler = "esbuild"
-  # Include node_modules in the function bundle
-  included_files = ["node_modules/**"]
+  # Include node_modules in the function bundle, and the course files that
+  # course-download.js reads off disk — they are no longer served statically.
+  included_files = ["node_modules/**", "course/downloads/**"]
 
 # Redirect rules
 [[redirects]]
@@ -49,7 +50,9 @@
     X-Robots-Tag = "noindex, nofollow"
 
 # Paid course assets must never appear in search results. These are binary
-# files that cannot carry a meta robots tag.
+# files that cannot carry a meta robots tag. The header is belt and braces now
+# that the rewrite below gates them, but it costs nothing and still applies to
+# the function's own responses.
 [[headers]]
   for = "/course/downloads/*"
   [headers.values]
@@ -83,6 +86,111 @@
   for = "/**/*.pdf"
   [headers.values]
     Content-Type = "application/pdf"
+
+# ---------------------------------------------------------------------------
+# The paid course files, gated.
+#
+# publish = "." means every file in the repository is served, so there is
+# nowhere a course file can sit and not be reachable. force = true is what
+# makes this a gate rather than a suggestion: a forced rewrite takes precedence
+# over a static file at the same path, so the asset stops being reachable and
+# every request arrives at the function, which requires a Supabase bearer token
+# and a true has_course_access before it returns a byte.
+#
+# Verify after any change to this block, from a signed-out browser:
+#   curl -so /dev/null -w '%{http_code}' <site>/course/downloads/bonus/90_Day_Implementation_Plan.pdf
+# 401 is correct. 200 means the rewrite is not matching and the files are open.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/course/downloads/*"
+  to = "/.netlify/functions/course-download?file=:splat"
+  status = 200
+  force = true
+
+# ---------------------------------------------------------------------------
+# Source files are not website.
+#
+# The publish directory is the repository root, so the function sources, the
+# tooling and the working documents were all being served: /netlify/functions/
+# auth-login.js answered 200 and showed the table names and the service-key
+# usage. No credentials were in them — they read process.env — but none of it
+# is anyone's business, and SEO_AUDIT.md was a public document nobody asked
+# for. These 404 instead.
+#
+# /netlify/* is the source directory. Function invocations go to
+# /.netlify/functions/* with a leading dot, which is a different path and is
+# not affected.
+#
+# Netlify only treats a splat as a wildcard at the END of a path, so these are
+# directory prefixes and exact filenames rather than an extension glob.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/tools/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/drafts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# The working documents. Listed rather than globbed, for the splat reason
+# above. tools/README.md and drafts/ are already covered by their directories.
+[[redirects]]
+  from = "/SEO_AUDIT.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/CLAIMS.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/TESTIMONIALS.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/COURSE-SYSTEM-SETUP.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/NAV-FOOTER-STANDARDIZATION-GUIDE.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/images/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
 
 # ---------------------------------------------------------------------------
 # Blog URL migration (see tools/migrate_blog_urls.py)

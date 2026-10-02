@@ -569,6 +569,19 @@ def check_redirects():
         target = to.group(1).split("?")[0].lstrip("/")
         if not target or target.startswith("http"):
             continue
+
+        # A function target is a handler on disk, not a file in the publish
+        # directory: /.netlify/functions/foo is netlify/functions/foo.js.
+        # Checking it still matters — a redirect naming a function that does
+        # not exist is a 404 on a route the site depends on.
+        if target.startswith(".netlify/functions/"):
+            name = target[len(".netlify/functions/"):]
+            if not any(os.path.exists(f"netlify/functions/{name}{ext}")
+                       for ext in (".js", ".mjs", ".ts")):
+                err("netlify.toml",
+                    f"redirect names a function that does not exist: {name}")
+            continue
+
         if not os.path.exists(target):
             err("netlify.toml", f"redirect target does not exist: {to.group(1)}")
         if frm and frm.group(1).lstrip("/") == target:
@@ -732,7 +745,113 @@ def check_contrast():
                       f"run python3 tools/fix_contrast.py")
 
 
+def check_course_gate():
+    """The paid course files must be behind the function, not served statically.
+
+    publish = "." means every file in the repository is served, so the only
+    thing standing between course/downloads/ and the public internet is the
+    forced rewrite in netlify.toml. Delete that one block and 26 paid files go
+    back to answering 200, silently, with nothing else in the repository
+    changing. This asserts the whole chain is present.
+
+    It cannot tell you the gate WORKS — that needs a deployed site. The
+    netlify.toml comment carries the one-line curl for that.
+    """
+    if not os.path.exists("netlify.toml"):
+        return
+    toml = open("netlify.toml", encoding="utf-8").read()
+
+    gate = None
+    for block in re.findall(r"\[\[redirects\]\](.*?)(?=\[\[|\Z)", toml, re.S):
+        frm = re.search(r'from\s*=\s*"([^"]+)"', block)
+        if frm and frm.group(1) == "/course/downloads/*":
+            gate = block
+            break
+
+    if gate is None:
+        err("netlify.toml", "no rewrite for /course/downloads/* — the paid "
+                            "course files are served as public static assets")
+        return
+
+    if not re.search(r"force\s*=\s*true", gate):
+        err("netlify.toml", "/course/downloads/* rewrite is not force = true, "
+                            "so the static files still win and the gate does "
+                            "nothing")
+
+    if "course-download" not in gate:
+        err("netlify.toml", "/course/downloads/* does not point at the "
+                            "course-download function")
+
+    if not os.path.exists("netlify/functions/course-download.js"):
+        err("netlify/functions/", "course-download.js is missing")
+
+    # The function reads the files off disk, so they must be in its bundle.
+    inc = re.search(r"included_files\s*=\s*\[([^\]]*)\]", toml)
+    if not inc or "course/downloads" not in inc.group(1):
+        err("netlify.toml", "course/downloads is not in included_files, so the "
+                            "function cannot read the files it gates")
+
+    # Every page with download links needs the client that adds the header.
+    for path in sorted(glob.glob("course/*.html")):
+        page = open(path, encoding="utf-8", errors="replace").read()
+        if 'class="dl-btn"' in page and "downloads.js" not in page:
+            err(path, "has download links but does not load downloads.js, so "
+                      "they will hit the gate without a token")
+
+
+def check_netlify_toml():
+    """netlify.toml must actually parse as TOML.
+
+    Everything else here reads netlify.toml with regular expressions, which
+    cannot tell a valid document from a broken one. That gap shipped a
+    duplicate `force` key to Netlify: the build failed, every deploy check went
+    red, and this checker said PASSED, because a regex looking for
+    `force = true` is perfectly happy to find it on the line above a
+    contradicting `force = false`.
+
+    tomllib rejects that in one line, so it runs first and the regex checks
+    below it are only reached on a document that parses.
+
+    It also catches what the regex checks structurally cannot: a key repeated
+    inside one block, a table defined twice, an unterminated string.
+    """
+    if not os.path.exists("netlify.toml"):
+        return
+    try:
+        import tomllib
+    except ImportError:          # Python < 3.11
+        warn("netlify.toml", "tomllib unavailable; TOML not validated")
+        return
+    try:
+        with open("netlify.toml", "rb") as fh:
+            config = tomllib.load(fh)
+    except tomllib.TOMLDecodeError as exc:
+        err("netlify.toml", f"does not parse as TOML — Netlify will fail the "
+                            f"deploy: {exc}")
+        return
+
+    # A redirect needs somewhere to go, and a status Netlify understands.
+    for i, rule in enumerate(config.get("redirects", []), start=1):
+        if "from" not in rule:
+            err("netlify.toml", f"redirect #{i} has no `from`")
+        if "to" not in rule:
+            err("netlify.toml", f"redirect #{i} ({rule.get('from', '?')}) "
+                                f"has no `to`")
+        status = rule.get("status", 301)
+        if not isinstance(status, int) or not 200 <= status <= 599:
+            err("netlify.toml", f"redirect {rule.get('from', '?')} has an "
+                                f"invalid status: {status!r}")
+
+        # Netlify expands a splat only at the end of a path. `/*.md` looks like
+        # an extension glob and is not one — it matches nothing.
+        frm = rule.get("from", "")
+        if "*" in frm and not frm.endswith("*"):
+            err("netlify.toml", f"`{frm}` has a splat that is not at the end; "
+                                f"Netlify will not treat it as a wildcard")
+
+
 CHECKS = [
+    ("netlify-toml", check_netlify_toml, "netlify.toml parses and its redirects are sane"),
     ("secrets", check_secrets, "live credentials in tracked files"),
     ("gitignore", check_gitignore, ".env is ignored"),
     ("json-ld", check_json_ld, "schema parses and describes its own page"),
@@ -756,6 +875,7 @@ CHECKS = [
     ("faq-visible", check_faq_visible, "FAQPage markup matches visible text"),
     ("fragments", check_fragments, "every #fragment link has a target"),
     ("contrast", check_contrast, "no colour pairing below WCAG AA"),
+    ("course-gate", check_course_gate, "paid course files are behind the function"),
 ]
 
 
