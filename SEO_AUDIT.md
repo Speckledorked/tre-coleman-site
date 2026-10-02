@@ -1270,10 +1270,10 @@ Every item below is currently published on the live site. None can be verified f
 
 | Claim | Where | What's needed | Status |
 |---|---|---|
-| "10+ years managing multi-unit restaurant operations" | `about.html:341`, `index.html`, `blog.html` | Employment history | ✅ Softened 2026-10-02 — now "10+ years in hospitality operations, including multi-unit management" |
-| "300+ employees led across multiple locations" | `about.html:341`, `index.html` | Documentation | ✅ Replaced 2026-10-02 — now "Led teams of 60–80+ across five national-brand locations" |
-| "$300K+ in revenue waste eliminated for clients" | `about.html:341` | Client documentation | ✅ Softened 2026-10-02 — no number claimed |
-| "National Hospitality Brands" | `index.html` | Which brands? Naming them (with permission) is far stronger than the vague phrase | ✅ Named 2026-10-02 — "Hooters · Red Robin · Outback · Chili's · Buffalo Wild Wings" (Potbelly removed) |
+| "10+ years managing multi-unit restaurant operations" | `about.html:341`, `index.html`, `blog.html` | Employment history | ⏳ REVERTED 2026-10-02 — resume disavowed by Tre'; awaiting correct work history |
+| "300+ employees led across multiple locations" | `about.html:341`, `index.html` | Documentation | ⏳ REVERTED 2026-10-02 — resume disavowed by Tre'; awaiting correct work history |
+| "$300K+ in revenue waste eliminated for clients" | `about.html:341` | Client documentation | ⏳ REVERTED 2026-10-02 — resume disavowed by Tre'; awaiting correct work history |
+| "National Hospitality Brands" | `index.html` | Which brands? Naming them (with permission) is far stronger than the vague phrase | ⏳ REVERTED 2026-10-02 — resume disavowed by Tre'; brand names removed, awaiting correct work history |
 | "Cut admin time 40-60%" | `ai-integration.html` meta + body | Measured client results | ✅ Reframed as pilot target 2026-10-02 |
 | "New hires productive 40% faster with AI" | `ai-integration.html:417` | Measured results | ✅ Softened 2026-10-02 — ramp time measured per rollout |
 | "50% faster onboarding — 2-3 weeks instead of 4-6" | `sops-training.html:318,419` | Measured results | ✅ Reframed as program target 2026-10-02 |

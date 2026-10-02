@@ -25,10 +25,10 @@ Status key — `documented` · `needs softening` · `remove` · `unreviewed`
 
 | # | Claim | Where | Evidence | Status |
 |---|---|---|---|---|
-| 1 | "10+ years managing multi-unit restaurant operations" | `about.html`, `index.html`, `blog.html` | | softened (2026-10-02) |
-| 2 | "300+ employees led across multiple locations" | `about.html`, `index.html` | | softened (2026-10-02) |
-| 3 | "$300K+ in revenue waste eliminated for clients" | `about.html` | | softened (2026-10-02) |
-| 4 | "National Hospitality Brands" | `index.html` | | softened (2026-10-02) |
+| 1 | "10+ years managing multi-unit restaurant operations" | `about.html`, `index.html`, `blog.html` | | unreviewed — resume disavowed by Tre' 2026-10-02; awaiting correct work history |
+| 2 | "300+ employees led across multiple locations" | `about.html`, `index.html` | | unreviewed — resume disavowed by Tre' 2026-10-02; awaiting correct work history |
+| 3 | "$300K+ in revenue waste eliminated for clients" | `about.html` | | unreviewed — resume disavowed by Tre' 2026-10-02; awaiting correct work history |
+| 4 | "National Hospitality Brands" | `index.html` | | unreviewed — resume disavowed by Tre' 2026-10-02; awaiting correct work history |
 
 > On #4 — naming the brands (with permission) is far stronger than the vague
 > phrase. Specificity is the whole credibility mechanism here.
