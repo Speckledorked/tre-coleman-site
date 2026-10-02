@@ -401,14 +401,29 @@ def _inbound_counts():
 
 
 def check_orphans():
-    """Indexable pages nothing links to, and link equity sent to noindex pages."""
+    """Indexable pages nothing links to, and noindex pages out-linking content."""
     counts = _inbound_counts()
+
+    indexable = []
+    for p, c in counts.items():
+        body = open(p, encoding="utf-8", errors="replace").read()
+        if not is_noindex(body, p):
+            indexable.append(c)
+    indexable.sort()
+    median_indexable = (indexable[len(indexable) // 2] if indexable else 0)
     for path, n in sorted(counts.items()):
         s = open(path, encoding="utf-8", errors="replace").read()
         if is_noindex(s, path):
-            if n > 20:
-                warn(path, f"noindex page has {n} inbound links — that equity "
-                           "is going nowhere")
+            # A members-area login link in the footer is normal and harmless;
+            # "link equity going nowhere" is not a real mechanism. What IS a
+            # real signal is a noindex page out-linking your actual content —
+            # which is what this site had when login.html sat at 32 inbound
+            # links while each service page had 1. Compare against the median
+            # indexable page rather than a fixed number.
+            if indexable and n > 1.5 * median_indexable:
+                warn(path, f"noindex page has {n} inbound links vs a median of "
+                           f"{median_indexable:.0f} for indexable pages — it is "
+                           "out-linked against your real content")
             continue
         if n == 0:
             err(path, "orphan: no internal page links to it")

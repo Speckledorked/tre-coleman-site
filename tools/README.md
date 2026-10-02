@@ -101,6 +101,7 @@ Every check corresponds to a defect this site has actually had.
 | `sitemap` | Indexable pages missing from it, noindex pages wrongly listed, invalid XML |
 | `robots` | Missing `Sitemap:` directive, accidental `Disallow: /` |
 | `stale` | Hot-linked Unsplash images, the removed Crisp loader, old blog filenames, the stale `$750` price, pre-WebP image paths, a reintroduced font `@import` |
+| `orphans` | Indexable pages nothing links to, and noindex pages out-linked against your real content (compared to the median indexable page, not a fixed number) |
 | `js` | JavaScript that does not parse — the duplicate `const` that left the exit-intent popup dead for months |
 
 ### Known limitations
