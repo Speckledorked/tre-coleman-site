@@ -55,10 +55,14 @@
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
 
-# The course archive at the site root is the complete paid product and is
-# currently downloadable without payment. This header keeps it out of search
-# results, but it does NOT restrict access — the file still needs to be
-# deleted from the repo (its 26 files already exist under course/downloads/).
+# The course archive that used to sit at the site root — the complete $67
+# product, downloadable by anyone who guessed the filename — has been deleted.
+# Its 26 files are byte-identical to the ones under course/downloads/, so
+# nothing was lost.
+#
+# This rule stays as a standing guard: any .zip that lands at the root in
+# future is kept out of search results by default. It does NOT restrict
+# access, and nothing here can — see the note on course/downloads above.
 [[headers]]
   for = "/*.zip"
   [headers.values]
