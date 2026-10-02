@@ -276,9 +276,9 @@ For the record, an intermediate revision of this document claimed the page was m
 | **Substantiate published claims** | The ~18 figures listed at the end of this document are unchanged and still need documentation |
 | **Named testimonials** | **[EXTERNAL]** — the site still has one anonymous testimonial. `Review` schema stays correctly absent until there are named, permissioned ones |
 | **GBP, citations, reviews, outreach** | **[EXTERNAL]** — all of §5.4 |
-| **Remaining 9 articles** | §4.5 items 2–10. Several depend on your operating experience — #10 in particular cannot be written by anyone else without fabricating |
+| **Remaining 3 articles** | Seven of the ten in §4.5 are published. What is left is #4 (food truck event pricing), which needs real figures rather than invented ones; #9 (ghost kitchen profitability), declined unless you have the operating experience; and #10 (multi-unit Virginia), which is first-person and cannot be written by anyone else without fabricating it |
 | **Rewrite the 5 original posts** | Half done. The seams are closed: each post opened with sharp new sentences and then resumed the old draft mid-paragraph, three of them with a stranded clause or a connective contrasting nothing. Fixed by deletion and reorder in `tools/fix_article_seams.py`, no new prose. What remains needs your voice and your numbers — chiefly the second paragraph of all five, an empty preamble carrying the two unverified claims. `REWRITE-NOTES.md` has the order |
-| **Extract shared inline CSS** | Deliberately skipped: ~8h of work across 40 pages with real regression risk and modest payoff. Worth doing when the site next gets a design pass |
+| **Extract shared inline CSS** | Deliberately skipped, and the partial extraction already done is the argument for leaving the rest alone: it appended desktop dropdown rules after the mobile media queries and silently broke the mobile submenu on 24 pages for weeks. ~8h across 40 pages, real regression risk, modest payoff. If it is ever resumed, the generator-agreement CI step and a rendered check at 390px are the minimum safety net |
 | **Server-render `virginia-neighbors.html`** | Mitigated with static copy, but the listings still need JS. A proper fix needs a build step |
 
 ---
