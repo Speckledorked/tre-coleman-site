@@ -663,6 +663,75 @@ def check_faq_visible():
                     err(path, f'FAQPage question not visible on the page: "'
                               f'{q.get("name", "")[:50]}..."')
 
+def check_fragments():
+    """Every same-page #fragment must have an element to land on.
+
+    This is the check that was missing when twenty pages shipped a skip link
+    pointing at #main-content on pages that had no such id: the first thing a
+    keyboard user tabbed to did nothing. lychee found it in CI; it should not
+    have needed CI to find it, so it is static now.
+
+    Only same-page fragments are checked. A fragment on a link to another page
+    is resolved against that page, and a bare href="#" is a deliberate
+    JavaScript hook, not a destination.
+    """
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        targets = set(re.findall(r'\sid="([^"]+)"', s))
+        targets |= set(re.findall(r'<a\b[^>]*\sname="([^"]+)"', s))
+        for frag in sorted(set(re.findall(r'href="#([^"]+)"', s))):
+            if frag == "top" or frag in targets:
+                continue
+            err(path, f'href="#{frag}" but nothing on the page has that id')
+
+        # A skip link is the one fragment that must exist on every page that
+        # claims to have one, and must point at the content rather than a modal.
+        if "skip-link" in s and 'id="main-content"' not in s:
+            err(path, "skip link with no #main-content landmark to skip to")
+
+        # Fragments on links to other pages of this site, which lychee also
+        # resolves. Links off the site are left to lychee alone.
+        for rel, frag in set(re.findall(r'href="([^":#]+\.html)#([^"]+)"', s)):
+            target = os.path.normpath(os.path.join(os.path.dirname(path), rel))
+            if not os.path.exists(target):
+                continue   # the links check reports the missing file itself
+            other = open(target, encoding="utf-8", errors="replace").read()
+            if frag not in set(re.findall(r'\sid="([^"]+)"', other)):
+                err(path, f'links to {rel}#{frag} but that page has no '
+                          f'id="{frag}"')
+
+
+def check_contrast():
+    """No colour pairing that fix_contrast.py would have to repair.
+
+    This delegates to the generator rather than restating its patterns, so the
+    two cannot drift. If fix_contrast.py would change a file, the file has a
+    pairing measured below WCAG AA and this fails.
+
+    It exists because Lighthouse could not be relied on here. axe cannot
+    resolve the backdrop behind an element whose ancestor carries a background
+    image, so it reports those descendants as *incomplete* rather than failing,
+    and Lighthouse's color-contrast audit counts only failures. advisory.html
+    scored accessibility 100 with a white-on-gold button at 2.03:1 sitting
+    inside its hero image. axe also never evaluates a :hover state, so a button
+    can pass at rest and fail under the pointer. Both gaps are static, so a
+    static check closes them.
+    """
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    sys.dont_write_bytecode = True   # no __pycache__ beside the tools
+    try:
+        import fix_contrast
+    except ImportError:
+        warn("tools/", "fix_contrast.py not importable; contrast unchecked")
+        return
+    for path in html_files():
+        original = open(path, encoding="utf-8", errors="replace").read()
+        _, num = fix_contrast.convert(path, original)
+        if num:
+            err(path, f"{num} colour pairing(s) below WCAG AA — "
+                      f"run python3 tools/fix_contrast.py")
+
+
 CHECKS = [
     ("secrets", check_secrets, "live credentials in tracked files"),
     ("gitignore", check_gitignore, ".env is ignored"),
@@ -685,6 +754,8 @@ CHECKS = [
     ("prices", check_prices, "no stale product prices"),
     ("html-a11y", check_ids_and_a11y, "duplicate ids, noopener, mixed content, labels"),
     ("faq-visible", check_faq_visible, "FAQPage markup matches visible text"),
+    ("fragments", check_fragments, "every #fragment link has a target"),
+    ("contrast", check_contrast, "no colour pairing below WCAG AA"),
 ]
 
 

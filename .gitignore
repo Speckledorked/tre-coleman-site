@@ -24,3 +24,7 @@ npm-debug.log*
 
 # Lighthouse CI output
 .lighthouseci/
+
+# Python bytecode, created when check_site.py imports fix_contrast
+__pycache__/
+*.py[cod]

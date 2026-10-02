@@ -43,14 +43,14 @@ NAV = """<nav id="mainNav">
             </li>
             <li><a href="{p}advisory.html">Advisory</a></li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Insights</a>
+              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Insights</a>
               <div class="dropdown-menu">
                 <a href="{p}blog.html">Blog &amp; Playbooks</a>
                 <a href="{p}catering-profit.html">Catering Profit System</a>
               </div>
             </li>
             <li class="nav-dropdown">
-              <a href="#" onclick="return false;">Resources</a>
+              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Resources</a>
               <div class="dropdown-menu">
                 <a href="{p}audit.html">Restaurant Ops Audit</a>
                 <a href="{p}food-truck-audit.html">Food Truck Launch Audit</a>

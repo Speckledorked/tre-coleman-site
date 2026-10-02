@@ -53,9 +53,15 @@ jobs:
         with:
           # Internal links are resolved against the checked-out files, so this
           # tests THIS commit rather than whatever is currently deployed.
+          #
+          # --root-dir is what lets root-relative hrefs resolve. The course
+          # pages link to /catering-profit.html, which is correct in production
+          # but means nothing to a checker reading a file off disk; without it
+          # lychee reports them as unresolvable rather than checking them.
           args: >-
             --no-progress
             --include-fragments
+            --root-dir "$GITHUB_WORKSPACE"
             --max-concurrency 8
             --timeout 20
             --retry-wait-time 5
