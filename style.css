@@ -21,6 +21,13 @@
   --secondary-light: #34495e;
   --accent-colour: #F4A460;
   --accent-gold: #F4A460;
+  /* Accessible variant of the brand gold, for anything carrying text.
+     #F4A460 on white is 2.03:1 — it fails WCAG AA badly in both directions,
+     which Lighthouse flagged on the primary booking CTA. This is the same
+     hue darkened to 4.85:1, so it passes AA as a text colour on white AND as
+     a button background under white text. Keep --accent-gold for decorative
+     use only: borders, rules, bullet markers, focus outlines. */
+  --accent-gold-text: #A85F28;
   --accent-dark: #d4895f;
 
   /* Background colors */
@@ -239,7 +246,7 @@ nav a.button:hover {
 
 /* Navigation CTA button (Snapshot) */
 .nav-cta {
-  background: var(--accent-colour) !important;
+  background: var(--accent-gold-text) !important;
   color: white !important;
   padding: 0.65rem 1.5rem !important;
   border-radius: 6px !important;
@@ -642,10 +649,18 @@ footer .footer-content {
   margin-bottom: 2rem;
 }
 
+.footer-section h2,
+.footer-section h3,
 .footer-section h4 {
   color: white;
   margin-bottom: 1rem;
   font-size: 1.1rem;
+}
+
+.footer-section p,
+.footer-bottom p,
+.footer-bottom {
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .footer-section ul {
@@ -917,7 +932,7 @@ button[type="submit"]:active,
   }
 
   nav ul li a:hover, #mainNav a:hover {
-    color: var(--accent-colour, #F4A460);
+    color: var(--accent-gold-text, #A85F28);
   }
 
   nav a.button {
@@ -953,7 +968,7 @@ button[type="submit"]:active,
 
   .dropdown-menu a:hover {
     background: rgba(31, 71, 136, 0.1);
-    color: var(--accent-colour, #F4A460) !important;
+    color: var(--accent-gold-text, #A85F28) !important;
   }
 }
 
@@ -1095,7 +1110,7 @@ button[type="submit"]:active,
   content: '✓';
   position: absolute;
   left: 0;
-  color: #F4A460;
+  color: var(--accent-gold-text, #A85F28);
   font-weight: 700;
 }
 
@@ -1312,3 +1327,16 @@ textarea:focus-visible,
 }
 
 /* Mobile nav styles handled by style.css */
+
+
+/* Links in running text must not rely on colour alone to be distinguishable —
+   WCAG 1.4.1. Underline them inside prose, while leaving nav, buttons,
+   breadcrumbs and card links to their own styling. */
+main p a:not([class]),
+main li a:not([class]),
+.post-content p a:not([class]),
+.post-content li a:not([class]),
+.audit-intro a:not([class]) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

@@ -21,3 +21,6 @@ Thumbs.db
 npm-debug.log*
 .vscode/
 .idea/
+
+# Lighthouse CI output
+.lighthouseci/

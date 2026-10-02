@@ -109,3 +109,58 @@ It is a static checker. It cannot see anything that only exists at runtime:
 rendered output, actual Core Web Vitals, whether a redirect resolves, whether
 Supabase RLS is enabled, or whether an API key is valid. For those, see
 `SEO_AUDIT.md` §7 and the external tools listed there.
+
+## Runtime checks (CI only)
+
+`check_site.py` is static — it reads files. The two things it cannot tell you
+are covered by `.github/workflows/quality.yml`, which adds no runtime
+dependency to the site: `package.json` still carries only the three the Netlify
+Functions need.
+
+### Lighthouse — real Core Web Vitals
+
+Config in `.lighthouserc.json`. Serves the repo as a static directory and
+measures seven representative pages in headless Chrome.
+
+```bash
+npx --yes @lhci/cli@0.14.x autorun --config=.lighthouserc.json
+```
+
+Hard failures: Performance or Accessibility below 90, SEO below 100, LCP over
+2.5s, CLS over 0.1, TBT over 200ms, plus missing alt text, link names, titles,
+descriptions, `lang`, or unsized images.
+
+Deliberately switched off: text compression, cache TTL, CSS/JS minification and
+unused CSS. Netlify serves those, not the repo, so they fail against a plain
+static server and would be permanent false alarms. `color-contrast` and
+`heading-order` are warnings rather than errors — see the known gaps below.
+
+### lychee — link rot
+
+Checks internal *and* external links. Internal ones resolve against the
+checked-out files, so a pull request tests its own commit rather than whatever
+is deployed. Also runs weekly on a schedule, because external links rot without
+anyone touching the repo.
+
+Exclusions are in `.lycheeignore`. LinkedIn, Facebook and Stripe are excluded
+because they return 403/999 to automated checkers — the host refusing a bot,
+not a broken link.
+
+### Known gaps, as measured
+
+Last run, all seven pages: **Performance 100, SEO 100, Best Practices 96**,
+LCP 0.4–0.6s, CLS 0.
+
+Accessibility is 90–100. What remains:
+
+| Page | Score | Remaining |
+|---|---|---|
+| `services.html` | 90 | gold-on-white contrast in page-level CSS; one h1→h3 jump |
+| `profit-leak-snapshot.html` | 95 | gold-on-white contrast in page-level CSS |
+| `blog/*` | 95 | a prose link not matched by the underline rule |
+
+The brand gold `#F4A460` is **2.03:1** against white and fails WCAG AA badly in
+both directions. `--accent-gold-text: #A85F28` is the same hue at **4.85:1** and
+should be used for anything carrying text; keep `--accent-gold` for borders,
+rules and markers only. The pages above still define the old value in their own
+inline CSS.
