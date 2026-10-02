@@ -62,6 +62,7 @@ tells you which ones it skipped rather than inventing one.
 | `build_new_pages.py` | Generates the service and location pages |
 | `migrate_blog_urls.py` | One-shot: renamed blog files to slugs, added 301s |
 | `fix_contrast.py` | Raises colour pairings measured below WCAG AA |
+| `wire_course_downloads.py` | Adds `downloads.js` to the course pages with download links |
 
 ## Requirements
 
@@ -119,6 +120,7 @@ Every check corresponds to a defect this site has actually had.
 | `js` | JavaScript that does not parse — the duplicate `const` that left the exit-intent popup dead for months |
 | `fragments` | A `href="#foo"` with no `id="foo"` on the page — twenty pages shipped a skip link pointing at nothing |
 | `contrast` | Colour pairings below WCAG AA, including the two kinds axe cannot see (see below) |
+| `course-gate` | The paid course files losing their gate — a missing rewrite, a missing `force = true`, a missing function, or a page whose download links load without `downloads.js` |
 
 ### Known limitations
 

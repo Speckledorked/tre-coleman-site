@@ -30,6 +30,68 @@ Most of this audit has since been implemented. **The findings below are preserve
 | **Analytics** | Per-form conversion events, `phone_click`/`email_click`, exit-intent A/B variant tracking |
 | **Tooling** | Two regex-based nav workflows retired in favour of `tools/` generators — see `tools/README.md` |
 
+### The paid course files are now actually gated
+
+Both halves of this are done, and the second half only became possible once the
+Supabase environment variables were restored.
+
+The **complete $67 product** sat at the repository root as a single ZIP, served
+at a guessable URL with no authentication — confirmed live at HTTP 200 before
+deletion. All 26 files inside it were verified byte-identical by SHA-256 to the
+copies under `course/downloads/<module>/`, so deleting it lost nothing. It now
+404s.
+
+The **26 files themselves** were the larger half. The course pages checked
+`has_course_access` in the browser and redirected when it was false, but that
+only ever hid the links — a direct request answered 200 to anyone, and the
+`X-Robots-Tag` header kept them out of search results, which is not the same as
+keeping them private.
+
+What makes the gate real is that `publish = "."`, so every file in the
+repository is served and there is nowhere a course file can sit and not be
+reachable. A **forced rewrite** takes precedence over a static file at the same
+path, so `/course/downloads/*` now resolves to `netlify/functions/course-download.js`,
+which requires the same Supabase bearer token the rest of the course uses and a
+true `has_course_access` before returning a byte. The files stay where they are
+and stop being reachable without a token. No new environment variables: it
+reuses the three Supabase values the auth functions already read.
+
+An `<a href>` cannot send an `Authorization` header, so `course/downloads.js`
+intercepts the clicks and re-issues them as authenticated fetches. A token in
+the query string would have avoided that, and would also have put a live
+credential into browser history, Netlify's access logs, and any `Referer` the
+file's host passes onward. The pages carrying these links already require
+JavaScript — they do not render until `verifySession()` resolves — so nothing
+that worked without it stopped working.
+
+The function resolves file paths against an **allowlist built by walking the
+directory**, rather than sanitising the request. Nothing outside the walk is
+ever in the set, so traversal has nothing to name. Verified locally: all 26
+files allow, `../../package.json`, `/etc/passwd`, `module-1/../../../package.json`
+and percent-encoded variants all deny, and no resolved path escapes the root.
+
+A `course-gate` check now asserts the whole chain — the rewrite, its
+`force = true`, the function, the `included_files` entry, and `downloads.js` on
+every page with download links. Deleting any one of them puts 26 paid files
+back on the public internet silently, and now fails the build instead.
+
+**This needs verifying against the deployed site, not just the repo.** The
+one-line check is in the `netlify.toml` comment: a signed-out request for a
+course file must answer 401, and a 200 means the rewrite is not matching.
+
+### Source files were being served, and are not any more
+
+Found while working on the above: because the publish directory is the
+repository root, `/netlify/functions/auth-login.js` answered **200**, as did
+`/tools/check_site.py`, `/package.json` and `SEO_AUDIT.md` itself. No
+credentials were exposed — the functions read `process.env` — but the table
+names, the service-key usage pattern and the Stripe price-matching logic were
+all public, and this audit was a public document nobody asked for. Those paths
+now 404.
+
+(`/netlify/*` is the source directory. Function invocations go to
+`/.netlify/functions/*`, with a leading dot, and are unaffected.)
+
 ### What CI caught that this audit did not
 
 The Lighthouse and lychee jobs added in the last round failed on their first
@@ -121,7 +183,6 @@ For the record, an intermediate revision of this document claimed the page was m
 | Item | Why it is blocked |
 |---|---|
 | **Verify Google Search Console** | **[EXTERNAL]** — still the single highest-value action. Nothing here is measurable without it |
-| **Gate `/course/downloads/`** | Currently client-side `localStorage` only; direct URLs bypass it entirely — all 26 files answer 200 to an unauthenticated request. The root ZIP is now deleted, so the one-click copy of the whole product is gone, but the files themselves are still open. A real fix needs a Netlify Function checking a session, which is blocked on the Supabase env vars |
 | **Substantiate published claims** | The ~18 figures listed at the end of this document are unchanged and still need documentation |
 | **Named testimonials** | **[EXTERNAL]** — the site still has one anonymous testimonial. `Review` schema stays correctly absent until there are named, permissioned ones |
 | **GBP, citations, reviews, outreach** | **[EXTERNAL]** — all of §5.4 |
