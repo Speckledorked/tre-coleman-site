@@ -9,7 +9,10 @@
         "http://localhost/advisory.html",
         "http://localhost/contact.html",
         "http://localhost/menu-engineering.html",
-        "http://localhost/blog/restaurant-consultant-cost.html"
+        "http://localhost/blog/restaurant-consultant-cost.html",
+        "http://localhost/about.html",
+        "http://localhost/catering-profit.html",
+        "http://localhost/virginia-neighbors.html"
       ],
       "numberOfRuns": 1,
       "settings": {

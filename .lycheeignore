@@ -12,3 +12,14 @@ https://buy.stripe.com/.*
 # The site's own domain. It is checked as local files; resolving it over the
 # network would test whatever is currently deployed, not this commit.
 ^https://trecoleman\.com.*
+
+# Google Drive returns 401 to anything without a session cookie, including for
+# files shared publicly. The course download links are checked by signing in,
+# not by CI.
+^https://drive\.google\.com/.*
+
+# Stock photo hosts, credited in images/README.md. They return 401/403 to
+# automated checkers.
+^https://unsplash\.com/?$
+^https://pexels\.com/?$
+^https://pixabay\.com/?$

@@ -11,6 +11,19 @@ caused). Editing 40 hand-written HTML files by regex is how the site ended up
 with six different nav variants; running one generator that owns the whole
 block is how it stays at one.
 
+## Order matters: the nav generator owns the nav
+
+`standardise_nav.py` rewrites the whole `<nav>` block, so anything another
+script adds inside it is overwritten the next time the nav is regenerated. That
+already happened once: `fix_accessibility.py` added `role="button"` and
+`aria-haspopup` to the dropdown toggles, a later nav run stripped them all back
+out, and nothing noticed because missing `aria-haspopup` is not an axe failure.
+
+The ARIA attributes now live in `standardise_nav.py`'s own template, which is
+the only place they can survive. The rule generalises: **if markup lives inside
+the nav or footer, it belongs to that generator**, not to a pass that edits
+pages afterwards.
+
 ## When you change the nav or footer
 
 Edit the block at the top of the script, then re-run it:
@@ -48,6 +61,7 @@ tells you which ones it skipped rather than inventing one.
 | `fix_accessibility.py` | `<main>`, skip links, footer heading levels, nav ARIA |
 | `build_new_pages.py` | Generates the service and location pages |
 | `migrate_blog_urls.py` | One-shot: renamed blog files to slugs, added 301s |
+| `fix_contrast.py` | Raises colour pairings measured below WCAG AA |
 
 ## Requirements
 
@@ -103,6 +117,8 @@ Every check corresponds to a defect this site has actually had.
 | `stale` | Hot-linked Unsplash images, the removed Crisp loader, old blog filenames, the stale `$750` price, pre-WebP image paths, a reintroduced font `@import` |
 | `orphans` | Indexable pages nothing links to, and noindex pages out-linked against your real content (compared to the median indexable page, not a fixed number) |
 | `js` | JavaScript that does not parse — the duplicate `const` that left the exit-intent popup dead for months |
+| `fragments` | A `href="#foo"` with no `id="foo"` on the page — twenty pages shipped a skip link pointing at nothing |
+| `contrast` | Colour pairings below WCAG AA, including the two kinds axe cannot see (see below) |
 
 ### Known limitations
 
@@ -143,13 +159,24 @@ checked-out files, so a pull request tests its own commit rather than whatever
 is deployed. Also runs weekly on a schedule, because external links rot without
 anyone touching the repo.
 
-Exclusions are in `.lycheeignore`. LinkedIn, Facebook and Stripe are excluded
-because they return 403/999 to automated checkers — the host refusing a bot,
-not a broken link.
+`--root-dir` is what makes root-relative hrefs resolve. The course pages link
+to `/catering-profit.html`, which is right in production but means nothing to a
+checker reading files off disk; without it lychee reports them unresolvable
+instead of checking them.
+
+Exclusions are in `.lycheeignore`. LinkedIn, Facebook, Stripe, Google Drive and
+the three stock-photo hosts are excluded because they return 401/403/999 to
+automated checkers — the host refusing a bot, not a broken link.
+
+Its first real run earned its place immediately: `--include-fragments` found
+that twenty pages carried a skip link pointing at a `#main-content` that did not
+exist on them, so the first thing a keyboard user tabbed to did nothing. That
+class of defect is static, so `check_site.py` now has a `fragments` check and
+catches it before CI does.
 
 ### Measured baseline
 
-All seven pages: **Performance 100, Accessibility 100, SEO 100, Best
+All ten sampled pages: **Performance 100, Accessibility 100, SEO 100, Best
 Practices 96**, LCP 0.4–0.6s, CLS 0.
 
 Because accessibility is at 100 everywhere, `color-contrast`, `heading-order`,
@@ -159,6 +186,28 @@ category floor is 0.95. A regression fails CI rather than being logged.
 Best Practices sits at 96 because of a console error that only occurs behind a
 TLS-intercepting proxy; it does not reproduce in CI or production.
 
+The sample started at seven pages, all of which used the shared stylesheet.
+Adding `about.html`, `catering-profit.html` and `virginia-neighbors.html` — the
+pages that declare colour locally — turned up four contrast failures the first
+seven could never have exposed. **A page that redeclares its own styles needs
+its own entry here**; the sample is not representative by default.
+
+### Where Lighthouse cannot help, and what covers it instead
+
+Two real contrast failures are invisible to axe, which is why the `contrast`
+check is static rather than left to Lighthouse:
+
+1. **An ancestor with a background image.** axe cannot resolve what is actually
+   behind the text, so it reports the element as *incomplete* instead of
+   failing, and Lighthouse's audit counts only failures. `advisory.html` scored
+   accessibility **100** with a white-on-gold button at **2.03:1** sitting
+   inside its hero image.
+2. **`:hover` states.** axe only ever evaluates the resting state. Four buttons
+   passed at rest and dropped to 2.5–2.7:1 under the pointer.
+
+The lesson worth keeping: accessibility 100 means no failure axe could
+*measure*, not no failure.
+
 ### The gold
 
 The brand gold `#F4A460` is **2.03:1** against white and fails WCAG AA badly in
@@ -166,3 +215,19 @@ both directions. Use `--accent-gold-text: #A85F28` — the same hue at **4.85:1*
 for anything carrying text, whether as the text colour or as a background under
 white text. Keep `--accent-gold` for borders, rules, bullet markers and focus
 outlines, where contrast rules do not apply.
+
+The matching darker shades, for the places a flat `#A85F28` will not do:
+
+| Use | Was | Now | White on it |
+|---|---|---|---|
+| Gradient sweep | `#F4A460 → #e09450` | `#A85F28 → #94501F` | 4.85:1 → 6.13:1 |
+| Hover (light) | `#c89456` | `#8F4F21` | 6.35:1 |
+| Hover (mid) | `#e09450` | `#94501F` | 6.13:1 |
+
+`python3 tools/fix_contrast.py` applies all of this and is idempotent. Run it
+after any change that introduces colour on a page rather than in `style.css`.
+
+Write the pairing out in full when you add colour to a page. The script matches
+`background` and `color` in the same declaration block, so splitting them across
+two rules hides the pairing from it — that is how four hover states and the
+`.bonus-card` gradient had to be handled by name instead.

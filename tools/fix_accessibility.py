@@ -56,22 +56,111 @@ NEW_HANDLER = """dropdownToggles.forEach(toggle => {
 
 
 def add_main(html):
-    if "<main" in html:
+    """Guarantee exactly one #main-content, because the skip link targets it.
+
+    The first version of this only handled the easy case — no <main> yet, and a
+    single </header>…<footer> pair to wrap. It returned early on everything
+    else, while add_skip_link ran unconditionally. The result was 20 pages
+    carrying a skip link that pointed at a fragment the page did not contain:
+    the first thing a keyboard user tabs to did nothing at all. lychee's
+    --include-fragments is what caught it.
+
+    So there are now three cases, tried in order:
+
+      1. A <main> already exists and only needs the id (11 pages had a
+         <main class="container"> from before this script existed).
+      2. No <main>, but one </header>…<footer> pair to wrap. The original case.
+      3. Neither — the auth pages, the course gate and the two app mounts have
+         no header or footer at all. Wrap their primary content container.
+         Wrapping rather than renaming keeps every existing CSS selector
+         working; there are no `body > …` selectors in the stylesheet, so the
+         extra level is inert.
+    """
+    if 'id="main-content"' in html:
         return html, False
+
+    existing = re.search(r"<main\b([^>]*)>", html, re.I)
+    if existing:
+        return (
+            html[: existing.start()]
+            + "<main id=\"main-content\"" + existing.group(1) + ">"
+            + html[existing.end():]
+        ), True
+
     low = html.lower()
-    if low.count("</header>") != 1 or low.count("<footer") != 1:
-        return html, False
-    end_header = low.find("</header>") + len("</header>")
-    start_footer = low.find("<footer")
-    if end_header >= start_footer:
-        return html, False
-    return (
-        html[:end_header]
-        + '\n<main id="main-content">'
-        + html[end_header:start_footer]
-        + "</main>\n"
-        + html[start_footer:]
-    ), True
+    if low.count("</header>") == 1 and low.count("<footer") == 1:
+        end_header = low.find("</header>") + len("</header>")
+        start_footer = low.find("<footer")
+        if end_header < start_footer:
+            return (
+                html[:end_header]
+                + '\n<main id="main-content">'
+                + html[end_header:start_footer]
+                + "</main>\n"
+                + html[start_footer:]
+            ), True
+
+    span = find_content_container(html)
+    if span:
+        start, end = span
+        return (
+            html[:start]
+            + '<main id="main-content">\n'
+            + html[start:end]
+            + '\n</main>'
+            + html[end:]
+        ), True
+
+    return html, False
+
+
+def top_level_elements(html):
+    """(tag, attrs, start, end) for each direct child element of <body>."""
+    body = re.search(r"<body[^>]*>", html, re.I)
+    if not body:
+        return []
+    offset = body.end()
+    rest = html[offset:]
+    void = {
+        "br", "img", "input", "meta", "link", "hr", "source", "area", "base",
+        "col", "embed", "param", "track", "wbr",
+    }
+    out, depth, opened = [], 0, None
+    for tag in re.finditer(r"<(/?)([a-zA-Z][\w-]*)([^>]*?)(/?)>", rest):
+        closing, name, attrs, self_closing = (
+            tag.group(1), tag.group(2).lower(), tag.group(3), tag.group(4)
+        )
+        if name in void or self_closing:
+            continue
+        if not closing:
+            if depth == 0:
+                opened = (name, attrs, offset + tag.start())
+            depth += 1
+        else:
+            depth -= 1
+            if depth == 0 and opened and opened[0] == name:
+                out.append((opened[0], opened[1], opened[2], offset + tag.end()))
+                opened = None
+            elif depth < 0:
+                break
+    return out
+
+
+def find_content_container(html):
+    """The (start, end) of the page's primary content wrapper.
+
+    Prefer the last top-level <div> whose class contains "container" — that
+    covers .container and .auth-container, and skips the modal and overlay
+    divs that sit at the same level. Fall back to the last top-level <div>
+    for the pages whose content wrapper is an app mount (#root, #vf) or an
+    unclassed styled div.
+    """
+    divs = [e for e in top_level_elements(html) if e[0] == "div"]
+    if not divs:
+        return None
+    named = [e for e in divs if re.search(r'class="[^"]*container', e[1])]
+    tag, attrs, start, end = (named or divs)[-1]
+    return start, end
 
 
 def add_skip_link(html):

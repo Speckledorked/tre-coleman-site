@@ -26,9 +26,79 @@ Most of this audit has since been implemented. **The findings below are preserve
 | **Metadata** | Titles and descriptions rewritten on 23 pages, all now 47–59 and 118–156 characters |
 | **New pages** | `food-truck-consulting.html`, `catering-consulting.html`, `virginia-restaurant-consulting.html`; `contact.html` expanded from ~60 to ~400 words of unique copy |
 | **Content** | `blog/restaurant-consultant-cost.html` published (item #1 in §4.5); blog URLs migrated to real slugs with 301s |
-| **Accessibility** | `<main>` on 22 pages, skip links on all 42, `:focus-visible`, `prefers-reduced-motion`, footer heading levels, nav ARIA, emoji out of H1s |
+| **Accessibility** | `<main id="main-content">` and a working skip link on all 51 pages, `:focus-visible`, `prefers-reduced-motion`, footer heading levels, nav ARIA, emoji out of H1s, every colour pairing at WCAG AA or better. *The first version of this row claimed skip links on all 42 pages; on 20 of them the link pointed at nothing — see below.* |
 | **Analytics** | Per-form conversion events, `phone_click`/`email_click`, exit-intent A/B variant tracking |
 | **Tooling** | Two regex-based nav workflows retired in favour of `tools/` generators — see `tools/README.md` |
+
+### What CI caught that this audit did not
+
+The Lighthouse and lychee jobs added in the last round failed on their first
+real run. Both failures were genuine, and both were defects introduced or
+missed by this audit's own implementation rather than pre-existing ones.
+
+**1. Twenty pages had a skip link pointing at nothing.** `fix_accessibility.py`
+added a `<a href="#main-content">` to every page unconditionally, but only
+added `id="main-content"` where it also created the `<main>` element. Pages that
+already had a `<main class="container">`, and the auth pages that have no
+`<header>`/`<footer>` to wrap, were left with a skip link whose target did not
+exist — so the first element a keyboard user tabs to did nothing at all. The
+"Accessibility: skip links on all 42" line above was true in the letter and
+false in the substance. The generator now guarantees exactly one
+`#main-content` per page, and `check_site.py` has a `fragments` check so the
+defect is caught statically rather than in CI.
+
+**2. The nav generator was silently stripping the ARIA attributes.**
+`standardise_nav.py` rewrites the whole `<nav>` block, so the `role="button"`
+and `aria-haspopup` that `fix_accessibility.py` added to the dropdown toggles
+were removed the next time the nav was regenerated. Nothing noticed, because a
+missing `aria-haspopup` is not an axe failure. The attributes now live in the
+nav generator's own template, which is the only place they can survive.
+
+**3. Eighteen colour pairings were below WCAG AA, four of them measured by
+axe.** `style.css` has carried `--accent-gold-text` since the first pass, but
+colour declared *on the page* — inline styles, page-local `<style>` blocks, and
+the pages that redeclare the whole nav and so shadow the stylesheet — was never
+converted. Worth recording precisely, because the audit treated a Lighthouse
+accessibility score of 100 as sufficient evidence and it is not:
+
+| Page | Element | Was | Now |
+|---|---|---|---|
+| `catering-profit.html` | BONUS `<h3>`, gold on `#fff9e6` | 1.93:1 | 4.60:1 |
+| `catering-profit.html` | "Who this fits" `<h3>`, green on `#f8f9fa` | 2.73:1 | 5.09:1 |
+| `virginia-neighbors.html` | `.nav-cta`, white on gold | 2.03:1 | 4.85:1 |
+| `virginia-neighbors.html` | directory status text, red on `#fafaf8` | 3.95:1 | 5.23:1 |
+| `advisory.html` | hero CTA button, white on gold | 2.03:1 | 4.85:1 |
+| 4 buttons | `:hover` backgrounds | 2.46–2.68:1 | 6.13–6.35:1 |
+| 7 others | gold fills and gradients under white text | 2.03–2.46:1 | 4.85–6.13:1 |
+
+The last two rows are the ones worth understanding, because **neither can ever
+appear in a Lighthouse score**. axe cannot resolve the backdrop behind text
+whose ancestor carries a background image, so it marks those descendants
+*incomplete* rather than failing, and Lighthouse's audit counts only failures —
+`advisory.html` scored accessibility **100** with a 2.03:1 button inside its
+hero image. And axe never evaluates a `:hover` state at all.
+
+One of those eighteen took two rounds, and the reason is worth keeping. The
+first version of the pattern ended in `\b`, which can never match after
+`var(--white)` — `)` and the space after it are both non-word characters, so
+there is no boundary there. A rule written `color: white` was fixed and the
+identical rule written `color: var(--white)` was skipped in silence, which is
+how `virginia-neighbors.html` came back from the *second* Lighthouse run still
+at accessibility 96. The pattern now ends in `(?![\w-])`. **A fix script that
+reports "0 changed" is not evidence of a clean site until something independent
+agrees** — here, Lighthouse.
+
+So the `contrast` check in `check_site.py` is static, and delegates to
+`tools/fix_contrast.py` so the two cannot drift. The Lighthouse sample also grew
+from seven pages to ten: the original seven all used the shared stylesheet, so
+they could not have exposed any of this. **A page that declares its own colour
+needs its own entry in `.lighthouserc.json`.**
+
+**4. Two smaller ones.** `virginia-neighbors.html` had an "add your listing"
+link to `#submit` with no such anchor on the page — it now points at the
+submission section. And lychee needed `--root-dir` before the course pages'
+root-relative links (`/catering-profit.html`) could be resolved at all; they
+are correct in production, but mean nothing to a checker reading files off disk.
 
 ### Bugs found and fixed along the way
 
