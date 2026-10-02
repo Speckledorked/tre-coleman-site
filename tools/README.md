@@ -53,3 +53,59 @@ tells you which ones it skipped rather than inventing one.
 
 Python 3 and Pillow (`pip install Pillow`) for the image scripts. Everything
 else uses only the standard library.
+
+## Checking the site
+
+```bash
+python3 tools/check_site.py           # everything
+python3 tools/check_site.py --quiet   # errors only
+python3 tools/check_site.py --list    # what each check does
+```
+
+Exit code 1 on any error, 0 otherwise. Warnings never fail the run. Zero
+dependencies — standard library only.
+
+It also runs in CI on every push and pull request via
+`.github/workflows/check-site.yml`, which additionally verifies that
+`sitemap.xml` matches what `build_sitemap.py` would generate.
+
+### Run it before every commit
+
+Optional, but this is the check that would have caught the Airtable token
+before it reached a public repository:
+
+```bash
+cat > .git/hooks/pre-commit <<'HOOK'
+#!/bin/sh
+python3 tools/check_site.py --quiet || {
+  echo "Site checks failed. Fix, or commit with --no-verify to override."
+  exit 1
+}
+HOOK
+chmod +x .git/hooks/pre-commit
+```
+
+### What it checks, and why each one is there
+
+Every check corresponds to a defect this site has actually had.
+
+| Check | Catches |
+|---|---|
+| `secrets` | Live Stripe/Resend/Airtable/AWS keys, private keys, and Supabase **service-role** JWTs (it decodes the token to read the role claim) |
+| `gitignore` | `.env` not ignored — the absence of a `.gitignore` is how a real Airtable token reached this repo's history |
+| `json-ld` | Schema that does not parse, or describes the wrong page. Also blocks `Review`/`AggregateRating` without a named author |
+| `metadata` | Missing or duplicated title/description/canonical, multiple `<h1>`, noindex pages that also declare a canonical |
+| `structure` | Unbalanced tags, missing `lang` |
+| `links` | Internal links to files that do not exist |
+| `images` | Missing files, and `<img>` without `width`/`height` (layout shift) or `alt` |
+| `sitemap` | Indexable pages missing from it, noindex pages wrongly listed, invalid XML |
+| `robots` | Missing `Sitemap:` directive, accidental `Disallow: /` |
+| `stale` | Hot-linked Unsplash images, the removed Crisp loader, old blog filenames, the stale `$750` price, pre-WebP image paths, a reintroduced font `@import` |
+| `js` | JavaScript that does not parse — the duplicate `const` that left the exit-intent popup dead for months |
+
+### Known limitations
+
+It is a static checker. It cannot see anything that only exists at runtime:
+rendered output, actual Core Web Vitals, whether a redirect resolves, whether
+Supabase RLS is enabled, or whether an API key is valid. For those, see
+`SEO_AUDIT.md` §7 and the external tools listed there.

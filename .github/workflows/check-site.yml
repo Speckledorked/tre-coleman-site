@@ -1,0 +1,43 @@
+name: Site checks
+
+# Runs tools/check_site.py on every push and pull request.
+#
+# This is a deliberately different kind of workflow from the two that used to
+# live here. update-navigation.yml and fix-audit-navigation.yml MODIFIED the
+# site by regex and were removed; the second existed only to repair damage the
+# first caused. This one is read-only — it never writes to the repository.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run site checks
+        run: python3 tools/check_site.py
+
+      - name: Confirm the sitemap is current
+        # The sitemap is generated. If regenerating it produces a diff, someone
+        # hand-edited it or added a page without updating tools/build_sitemap.py.
+        run: |
+          cp sitemap.xml /tmp/sitemap.before
+          python3 tools/build_sitemap.py
+          if ! diff -q /tmp/sitemap.before sitemap.xml > /dev/null; then
+            echo "::error::sitemap.xml is out of date. Run: python3 tools/build_sitemap.py"
+            diff /tmp/sitemap.before sitemap.xml || true
+            exit 1
+          fi
+          echo "sitemap.xml is current"

@@ -1,0 +1,430 @@
+#!/usr/bin/env python3
+"""
+Pre-flight checks for the site. Zero dependencies — standard library only.
+
+    python3 tools/check_site.py            # all checks
+    python3 tools/check_site.py --quiet    # errors only
+    python3 tools/check_site.py --list     # what each check does
+
+Exit code 0 if no errors, 1 if any. Warnings never fail the run.
+
+Every check here corresponds to a real defect this site has actually had:
+a secret committed to a public repo, blog posts missing from the sitemap,
+an article inheriting another article's schema, a 404 page declaring itself
+canonical, images with no dimensions, a stale $750 price in a dead code path.
+"""
+
+import argparse
+import glob
+import json
+import os
+import re
+import sys
+import urllib.parse
+import xml.dom.minidom
+
+SITE = "https://trecoleman.com"
+
+errors = []
+warnings = []
+
+
+def err(where, msg):
+    errors.append((where, msg))
+
+
+def warn(where, msg):
+    warnings.append((where, msg))
+
+
+def html_files():
+    return [p for p in sorted(glob.glob("**/*.html", recursive=True))
+            if "node_modules" not in p]
+
+
+def head_of(s):
+    return s.split("</head>")[0] if "</head>" in s else s
+
+
+def _header_noindex_globs():
+    """Paths marked noindex via X-Robots-Tag in netlify.toml."""
+    if not os.path.exists("netlify.toml"):
+        return []
+    toml = open("netlify.toml", encoding="utf-8").read()
+    out = []
+    for block in re.findall(r"\[\[headers\]\](.*?)(?=\[\[|\Z)", toml, re.S):
+        if re.search(r"X-Robots-Tag\s*=\s*\"[^\"]*noindex", block, re.I):
+            m = re.search(r'for\s*=\s*"([^"]+)"', block)
+            if m:
+                out.append(m.group(1).strip("/"))
+    return out
+
+
+_HEADER_NOINDEX = None
+
+
+def is_noindex(s, path=None):
+    if re.search(r'name="robots"[^>]*content="[^"]*noindex', head_of(s), re.I):
+        return True
+    if path:
+        global _HEADER_NOINDEX
+        if _HEADER_NOINDEX is None:
+            _HEADER_NOINDEX = _header_noindex_globs()
+        import fnmatch
+        for pat in _HEADER_NOINDEX:
+            if fnmatch.fnmatch(path, pat) or fnmatch.fnmatch(path, pat + "/*"):
+                return True
+    # A file with no <html> element is not a page (e.g. a bare verification
+    # token served with a .html extension).
+    if "<html" not in s.lower():
+        return True
+    return False
+
+
+# --------------------------------------------------------------------------
+# 1. Secrets. This is the check that would have caught the Airtable token.
+# --------------------------------------------------------------------------
+
+SECRET_PATTERNS = [
+    (r"\bsk_live_[A-Za-z0-9]{16,}", "Stripe live secret key"),
+    (r"\bsk_test_[A-Za-z0-9]{16,}", "Stripe test secret key"),
+    (r"\brk_live_[A-Za-z0-9]{16,}", "Stripe restricted key"),
+    (r"\bwhsec_[A-Za-z0-9]{16,}", "Stripe webhook secret"),
+    (r"\bre_[A-Za-z0-9]{24,}", "Resend API key"),
+    (r"\bpat[A-Za-z0-9]{14}\.[A-Za-z0-9]{40,}", "Airtable personal access token"),
+    (r"\bghp_[A-Za-z0-9]{36}", "GitHub personal access token"),
+    (r"\bAKIA[0-9A-Z]{16}\b", "AWS access key id"),
+    (r'"type"\s*:\s*"service_account"', "Google service account JSON"),
+    (r"-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----", "Private key"),
+]
+
+SECRET_SCAN_EXT = {".html", ".js", ".json", ".md", ".txt", ".toml", ".yml",
+                   ".yaml", ".py", ".css"}
+SECRET_SKIP = {"tools/check_site.py", ".env.example"}
+
+
+def check_secrets():
+    """No live credentials anywhere in the working tree."""
+    for path in sorted(glob.glob("**/*", recursive=True)):
+        if not os.path.isfile(path):
+            continue
+        if "node_modules" in path or path.startswith(".git/"):
+            continue
+        if path in SECRET_SKIP or os.path.splitext(path)[1] not in SECRET_SCAN_EXT:
+            continue
+        try:
+            s = open(path, encoding="utf-8", errors="replace").read()
+        except OSError:
+            continue
+        for pattern, label in SECRET_PATTERNS:
+            if re.search(pattern, s):
+                err(path, f"possible {label} committed — this repo is public")
+
+    # A service-role JWT is the one Supabase key that must never ship.
+    for path in html_files() + sorted(glob.glob("**/*.js", recursive=True)):
+        if "node_modules" in path:
+            continue
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for jwt in re.findall(r"eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}", s):
+            try:
+                import base64
+                body = jwt.split(".")[1]
+                body += "=" * (-len(body) % 4)
+                claims = json.loads(base64.urlsafe_b64decode(body))
+                if claims.get("role") == "service_role":
+                    err(path, "Supabase SERVICE_ROLE key present — bypasses RLS")
+            except Exception:
+                pass
+
+
+def check_gitignore():
+    """.env must be ignored, or the next secret lands in history too."""
+    if not os.path.exists(".gitignore"):
+        err(".gitignore", "missing — nothing stops .env being committed")
+        return
+    s = open(".gitignore", encoding="utf-8").read()
+    if not re.search(r"^\.env\b", s, re.M):
+        err(".gitignore", ".env is not ignored")
+
+
+# --------------------------------------------------------------------------
+# 2. Structured data
+# --------------------------------------------------------------------------
+
+def check_json_ld():
+    """Every JSON-LD block parses, and describes its own page."""
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for raw in re.findall(r'<script type="application/ld\+json">(.*?)</script>',
+                              s, re.S):
+            try:
+                obj = json.loads(raw)
+            except json.JSONDecodeError as e:
+                err(path, f"invalid JSON-LD: {e}")
+                continue
+            graph = obj.get("@graph")
+            # A @graph with several entities is a hub describing other pages
+            # (services.html lists six Service nodes, one per service page).
+            # Only a standalone node is expected to describe its own page.
+            hub = bool(graph and len(graph) > 1)
+            for node in (graph or [obj]):
+                t = node.get("@type")
+                if not hub and t in ("BlogPosting", "Article", "Service",
+                                     "ContactPage", "Course"):
+                    url = node.get("url") or node.get("@id") or ""
+                    if url and os.path.basename(path) not in url:
+                        err(path, f"{t} schema points at {url} — wrong page")
+                if t in ("Review", "AggregateRating"):
+                    author = (node.get("author") or {})
+                    if t == "AggregateRating" or not author.get("name"):
+                        err(path, f"{t} without a named author — Google rejects "
+                                  "this and self-rating risks a manual action")
+
+
+# --------------------------------------------------------------------------
+# 3. Metadata
+# --------------------------------------------------------------------------
+
+def check_metadata():
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        head = head_of(s)
+        noindex = is_noindex(s, path)
+
+        for attr, label in (("rel=\"canonical\"", "canonical"),
+                            ("name=\"description\"", "description")):
+            n = len(re.findall(attr, head))
+            if n > 1:
+                err(path, f"{n} {label} tags — must be exactly one")
+
+        titles = re.findall(r"<title>(.*?)</title>", head, re.S)
+        if len(titles) > 1:
+            err(path, f"{len(titles)} <title> tags")
+        elif not titles and not noindex:
+            err(path, "no <title>")
+
+        if noindex:
+            if "rel=\"canonical\"" in head:
+                err(path, "noindex page declares a canonical — contradictory")
+            continue
+
+        if "rel=\"canonical\"" not in head:
+            err(path, "indexable page with no canonical")
+        if titles:
+            t = re.sub(r"&amp;", "&", titles[0]).strip()
+            if len(t) > 62:
+                warn(path, f"title {len(t)} chars, will truncate (aim 50-60)")
+            elif len(t) < 30:
+                warn(path, f"title only {len(t)} chars — wasting the budget")
+
+        m = re.search(r'name="description"[^>]*content="([^"]*)"', head) or \
+            re.search(r'content="([^"]*)"[^>]*name="description"', head)
+        if not m:
+            err(path, "indexable page with no meta description")
+        else:
+            d = len(re.sub(r"&amp;", "&", m.group(1)))
+            if d > 165:
+                warn(path, f"description {d} chars, will truncate (aim 140-160)")
+            elif d < 90:
+                warn(path, f"description only {d} chars")
+
+        if "og:image" in head and "og:image:width" not in head:
+            warn(path, "og:image without declared dimensions")
+
+        h1s = re.findall(r"<h1\b", s)
+        if len(h1s) > 1:
+            err(path, f"{len(h1s)} <h1> elements — must be one")
+        elif not h1s:
+            warn(path, "no <h1>")
+
+
+# --------------------------------------------------------------------------
+# 4. Structure and links
+# --------------------------------------------------------------------------
+
+def check_structure():
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for tag in ("head", "main", "article", "nav", "footer", "section", "style"):
+            opens = len(re.findall(rf"<{tag}\b[^>]*>", s))
+            closes = s.count(f"</{tag}>")
+            if opens != closes:
+                err(path, f"<{tag}> unbalanced: {opens} open, {closes} close")
+        if re.search(r"<style[^>]*>\s*</style>", s):
+            warn(path, "empty <style> block")
+        if "<html" in s.lower() and not re.search(r'<html[^>]*\blang=', s):
+            err(path, "<html> has no lang attribute")
+
+
+def check_links():
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for href in re.findall(r'href="([^"#][^"]*\.html)"', s):
+            if href.startswith(("http://", "https://", "//")):
+                continue
+            base = "" if href.startswith("/") else os.path.dirname(path)
+            target = os.path.normpath(os.path.join(
+                base, urllib.parse.unquote(href.lstrip("/"))))
+            if not os.path.exists(target):
+                err(path, f"broken link: {href}")
+
+
+def check_images():
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for tag in re.findall(r"<img\b[^>]*>", s, re.I):
+            m = re.search(r'src="([^"]+)"', tag)
+            if not m:
+                err(path, "<img> with no src")
+                continue
+            src = m.group(1)
+            if src.startswith(("http", "data:")):
+                warn(path, f"third-party image: {src[:60]}")
+                continue
+            target = os.path.normpath(os.path.join(
+                os.path.dirname(path), urllib.parse.unquote(src)))
+            if not os.path.exists(target):
+                err(path, f"missing image: {src}")
+            if "width=" not in tag or "height=" not in tag:
+                err(path, f"<img> without width/height (causes layout shift): {src}")
+            if "loading=" not in tag:
+                warn(path, f"<img> without loading attribute: {src}")
+            if 'alt="' not in tag:
+                err(path, f"<img> without alt: {src}")
+
+
+# --------------------------------------------------------------------------
+# 5. Sitemap and robots
+# --------------------------------------------------------------------------
+
+def check_sitemap():
+    if not os.path.exists("sitemap.xml"):
+        err("sitemap.xml", "missing")
+        return
+    try:
+        xml.dom.minidom.parse("sitemap.xml")
+    except Exception as e:
+        err("sitemap.xml", f"invalid XML: {e}")
+        return
+
+    s = open("sitemap.xml", encoding="utf-8").read()
+    listed = set(re.findall(r"<loc>([^<]+)</loc>", s))
+    paths = {u.replace(SITE, "").lstrip("/") or "index.html" for u in listed}
+
+    if "<lastmod>" not in s:
+        warn("sitemap.xml", "no <lastmod> — the one element Google actually uses")
+
+    for url in listed:
+        if not url.startswith(SITE):
+            err("sitemap.xml", f"URL on another domain: {url}")
+
+    for path in html_files():
+        s2 = open(path, encoding="utf-8", errors="replace").read()
+        noindex = is_noindex(s2, path)
+        key = "index.html" if path == "index.html" else path
+        if noindex and key in paths:
+            err("sitemap.xml", f"lists a noindex page: {path}")
+        if not noindex and key not in paths and path != "404.html":
+            err("sitemap.xml", f"indexable page missing: {path}")
+
+
+def check_robots():
+    if not os.path.exists("robots.txt"):
+        err("robots.txt", "missing")
+        return
+    s = open("robots.txt", encoding="utf-8").read()
+    if "Sitemap:" not in s:
+        err("robots.txt", "no Sitemap: directive")
+    for line in re.findall(r"^Disallow:\s*(\S+)", s, re.M):
+        if line == "/":
+            err("robots.txt", "Disallow: / blocks the entire site")
+
+
+# --------------------------------------------------------------------------
+# 6. Regressions this site has actually had
+# --------------------------------------------------------------------------
+
+STALE = [
+    (r"images\.unsplash\.com", "hot-linked Unsplash image (unlicensed, slow)"),
+    (r"client\.crisp\.chat", "Crisp chat loader (removed; was misconfigured)"),
+    (r"blog_post_\d_", "old blog filename — use the slug"),
+    (r"\$750", "stale Snapshot price — it is $350"),
+    (r"familypic\.jpg|hero\.png|calm%20ops|catering%20add", "pre-WebP image path"),
+    (r"@import\s+url\(.*fonts\.googleapis", "render-blocking font @import"),
+]
+
+
+def check_stale():
+    for path in html_files() + ["style.css", "analytics.js", "exit-intent-popup.js"]:
+        if not os.path.exists(path):
+            continue
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for pattern, label in STALE:
+            if re.search(pattern, s):
+                err(path, f"stale reference: {label}")
+
+
+def check_js():
+    """Catch the duplicate-declaration class of bug that killed the popup."""
+    import subprocess
+    import shutil
+    if not shutil.which("node"):
+        warn("js", "node not installed — skipping syntax check")
+        return
+    for path in sorted(glob.glob("*.js")) + sorted(glob.glob("netlify/functions/*.js")):
+        r = subprocess.run(["node", "--check", path],
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            first = (r.stderr.strip().splitlines() or ["syntax error"])
+            err(path, f"JS syntax error: {first[min(2, len(first)-1)].strip()}")
+
+
+CHECKS = [
+    ("secrets", check_secrets, "live credentials in tracked files"),
+    ("gitignore", check_gitignore, ".env is ignored"),
+    ("json-ld", check_json_ld, "schema parses and describes its own page"),
+    ("metadata", check_metadata, "title/description/canonical/h1 sanity"),
+    ("structure", check_structure, "tag balance and lang attribute"),
+    ("links", check_links, "internal links resolve"),
+    ("images", check_images, "images exist and carry width/height/alt"),
+    ("sitemap", check_sitemap, "every indexable page listed, no noindex ones"),
+    ("robots", check_robots, "robots.txt sane"),
+    ("stale", check_stale, "references to removed assets and old prices"),
+    ("js", check_js, "JavaScript parses"),
+]
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--quiet", action="store_true", help="errors only")
+    ap.add_argument("--list", action="store_true", help="list checks and exit")
+    args = ap.parse_args()
+
+    if args.list:
+        for name, _, desc in CHECKS:
+            print(f"  {name:<12} {desc}")
+        return 0
+
+    for name, fn, _ in CHECKS:
+        fn()
+
+    if warnings and not args.quiet:
+        print(f"\n{len(warnings)} warning(s):")
+        for where, msg in warnings:
+            print(f"  {where}: {msg}")
+
+    if errors:
+        print(f"\n{len(errors)} error(s):")
+        for where, msg in errors:
+            print(f"  {where}: {msg}")
+        print(f"\nFAILED — {len(errors)} error(s), {len(warnings)} warning(s)")
+        return 1
+
+    print(f"\nPASSED — 0 errors, {len(warnings)} warning(s), "
+          f"{len(html_files())} pages checked")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
