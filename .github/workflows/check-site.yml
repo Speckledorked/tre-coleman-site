@@ -64,6 +64,11 @@ jobs:
           python3 tools/standardise_nav.py > /dev/null
           python3 tools/standardise_footer.py > /dev/null
           python3 tools/fix_contrast.py > /dev/null
+          python3 tools/sync_social_descriptions.py > /dev/null
+          python3 tools/fix_mobile_nav_css.py > /dev/null
+          python3 tools/wire_nav_aria.py > /dev/null
+          python3 tools/ensure_dropdown_handler.py > /dev/null
+          python3 tools/fix_nav_close_selector.py > /dev/null
           if ! git diff --quiet; then
             echo "::error::A generator disagrees with the committed tree."
             echo "Run the generators locally and commit the result, or update"

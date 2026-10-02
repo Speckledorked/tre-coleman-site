@@ -9,14 +9,14 @@
 <meta content="article" property="og:type"/>
 <meta property="og:title" content="How to Find &amp; Fix Restaurant Profit Leaks | Tre Coleman" />
 <meta content="https://trecoleman.com/blog/restaurant-profit-leaks.html" property="og:url"/>
-<meta content="Discover how to identify and eliminate hidden profit leaks in your restaurant. Practical strategies for labor, menu, and cash flow that actually move numbers." property="og:description"/>
+<meta content="Where independent restaurants quietly lose margin — labor, item mix, waste, and cash flow — and the checks that surface each one." property="og:description"/>
 <meta content="https://trecoleman.com/images/og-card.jpg" property="og:image"/>
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="Tre Coleman — restaurant operations consulting for restaurants, food trucks, and catering companies" property="og:image:alt"/>
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="How to Find &amp; Fix Restaurant Profit Leaks | Tre Coleman" />
-<meta name="twitter:description" content="Discover how to identify and eliminate hidden profit leaks in your restaurant. Practical strategies for labor, menu, and cash flow that actually move numbers." />
+<meta name="twitter:description" content="Where independent restaurants quietly lose margin — labor, item mix, waste, and cash flow — and the checks that surface each one." />
 <meta name="twitter:url" content="https://trecoleman.com/blog/restaurant-profit-leaks.html" />
 <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,7 +242,7 @@
           <ul>
             <li><a href="../profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
             <li class="nav-dropdown">
-              <a href="../services.html">Services</a>
+              <a href="../services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
                 <a href="../services.html">All Services</a>
                 <a href="../menu-engineering.html">Menu Engineering</a>
@@ -400,7 +400,10 @@
       const mobileMenuToggle = document.getElementById('mobileMenuToggle');
       const mainNav = document.getElementById('mainNav');
       const mobileOverlay = document.getElementById('mobileOverlay');
-      const navLinks = mainNav.querySelectorAll('a');
+      // Dropdown parents are excluded: on mobile they expand a submenu
+      // rather than navigate, so closing the menu on their click hid
+      // the submenu they had just opened.
+      const navLinks = mainNav.querySelectorAll('a:not(.nav-dropdown > a)');
 
       function toggleMenu() {
         mobileMenuToggle.classList.toggle('active');
@@ -436,5 +439,6 @@
     </script>
 <script defer src="../analytics.js"></script>
 <script defer src="/exit-intent-popup.js"></script>
+<script src="/nav-aria.js" defer></script>
 </body>
 </html>

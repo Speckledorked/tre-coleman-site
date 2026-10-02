@@ -175,7 +175,15 @@ header .logo {
 .mobile-menu-toggle {
   display: none;
   flex-direction: column;
+  /* Centre the bars inside a 44x44 target. The bars themselves are 25x3 with
+     two 4px gaps, which with the old padding made the whole button 41x35 —
+     above the 24x24 WCAG 2.5.8 AA minimum, but under the 44x44 that both
+     Apple's and Google's guidance ask for, and it is a primary control. */
+  justify-content: center;
+  align-items: center;
   gap: 4px;
+  min-width: 44px;
+  min-height: 44px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -892,7 +900,20 @@ button[type="submit"]:active,
     display: flex;
   }
 
-  /* Hide navigation by default on mobile */
+  /* Hide navigation by default on mobile.
+
+     right: -100% alone only moves the panel out of sight. It stays rendered
+     and focusable, so tabbing through a page with the menu closed sent focus
+     into seven links sitting at x=468 in a 390px viewport — focus vanished
+     off-screen for seven stops with nothing to show for it. WCAG 2.4.3 and
+     2.4.7 both.
+
+     visibility: hidden takes it out of the focus order. The delayed transition
+     is what keeps the slide-out animation: visibility flips only after the
+     0.3s slide finishes, rather than cutting the panel off mid-movement. On
+     the way in it flips immediately, so the panel is focusable as it arrives.
+
+     display: none would also work and would break the animation entirely. */
   nav, #mainNav {
     position: fixed;
     top: 0;
@@ -901,7 +922,8 @@ button[type="submit"]:active,
     max-width: 400px;
     height: 100vh;
     background: linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%);
-    transition: right 0.3s ease;
+    visibility: hidden;
+    transition: right 0.3s ease, visibility 0s linear 0.3s;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
     padding: 2rem;
     padding-top: 5rem;
@@ -911,6 +933,8 @@ button[type="submit"]:active,
 
   nav.active, #mainNav.active {
     right: 0;
+    visibility: visible;
+    transition: right 0.3s ease, visibility 0s;
   }
 
   nav ul, #mainNav ul {
@@ -1279,51 +1303,63 @@ textarea:focus-visible,
    ========================================================================== */
 
 /* ---- Dropdown navigation (was inline on 11 pages) ---- */
-/* Dropdown navigation styles */
-.nav-dropdown {
-  position: relative;
-}
+/* These are the DESKTOP rules, and they live at the end of the file, which is
+   after style.css's own `max-width: 1024px` blocks. Unguarded, the last
+   `.dropdown-menu { position: absolute }` therefore won at every width and
+   silently beat the mobile `position: static` above — so on every page without
+   its own inline copy of the mobile rule, an open submenu was drawn on top of
+   the nav items below it instead of pushing them down. Twenty-four pages.
+   index.html looked fine only because its inline CSS re-fixed it afterwards.
 
-.nav-dropdown > a::after {
-  content: ' ▾';
-  font-size: 0.8em;
-  margin-left: 0.25rem;
-}
+   The min-width guard keeps them where they belong. Breakpoint is 1025px
+   because the mobile blocks use max-width: 1024px. */
+@media screen and (min-width: 1025px) {
+  /* Dropdown navigation styles */
+  .nav-dropdown {
+    position: relative;
+  }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  min-width: 220px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 0.5rem 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
+  .nav-dropdown > a::after {
+    content: ' ▾';
+    font-size: 0.8em;
+    margin-left: 0.25rem;
+  }
 
-.nav-dropdown:hover .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 220px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
 
-.dropdown-menu a {
-  display: block;
-  padding: 0.75rem 1.25rem;
-  color: #2c3e50;
-  text-decoration: none;
-  transition: background 0.2s ease;
-  font-size: 0.95rem;
-}
+  .nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 
-.dropdown-menu a:hover {
-  background: #f8f9fa;
-  color: #1e3a5f;
+  .dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: #2c3e50;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    font-size: 0.95rem;
+  }
+
+  .dropdown-menu a:hover {
+    background: #f8f9fa;
+    color: #1e3a5f;
+  }
 }
 
 /* Mobile nav styles handled by style.css */

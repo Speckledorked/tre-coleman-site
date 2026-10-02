@@ -30,7 +30,7 @@ NAV = """<nav id="mainNav">
           <ul>
             <li><a href="{p}profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
             <li class="nav-dropdown">
-              <a href="{p}services.html">Services</a>
+              <a href="{p}services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
                 <a href="{p}services.html">All Services</a>
                 <a href="{p}menu-engineering.html">Menu Engineering</a>

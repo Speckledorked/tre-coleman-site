@@ -36,6 +36,36 @@ which side is wrong. Either the tree drifted and the generator is right, or the
 page is right and the generator needs updating — which is the usual answer when
 the change was a deliberate edit made after generation.
 
+## The mobile navigation
+
+Seven separate defects, found by driving the real pages in headless Chromium at
+390x844 rather than by reading the CSS. All 35 pages with a mobile nav now pass.
+
+| What was wrong | Where | Why it mattered |
+|---|---|---|
+| Closed panel still took keyboard focus | `style.css`, all pages | `right: -100%` moves it out of sight, not out of the focus order. Tabbing walked into 7 links at x=468 in a 390px viewport |
+| Submenu overlaid the nav instead of pushing it | `style.css`, 24 pages | A duplicated **desktop** dropdown block sat after the mobile media queries and won at every width |
+| Hamburger `display: none` | `playbook.html` | No way to open the menu on a phone at all |
+| Tapping a dropdown closed the whole menu | 29 pages | `closeMenu` was bound to every link in the nav, including the three dropdown parents |
+| Fatal JS: duplicate `const` | `chat.html` | Killed the script; the menu never worked |
+| No dropdown handler | `privacy.html` | Tapping Services navigated away instead of expanding |
+| `aria-expanded` static or absent | all pages | Screen readers were told the opposite of what was on screen |
+
+Two of these are worth remembering for how they were caught.
+
+**The duplicated desktop block was mine**, from `extract_shared_css.py`. It
+appended the desktop dropdown rules to the end of `style.css` — after that
+file's own `max-width: 1024px` blocks — so the last `position: absolute` beat
+the mobile `position: static` everywhere. `index.html` looked fine only because
+its inline CSS re-fixed it afterwards, which is exactly how a sitewide bug hides.
+
+**The close-on-tap bug passed an automated check before a screenshot caught
+it.** The test measured the nav's `scrollHeight` before and after the tap and
+expected growth. It does grow — the submenu really is inserted — and then the
+panel hides, which does not change `scrollHeight` at all. The number was
+measuring the wrong thing. **When a visual behaviour is in question, look at
+the picture, not only the metric.**
+
 ## Order matters: the nav generator owns the nav
 
 `standardise_nav.py` rewrites the whole `<nav>` block, so anything another
@@ -83,12 +113,18 @@ tells you which ones it skipped rather than inventing one.
 | `fix_og_images.py` | Repoints `og:image` / `twitter:image` at that card |
 | `add_structured_data.py` | BlogPosting, BreadcrumbList, WebSite, `areaServed` |
 | `rewrite_metadata.py` | Titles and meta descriptions (see `SEO_AUDIT.md` §3) |
+| `sync_social_descriptions.py` | Keeps `og:description` / `twitter:description` equal to the meta description |
 | `fix_accessibility.py` | `<main>`, skip links, footer heading levels, nav ARIA |
 | `build_new_pages.py` | Generates the service and location pages |
 | `migrate_blog_urls.py` | One-shot: renamed blog files to slugs, added 301s |
 | `fix_contrast.py` | Raises colour pairings measured below WCAG AA |
 | `wire_course_downloads.py` | Adds `downloads.js` to the course pages with download links |
 | `fix_article_seams.py` | Closes the seam where the five original posts' new openings meet the old draft |
+| `sync_social_descriptions.py` | Keeps `og:`/`twitter:description` equal to the meta description |
+| `fix_mobile_nav_css.py` | Repairs page-local CSS that breaks the mobile nav |
+| `wire_nav_aria.py` | Loads `nav-aria.js`, which keeps `aria-expanded` truthful |
+| `ensure_dropdown_handler.py` | Gives every page the dropdown tap handler |
+| `fix_nav_close_selector.py` | Stops a dropdown tap closing the whole menu |
 
 ## Requirements
 
