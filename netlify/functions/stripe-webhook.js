@@ -51,8 +51,43 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: `Webhook Error: ${err.message}` };
   }
 
-  // Handle the checkout.session.completed event
-  if (stripeEvent.type === 'checkout.session.completed') {
+  // The customer's asynchronous payment did not clear. Nothing was granted
+  // when the session completed — the payment_status guard below refuses an
+  // unpaid session — so there is nothing to revoke. The owner should still
+  // know a sale fell through rather than watch it quietly disappear.
+  if (stripeEvent.type === 'checkout.session.async_payment_failed') {
+    const session = stripeEvent.data.object;
+    const email = session.customer_details?.email || session.customer_email || 'unknown';
+    console.log(`Async payment failed for session ${session.id} (${email}). No access was granted.`);
+    await alertAdmin('Course purchase payment failed', `
+      <p>An asynchronous payment did not clear, so no course access was granted.</p>
+      <p>Customer: ${email}</p>
+      <p>Stripe Session ID: ${session.id}</p>
+      <p>No action is needed unless you expected this sale to complete.</p>
+    `);
+    return { statusCode: 200, body: 'Async payment failure acknowledged' };
+  }
+
+  // The two events that can grant course access.
+  //
+  // checkout.session.completed fires when the customer finishes checkout,
+  // which is not the same as the money having arrived. With an asynchronous
+  // payment method — a bank debit, Klarna, boleto — the session completes
+  // with payment_status 'unpaid' and settles minutes or days later, or never.
+  // checkout.session.async_payment_succeeded is that settlement.
+  //
+  // Both run the same path below and the payment_status guard decides which
+  // one actually grants, so an async purchase is refused at completion and
+  // granted at settlement without a second code path.
+  //
+  // The endpoint must be subscribed to BOTH in Stripe. Subscribed only to
+  // completed, an async buyer would be charged and never let in.
+  const GRANTS_ACCESS = [
+    'checkout.session.completed',
+    'checkout.session.async_payment_succeeded'
+  ];
+
+  if (GRANTS_ACCESS.includes(stripeEvent.type)) {
     const session = stripeEvent.data.object;
 
     // Get customer email from session
@@ -82,6 +117,45 @@ exports.handler = async (event) => {
         await reportPurchaseToGA4(stripeEvent, lineItems);
         return { statusCode: 200, body: 'Non-course payment acknowledged' };
       }
+    }
+
+    // The money has to have actually arrived.
+    //
+    // Reaching this point used to be enough to hand over the paid course, a
+    // Supabase auth user and working login credentials. For a card payment
+    // that is right — payment_status is already 'paid' when the session
+    // completes. For an asynchronous method it is not: the session completes
+    // 'unpaid' and the charge settles later, so the course went out before
+    // any money moved, and stayed out if the payment then failed.
+    //
+    // Only an explicit 'unpaid' blocks. 'paid' is the normal case, and
+    // 'no_payment_required' is a legitimately zero-value session — a 100%
+    // discount code, which is the owner's to issue — so both grant. A missing
+    // value grants too, which preserves exactly the behaviour this guard
+    // replaces: Stripe documents the field as always present on a
+    // payment-mode session, and inventing a new way to refuse a real buyer
+    // would be a worse bug than the one being closed.
+    if (session.payment_status === 'unpaid') {
+      console.log(
+        `Session ${session.id} from ${customerEmail} completed but is unpaid; ` +
+        `not granting access. Waiting for checkout.session.async_payment_succeeded.`
+      );
+      await alertAdmin('Course purchase is awaiting payment', `
+        <p>A course checkout completed but the payment has not cleared, so no
+           access has been granted yet.</p>
+        <p>Customer: ${customerEmail}</p>
+        <p>Stripe Session ID: ${session.id}</p>
+        <p>This is normal for an asynchronous payment method such as a bank
+           debit or Klarna. Access is granted automatically when Stripe sends
+           <code>checkout.session.async_payment_succeeded</code>, and you will
+           get a separate email if the payment fails instead.</p>
+        <p>If neither email arrives, check that the webhook endpoint is
+           subscribed to <code>checkout.session.async_payment_succeeded</code>
+           — without it this customer would be charged and never let in.</p>
+      `);
+      // 200, not 500: a redelivery cannot change payment_status, and a 500
+      // makes Stripe retry this same event for days.
+      return { statusCode: 200, body: 'Awaiting payment' };
     }
 
     console.log(`Processing course purchase for: ${customerEmail}`);
@@ -199,22 +273,12 @@ exports.handler = async (event) => {
     } catch (error) {
       console.error('Error processing purchase:', error);
 
-      // Send notification to admin about failed processing
-      try {
-        await resend.emails.send({
-          from: 'System <noreply@trecoleman.com>',
-          to: 'hello@trecoleman.com',
-          subject: 'ALERT: Failed to process course purchase',
-          html: `
-            <p>Failed to automatically process purchase for: ${customerEmail}</p>
-            <p>Stripe Session ID: ${session.id}</p>
-            <p>Error: ${error.message}</p>
-            <p>Please manually grant course access.</p>
-          `
-        });
-      } catch (e) {
-        console.error('Failed to send admin alert:', e);
-      }
+      await alertAdmin('Failed to process course purchase', `
+        <p>Failed to automatically process purchase for: ${customerEmail}</p>
+        <p>Stripe Session ID: ${session.id}</p>
+        <p>Error: ${error.message}</p>
+        <p>Please manually grant course access.</p>
+      `);
 
       return { statusCode: 500, body: 'Processing error' };
     }
@@ -222,6 +286,26 @@ exports.handler = async (event) => {
 
   return { statusCode: 200, body: 'Event received' };
 };
+
+// Tell the owner that something needs a human.
+//
+// Never throws. An alert that cannot be sent must not take down the path that
+// was trying to send it — the original problem is already worse than the
+// missing email, and in the catch block below this would have replaced a
+// recoverable error with an unhandled one.
+async function alertAdmin(subject, html) {
+  try {
+    await resend.emails.send({
+      from: 'System <noreply@trecoleman.com>',
+      to: 'hello@trecoleman.com',
+      subject: `ALERT: ${subject}`,
+      html
+    });
+  } catch (e) {
+    console.error(`Failed to send admin alert (${subject}):`, e.message);
+  }
+}
+
 
 // ── Reporting revenue to GA4 ───────────────────────────────────────────────
 //

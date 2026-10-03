@@ -55,7 +55,10 @@ CREATE POLICY "Service role full access" ON users
 1. Go to your [Stripe Dashboard](https://dashboard.stripe.com)
 2. Navigate to Developers > Webhooks
 3. Add endpoint: `https://trecoleman.com/.netlify/functions/stripe-webhook`
-4. Select events: `checkout.session.completed`
+4. Select events — all three:
+   - `checkout.session.completed`
+   - `checkout.session.async_payment_succeeded`
+   - `checkout.session.async_payment_failed`
 5. Save the **Webhook Signing Secret** (starts with `whsec_`)
 
 ## Environment Variables
@@ -103,8 +106,17 @@ is wrong, customers are charged and receive nothing.
 **`STRIPE_WEBHOOK_SECRET` cannot be recovered and must be regenerated whenever
 the site URL changes.** Create the endpoint at
 `<site>/.netlify/functions/stripe-webhook`, subscribe it to
-`checkout.session.completed` (the only event the code handles), then copy that
-endpoint's signing secret. It is verified at `stripe-webhook.js:21-24`.
+the three `checkout.session.*` events listed above, then copy that endpoint's
+signing secret.
+
+**Subscribe to all three, not just `checkout.session.completed`.** A card
+payment is already `paid` when the session completes, but an asynchronous
+method — a bank debit, Klarna, boleto — completes the session `unpaid` and
+settles minutes or days later. The function refuses to grant access on an
+unpaid session (it would otherwise hand over the course before any money
+moved), and grants it on `async_payment_succeeded` instead. Subscribed only
+to `completed`, such a customer is charged and never let in; you would get an
+"awaiting payment" alert and then silence. It is verified at `stripe-webhook.js:21-24`.
 
 **`AIRTABLE_TOKEN` needs read AND write scope on base `appk7mBGffiWhowPC`**
 (table `Listings`), which is hardcoded at `airtable-proxy.js:3-4`. The base is
