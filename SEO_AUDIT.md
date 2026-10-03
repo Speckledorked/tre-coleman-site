@@ -1272,7 +1272,7 @@ Every item below is currently published on the live site. None can be verified f
 |---|---|---|
 | "10+ years managing multi-unit restaurant operations" | `about.html:341`, `index.html`, `blog.html` | Employment history | ✅ Documented 2026-10-02 — resume: "over a decade" + Potbelly District Manager Oct 2020–Nov 2024 across multiple store locations |
 | "300+ employees led across multiple locations" | `about.html:341`, `index.html` | Documentation | ✅ Softened 2026-10-02 — no headcount on resume; now "District Manager leading multiple store locations" |
-| "$300K+ in revenue waste eliminated for clients" | `about.html:341` | Client documentation | ✅ Softened 2026-10-02 — resume shows $300k revenue, not waste eliminated for clients |
+| "$3M+ in combined revenue across multiple store locations" | `about.html`, `index.html`, `catering-profit.html` | Owner-confirmed 2026-10-03 | ✅ Resolved — the original "waste eliminated for clients" framing had no backing and is gone. The resume reads "$300k", which the owner confirms is a typo for $3M; the resume itself still needs correcting. See `CLAIMS.md` #3 |
 | "National Hospitality Brands" | `index.html` | Which brands? Naming them (with permission) is far stronger than the vague phrase | ✅ Named 2026-10-02 — "Potbelly · Hooters" (resume + Tre's confirmation) |
 | "Cut admin time 40-60%" | `ai-integration.html` meta + body | Measured client results | ✅ Reframed as pilot target 2026-10-02 |
 | "New hires productive 40% faster with AI" | `ai-integration.html:417` | Measured results | ✅ Softened 2026-10-02 — ramp time measured per rollout |
