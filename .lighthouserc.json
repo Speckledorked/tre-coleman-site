@@ -14,7 +14,8 @@
         "http://localhost/catering-profit.html",
         "http://localhost/virginia-neighbors.html"
       ],
-      "numberOfRuns": 1,
+      "_comment_numberOfRuns": "3, not 1. LHCI asserts against the MEDIAN run, so a single run gives a contended CI runner a casting vote. index.html failed once at TBT 234.5ms and performance 0.89 against thresholds of 200 and 0.90 — on a commit whose entire diff was three text substitutions, one of which made that page three characters shorter. Measured locally straight afterwards: TBT 0.0ms and performance 1.00, five runs out of five. The page has no blocking work; the runner simply had no CPU. Three runs costs about five extra minutes and stops CPU contention failing a build on its own.",
+      "numberOfRuns": 3,
       "settings": {
         "preset": "desktop",
         "chromeFlags": "--no-sandbox --headless=new --disable-dev-shm-usage"
