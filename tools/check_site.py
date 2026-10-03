@@ -590,6 +590,38 @@ def check_env_documented():
                             f"settable line, or a hand-entered value overrides it")
 
 
+def check_ga4_ids_agree():
+    """The GA4 measurement id is written in two places; they must match.
+
+    analytics.js configures the property for the browser. stripe-webhook.js
+    hardcodes the same id to post server-side purchase events to it. Nothing
+    at runtime would notice a mismatch: the webhook would keep answering 200
+    and keep logging success while posting revenue into a property that does
+    not exist, and the only symptom would be a `purchase` conversion stuck at
+    zero while Stripe shows sales.
+    """
+    pairs = [
+        ("analytics.js", r"G-[A-Z0-9]+"),
+        ("netlify/functions/stripe-webhook.js", r"G-[A-Z0-9]+"),
+    ]
+    found = {}
+    for path, pat in pairs:
+        if not os.path.exists(path):
+            continue
+        ids = set(re.findall(pat, open(path, encoding="utf-8").read()))
+        if not ids:
+            err(path, "no GA4 measurement id (G-...) found")
+            return
+        if len(ids) > 1:
+            err(path, f"more than one GA4 measurement id: {sorted(ids)}")
+            return
+        found[path] = ids.pop()
+
+    if len(found) == 2 and len(set(found.values())) != 1:
+        err("analytics.js", "GA4 measurement id disagrees with "
+                            f"stripe-webhook.js: {found}")
+
+
 def check_redirects():
     """Redirect targets in netlify.toml must exist."""
     if not os.path.exists("netlify.toml"):
@@ -948,6 +980,7 @@ CHECKS = [
     ("weight", check_weight, "image and page weight budgets"),
     ("unused-img", check_unused_images, "images deployed but never referenced"),
     ("env-docs", check_env_documented, "every process.env var is in .env.example"),
+    ("ga4-ids", check_ga4_ids_agree, "the GA4 measurement id matches in both files"),
     ("redirects", check_redirects, "netlify.toml redirect targets exist"),
     ("prices", check_prices, "no stale product prices"),
     ("html-a11y", check_ids_and_a11y, "duplicate ids, noopener, mixed content, labels"),
