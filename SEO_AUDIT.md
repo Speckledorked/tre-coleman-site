@@ -51,17 +51,37 @@ purchase event lies easily:
 - **Blocked storage.** If `sessionStorage` throws, it fires anyway. Counting a
   refresh twice is a smaller error than losing the conversion.
 
-**It deliberately sends no `value`.** Both the $350 Snapshot and the $67 course
-redirect to the same page, which cannot tell which was bought, so any figure
-would be invented. Conversions are counted; revenue is not.
+**Revenue is reported from the server, not from this page.** An earlier version
+of this note said both products redirect to the same thank-you page. That was
+wrong: the $350 Snapshot uses a `book.stripe.com` booking link
+(`profit-leak-snapshot.html:488`) and finishes on Stripe's own page without
+ever returning to the site, and `thank-you.html` is written for the course by
+name. So the browser cannot see the Snapshot at all, and never learns an
+amount for either product.
 
-**The accurate way to get revenue** is server-side, from
-`netlify/functions/stripe-webhook.js`. It already receives
-`checkout.session.completed` with the real amount and the real product, and it
-is immune to ad-blockers, refreshes and people closing the tab before the
-redirect. Sending a GA4 Measurement Protocol event from there would give true
-revenue per product. It needs a GA4 API secret as a new environment variable,
-which is why it is noted here rather than done.
+`netlify/functions/stripe-webhook.js` now sends the `purchase` event itself,
+over the GA4 Measurement Protocol, with the real amount and the real line
+items from `checkout.session.completed`. It covers both products and is immune
+to ad-blockers, refreshes and people closing the tab before the redirect.
+
+**The browser deliberately sends no `purchase` event at all**, only
+`course_thank_you_view`. Sending both would risk double-counting revenue: GA4
+collapses two purchases sharing a `transaction_id` only when they also share a
+user, and a buyer who opened the payment link straight from an email carries
+no client id for the server to match. That failure would be silent and would
+inflate revenue, so there is exactly one source of truth.
+
+To keep attribution, `analytics.js` stamps the browser's GA4 client id onto
+every Stripe link as `client_reference_id` (encoded `ga-<digits>-<digits>`,
+because Stripe permits no dots). Stripe passes it through to the checkout
+session, the webhook decodes it, and the purchase joins the same user and
+session as the click that started it. When it does not survive the trip the id
+is derived deterministically from the Stripe session instead, so a webhook
+retry cannot invent a second user — revenue still lands, and acquisition reads
+as direct.
+
+Requires `GA4_API_SECRET`. Without it nothing breaks and no purchase event is
+sent; the function logs a warning naming the session it skipped.
 
 ### The directory submissions were invisible too
 
@@ -1130,7 +1150,7 @@ Measurement targets below are **directional planning figures, not forecasts.** N
 | Crisp Chat | ⚠️ Loads on 17 pages, likely broken | `exit-intent-popup.js:18-25` — see T41 |
 | Exit-intent popup | ⚠️ 17 pages, untracked | `exit-intent-popup.js` — absent from `/` and `/contact.html` (T42) |
 | Call tracking | 🔴 Absent | `tel:540-807-9045` in footer is untracked |
-| Stripe purchase → GA4 revenue | ⚠️ Partial | `booking_click` fires on click; `netlify/functions/stripe-webhook.js` handles completion but sends no GA4 event |
+| Stripe purchase → GA4 revenue | ✅ Server-side | `netlify/functions/stripe-webhook.js` sends `purchase` with the real amount via the Measurement Protocol; needs `GA4_API_SECRET` set |
 | Zoho verification | ✅ Present | `zohoverify/verifyforzoho.html` (email, not search) |
 
 **The `analytics.js` implementation is better than typical.** Event delegation on `document` catches every CTA across all 41 pages without per-page instrumentation, and it correctly distinguishes booking clicks from softer CTA clicks. Whoever wrote it knew what they were doing.

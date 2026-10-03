@@ -13,6 +13,39 @@
 
     // ── Conversion & CTA event tracking ──────────────────────────────────────
 
+    // ── Carrying identity across to Stripe ───────────────────────────────────
+    //
+    // Revenue is reported from stripe-webhook.js, because that is the only
+    // place that knows what was actually bought and for how much. A server
+    // event has to name a user, though, and GA4 identifies users by the
+    // client id held in the browser's _ga cookie — which Stripe's own pages
+    // never see.
+    //
+    // Stripe passes client_reference_id from a payment-link URL straight
+    // through to the checkout session, so the id travels as a query
+    // parameter: site -> Stripe -> webhook -> GA4. The purchase then joins
+    // the same user and the same session that the click came from, so the
+    // acquisition source survives.
+    //
+    // Stripe restricts the value to alphanumerics, dashes and underscores,
+    // and a GA4 client id is two integers joined by a dot, so the dot travels
+    // as a dash. Stripe silently drops a value it considers invalid rather
+    // than rejecting the payment, so a malformed id can cost attribution but
+    // can never cost a sale.
+    // https://docs.stripe.com/payment-links/url-parameters
+    function ga4ClientId() {
+        var m = /(?:^|;\s*)_ga=GA\d+\.\d+\.(\d+\.\d+)/.exec(document.cookie || '');
+        return m ? m[1] : '';
+    }
+
+    function withClientRef(url) {
+        if (url.indexOf('client_reference_id=') !== -1) return url;  // already stamped
+        var cid = ga4ClientId();
+        if (!cid) return url;          // no cookie: leave the link exactly as authored
+        return url + (url.indexOf('?') === -1 ? '?' : '&') +
+               'client_reference_id=ga-' + cid.replace('.', '-');
+    }
+
     // Click tracking via event delegation — catches all CTAs across every page
     document.addEventListener('click', function(e) {
         var el = e.target.closest('a, button');
@@ -21,8 +54,45 @@
         var text = (el.textContent || '').trim().substring(0, 60);
         var page = window.location.pathname;
 
+        // Which host this link actually points at. Compared as a parsed
+        // hostname rather than by substring on purpose: `indexOf` would read
+        // https://buy.stripe.com.example.test/ — or any URL that merely
+        // mentions the string in its path or query — as Stripe, and the
+        // stamping below would hand that host the visitor's GA4 client id.
+        // Non-http schemes (tel:, mailto:) yield '' and fall through to their
+        // own branches further down, which match on href as before.
+        var host = '';
+        if (href) {
+            try { host = new URL(href, window.location.href).hostname; }
+            catch (e) { host = ''; }
+        }
+
+        // Stamp the GA4 client id onto any link that hands the visitor to
+        // Stripe, so the server-side purchase event can find its way back to
+        // this user. Done before the event below, so `href` is the URL the
+        // browser will actually open.
+        if (host === 'buy.stripe.com' || host === 'book.stripe.com') {
+            var stamped = withClientRef(href);
+            if (stamped !== href) {
+                el.setAttribute('href', stamped);
+                href = stamped;
+            }
+        }
+
+        // PRIMARY CONVERSION: the $67 course checkout. Only book.stripe.com
+        // was tracked before, so every click on the course's own buy button
+        // was missing from the funnel.
+        if (host === 'buy.stripe.com') {
+            gtag('event', 'checkout_click', {
+                event_category: 'conversion',
+                event_label: text,
+                page_location: page
+            });
+            return;
+        }
+
         // PRIMARY CONVERSION: Stripe booking link click
-        if (href.indexOf('book.stripe.com') !== -1) {
+        if (host === 'book.stripe.com') {
             gtag('event', 'booking_click', {
                 event_category: 'conversion',
                 event_label: text,
@@ -111,50 +181,55 @@
         });
     };
 
-    // ── Completed purchase ───────────────────────────────────────────────────
+    // ── Reaching the thank-you page ──────────────────────────────────────────
     //
-    // booking_click fires when someone heads TO Stripe. Nothing fired when they
-    // came back having paid, so GA4 could report how many people reached
-    // checkout and nothing about how many bought — the one number the funnel
-    // exists to produce.
+    // This deliberately does NOT send `purchase`. That event is sent once,
+    // from stripe-webhook.js, and sending it from here as well would double
+    // count: GA4 collapses two purchases that share a transaction id only
+    // when they also share a user, and a buyer who opened the payment link
+    // from an email carries no client id for the server to match. The
+    // failure would be silent and would inflate revenue, so the browser
+    // stays out of revenue entirely.
     //
-    // Stripe returns to /success, which netlify.toml rewrites to
-    // thank-you.html while leaving the URL as /success.
+    // What the browser still knows, and the server does not, is whether the
+    // buyer ever arrived back on the site. Stripe returns to /success, which
+    // netlify.toml:23-26 rewrites to thank-you.html while leaving the URL as
+    // /success. A buyer who closes the tab at Stripe is paid up but never
+    // onboarded, and that gap is worth being able to see.
     //
-    // Two things make a page-based purchase event lie, and both are handled:
-    // a refresh or a bookmarked page would count again, so the event is fired
-    // once per browser session and keyed on the Stripe session id when Stripe
-    // supplies one.
+    // Only the $67 course comes back here — thank-you.html is written for it
+    // by name. The $350 Snapshot goes to a book.stripe.com link
+    // (profit-leak-snapshot.html:488) and finishes on Stripe's own page, so
+    // it is invisible to this file and reaches GA4 only via the webhook.
     //
-    // What this deliberately does NOT send is `value`. Both products land on
-    // this same page and the page cannot tell which was bought, so any figure
-    // here would be a guess. Conversions will be counted; revenue will not.
-    // See the note in SEO_AUDIT.md for the accurate way to get revenue.
-    function trackPurchase() {
+    // Fired once per browser session, keyed on the Stripe session id when
+    // Stripe supplies one, so a refresh or a bookmark does not count again.
+    function trackThankYouView() {
         var path = window.location.pathname;
         if (path.indexOf('/success') === -1 && path.indexOf('thank-you') === -1) return;
 
         var params = new URLSearchParams(window.location.search);
         var sessionId = params.get('session_id') || params.get('checkout_session_id');
-        var key = 'purchase_tracked:' + (sessionId || path);
+        var key = 'thank_you_seen:' + (sessionId || path);
 
         try {
             if (window.sessionStorage.getItem(key)) return;   // already counted
             window.sessionStorage.setItem(key, '1');
         } catch (e) {
-            // Private mode or blocked storage: better to count a refresh twice
-            // than to lose the conversion entirely.
+            // Private mode or blocked storage: better to count a refresh
+            // twice than to lose the signal entirely. Nothing here carries
+            // revenue, so a double count costs nothing but a view.
         }
 
-        var payload = { event_category: 'conversion', currency: 'USD' };
+        var payload = { event_category: 'engagement' };
         if (sessionId) payload.transaction_id = sessionId;
-        gtag('event', 'purchase', payload);
+        gtag('event', 'course_thank_you_view', payload);
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', trackPurchase);
+        document.addEventListener('DOMContentLoaded', trackThankYouView);
     } else {
-        trackPurchase();
+        trackThankYouView();
     }
 
 })();

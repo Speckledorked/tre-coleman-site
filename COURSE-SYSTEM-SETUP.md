@@ -78,6 +78,20 @@ See `.env.example` in the repository root for the same list with notes.
 | `RESEND_API_KEY` | Resend API key | `re_xxxxx` | **No** — shown once |
 | `AIRTABLE_TOKEN` | Airtable personal access token | `patxxxxx...` | **No** — shown once |
 | `CHAT_PASSWORD` | Shared password for the premium AI chat | any string | **No** — self-chosen |
+| `GA4_API_SECRET` | Measurement Protocol secret for server-side revenue (optional) | opaque string | **No** — shown once |
+
+### The one that is optional
+
+**`GA4_API_SECRET` is the only variable the site runs fine without.** It lets
+`stripe-webhook.js` report what each purchase was worth to GA4. Leave it unset
+and purchases are simply never reported — the function logs a warning naming
+the session it skipped, and the `purchase` conversion in GA4 stays at zero
+while Stripe shows sales. Create it in GA4 under Admin -> Data streams -> the
+web stream -> Measurement Protocol API secrets.
+
+It is not the measurement ID. That is `G-778929FT8G`, it is public, and it is
+hardcoded in both `analytics.js` and `stripe-webhook.js` — `tools/check_site.py`
+fails if those two ever disagree.
 
 ### Three that are easy to get wrong
 
