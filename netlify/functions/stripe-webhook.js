@@ -329,7 +329,16 @@ async function reportPurchaseToGA4(stripeEvent, lineItems) {
 
   } catch (err) {
     // Never fatal. The customer has already been served.
-    console.error(`Could not report purchase ${session.id} to GA4:`, err.message);
+    //
+    // The message is scrubbed of the API secret first. The Measurement
+    // Protocol carries that secret in the query string — Google supports no
+    // other transport — and a fetch failure is free to quote the URL it was
+    // given. Scrubbing makes it impossible for the secret to reach a log
+    // regardless of what the error text turns out to contain.
+    const secret = process.env.GA4_API_SECRET;
+    let message = (err && err.message) || String(err);
+    if (secret) message = message.split(secret).join('[redacted]');
+    console.error(`Could not report purchase ${session.id} to GA4:`, message);
   }
 }
 

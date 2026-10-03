@@ -54,13 +54,24 @@
         var text = (el.textContent || '').trim().substring(0, 60);
         var page = window.location.pathname;
 
+        // Which host this link actually points at. Compared as a parsed
+        // hostname rather than by substring on purpose: `indexOf` would read
+        // https://buy.stripe.com.example.test/ — or any URL that merely
+        // mentions the string in its path or query — as Stripe, and the
+        // stamping below would hand that host the visitor's GA4 client id.
+        // Non-http schemes (tel:, mailto:) yield '' and fall through to their
+        // own branches further down, which match on href as before.
+        var host = '';
+        if (href) {
+            try { host = new URL(href, window.location.href).hostname; }
+            catch (e) { host = ''; }
+        }
+
         // Stamp the GA4 client id onto any link that hands the visitor to
         // Stripe, so the server-side purchase event can find its way back to
         // this user. Done before the event below, so `href` is the URL the
         // browser will actually open.
-        var toStripe = href.indexOf('buy.stripe.com') !== -1 ||
-                       href.indexOf('book.stripe.com') !== -1;
-        if (toStripe) {
+        if (host === 'buy.stripe.com' || host === 'book.stripe.com') {
             var stamped = withClientRef(href);
             if (stamped !== href) {
                 el.setAttribute('href', stamped);
@@ -71,7 +82,7 @@
         // PRIMARY CONVERSION: the $67 course checkout. Only book.stripe.com
         // was tracked before, so every click on the course's own buy button
         // was missing from the funnel.
-        if (href.indexOf('buy.stripe.com') !== -1) {
+        if (host === 'buy.stripe.com') {
             gtag('event', 'checkout_click', {
                 event_category: 'conversion',
                 event_label: text,
@@ -81,7 +92,7 @@
         }
 
         // PRIMARY CONVERSION: Stripe booking link click
-        if (href.indexOf('book.stripe.com') !== -1) {
+        if (host === 'book.stripe.com') {
             gtag('event', 'booking_click', {
                 event_category: 'conversion',
                 event_label: text,
