@@ -737,6 +737,17 @@
       if (!res.ok) throw new Error();
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successMsg').classList.add('show');
+
+      // This submission is a lead, and it was invisible to analytics: the
+      // modal posts through handleSubmit() rather than firing a form submit
+      // event, so the form-name mapping in analytics.js never saw it. Fired
+      // here, on the success branch only, so a failed post is not counted.
+      if (window.gtag) {
+        gtag('event', 'directory_submission', {
+          event_category: 'conversion',
+          event_label: category
+        });
+      }
     } catch(err) {
       alert('Something went wrong. Please try again.');
       btn.disabled = false; btn.textContent = 'Submit for Review →';
