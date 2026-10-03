@@ -30,6 +30,64 @@ Most of this audit has since been implemented. **The findings below are preserve
 | **Analytics** | Per-form conversion events, `phone_click`/`email_click`, exit-intent A/B variant tracking |
 | **Tooling** | Two regex-based nav workflows retired in favour of `tools/` generators — see `tools/README.md` |
 
+### Analytics: the completed purchase was never tracked
+
+GA4 (`G-778929FT8G`) loads via `analytics.js` on all 42 indexable pages — the
+ten gated course pages and the Zoho stub are correctly excluded — and tracked
+thirteen events before this: five CTA clicks, six form submissions and the
+exit-intent variants.
+
+What it did not track was anyone buying anything. `booking_click` fired when a
+visitor headed **to** Stripe; nothing fired when they came back having paid.
+`thank-you.html`, which is where Stripe returns, loaded analytics and emitted no
+conversion event at all. So GA4 could report how many people reached checkout
+and nothing about how many bought — the one number the funnel exists to produce.
+
+A `purchase` event now fires there, with two guards, because a page-based
+purchase event lies easily:
+
+- **Refreshes and bookmarks.** It fires once per browser session, keyed on the
+  Stripe `session_id` when Stripe supplies one and on the path otherwise.
+- **Blocked storage.** If `sessionStorage` throws, it fires anyway. Counting a
+  refresh twice is a smaller error than losing the conversion.
+
+**It deliberately sends no `value`.** Both the $350 Snapshot and the $67 course
+redirect to the same page, which cannot tell which was bought, so any figure
+would be invented. Conversions are counted; revenue is not.
+
+**The accurate way to get revenue** is server-side, from
+`netlify/functions/stripe-webhook.js`. It already receives
+`checkout.session.completed` with the real amount and the real product, and it
+is immune to ad-blockers, refreshes and people closing the tab before the
+redirect. Sending a GA4 Measurement Protocol event from there would give true
+revenue per product. It needs a GA4 API secret as a new environment variable,
+which is why it is noted here rather than done.
+
+### The directory submissions were invisible too
+
+`virginia-neighbors.html` posts its listing form through a `handleSubmit()`
+function rather than firing a form submit event, so the form-name mapping in
+`analytics.js` never saw it and every submission went untracked. A
+`directory_submission` event now fires on the success branch only — a failed
+post is not a lead — carrying the category as its label.
+
+Verified by driving the real page: the success path fires the event with
+`event_label` set to the chosen category, and a 500 from the proxy fires
+nothing.
+
+### Still worth doing in the GA4 interface
+
+Two things no amount of site code can do:
+
+1. **Mark the key events as conversions.** `purchase`, `booking_click`,
+   `contact_form_submit` and `directory_submission` are firing, but until they
+   are flagged in Admin → Events they will not appear in conversion reports or
+   attribution.
+2. **Check enhanced measurement is on**, which gives scroll depth free. With
+   twelve articles and no engagement signal, there is currently no way to tell
+   a read from a bounce — and that is the data that should decide which of the
+   three remaining articles to write.
+
 ### Everything the functions need is live, and verified
 
 With the Airtable token replaced and all nine environment variables set, all

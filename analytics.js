@@ -110,4 +110,51 @@
             page_location: window.location.pathname
         });
     };
+
+    // ── Completed purchase ───────────────────────────────────────────────────
+    //
+    // booking_click fires when someone heads TO Stripe. Nothing fired when they
+    // came back having paid, so GA4 could report how many people reached
+    // checkout and nothing about how many bought — the one number the funnel
+    // exists to produce.
+    //
+    // Stripe returns to /success, which netlify.toml rewrites to
+    // thank-you.html while leaving the URL as /success.
+    //
+    // Two things make a page-based purchase event lie, and both are handled:
+    // a refresh or a bookmarked page would count again, so the event is fired
+    // once per browser session and keyed on the Stripe session id when Stripe
+    // supplies one.
+    //
+    // What this deliberately does NOT send is `value`. Both products land on
+    // this same page and the page cannot tell which was bought, so any figure
+    // here would be a guess. Conversions will be counted; revenue will not.
+    // See the note in SEO_AUDIT.md for the accurate way to get revenue.
+    function trackPurchase() {
+        var path = window.location.pathname;
+        if (path.indexOf('/success') === -1 && path.indexOf('thank-you') === -1) return;
+
+        var params = new URLSearchParams(window.location.search);
+        var sessionId = params.get('session_id') || params.get('checkout_session_id');
+        var key = 'purchase_tracked:' + (sessionId || path);
+
+        try {
+            if (window.sessionStorage.getItem(key)) return;   // already counted
+            window.sessionStorage.setItem(key, '1');
+        } catch (e) {
+            // Private mode or blocked storage: better to count a refresh twice
+            // than to lose the conversion entirely.
+        }
+
+        var payload = { event_category: 'conversion', currency: 'USD' };
+        if (sessionId) payload.transaction_id = sessionId;
+        gtag('event', 'purchase', payload);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', trackPurchase);
+    } else {
+        trackPurchase();
+    }
+
 })();
