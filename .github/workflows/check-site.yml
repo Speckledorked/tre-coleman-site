@@ -21,6 +21,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # build_sitemap.py reads each page's <lastmod> from `git log -1` on
+          # that file. actions/checkout defaults to fetch-depth: 1, which
+          # leaves exactly one commit of history, so git reports that single
+          # commit's date for EVERY file and the regenerated sitemap comes out
+          # uniformly stamped with today.
+          #
+          # The sitemap check below therefore was not comparing what it looked
+          # like it was comparing. It passed only while the committed sitemap
+          # happened to carry the same date as CI's HEAD commit — true whenever
+          # the file was regenerated and pushed the same day, and false the
+          # first time a session ran past midnight.
+          #
+          # Measured: a depth-1 clone of this repository produces 34 URLs all
+          # dated the HEAD commit; full history produces 31 at one date and 3
+          # at another.
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
