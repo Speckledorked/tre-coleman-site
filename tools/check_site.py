@@ -667,6 +667,54 @@ def check_markdown_blocked():
                       f"netlify.toml, or move it under tools/")
 
 
+MONTHS = {m: i for i, m in enumerate(
+    ["January", "February", "March", "April", "May", "June", "July",
+     "August", "September", "October", "November", "December"], start=1)}
+
+# A date is only a promise when something nearby says it is one. Without this
+# the blog's own post-meta ("August 16, 2026") would trip the check.
+PROMISE = r"launch\w*|goes live|going live|coming|release\w*|drops|opens"
+
+
+def check_launch_dates():
+    """A launch date that has already passed must not still be advertised.
+
+    "March 30th, 2026" sat in eleven customer-facing places for six months.
+    Every one of them was reachable only AFTER payment — the post-purchase
+    page, both confirmation emails, and the logged-in course pages — so the
+    public site looked clean while everyone who paid was told the course had
+    launched in March. The sales page said only "soon", which is why nobody
+    browsing could see the contradiction.
+
+    Only .html and .js are checked, and tools/ and drafts/ are skipped: the
+    failure being guarded against is what a customer reads.
+    """
+    import datetime
+    today = datetime.date.today()
+    pattern = re.compile(
+        rf"(?:{PROMISE})[^<>.]{{0,60}}?"
+        rf"({'|'.join(MONTHS)})\s+(\d{{1,2}})(?:st|nd|rd|th)?(?:,?\s+(20\d\d))?",
+        re.I)
+
+    files = [f for f in glob.glob("**/*.html", recursive=True)
+                     + glob.glob("**/*.js", recursive=True)
+             if not f.startswith(("tools/", "drafts/", "node_modules/"))]
+
+    for f in sorted(files):
+        text = open(f, encoding="utf-8", errors="replace").read()
+        for m in pattern.finditer(text):
+            month = MONTHS[m.group(1).capitalize()]
+            day = int(m.group(2))
+            year = int(m.group(3)) if m.group(3) else today.year
+            try:
+                when = datetime.date(year, month, day)
+            except ValueError:
+                continue
+            if when < today:
+                err(f, f"advertises a launch date that has passed: "
+                       f"{m.group(0).strip()!r} ({when.isoformat()})")
+
+
 def check_redirects():
     """Redirect targets in netlify.toml must exist."""
     if not os.path.exists("netlify.toml"):
@@ -1027,6 +1075,7 @@ CHECKS = [
     ("env-docs", check_env_documented, "every process.env var is in .env.example"),
     ("ga4-ids", check_ga4_ids_agree, "the GA4 measurement id matches in both files"),
     ("md-private", check_markdown_blocked, "working .md documents are not served"),
+    ("launch-date", check_launch_dates, "no advertised launch date has already passed"),
     ("redirects", check_redirects, "netlify.toml redirect targets exist"),
     ("prices", check_prices, "no stale product prices"),
     ("html-a11y", check_ids_and_a11y, "duplicate ids, noopener, mixed content, labels"),

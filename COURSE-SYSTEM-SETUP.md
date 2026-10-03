@@ -261,7 +261,18 @@ stripe listen --forward-to localhost:8888/.netlify/functions/stripe-webhook
 
 ## Adding Video Content
 
-When course launches (March 30th), update each module page:
+When the course launches, update each module page:
+
+Every customer-facing mention of the launch currently reads "soon" rather
+than a date. A hardcoded date was wrong here for six months — it said
+March 30th, 2026 in eleven places, all of them seen only after payment, so
+nobody browsing the site could spot it. `tools/check_site.py` now fails on a
+launch date that has passed. The eleven places were:
+
+- `thank-you.html` — the post-purchase page
+- `netlify/functions/stripe-webhook.js` — both confirmation emails
+- `course/dashboard.html` — the logged-in notice
+- `course/module-1..5.html`, `course/bonus.html`, `course/module-template.html`
 
 1. Remove the `video-placeholder` div
 2. Add YouTube embed:
