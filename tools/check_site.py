@@ -622,6 +622,51 @@ def check_ga4_ids_agree():
                             f"stripe-webhook.js: {found}")
 
 
+def check_markdown_blocked():
+    """Every working .md document must 404, not be served.
+
+    publish = "." serves the whole repository, so a note added at the root is
+    a live URL. The rules are per-file because a splat only expands at the END
+    of a Netlify path, so "/*.md" matched nothing and silently published
+    everything it was written to hide.
+
+    Per-file rules are easy to forget on the next document, which is what this
+    check exists to catch: CLAUDE.md was one `git add` away from being served
+    when it was written. Files under tools/ and drafts/ are already covered by
+    their directory rules, so only the root and images/ are checked here.
+    """
+    if not os.path.exists("netlify.toml"):
+        return
+    # tomllib is imported here, not at module scope — check_netlify_toml does
+    # the same so the file keeps working on a Python without it. The first
+    # version of this function called tomllib.load() as though it were a
+    # global and wrapped it in `except Exception: return`, so every run threw
+    # NameError, swallowed it, and reported a clean pass over a file it had
+    # never opened. Only TOMLDecodeError is caught now, and the import failing
+    # is reported rather than hidden.
+    try:
+        import tomllib
+    except ImportError:
+        warn("netlify.toml", "tomllib unavailable; .md exposure not checked")
+        return
+    with open("netlify.toml", "rb") as fh:
+        try:
+            conf = tomllib.load(fh)
+        except tomllib.TOMLDecodeError:
+            return          # check_netlify_toml already reported this
+
+    blocked = {
+        r.get("from") for r in conf.get("redirects", [])
+        if str(r.get("status")) == "404"
+    }
+
+    for path in sorted(glob.glob("*.md") + glob.glob("images/*.md")):
+        route = "/" + path.replace(os.sep, "/")
+        if route not in blocked:
+            err(path, f"served publicly — add a 404 redirect for {route} in "
+                      f"netlify.toml, or move it under tools/")
+
+
 def check_redirects():
     """Redirect targets in netlify.toml must exist."""
     if not os.path.exists("netlify.toml"):
@@ -981,6 +1026,7 @@ CHECKS = [
     ("unused-img", check_unused_images, "images deployed but never referenced"),
     ("env-docs", check_env_documented, "every process.env var is in .env.example"),
     ("ga4-ids", check_ga4_ids_agree, "the GA4 measurement id matches in both files"),
+    ("md-private", check_markdown_blocked, "working .md documents are not served"),
     ("redirects", check_redirects, "netlify.toml redirect targets exist"),
     ("prices", check_prices, "no stale product prices"),
     ("html-a11y", check_ids_and_a11y, "duplicate ids, noopener, mixed content, labels"),
