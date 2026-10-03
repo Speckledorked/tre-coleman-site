@@ -27,11 +27,36 @@ Status key — `documented` · `needs softening` · `remove` · `unreviewed`
 |---|---|---|---|---|
 | 1 | "10+ years managing multi-unit restaurant operations" | `about.html`, `index.html`, `blog.html` | Resume: summary claims "over a decade"; Potbelly District Manager Oct 2020–Nov 2024 across multiple store locations | documented (2026-10-02, verified from resume screenshots) |
 | 2 | "300+ employees led across multiple locations" | `about.html`, `index.html` | No headcount on resume | softened (2026-10-02) — now "District Manager leading multiple store locations" / tile "Multi-Unit District Manager" |
-| 3 | "$300K+ in revenue waste eliminated for clients" | `about.html` | Resume: "combined $300k revenue across multiple store locations" (Potbelly DM) | reworded (2026-10-02) — now "$300K+ in revenue across multiple store locations"; the "waste eliminated for clients" framing had no backing |
+| 3 | "$3M+ in combined revenue across multiple store locations" | `about.html`, `index.html`, `catering-profit.html` | Resume reads "combined $300k revenue across multiple store locations" (Potbelly DM). Owner confirms that line is a typo and the figure is **$3M**, not $300K | **owner-confirmed (2026-10-03)**, resume not yet corrected — see note below |
 | 4 | "National Hospitality Brands" | `index.html` | Resume: Potbelly (District Manager); Hooters confirmed by Tre' | softened (2026-10-02) — now "Potbelly · Hooters" |
 
 > On #4 — naming the brands (with permission) is far stronger than the vague
 > phrase. Specificity is the whole credibility mechanism here.
+
+### Note on claim #3 — the resume itself needs correcting
+
+The figure went through three readings before landing. The original site copy
+said "$300K+ in revenue **waste eliminated for clients**", which the resume
+never supported in any form. The resume line is "combined $300k revenue across
+multiple store locations" — a different claim entirely, and the site was
+corrected to match it.
+
+That corrected version was then questioned for a simple reason: $300K of
+combined revenue across several Potbelly locations does not describe any
+plausible multi-unit reality, and as a headline credential it understated the
+role while inviting doubt about the claims beside it. The owner has confirmed
+the resume line is missing a zero and the figure is **$3M**, which is
+consistent with a small district. The site now says $3M.
+
+**This is owner recollection, not a document.** No P&L, bonus statement or job
+description has been produced for it, and the source document still says $300K.
+Two things follow:
+
+1. **The resume needs the same correction.** It is being sent to people and it
+   currently understates its own author by a factor of ten.
+2. If a period P&L, a bonus statement struck against district volume, or the
+   original job posting ever surfaces, attach it here and move the status to
+   documented.
 
 ## Service outcome claims
 

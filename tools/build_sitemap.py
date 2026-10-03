@@ -78,17 +78,57 @@ def last_modified(path):
     return out or None
 
 
+def refuse_if_history_is_useless(dates):
+    """Refuse when every page resolved to the same commit, in a shallow clone.
+
+    `git log -1 -- <path>` in a depth-1 clone can only return the one commit it
+    has, so every page resolves to the same date and the sitemap comes out
+    uniformly stamped with whenever the clone happened. Nothing errors; the
+    output is simply wrong, which is the worst failure mode a generator has.
+
+    It bit CI rather than a person: the workflow used the default
+    fetch-depth: 1 and its sitemap check compared the committed file against
+    34 URLs all dated today. That matched by luck whenever regeneration and CI
+    fell on the same day, and stopped matching the first time a session crossed
+    midnight.
+
+    The test is the symptom, not `--is-shallow-repository`. A truncated clone
+    is usually fine: this very checkout reports shallow while holding 189
+    commits and resolving per-file dates correctly. What is never fine is a
+    shallow clone in which every single page collapsed onto one date, because
+    that is the signature of history too short to answer the question.
+    """
+    if len(dates) < 2 or len(set(dates)) != 1:
+        return
+    shallow = subprocess.run(
+        ["git", "rev-parse", "--is-shallow-repository"],
+        capture_output=True, text=True,
+    ).stdout.strip()
+    if shallow != "true":
+        return          # genuinely one commit touched everything; believable
+    sys.exit(
+        f"refusing to write a sitemap: all {len(dates)} pages resolved to "
+        f"{dates[0]} in a shallow clone.\n"
+        "<lastmod> comes from per-file git history, and this clone has too "
+        "little of it to tell the pages apart.\n"
+        "Fix: `git fetch --unshallow`, or set fetch-depth: 0 on "
+        "actions/checkout."
+    )
+
+
 def main():
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ]
     unknown = []
+    collected = []
     for url, path, priority, changefreq in PAGES:
         date = last_modified(path)
         if date is None:
             unknown.append(path)
             continue
+        collected.append(date)
         lines += [
             "  <url>",
             f"    <loc>{SITE}{url}</loc>",
@@ -98,6 +138,9 @@ def main():
             "  </url>",
         ]
     lines.append("</urlset>")
+
+    # Check before writing: a wrong sitemap on disk is worse than none.
+    refuse_if_history_is_useless(collected)
 
     with open("sitemap.xml", "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines) + "\n")
