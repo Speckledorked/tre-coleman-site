@@ -22,171 +22,16 @@
 <meta name="twitter:title" content="Restaurant Operations Insights &amp; Playbooks | Tre Coleman" />
 <meta name="twitter:description" content="Practical operations, profitability, and marketing playbooks for independent restaurant, food truck, and catering operators. No theory, just systems." />
 <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
 <link href="style.css" rel="stylesheet"/>
-<style>
-      /* Page-specific styles for blog */
-      .blog-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
-      }
-
-      .blog-post {
-        background: var(--white);
-        border-radius: var(--radius-md);
-        padding: 2rem;
-        box-shadow: var(--shadow-md);
-        transition: all var(--transition-base);
-        border: 1px solid rgba(31, 71, 136, 0.05);
-        display: flex;
-        flex-direction: column;
-      }
-
-      .blog-post:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-lg);
-      }
-
-      .blog-post .post-meta {
-        font-size: 0.875rem;
-        color: var(--medium-text);
-        margin-bottom: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .blog-post h2 {
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
-      }
-
-      .blog-post h2 a {
-        color: var(--primary-navy);
-        text-decoration: none;
-      }
-
-      .blog-post h2 a:hover {
-        color: var(--primary-light);
-      }
-
-      .blog-post p {
-        margin-bottom: 1.5rem;
-        flex-grow: 1;
-      }
-
-      .blog-post .read-more {
-        font-weight: 700;
-        color: var(--accent-gold);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-size: 0.875rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .blog-categories {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-        margin-bottom: 3rem;
-        justify-content: center;
-      }
-
-      .blog-categories a {
-        background: var(--white);
-        color: var(--primary-navy);
-        padding: 0.5rem 1.25rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        border: 1px solid var(--primary-navy);
-      }
-
-      .blog-categories a:hover,
-      .blog-categories a.active {
-        background: var(--primary-navy);
-        color: var(--white);
-      }
-
-      .newsletter-box {
-        background: var(--primary-navy);
-        color: var(--white);
-        padding: 3rem 2rem;
-        border-radius: var(--radius-lg);
-        text-align: center;
-        margin: 4rem 0;
-        box-shadow: var(--shadow-lg);
-      }
-
-      .newsletter-box h3 {
-        color: var(--white);
-        margin-bottom: 1rem;
-      }
-
-      .newsletter-box p {
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 2rem;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .newsletter-form {
-        display: flex;
-        gap: 1rem;
-        max-width: 500px;
-        margin: 0 auto;
-        flex-wrap: wrap;
-      }
-
-      .newsletter-form input {
-        flex: 1;
-        padding: 0.875rem 1.25rem;
-        border: none;
-        border-radius: var(--radius-sm);
-        min-width: 250px;
-        font-family: inherit;
-      }
-
-      .newsletter-form button {
-        background: var(--accent-gold-text);
-        color: var(--white);
-        border: none;
-        padding: 0.875rem 2rem;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        transition: all 0.3s ease;
-      }
-
-      .newsletter-form button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-
-      @media (max-width: 768px) {
-        .newsletter-form {
-          flex-direction: column;
-        }
-        .newsletter-form input,
-        .newsletter-form button {
-          width: 100%;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="ledger.css" />
   <link rel="canonical" href="https://trecoleman.com/blog.html" />
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 
@@ -194,8 +39,8 @@
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <!-- Header -->
 <header>
-<div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="lg-wrap">
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <!-- Mobile Menu Toggle Button -->
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
@@ -244,14 +89,14 @@
 </header>
 <!-- Blog Hero -->
 <section class="hero">
-<div class="container">
+<div class="lg-wrap">
 <h1>Insights &amp; Playbooks</h1>
 <p>Practical operations frameworks from 10+ years managing multi-unit restaurants. No fluff, just systems that move numbers.</p>
 </div>
 </section>
-<main id="main-content" class="container" style="padding: 4rem 1.25rem;">
+<main id="main-content" class="lg-wrap">
 <!-- Categories -->
-<div class="blog-categories">
+<div class="lg-chips">
 <a class="active" href="#">All Posts</a>
 <a href="#">Operations</a>
 <a href="#">AI Integration</a>
@@ -259,80 +104,80 @@
 <a href="#">Leadership</a>
 </div>
 <!-- Blog Grid -->
-<div class="blog-grid">
-  <article class="blog-post">
+<div class="lg-ledger">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 9 min read</div>
     <h2><a href="blog/busy-but-not-profitable.html">Why Your Restaurant Is Busy But Not Profitable</a></h2>
     <p>Full dining room, flat bank balance. The four places independent restaurants lose margin while volume looks healthy — and how to tell which one is yours.</p>
     <a class="read-more" href="blog/busy-but-not-profitable.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 10 min read</div>
     <h2><a href="blog/restaurant-profit-and-loss.html">The Restaurant P&amp;L, Line by Line</a></h2>
     <p>A plain-English walk through a restaurant profit and loss statement: what each line means, which ones you control weekly, and the order to read them in.</p>
     <a class="read-more" href="blog/restaurant-profit-and-loss.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 8 min read</div>
     <h2><a href="blog/restaurant-labor-cost.html">How to Lower Restaurant Labor Cost Without Cutting Service</a></h2>
     <p>Labor is the fastest-moving cost you control. How to build a schedule from sales patterns instead of habit — and why cutting hours is usually the wrong first move.</p>
     <a class="read-more" href="blog/restaurant-labor-cost.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 8 min read</div>
     <h2><a href="blog/restaurant-sop-templates.html">Restaurant SOPs: What to Document First</a></h2>
     <p>Most SOP projects fail because they start by documenting everything. How to pick the few procedures that actually change what happens on a shift.</p>
     <a class="read-more" href="blog/restaurant-sop-templates.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 7 min read</div>
     <h2><a href="blog/fractional-coo-vs-consultant.html">Fractional COO vs Restaurant Consultant: Which Do You Need?</a></h2>
     <p>Project consulting and ongoing fractional leadership solve different problems. How to tell which one your operation needs — including when it's neither.</p>
     <a class="read-more" href="blog/fractional-coo-vs-consultant.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 8 min read</div>
     <h2><a href="blog/restaurant-consultant-cost.html">How Much Does a Restaurant Consultant Cost?</a></h2>
     <p>What restaurant consultants actually charge, how the four common pricing models differ, and the arithmetic that tells you whether an engagement will pay for itself before you sign.</p>
     <a class="read-more" href="blog/restaurant-consultant-cost.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Leadership • 6 min read</div>
     <h2><a href="unreasonably-optimistic.html">Unreasonably Optimistic</a></h2>
     <p>The difference between restaurant owners who turn things around and those who stay stuck isn't intelligence or experience. It's how they relate to uncertainty. Operations don't reward certainty—they reward motion.</p>
     <a class="read-more" href="unreasonably-optimistic.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 7 min read</div>
     <h2><a href="blog/restaurant-profit-leaks.html">Unmasking the Hidden Costs: How to Identify and Plug Profit Leaks in Your Restaurant</a></h2>
     <p>Every restaurant owner dreams of a thriving business, bustling with happy customers and healthy profits. Yet, for many, the reality is a constant batt...</p>
     <a class="read-more" href="blog/restaurant-profit-leaks.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 7 min read</div>
     <h2><a href="blog/restaurant-systems-for-growth.html">Beyond the Daily Grind: Implementing Systems for Sustainable Restaurant Growth</a></h2>
     <p>In the fast-paced world of hospitality, restaurant owners and managers often find themselves caught in a relentless cycle of daily tasks – putting out...</p>
     <a class="read-more" href="blog/restaurant-systems-for-growth.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 7 min read</div>
     <h2><a href="blog/menu-engineering-guide.html">Maximizing My Menu's Potential: A Guide to Restaurant Menu Engineering</a></h2>
     <p>Your restaurant's menu is far more than just a list of dishes and prices; it's a powerful marketing tool, a reflection of your brand, and, most import...</p>
     <a class="read-more" href="blog/menu-engineering-guide.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 7 min read</div>
     <h2><a href="blog/fractional-coo-for-restaurants.html">The Strategic Advantage: How Fractional COO Services Elevate Restaurant Operations</a></h2>
     <p>For many growing restaurants, the journey from a successful single unit to a multi-location enterprise or a highly efficient, profitable operation oft...</p>
     <a class="read-more" href="blog/fractional-coo-for-restaurants.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 11 min read</div>
     <h2><a href="blog/how-to-price-catering-jobs.html">How to Price Catering Jobs So You Actually Make Money</a></h2>
     <p>Most catering quotes are built from food cost and a guess. The full cost stack, the break-even formula most operators get backwards, and the margin benchmarks that show which events actually pay...</p>
     <a class="read-more" href="blog/how-to-price-catering-jobs.html">Read more →</a>
   </article>
-  <article class="blog-post">
+  <article class="lg-row lg-row--post">
     <div class="post-meta">Operations • 7 min read</div>
     <h2><a href="blog/scaling-a-catering-business.html">From Food Truck to Empire: Scaling My Catering Business Profitably</a></h2>
     <p>The catering industry, whether as a standalone business or an extension of a restaurant or food truck, offers immense potential for revenue growth. Ho...</p>
@@ -340,25 +185,25 @@
   </article>
 </div>
 <!-- Newsletter Signup -->
-<section class="newsletter-box">
+<section class="lg-note">
 <h3>Get Operator-Grade Insights</h3>
 <p>Weekly strategies for restaurant operators who want systems that actually work. Frameworks you can use Monday morning.</p>
 <form class="newsletter-form" id="newsletter-form">
 <input id="newsletter-email" placeholder="Enter your email address" required type="email"/>
 <button id="newsletter-btn" type="submit">Subscribe</button>
 </form>
-<p id="newsletter-message" style="margin-top: 1rem; font-size: 0.95rem; display: none;"></p>
+<p id="newsletter-message"></p>
 </section>
 <!-- Free Diagnostic Tools -->
-<section style="background: #fef9f3; padding: 3rem; border-radius: var(--radius-lg); border: 1px solid rgba(31, 71, 136, 0.1);">
-<h2 style="margin-bottom: 2rem;">Free Diagnostic Tools</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+<section>
+<h2>Free Diagnostic Tools</h2>
 <div>
-<a href="audit.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-navy); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ Restaurant Profit Audit</a>
+<div>
+<a href="audit.html">→ Restaurant Profit Audit</a>
 <p>15-minute assessment to identify your biggest profit leaks and hidden waste.</p>
 </div>
 <div>
-<a href="playbook.html" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-navy); text-decoration: none; display: block; margin-bottom: 0.5rem;">→ 90-Day Profit Playbook</a>
+<a href="playbook.html">→ 90-Day Profit Playbook</a>
 <p>Download the 5-step framework I use with consulting clients to stabilize operations.</p>
 </div>
 </div>
@@ -366,7 +211,7 @@
 </main>
 <!-- Footer -->
 <footer>
-<div class="container">
+<div class="lg-wrap">
 <div class="footer-grid">
 <div class="footer-section">
 <h2>Tre Coleman Consulting LLC</h2>

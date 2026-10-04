@@ -23,10 +23,13 @@
     <meta name="twitter:description" content="AI workflows, SOPs and training, menu engineering, local marketing, and fractional ops support for independent restaurant and catering operators." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
     <!-- Use relative path for CSS so it loads on GitHub Pages project sites -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="ledger.css" />
     
     <script type="application/ld+json">
     {
@@ -131,7 +134,7 @@
     </script>
     <script src="analytics.js"></script>
   </head>
-  <body>
+  <body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
     <!-- Mobile Menu Overlay -->
@@ -139,8 +142,8 @@
 
     <!-- Header -->
     <header>
-      <div class="container">
-        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+      <div class="lg-wrap">
+        <div class="logo"><a href="index.html">Tre Coleman</a></div>
 
         <!-- Mobile Menu Toggle Button -->
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
@@ -192,96 +195,96 @@
 <main id="main-content">
 
     <section id="projects">
-      <div class="container">
-        <h1 class="text-center mb-2">Restaurant Consulting Services for Independent Operators</h1>
-        <p class="text-center mb-2" style="max-width: 700px; margin-left: auto; margin-right: auto; font-size: 1.1rem;">For restaurants, food trucks, and catering companies across the U.S. Every engagement starts with a clear picture of what's actually hurting your margins.</p>
+      <div class="lg-wrap">
+        <h1 class="mb-2">Restaurant Consulting Services for Independent Operators</h1>
+        <p class="mb-2">For restaurants, food trucks, and catering companies across the U.S. Every engagement starts with a clear picture of what's actually hurting your margins.</p>
 
                 <!-- Service Ladder Cards -->
-        <div class="service-ladder" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 3rem 0;">
+        <div class="service-ladder">
 
-            <div class="service-card" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div class="service-card">
                 <h2>Profit Leak Snapshot</h2>
-                <div class="price" style="font-size: 2rem; font-weight: 700; color: var(--primary-navy); margin: 1rem 0;">$350</div>
+                <div class="price">$350</div>
                 <p>A 90-minute diagnostic session to identify $10K–$50K in annual profit leaks. The right starting point for most operators.</p>
-                <a href="profit-leak-snapshot.html" class="cta-button" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--primary-navy); color: white; text-decoration: none; border-radius: 4px;">Learn More →</a>
+                <a href="profit-leak-snapshot.html" class="lg-cta">Learn More →</a>
             </div>
 
-            <div class="service-card" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div class="service-card">
                 <h2>Project Consulting</h2>
-                <div class="price" style="font-size: 2rem; font-weight: 700; color: var(--primary-navy); margin: 1rem 0;">$2,500–$50,000</div>
+                <div class="price">$2,500–$50,000</div>
                 <p>Focused projects in menu engineering, AI integration, SOPs and training systems, local store marketing, and catering operations. See service areas below.</p>
-                <a href="#service-areas" class="cta-button" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--primary-navy); color: white; text-decoration: none; border-radius: 4px;">View Services →</a>
+                <a href="#service-areas" class="lg-cta">View Services →</a>
             </div>
 
-            <div class="service-card" style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <div class="service-card">
                 <h2>Advisory Retainer</h2>
-                <div class="price" style="font-size: 2rem; font-weight: 700; color: var(--primary-navy); margin: 1rem 0;">$2,000/mo</div>
+                <div class="price">$2,000/mo</div>
                 <p>Ongoing strategic support for independent operators running $1M+ operations who need a seasoned restaurant operations consultant in their corner every week.</p>
-                <a href="advisory.html" class="cta-button" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--primary-navy); color: white; text-decoration: none; border-radius: 4px;">Learn More →</a>
+                <a href="advisory.html" class="lg-cta">Learn More →</a>
             </div>
 
         </div>
-        <p class="text-center mb-2">
-          Every project starts with a clear audit and a simple plan: fix the bottlenecks, prove the result, then scale. <a href="profit-leak-snapshot.html" style="color: var(--primary-navy); font-weight: 600;">Start with a Profit Leak Snapshot →</a>
+        <p class="mb-2">
+          Every project starts with a clear audit and a simple plan: fix the bottlenecks, prove the result, then scale. <a href="profit-leak-snapshot.html">Start with a Profit Leak Snapshot →</a>
         </p>
 
         <!-- Before/After Systems Image -->
-        <div style="text-align: center; margin: 3rem 0;">
-          <img src="images/restaurant-systems-before-after.webp" alt="Before and after: from chaos to organized systems" width="1024" height="1024" loading="lazy" decoding="async" style="max-width: 700px; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);">
-          <p style="margin-top: 1rem; font-size: 0.95rem; color: #666; font-style: italic;">From chaos to clarity: the transformation your operations need</p>
+        <div>
+          <img src="images/restaurant-systems-before-after.webp" alt="Before and after: from chaos to organized systems" width="1024" height="1024" loading="lazy" decoding="async">
+          <p>From chaos to clarity: the transformation your operations need</p>
         </div>
 
         <!-- Service Areas -->
-        <div id="service-areas" class="pillars">
+        <div id="service-areas" class="lg-stack">
 
-          <div class="pillar" id="ai-for-restaurants">
-            <h2 style="font-size: 1.4rem; color: var(--primary-navy); margin-bottom: 0.75rem;">AI Integration &amp; Automation for Restaurants</h2>
-            <img src="images/ai-integration-restaurants.webp" alt="AI Integration for restaurants" width="560" height="840" loading="lazy" decoding="async" style="width: 100%; max-width: 280px; height: auto; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <div class="lg-stack__item" id="ai-for-restaurants">
+            <h2>AI Integration &amp; Automation for Restaurants</h2>
+            <img src="images/ai-integration-restaurants.webp" alt="AI Integration for restaurants" width="560" height="840" loading="lazy" decoding="async">
             <p>Restaurants, food trucks, and catering operations are drowning in repetitive admin work that AI can handle in minutes. I help operators identify the right tools, build practical workflows, and roll out AI for restaurant operations without disrupting the floor. The result: your managers spend less time in the back office and more time running the operation.</p>
-            <a href="ai-integration.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-navy); font-weight: 600;">Learn more →</a>
-            <p style="margin-top: 1rem;"><a href="profit-leak-snapshot.html" style="color: var(--accent-gold-text); font-weight: 600; font-size: 0.95rem;">Not sure where to start? Book a Profit Leak Snapshot first →</a></p>
+            <a href="ai-integration.html">Learn more →</a>
+            <p><a href="profit-leak-snapshot.html">Not sure where to start? Book a Profit Leak Snapshot first →</a></p>
           </div>
 
-          <div class="pillar" id="restaurant-sops-training">
-            <h2 style="font-size: 1.4rem; color: var(--primary-navy); margin-bottom: 0.75rem;">SOPs &amp; Training Systems for Restaurants and Catering Companies</h2>
-            <img src="images/sops-training-systems.webp" alt="SOPs and training systems" width="560" height="840" loading="lazy" decoding="async" style="width: 100%; max-width: 280px; height: auto; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <div class="lg-stack__item" id="restaurant-sops-training">
+            <h2>SOPs &amp; Training Systems for Restaurants and Catering Companies</h2>
+            <img src="images/sops-training-systems.webp" alt="SOPs and training systems" width="560" height="840" loading="lazy" decoding="async">
             <p>Inconsistency costs you money—in wasted labor, food errors, and constant retraining. I build SOPs and training systems for restaurants and catering companies that are actually used: role scorecards, opening and closing checklists, 30-60-90 onboarding plans, and micro-training for your highest-turnover positions. Your team runs the playbook whether you're there or not.</p>
-            <a href="sops-training.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-navy); font-weight: 600;">Learn more →</a>
-            <p style="margin-top: 1rem;"><a href="profit-leak-snapshot.html" style="color: var(--accent-gold-text); font-weight: 600; font-size: 0.95rem;">Start with a Profit Leak Snapshot to prioritize what to fix first →</a></p>
+            <a href="sops-training.html">Learn more →</a>
+            <p><a href="profit-leak-snapshot.html">Start with a Profit Leak Snapshot to prioritize what to fix first →</a></p>
           </div>
 
-          <div class="pillar" id="restaurant-local-store-marketing">
-            <h2 style="font-size: 1.4rem; color: var(--primary-navy); margin-bottom: 0.75rem;">Local Store Marketing for Restaurants and Food Trucks</h2>
-            <img src="images/local-store-marketing.webp" alt="Local store marketing strategies" width="560" height="840" loading="lazy" decoding="async" style="width: 100%; max-width: 280px; height: auto; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <div class="lg-stack__item" id="restaurant-local-store-marketing">
+            <h2>Local Store Marketing for Restaurants and Food Trucks</h2>
+            <img src="images/local-store-marketing.webp" alt="Local store marketing strategies" width="560" height="840" loading="lazy" decoding="async">
             <p>Most independent operators are leaving money on the table with their immediate community. I build 12-week local store marketing calendars for restaurants, food trucks, and catering companies that drive repeat visits, fill slow shifts, and build neighborhood loyalty—without a big ad budget. Every offer is trackable so you can see what's actually working.</p>
-            <a href="lsm.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-navy); font-weight: 600;">Learn more →</a>
-            <p style="margin-top: 1rem;"><a href="profit-leak-snapshot.html" style="color: var(--accent-gold-text); font-weight: 600; font-size: 0.95rem;">Not sure where to start? Book a Profit Leak Snapshot first →</a></p>
+            <a href="lsm.html">Learn more →</a>
+            <p><a href="profit-leak-snapshot.html">Not sure where to start? Book a Profit Leak Snapshot first →</a></p>
           </div>
 
-          <div class="pillar" id="menu-engineering">
-            <h2 style="font-size: 1.4rem; color: var(--primary-navy); margin-bottom: 0.75rem;">Menu Engineering for Independent Restaurants</h2>
-            <img src="images/menu-engineering-analysis.webp" alt="Menu engineering and analysis" width="560" height="840" loading="lazy" decoding="async" style="width: 100%; max-width: 280px; height: auto; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <div class="lg-stack__item" id="menu-engineering">
+            <h2>Menu Engineering for Independent Restaurants</h2>
+            <img src="images/menu-engineering-analysis.webp" alt="Menu engineering and analysis" width="560" height="840" loading="lazy" decoding="async">
             <p>Your menu is either making you money or costing you—and most owners don't know which. Menu engineering for restaurants maps every item by contribution margin and popularity so you can promote what actually drives profit, retire what's dragging it down, and price with confidence. Most operators find 3–5 high-cost items hiding in plain sight on the first pass.</p>
-            <a href="menu-engineering.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-navy); font-weight: 600;">Learn more →</a>
-            <p style="margin-top: 1rem;"><a href="profit-leak-snapshot.html" style="color: var(--accent-gold-text); font-weight: 600; font-size: 0.95rem;">Start with a Profit Leak Snapshot to see your full cost picture →</a></p>
+            <a href="menu-engineering.html">Learn more →</a>
+            <p><a href="profit-leak-snapshot.html">Start with a Profit Leak Snapshot to see your full cost picture →</a></p>
           </div>
 
-          <div class="pillar" id="restaurant-advisory">
-            <h2 style="font-size: 1.4rem; color: var(--primary-navy); margin-bottom: 0.75rem;">Advisory &amp; Fractional Operations Support</h2>
-            <img src="images/advisory-fractional-operations.webp" alt="Advisory and fractional operations support" width="560" height="840" loading="lazy" decoding="async" style="width: 100%; max-width: 280px; height: auto; border-radius: 8px; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+          <div class="lg-stack__item" id="restaurant-advisory">
+            <h2>Advisory &amp; Fractional Operations Support</h2>
+            <img src="images/advisory-fractional-operations.webp" alt="Advisory and fractional operations support" width="560" height="840" loading="lazy" decoding="async">
             <p>For operators running $1M+ operations who need strategic support without a full-time COO. I work as an embedded partner—weekly calls, KPI reviews, and on-call guidance to help you make better decisions faster. Think of it as having a seasoned restaurant operations consultant in your corner every week, without the overhead of a full hire.</p>
-            <a href="advisory.html" style="display: inline-block; margin-top: 1rem; color: var(--primary-navy); font-weight: 600;">Learn more →</a>
-            <p style="margin-top: 1rem;"><a href="profit-leak-snapshot.html" style="color: var(--accent-gold-text); font-weight: 600; font-size: 0.95rem;">Start with a Profit Leak Snapshot before committing to a retainer →</a></p>
+            <a href="advisory.html">Learn more →</a>
+            <p><a href="profit-leak-snapshot.html">Start with a Profit Leak Snapshot before committing to a retainer →</a></p>
           </div>
 
         </div>
 
         <!-- Bottom CTA -->
-        <div style="text-align: center; margin: 4rem 0 2rem; padding: 3rem; background: var(--bg-cream); border-radius: 12px;">
-          <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Not Sure Where to Start?</h2>
-          <p style="max-width: 600px; margin: 0 auto 1.5rem; font-size: 1.05rem; line-height: 1.7;">Most operators start with a Profit Leak Snapshot. In 90 minutes we identify your highest-impact leaks and build a prioritized fix list. Available remotely for operators nationwide, and in person across Virginia.</p>
-          <a href="profit-leak-snapshot.html" class="cta-button">Book Your $350 Profit Leak Snapshot</a>
-          <p style="margin-top: 1rem; font-size: 0.95rem; color: var(--text-medium);">or <a href="index.html" style="color: var(--primary-navy); font-weight: 600;">learn more about how I work with operators →</a></p>
+        <div>
+          <h2>Not Sure Where to Start?</h2>
+          <p>Most operators start with a Profit Leak Snapshot. In 90 minutes we identify your highest-impact leaks and build a prioritized fix list. Available remotely for operators nationwide, and in person across Virginia.</p>
+          <a href="profit-leak-snapshot.html" class="lg-cta">Book Your $350 Profit Leak Snapshot</a>
+          <p>or <a href="index.html">learn more about how I work with operators →</a></p>
         </div>
 
       </div>
@@ -290,7 +293,7 @@
     <!-- Footer -->
     </main>
 <footer>
-      <div class="container">
+      <div class="lg-wrap">
         <div class="footer-grid">
           <div class="footer-section">
             <h2>Tre Coleman Consulting LLC</h2>

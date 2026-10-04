@@ -23,183 +23,14 @@
     <meta name="twitter:title" content="AI Automation for Restaurant Operations | Tre Coleman" />
     <meta name="twitter:description" content="Cut manager admin time with practical AI workflows for scheduling, prep, reporting, and training. Built by an operator, rolled out without floor disruption." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
 <link href="style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="ledger.css" />
 
-    <style>
-      .service-hero {
-        overflow: hidden;
-        position: relative;
-        background: url('images/hero-restaurant-operations.webp') center/cover no-repeat;
-        color: white;
-        padding: 4rem 0 3rem;
-        margin-bottom: 3rem;
-      }
-      .service-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(30, 58, 95, 0.92);
-        z-index: 0;
-      }
-      .service-hero .container {
-        position: relative;
-        z-index: 1;
-      }
-      .service-hero h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        line-height: 1.2;
-        color: #ffffff;
-        font-weight: 800;
-        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
-      }
-      .service-hero .subtitle {
-        font-size: 1.25rem;
-        max-width: 700px;
-        color: #ffffff;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-        margin: 0 auto;
-      }
-      .section-divider {
-        margin: 4rem 0;
-        border: none;
-        border-top: 2px solid var(--bg-cream);
-      }
-      .benefits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin: 2rem 0;
-      }
-      .benefit-card {
-        background: white;
-        border: 2px solid var(--bg-cream);
-        border-radius: 12px;
-        padding: 1.75rem;
-        transition: all 0.3s ease;
-      }
-      .benefit-card:hover {
-        border-color: var(--primary-navy);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        transform: translateY(-4px);
-      }
-      .benefit-card h3 {
-        color: var(--primary-navy);
-        margin-bottom: 0.75rem;
-        font-size: 1.3rem;
-      }
-      .process-steps {
-        counter-reset: step-counter;
-        margin: 2rem 0;
-      }
-      .process-step {
-        counter-increment: step-counter;
-        position: relative;
-        padding-left: 4rem;
-        margin-bottom: 2.5rem;
-      }
-      .process-step::before {
-        content: counter(step-counter);
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 50px;
-        height: 50px;
-        background: var(--primary-navy);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-      }
-      .process-step h3 {
-        margin-bottom: 0.5rem;
-        color: var(--primary-navy);
-      }
-      .outcomes-list {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-left: 4px solid var(--accent-gold);
-        padding: 2rem;
-        border-radius: 8px;
-        margin: 2rem 0;
-      }
-      .outcomes-list ul {
-        list-style: none;
-        margin: 1rem 0;
-      }
-      .outcomes-list li {
-        padding: 0.75rem 0;
-        padding-left: 2rem;
-        position: relative;
-      }
-      .outcomes-list li::before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        color: var(--accent-gold);
-        font-weight: bold;
-        font-size: 1.3rem;
-      }
-      .cta-section {
-        position: relative;
-        z-index: 1;
-        background: linear-gradient(135deg, var(--primary-navy) 0%, #2d5aa0 100%);
-        color: white;
-        padding: 3rem 2rem;
-        border-radius: 12px;
-        text-align: center;
-        margin: 3rem 0;
-      }
-      .cta-section h2 {
-        color: white;
-        margin-bottom: 1rem;
-      }
-      .cta-section p {
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-        opacity: 0.95;
-      }
-      .cta-section .button {
-        background: white;
-        color: var(--primary-navy);
-        padding: 1rem 2.5rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-      .cta-section .button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      }
-      @media (max-width: 768px) {
-        .service-hero h1 {
-          font-size: 2rem;
-        }
-        .service-hero .subtitle {
-          font-size: 1.1rem;
-        }
-        .benefits-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-      /* Main content section background and text */
-      section {
-        position: relative;
-        z-index: 1;
-        color: #2c3e50;
-      }
-      section h2, section h3, section p {
-        color: #2c3e50;
-      }
-    </style>
   <script src="analytics.js"></script>
 <script type="application/ld+json">
 {
@@ -269,15 +100,15 @@
 }
 </script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <!-- Header -->
 <header>
-<div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="lg-wrap">
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
 <span></span>
@@ -325,15 +156,15 @@
 <main id="main-content">
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">›</span> <a href="services.html">Services</a> <span aria-hidden="true">›</span> <span aria-current="page">AI Integration</span></nav>
 <!-- Hero Section -->
-<div class="service-hero">
-<div class="container text-center">
+<div class="lg-hero">
+<div class="lg-wrap">
 <h1>AI Integration &amp; Automation</h1>
-<p class="subtitle">Transform repetitive operations into automated workflows. Cut admin time by 40%+, speed up decisions, and free your team to focus on what matters—serving customers.</p>
+<p class="lg-hero__sub">Transform repetitive operations into automated workflows. Cut admin time by 40%+, speed up decisions, and free your team to focus on what matters—serving customers.</p>
 </div>
 </div>
 <!-- Main Content -->
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <!-- Problem/Solution -->
 <h2 class="mb-2">The Problem You're Facing</h2>
 <p class="mb-2">
@@ -348,47 +179,47 @@
         </p>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <!-- Benefits -->
 <h2 class="mb-2">What AI Integration Delivers</h2>
-<div class="benefits-grid">
-<div class="benefit-card">
+<div class="lg-stack">
+<div class="lg-stack__item">
 <h3>Kill Manual Work</h3>
 <p>
               Automate schedule adjustments, inventory alerts, daily reporting, and routine decision-making.
               Turn 4-hour tasks into 15-minute reviews.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Faster, Better Decisions</h3>
 <p>
               Surface insights from your POS, labor, and cost data instantly. No more waiting on weekly reports—make
               data-driven calls in real-time.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Consistent Execution</h3>
 <p>
               Build prompt libraries and AI-powered SOPs that ensure every team member follows the same proven
               process, every time.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Team Training at Scale</h3>
 <p>
               Create AI-assisted training modules that onboard new hires faster and answer common questions
               24/7—no manager intervention required.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Built With Guardrails</h3>
 <p>
               Every automation includes clear boundaries, approval workflows, and fail-safes. You stay in control
               while AI handles the busywork.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Scalable Systems</h3>
 <p>
               Start with one high-impact pilot, prove the ROI, then roll out to more locations. Built to grow with you.
@@ -397,12 +228,12 @@
 </div>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <!-- How It Works -->
 <h2 class="mb-2">How We Implement AI Automation</h2>
-<div class="process-steps">
-<div class="process-step">
+<div class="lg-steps">
+<div class="lg-steps__item">
 <h3>Discovery &amp; Workflow Mapping</h3>
 <p>
               We shadow your operations for 2-3 days, documenting every repetitive task, decision bottleneck,
@@ -410,7 +241,7 @@
               reporting, or inventory management.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Pilot Design &amp; Build</h3>
 <p>
               We select one critical workflow and build a custom AI automation—complete with prompts,
@@ -418,21 +249,21 @@
               specific task.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Testing &amp; Refinement</h3>
 <p>
               We run the pilot for 2-4 weeks with your team, gathering feedback and refining the automation.
               We measure time saved, error reduction, and team adoption rates.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Training &amp; Documentation</h3>
 <p>
               We create simple SOPs and training videos so your team knows exactly how to use the new automation.
               We also build a prompt library for common scenarios.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Rollout &amp; Optimization</h3>
 <p>
               Once the pilot is proven, we help you roll it out to additional locations or workflows. We provide
@@ -442,12 +273,12 @@
 </div>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <!-- Outcomes -->
 <h2 class="mb-2">Real Outcomes You Can Expect</h2>
 <div class="outcomes-list">
-<h3 style="margin-bottom: 1rem;">After implementing AI automation, clients typically see:</h3>
+<h3>After implementing AI automation, clients typically see:</h3>
 <ul>
 <li><strong>AI pilots target a 40-60% reduction</strong> in time spent on repetitive administrative tasks, measured against your baseline in the first 90 days</li>
 <li><strong>Pilot goal: 3-5 hours per week</strong> saved per manager on scheduling and reporting</li>
@@ -457,21 +288,21 @@
 <li><strong>Better data</strong>—real-time insights from integrated POS, labor, and inventory systems</li>
 <li><strong>Happier managers</strong>—less burnout from repetitive work, more time for leadership</li>
 </ul>
-<p style="margin-top: 1.5rem; font-style: italic;">
+<p>
 <strong>ROI target:</strong> 3-5x return within the first 90 days through labor efficiency alone, measured against engagement cost—not
             counting improved decision quality, faster problem resolution, or reduced manager turnover.
           </p>
 </div>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <!-- Who It's For -->
 <h2 class="mb-2">Who This Is For</h2>
 <p class="mb-2">
 <strong>This service is perfect for:</strong>
 </p>
-<ul class="mb-2" style="list-style: disc inside; margin-left: 1.5rem; line-height: 1.8;">
+<ul class="mb-2">
 <li><strong>Multi-unit operators (3+ locations)</strong> drowning in manual coordination across stores</li>
 <li><strong>Fast-casual and QSR brands</strong> with high transaction volume and thin labor margins</li>
 <li><strong>Operators with remote oversight</strong> who need better real-time visibility without constant check-ins</li>
@@ -484,8 +315,8 @@
         </p>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <h2 class="mb-2">Common Questions</h2>
 <h3>Is this going to replace anyone on my team?</h3>
 <p class="mb-2">No, and that is not what it is for. The target is the administrative work that pulls managers off the floor — reporting, scheduling drafts, prep lists, recurring documents. The intent is managers spending more time running the operation, not fewer managers.</p>
@@ -498,17 +329,17 @@
 </div>
 </section>
 <section>
-<div class="container">
+<div class="lg-wrap">
 <!-- CTA Section -->
-<div class="cta-section">
+<div class="lg-cta-block">
 <h2>Ready to Cut Your Admin Time in Half?</h2>
 <p>
             Book a 30-minute AI Readiness Call. We'll review your operations, identify your highest-ROI
             automation opportunity, and show you exactly how we'd implement it.
           </p>
 <a class="button" href="profit-leak-snapshot.html" rel="noopener" target="_blank">Schedule Your AI Readiness Call →</a>
-<p style="font-size: 0.95rem; margin-top: 1.5rem; opacity: 0.9;">
-            Or email <a href="mailto:hello@trecoleman.com" style="color: white; text-decoration: underline;">hello@trecoleman.com</a>
+<p>
+            Or email <a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a>
             to request the AI Pilot Checklist—our internal framework for evaluating automation opportunities.
           </p>
 </div>
@@ -517,7 +348,7 @@
 <!-- Footer -->
 </main>
 <footer>
-<div class="container">
+<div class="lg-wrap">
 <div class="footer-grid">
 <div class="footer-section">
 <h2>Tre Coleman Consulting LLC</h2>

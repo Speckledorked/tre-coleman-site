@@ -23,209 +23,17 @@
   <meta name="twitter:description" content="10+ years running multi-unit restaurant, catering, and food truck operations. Operator-first consulting for owners who need systems, not slide decks." />
   <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
   <!-- Use the shared stylesheet -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
   <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="ledger.css" />
   <!-- Page‑specific styles for the About page -->
-  <style>
-    /* Dropdown navigation styles */
-    .nav-dropdown {
-      position: relative;
-    }
-
-    .nav-dropdown > a::after {
-      content: ' ▾';
-      font-size: 0.8em;
-      margin-left: 0.25rem;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      min-width: 220px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      border-radius: 8px;
-      padding: 0.5rem 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-
-    .nav-dropdown:hover .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .dropdown-menu a {
-      display: block;
-      padding: 0.75rem 1.25rem;
-      color: #2c3e50;
-      text-decoration: none;
-      transition: background 0.2s ease;
-      font-size: 0.95rem;
-    }
-
-    .dropdown-menu a:hover {
-      background: #f8f9fa;
-      color: #1e3a5f;
-    }
-
-    /* Mobile nav styles handled by style.css */
-
-    /* Grid layout used for card sections */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-    /* Card component for feature blocks */
-    .card {
-      background: #f9f9f9;
-      padding: 1.5rem;
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-    .card h3 {
-      margin-bottom: 0.75rem;
-      font-size: 1.25rem;
-      color: var(--primary-navy);
-    }
-    .card p {
-      margin-bottom: 0.5rem;
-    }
-    /* Checklist styles for numbered and bulleted lists */
-    .checklist {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .checklist li {
-      margin-bottom: 0.75rem;
-      position: relative;
-      padding-left: 1.5rem;
-    }
-    .checklist li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: var(--primary-navy);
-    }
-    /* Hero section adjustments for About page */
-    .hero {
-      background-color: var(--bg-cream);
-      padding: 4rem 0;
-      text-align: center;
-    }
-    .hero-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .hero-image {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 5px solid white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    }
-    .hero h1 {
-      font-size: 2.25rem;
-      margin-bottom: 1rem;
-      color: var(--primary-navy);
-    }
-    .hero p {
-      font-size: 1.125rem;
-      margin-bottom: 2rem;
-      max-width: 42rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    @media (min-width: 768px) {
-      .hero-content {
-        flex-direction: row;
-        text-align: left;
-      }
-      .hero-image {
-        flex-shrink: 0;
-      }
-    }
-    /* CTA group styling for the call‑to‑action buttons */
-    .cta-group {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-    }
-    .cta-group a {
-      padding: 0.75rem 1.25rem;
-      border-radius: 4px;
-      font-weight: 600;
-      border: 2px solid var(--primary-navy);
-      transition: background-color 0.2s ease;
-    }
-    .cta-group a.primary {
-      background-color: var(--primary-navy);
-      color: white;
-    }
-    .cta-group a.primary:hover {
-      background-color: #2d5aa0;
-    }
-    .cta-group a.secondary {
-      background-color: transparent;
-      color: var(--primary-navy);
-    }
-    .cta-group a.secondary:hover {
-      background-color: var(--primary-navy);
-      color: white;
-    }
-  
-    /* mobile dropdown override (tools/fix_mobile_dropdowns.py) */
-    @media screen and (max-width: 1024px) {
-      .mobile-menu-toggle {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 44px;
-        min-height: 44px;
-      }
-      /* Off-screen is not hidden: without this the closed panel keeps taking
-         keyboard focus, and tabbing walks into links at x=468 in a 390px
-         viewport. */
-      nav, #mainNav {
-        visibility: hidden;
-        transition: right 0.3s ease, visibility 0s linear 0.3s;
-      }
-      nav.active, #mainNav.active {
-        visibility: visible;
-        transition: right 0.3s ease, visibility 0s;
-      }
-      .dropdown-menu {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        display: none;
-      }
-      .nav-dropdown.active .dropdown-menu {
-        display: block;
-      }
-    }
-</style>
   <script src="analytics.js"></script>
 </head>
-  <body>
+  <body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
     <!-- Mobile Menu Overlay -->
@@ -233,8 +41,8 @@
 
     <!-- Header -->
     <header>
-      <div class="container">
-        <div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+      <div class="lg-wrap">
+        <div class="logo"><a href="index.html">Tre Coleman</a></div>
 
         <!-- Mobile Menu Toggle Button -->
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
@@ -283,108 +91,123 @@
         </nav>
       </div>
     </header>
-  <main id="main-content" class="container">
+  <main id="main-content" class="lg-wrap">
     <!-- Hero section introducing the operator‑first mindset -->
-    <section class="hero">
-      <div class="hero-content">
-        <img src="images/tre-coleman-family.webp" alt="Tre Coleman - Hospitality Operations Consultant" width="400" height="428" loading="eager" fetchpriority="high" decoding="async" class="hero-image">
+    <section class="lg-hero">
+      <div class="lg-wrap">
+        <img src="images/tre-coleman-family.webp" alt="Tre Coleman - Hospitality Operations Consultant" width="400" height="428" loading="eager" fetchpriority="high" decoding="async" class="lg-portrait">
         <div>
             <h1>Tre Coleman — Restaurant Operations Consultant</h1>
-            <p>I've spent over a decade running restaurants, building catering operations, managing food trucks—and I know what it's like when everything's on fire and you need real solutions, not consulting jargon. I help food service operators fix what's broken, build systems that actually work, and use the right tools (including AI when it makes sense) to free up time and increase profits.</p>          <div class="cta-group">
-            <a href="profit-leak-snapshot.html" class="primary" target="_blank" rel="noopener">Book a call</a>
-            <a href="contact.html" class="secondary">Get the playbook</a>
+            <p>I've spent over a decade running restaurants, building catering operations, managing food trucks—and I know what it's like when everything's on fire and you need real solutions, not consulting jargon. I help food service operators fix what's broken, build systems that actually work, and use the right tools (including AI when it makes sense) to free up time and increase profits.</p>          <div class="cta-buttons">
+            <a href="profit-leak-snapshot.html" class="lg-cta" target="_blank" rel="noopener">Book a call</a>
+            <a href="contact.html" class="lg-cta-secondary">Get the playbook</a>
           </div>
         </div>
       </div>
 
-              <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2c4a6b 100%); color: white; padding: 4rem 2rem; text-align: center; margin: 4rem auto 0; border-radius: 12px;">
-            <h2 style="margin-bottom: 1rem; font-size: 2rem; font-weight: bold; color: #F4A460;">Want to see where your profit is leaking?</h2>
-            <p style="margin-bottom: 2rem; font-size: 1.2rem; color: white !important;">Book a 90-minute <a href="profit-leak-snapshot.html" style="color: #F4A460; text-decoration: underline; font-weight: bold;">Profit Leak Snapshot</a> and I'll show you your top 3 leaks and what to fix first.</p>
-            <a href="profit-leak-snapshot.html" style="display: inline-block; background: #A85F28; color: white; padding: 1.25rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.2rem; transition: transform 0.2s;">Book Your Snapshot</a>
+              <div>
+            <h2>Want to see where your profit is leaking?</h2>
+            <p>Book a 90-minute <a href="profit-leak-snapshot.html">Profit Leak Snapshot</a> and I'll show you your top 3 leaks and what to fix first.</p>
+            <a href="profit-leak-snapshot.html">Book Your Snapshot</a>
         </div>
     </section>
     <!-- What I do: three core pillars -->
-    <section class="section">
+    <section class="lg-band">
+<div class="lg-wrap">
       <h2>What I do</h2>
-      <div class="grid">
-        <div class="card">
+      <div class="lg-cols">
+        <div class="lg-module">
           <h3>Fix bottlenecks</h3>
           <p>Scheduling, labor control, inventory, shift execution, guest experience—tightened with simple SOPs and owner‑friendly reporting.</p>
         </div>
-        <div class="card">
+        <div class="lg-module">
           <h3>Add AI where it helps</h3>
           <p>Automations for daily reports, prep lists, content ops, training aids, and checklists. Human‑in‑the‑loop, guardrails on.</p>
         </div>
-        <div class="card">
+        <div class="lg-module">
           <h3>Train & enable</h3>
           <p>Role scorecards, micro‑training, 30‑60‑90s, and manager cadences so the standards stick without you babysitting.</p>
         </div>
       </div>
-    </section>
+    </div>
+</section>
     <!-- Process section outlining the engagement model -->
-    <section class="section">
+    <section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
       <h2>How we’ll work</h2>
-      <ol class="checklist">
+      <ol class="lg-list">
         <li><strong>Audit:</strong> Walk the floor (or virtual), pull 2–3 weeks of ops/financials, talk to the team.</li>
         <li><strong>Pilot:</strong> Pick one high‑impact win (e.g., labor dashboard + scheduling guardrails) and ship inside 2–3 weeks.</li>
         <li><strong>Rollout & train:</strong> SOPs, checklists, and micro‑training that are dead simple to follow.</li>
         <li><strong>Review:</strong> Weekly manager cadence and a plain‑English scorecard to keep the gains.</li>
       </ol>
-    </section>
+    </div>
+</section>
     <!-- Core principles section -->
-    <section class="section">
+    <section class="lg-band">
+<div class="lg-wrap">
       <p class="mb-2">More on how I think about this: <a href="unreasonably-optimistic.html">Unreasonably Optimistic</a>.</p>
 <h2>Principles I don’t bend</h2>
-      <ul class="checklist">
+      <ul class="lg-list">
         <li><strong>Operator‑grade.</strong> If the frontline won’t use it on a Friday rush, it’s not done.</li>
         <li><strong>80/20 forever.</strong> We fix the 20% that moves 80% of results, then scale what works.</li>
         <li><strong>Clear beats clever.</strong> One‑page SOPs &gt; pretty decks. Screenshots, checkboxes, examples.</li>
         <li><strong>Measure it.</strong> Labor %, item mix, prep accuracy, ticket time, traffic—pick the few that matter and watch them weekly.</li>
       </ul>
-    </section>
+    </div>
+</section>
     <!-- Why I'm useful section with highlights -->
-    <section class="section">
+    <section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
       <h2>Why I’m useful to operators</h2>
       <p>I’ve spent my career running units and leading teams in high‑volume environments—owning P&amp;L, hiring, training, and fixing the day‑to‑day realities that decide whether a store wins or bleeds. I bring that operator lens to every engagement so your team gets practical systems, not theory.</p>
-      <div class="grid">
-        <div class="card">
+      <div class="lg-cols">
+        <div class="lg-module">
           <h3>Multi‑unit leadership</h3>
           <p>Hands‑on experience leading teams, opening lanes for managers, and driving accountability without burning people out.</p>
         </div>
-        <div class="card">
+        <div class="lg-module">
           <h3>Marketing that feeds ops</h3>
           <p>Grassroots + LSM that your team can actually run—calendars, activations, and offers tied to dayparts and capacity.</p>
         </div>
-        <div class="card">
+        <div class="lg-module">
           <h3>Training that sticks</h3>
           <p>Role scorecards, checklists, and micro‑training that reduce ramp time and make standards repeatable.</p>
         </div>
       </div>
-    </section>
+    </div>
+</section>
     <!-- Tools section -->
-    <section class="section">
+    <section class="lg-band">
+<div class="lg-wrap">
       <h2>Tools I reach for</h2>
       <p>Whatever stack you’re on is fine. Typical mix includes Google Workspace, Sheets dashboards, Slack, lightweight automations (Zapier/Make), and AI assistants for checklists, training aids, and reporting—always with human review.</p>
-    </section>
+    </div>
+</section>
     <!-- Personal note section -->
-    <section class="section">
+    <section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
       <h2>Where I’m based & what I’m like</h2>
       <p>Home base is Louisa, VA. I’m a hospitality‑first operator who loves clear systems, fast feedback, and steady improvement. Off the clock: weightlifting and reading.</p>
-    </section>
+    </div>
+</section>
     <!-- Final call to action section -->
-    <section class="section">
-      <div class="cta-group">
-        <a href="profit-leak-snapshot.html" class="primary" target="_blank" rel="noopener">Book a call</a>
-        <a href="contact.html" class="secondary">Tell me your bottleneck</a>
+    <section class="lg-band">
+<div class="lg-wrap">
+      <div class="cta-buttons">
+        <a href="profit-leak-snapshot.html" class="lg-cta" target="_blank" rel="noopener">Book a call</a>
+        <a href="contact.html" class="lg-cta-secondary">Tell me your bottleneck</a>
       </div>
-    </section>
+    </div>
+</section>
 
     <!-- Credentials Section -->
-    <section class="section" style="padding: 3rem 0;">
-        <div class="container">
-            <div class="credentials" style="background: #fef9f3; padding: 2.5rem; border-radius: 8px; color: #2c3e50;">
-                <h2 style="color: #1F4788;">Background</h2>
-                <ul style="line-height: 1.8; font-size: 1.1rem; margin-top: 1.5rem; color: #2c3e50;">
+    <section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
+        <div class="lg-wrap">
+            <div class="credentials">
+                <h2>Background</h2>
+                <ul>
                     <li><strong>10+ years</strong> managing multi-unit restaurant operations</li>
                     <li><strong>District Manager</strong> leading multiple store locations</li>
                     <li><strong>$3M+</strong> in combined revenue across multiple store locations</li>
@@ -392,12 +215,13 @@
                 </ul>
             </div>
         </div>
-    </section>
+    </div>
+</section>
   </main>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
+    <div class="lg-wrap">
       <div class="footer-grid">
         <div class="footer-section">
           <h2>Tre Coleman Consulting LLC</h2>
