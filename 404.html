@@ -9,89 +9,16 @@
 <meta content="The page you are looking for could not be found." name="description"/>
     <!-- Error page: must never be indexed, and must not declare itself canonical. -->
     <meta name="robots" content="noindex, follow" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="ledger.css" />
 <link href="style.css" rel="stylesheet"/>
-<style>
-      /* Dropdown navigation styles */
-      .nav-dropdown {
-        position: relative;
-      }
-
-      .nav-dropdown > a::after {
-        content: ' ▾';
-        font-size: 0.8em;
-        margin-left: 0.25rem;
-      }
-
-      .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: white;
-        min-width: 220px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        border-radius: 8px;
-        padding: 0.5rem 0;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s ease;
-        z-index: 1000;
-      }
-
-      .nav-dropdown:hover .dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-
-      .dropdown-menu a {
-        display: block;
-        padding: 0.75rem 1.25rem;
-        color: #2c3e50;
-        text-decoration: none;
-        transition: background 0.2s ease;
-        font-size: 0.95rem;
-      }
-
-      .dropdown-menu a:hover {
-        background: #f8f9fa;
-        color: #1e3a5f;
-      }
-
-      /* Mobile dropdown behavior */
-      @media (max-width: 1024px) {
-        .dropdown-menu {
-          position: static;
-          opacity: 1;
-          visibility: visible;
-          transform: none;
-          box-shadow: none;
-          background: rgba(255, 255, 255, 0.05);
-          margin: 0.5rem 0;
-          display: none;
-        }
-
-        .nav-dropdown.active .dropdown-menu {
-          display: block;
-        }
-
-        .dropdown-menu a {
-          color: white;
-          padding-left: 2rem;
-        }
-
-        .dropdown-menu a:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
-        }
-      }
-    </style>
   <script src="analytics.js"></script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
@@ -99,7 +26,7 @@
 <!-- Header -->
 <header>
 <div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <!-- Mobile Menu Toggle Button -->
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
@@ -148,7 +75,7 @@
 </header>
 <main id="main-content">
 <section>
-<div class="container" style="text-align: center; padding: 4rem 1rem;">
+<div class="container">
 <h1 class="mb-2">404 – Page not found</h1>
 <p class="mb-2">The page you're looking for doesn’t exist.</p>
 <p class="mb-2">Use the navigation above or return to the <a href="index.html">home page</a>.</p>
@@ -162,7 +89,7 @@
 <div class="footer-section">
 <h2>Tre Coleman Consulting LLC</h2>
 <p>Virginia-based restaurant operations consultant.<br/>Serving operators nationwide.</p>
-<p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+<p>© 2026 All Rights Reserved</p>
 </div>
 <div class="footer-section">
             <h2>Services</h2>

@@ -23,14 +23,17 @@
     <meta name="twitter:title" content="Privacy Policy &amp; Data Practices | Tre Coleman" />
     <meta name="twitter:description" content="Learn how we collect and use data when you interact with Tre Coleman’s website and services." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="ledger.css" />
 <link href="style.css" rel="stylesheet"/>
 
   <script src="analytics.js"></script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
@@ -38,7 +41,7 @@
 <!-- Header -->
 <header>
 <div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <!-- Mobile Menu Toggle Button -->
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
@@ -120,7 +123,7 @@
 <div class="footer-section">
 <h2>Tre Coleman Consulting LLC</h2>
 <p>Virginia-based restaurant operations consultant.<br/>Serving operators nationwide.</p>
-<p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+<p>© 2026 All Rights Reserved</p>
 </div>
 <div class="footer-section">
             <h2>Services</h2>

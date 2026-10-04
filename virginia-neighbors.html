@@ -22,268 +22,15 @@
     <meta name="twitter:title" content="Virginia Local Business Directory | Tre Coleman" />
     <meta name="twitter:description" content="Find Virginia restaurants, food trucks, caterers, and local service businesses — or list your own and connect with neighbors who need you." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="ledger.css" />
   <script src="analytics.js"></script>
-  <style>
-    :root {
-      /* Page-specific vars */
-      --navy: #1F4788;
-      --navy-dark: #152b45;
-      --navy-light: #2d5aa0;
-      --gold: #F4A460;
-      --gold-dark: #d4895f;
-      --gold-light: #ffb574;
-      --bg: #FAFAF8;
-      --card-bg: #ffffff;
-      --text-dark: #2c2c2c;
-      --text-mid: #5a5a5a;
-      --text-light: #718096;
-      --border: #e2e8f0;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-      /* Aliases used by site header/footer */
-      --primary-navy: #1F4788;
-      --accent-gold: #F4A460;
-      --white: #ffffff;
-      --bg-cream: #FAFAF8;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
-    h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
-
-    /* ── Site-standard header ─────────────────────────────────────── */
-    header {
-      background: rgba(31, 71, 136, 0.85);
-      position: sticky;
-      top: 0;
-      z-index: 1100;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    header.scrolled {
-      background: rgba(31, 71, 136, 0.98);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    }
-    header .hdr-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1.25rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--white);
-      font-family: 'Montserrat', sans-serif;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      text-decoration: none;
-    }
-    header nav ul { display: flex; list-style: none; gap: 2rem; align-items: center; }
-    header nav a { text-decoration: none; color: var(--white); font-weight: 600; transition: color 0.3s; }
-    header nav a:hover { color: var(--accent-gold); }
-    .nav-cta {
-      background: var(--accent-gold-text) !important;
-      color: var(--white) !important;
-      padding: 0.65rem 1.5rem !important;
-      border-radius: 6px !important;
-      font-weight: 600 !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
-      transition: all 0.3s ease !important;
-    }
-    .nav-cta:hover { transform: translateY(-2px) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important; }
-    .nav-dropdown { position: relative; }
-    .nav-dropdown > a::after { content: ' ▾'; font-size: 0.8em; margin-left: 0.25rem; }
-    .dropdown-menu {
-      position: absolute; top: 100%; left: 0;
-      background: white; min-width: 220px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      border-radius: 8px; padding: 0.5rem 0;
-      opacity: 0; visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s ease; z-index: 1000;
-    }
-    .nav-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-    .dropdown-menu a { display: block; padding: 0.75rem 1.25rem; color: var(--text-dark); text-decoration: none; transition: background 0.2s ease; font-size: 0.95rem; }
-    .dropdown-menu a:hover { background: #f8f9fa; color: var(--primary-navy); }
-    .mobile-menu-toggle {
-      display: none; flex-direction: column; gap: 5px;
-      background: none; border: none; cursor: pointer;
-      padding: 0.5rem; z-index: 3; position: relative;
-    }
-    .mobile-menu-toggle span { display: block; width: 25px; height: 3px; background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: all 0.3s; }
-    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1; }
-    @media (max-width: 1024px) {
-      .mobile-menu-toggle { display: flex; }
-      header nav {
-        position: fixed; top: 0; right: -100%;
-        width: 80%; max-width: 400px; height: 100vh;
-        background: linear-gradient(to bottom, #FAFAF8 0%, #F5F5F3 100%);
-        padding: 2rem; padding-top: 5rem;
-        transition: right 0.3s; z-index: 2;
-        overflow-y: auto; box-shadow: -4px 0 20px rgba(0,0,0,0.15);
-      }
-      header nav.active { right: 0; }
-      header nav ul { flex-direction: column; align-items: flex-start; gap: 0; }
-      header nav li { width: 100%; border-bottom: 1px solid #eee; }
-      header nav a { display: block; padding: 1.25rem 0; color: var(--primary-navy); font-size: 1.1rem; }
-      .nav-cta { background: var(--accent-gold-text) !important; color: white !important; text-align: center; margin-bottom: 1.5rem; border-radius: 6px !important; }
-      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; background: rgba(0,0,0,0.03); margin: 0.5rem 0; display: none; }
-      .nav-dropdown.active .dropdown-menu { display: block; }
-    }
-
-    /* ── Site-standard footer ─────────────────────────────────────── */
-    footer {
-      background: #152b45;
-      color: var(--white);
-      padding: 5rem 0 2rem;
-    }
-    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 4rem;
-      margin-bottom: 4rem;
-    }
-    .footer-section h4 { color: var(--accent-gold); margin-bottom: 1.5rem; font-family: 'Montserrat', sans-serif; }
-    .footer-section ul { list-style: none; }
-    .footer-section li { margin-bottom: 0.75rem; }
-    .footer-section a { color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s; }
-    .footer-section a:hover { color: var(--accent-gold); }
-    .footer-section p { color: rgba(255,255,255,0.8); line-height: 1.6; }
-    .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
-
-    /* ── Page-specific styles ─────────────────────────────────────── */
-    .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: rgba(244,164,96,0.07); pointer-events: none; }
-    .hero-eyebrow { display: inline-block; background: rgba(244,164,96,0.15); color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; border: 1px solid rgba(244,164,96,0.3); }
-    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.1; letter-spacing: -0.02em; }
-    .hero h1 span { color: var(--gold); }
-    .hero-sub { color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 480px; margin: 0 auto 32px; line-height: 1.6; }
-    .hero-search { max-width: 500px; margin: 0 auto; position: relative; z-index: 1; }
-    .hero-search input { width: 100%; padding: 15px 20px 15px 48px; border-radius: 10px; border: none; font-family: 'Open Sans', sans-serif; font-size: 0.95rem; color: var(--text-dark); outline: none; box-shadow: var(--shadow-lg); }
-    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; pointer-events: none; }
-
-    .section { padding: 48px 24px; max-width: 1100px; margin: 0 auto; }
-    .section-title { font-size: 1.4rem; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
-    .section-sub { color: var(--text-mid); font-size: 0.88rem; margin-bottom: 28px; }
-    .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
-    .cat-card { background: var(--card-bg); border: 2px solid var(--border); border-radius: 12px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
-    .cat-card:hover { border-color: var(--navy); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-    .cat-card.active { border-color: var(--navy); background: var(--navy); color: #fff; }
-    .cat-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-    .cat-label { font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; }
-    .cat-count { font-size: 0.68rem; color: var(--text-light); margin-top: 3px; }
-    .cat-card.active .cat-count { color: rgba(255,255,255,0.6); }
-
-    .filters-bar { background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .filter-label { font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-    .filter-select { border: 1.5px solid var(--border); border-radius: 7px; padding: 7px 12px; font-family: 'Open Sans', sans-serif; font-size: 0.85rem; color: var(--text-dark); background: var(--bg); outline: none; cursor: pointer; }
-    .filter-clear { margin-left: auto; font-size: 0.8rem; color: var(--navy); cursor: pointer; font-weight: 600; text-decoration: underline; white-space: nowrap; }
-    .results-count { font-size: 0.82rem; color: var(--text-light); }
-
-    .listings-section { padding: 32px 24px 64px; max-width: 1100px; margin: 0 auto; }
-    .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-    .listing-card { background: var(--card-bg); border-radius: 14px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: all 0.2s; position: relative; }
-    .listing-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-    .listing-card.featured { border-color: var(--gold); border-width: 2px; }
-    .listing-badge { position: absolute; top: 16px; right: 16px; background: rgba(244,164,96,0.15); color: var(--gold-dark); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 20px; border: 1px solid rgba(244,164,96,0.3); }
-    .featured-badge { position: absolute; top: 16px; left: 16px; background: var(--gold); color: var(--navy-dark); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 20px; }
-    .listing-name { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 2px; padding-right: 80px; }
-    .listing-biz { font-size: 0.85rem; color: var(--text-mid); margin-bottom: 10px; font-weight: 600; }
-    .listing-desc { font-size: 0.82rem; color: var(--text-mid); line-height: 1.5; margin-bottom: 14px; }
-    .listing-meta { display: flex; flex-direction: column; gap: 5px; }
-    .listing-meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--text-mid); }
-    .meta-icon { font-size: 0.85rem; flex-shrink: 0; }
-    .listing-meta-item a { color: var(--navy); text-decoration: none; font-weight: 600; }
-    .listing-meta-item a:hover { text-decoration: underline; }
-    .listing-socials { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); flex-wrap: wrap; }
-    .social-link { font-size: 0.72rem; font-weight: 600; color: var(--navy); background: rgba(31,71,136,0.07); padding: 4px 10px; border-radius: 5px; text-decoration: none; transition: all 0.15s; }
-    .social-link:hover { background: var(--navy); color: #fff; }
-
-    .loading { text-align: center; padding: 64px 24px; color: var(--text-light); }
-    .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .empty-state { text-align: center; padding: 64px 24px; color: var(--text-light); }
-    .empty-icon { font-size: 3rem; margin-bottom: 12px; }
-    .empty-state h3 { font-size: 1.1rem; color: var(--text-mid); margin-bottom: 6px; }
-
-    .submit-section { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); padding: 64px 24px; text-align: center; }
-    .submit-inner { max-width: 560px; margin: 0 auto; }
-    .submit-section h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
-    .submit-section p { color: rgba(255,255,255,0.7); margin-bottom: 28px; line-height: 1.6; }
-    .btn-submit { background: var(--gold); color: var(--navy-dark); border: none; border-radius: 8px; padding: 14px 32px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-    .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
-
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
-    .modal-overlay.open { display: flex; }
-    .modal { background: var(--card-bg); border-radius: 16px; padding: 36px 32px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-    .modal-title { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--navy); }
-    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-light); }
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: block; font-size: 0.78rem; font-weight: 700; font-family: 'Montserrat', sans-serif; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-    .form-label span { color: #e53e3e; }
-    .form-input { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px; font-family: 'Open Sans', sans-serif; font-size: 0.9rem; color: var(--text-dark); outline: none; background: var(--bg); transition: border-color 0.2s; }
-    .form-input:focus { border-color: var(--navy); background: #fff; }
-    .form-select { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px; font-family: 'Open Sans', sans-serif; font-size: 0.9rem; color: var(--text-dark); outline: none; background: var(--bg); cursor: pointer; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .form-note { font-size: 0.75rem; color: var(--text-light); margin-top: 16px; line-height: 1.5; }
-    .btn-primary { width: 100%; background: var(--navy); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
-    .btn-primary:hover { background: var(--navy-light); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-    .success-msg { display: none; text-align: center; padding: 20px; }
-    .success-msg.show { display: block; }
-    .success-icon { font-size: 3rem; margin-bottom: 12px; }
-    .success-msg h3 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 8px; }
-    .success-msg p { color: var(--text-mid); font-size: 0.88rem; line-height: 1.5; }
-
-    @media (max-width: 600px) {
-      .categories-grid { grid-template-columns: repeat(3, 1fr); }
-      .listings-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-      .modal { padding: 24px 20px; }
-      .hero { padding: 48px 20px 40px; }
-    }
-  
-    /* mobile dropdown override (tools/fix_mobile_dropdowns.py) */
-    @media screen and (max-width: 1024px) {
-      .mobile-menu-toggle {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 44px;
-        min-height: 44px;
-      }
-      /* Off-screen is not hidden: without this the closed panel keeps taking
-         keyboard focus, and tabbing walks into links at x=468 in a 390px
-         viewport. */
-      nav, #mainNav {
-        visibility: hidden;
-        transition: right 0.3s ease, visibility 0s linear 0.3s;
-      }
-      nav.active, #mainNav.active {
-        visibility: visible;
-        transition: right 0.3s ease, visibility 0s;
-      }
-      .dropdown-menu {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        display: none;
-      }
-      .nav-dropdown.active .dropdown-menu {
-        display: block;
-      }
-    }
-</style>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 
@@ -344,7 +91,7 @@
   <p class="hero-sub">Local businesses, real people. Browse services across Virginia and connect directly.</p>
   <div class="hero-search">
     <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="Search by name, business, or keyword..." oninput="renderListings()" />
+    <input type="text" id="searchInput" placeholder="Search by name, business, or keyword..." oninput="renderListings()" aria-label="Search by name, business, or keyword">
   </div>
 </div>
 
@@ -382,7 +129,7 @@
 
 <div class="filters-bar" id="filtersBar" style="display:none;">
   <span class="filter-label">Filter by</span>
-  <select class="filter-select" id="locationFilter" onchange="renderListings()">
+  <select class="filter-select" id="locationFilter" onchange="renderListings()" aria-label="Filter by location">
     <option value="">All Locations</option>
   </select>
   <span class="results-count" id="resultsCount"></span>
@@ -402,12 +149,12 @@
   </div>
 </div>
 
-<div style="background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%); padding: 3rem 2rem; text-align: center; margin: 0;">
-  <div style="max-width: 640px; margin: 0 auto;">
-    <p style="color: #F4A460; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">For Restaurant, Food Truck & Catering Operators</p>
-    <h2 style="color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2;">Losing money you can't find on your P&L?</h2>
-    <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.6;">Independent operators lose an estimated $10K–$50K a year through labor, menu pricing, and systems gaps. A 90-minute Profit Leak Snapshot finds your top 3 leaks and tells you exactly what to fix first.</p>
-    <a href="profit-leak-snapshot.html" style="display: inline-block; background: #A85F28; color: white; padding: 1rem 2.25rem; border-radius: 8px; font-weight: 700; font-size: 1.05rem; text-decoration: none;">Book Your $350 Snapshot →</a>
+<div>
+  <div>
+    <p>For Restaurant, Food Truck & Catering Operators</p>
+    <h2>Losing money you can't find on your P&L?</h2>
+    <p>Independent operators lose an estimated $10K–$50K a year through labor, menu pricing, and systems gaps. A 90-minute Profit Leak Snapshot finds your top 3 leaks and tells you exactly what to fix first.</p>
+    <a href="profit-leak-snapshot.html">Book Your $350 Snapshot →</a>
   </div>
 </div>
 
@@ -427,7 +174,7 @@
       <div class="footer-section">
         <h2>Tre Coleman Consulting LLC</h2>
         <p>Virginia-based restaurant operations consultant.<br>Serving operators nationwide.</p>
-        <p style="margin-top: 1rem;">© 2026 All Rights Reserved</p>
+        <p>© 2026 All Rights Reserved</p>
       </div>
       <div class="footer-section">
             <h2>Services</h2>
@@ -482,16 +229,16 @@
     <div id="formWrap">
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Your Name <span>*</span></label>
+          <label class="form-label" for="f_name">Your Name <span>*</span></label>
           <input class="form-input" type="text" id="f_name" placeholder="First Last" />
         </div>
         <div class="form-group">
-          <label class="form-label">Business Name <span>*</span></label>
+          <label class="form-label" for="f_business">Business Name <span>*</span></label>
           <input class="form-input" type="text" id="f_business" placeholder="Your Business LLC" />
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Category <span>*</span></label>
+        <label class="form-label" for="f_category">Category <span>*</span></label>
         <select class="form-select" id="f_category">
           <option value="">Select a category...</option>
           <option>Restaurant &amp; Food</option>
@@ -511,36 +258,36 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">What do you do? <span>*</span></label>
+        <label class="form-label" for="f_description">What do you do? <span>*</span></label>
         <input class="form-input" type="text" id="f_description" placeholder="Brief description of your services..." />
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">City / County <span>*</span></label>
+          <label class="form-label" for="f_location">City / County <span>*</span></label>
           <input class="form-input" type="text" id="f_location" placeholder="e.g. Louisa, Richmond" />
         </div>
         <div class="form-group">
-          <label class="form-label">Phone</label>
+          <label class="form-label" for="f_phone">Phone</label>
           <input class="form-input" type="tel" id="f_phone" placeholder="540-000-0000" />
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Email <span>*</span></label>
+          <label class="form-label" for="f_email">Email <span>*</span></label>
           <input class="form-input" type="email" id="f_email" placeholder="you@email.com" />
         </div>
         <div class="form-group">
-          <label class="form-label">Website</label>
+          <label class="form-label" for="f_website">Website</label>
           <input class="form-input" type="url" id="f_website" placeholder="https://yourbiz.com" />
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Facebook</label>
+          <label class="form-label" for="f_facebook">Facebook</label>
           <input class="form-input" type="url" id="f_facebook" placeholder="https://facebook.com/yourbiz" />
         </div>
         <div class="form-group">
-          <label class="form-label">Instagram</label>
+          <label class="form-label" for="f_instagram">Instagram</label>
           <input class="form-input" type="url" id="f_instagram" placeholder="https://instagram.com/yourbiz" />
         </div>
       </div>
@@ -611,7 +358,7 @@
       renderCategories();
       renderListings();
     } catch(err) {
-      document.getElementById('loadingState').innerHTML = '<p style="color:#c53030;">Failed to load listings. Please refresh.</p>';
+      document.getElementById('loadingState').innerHTML = '<p>Failed to load listings. Please refresh.</p>';
     }
   }
 
@@ -685,8 +432,8 @@
       ].filter(Boolean).join('');
       return `<div class="listing-card ${l.featured?'featured':''}">
         ${l.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
-        <span class="listing-badge" style="${l.featured?'top:44px;':''}">${icon} ${l.category}</span>
-        <div class="listing-name" style="${l.featured?'padding-top:28px;':''}">${l.name}</div>
+        <span class="listing-badge">${icon} ${l.category}</span>
+        <div class="listing-name">${l.name}</div>
         <div class="listing-biz">${l.business}</div>
         <div class="listing-desc">${l.description}</div>
         <div class="listing-meta">
