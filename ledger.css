@@ -1,0 +1,648 @@
+/* ===========================================================================
+   ledger.css — the P&L as design language
+   ===========================================================================
+
+   Loaded AFTER style.css, and only by the pages that have opted in. That is
+   deliberate: 88% of this site's CSS lives in page <style> blocks (236 KB
+   inline against 31 KB in style.css), so rewriting style.css would have
+   changed almost nothing on the pages that matter while silently restyling
+   the 36 pages that do depend on it. This file is additive instead, and a
+   page joins the new language by linking it and dropping its inline block.
+
+   Two rules this file obeys, both load-bearing:
+
+   1. It restyles the nav's APPEARANCE only. The layout and visibility
+      mechanics live in style.css:897+ and encode seven separately-diagnosed
+      mobile defects (a closed panel must not take keyboard focus; a submenu
+      must push rather than overlay; the hamburger must not be display:none).
+      Nothing here touches position, visibility, right or display on nav
+      elements. See tools/README.md lines 39-52.
+
+   2. All nav CSS lives HERE, never in a page <style> block.
+      tools/fix_mobile_nav_css.py inspects page-local CSS for three
+      signatures and appends its own 1024px override when it finds one. A
+      page with no <style> block matches none of them and is skipped, which
+      is how the new breakpoints survive CI.
+
+   Colour pairings below were measured, not assumed — ratios are recorded
+   inline. tools/README.md records a button that scored accessibility 100 at
+   2.03:1 because axe cannot resolve a background-image ancestor.
+   =========================================================================== */
+
+
+/* --- Typefaces -------------------------------------------------------------
+
+   Self-hosted, same-origin, two files. Both are single variable fonts, so
+   Archivo carries weight 400-800 AND width 62-125% in 88 KB, and Inter
+   carries weight 400-700 in 47 KB. The width axis is what gives the display
+   face its condensed, operating-statement set without a second download.
+
+   This replaces a third-party chain — two preconnects, a CSS request, then
+   two font fetches from fonts.gstatic.com — with two local files, so it
+   should help LCP rather than cost it.
+
+   @font-face, never @import: check_site.py's `stale` check errors on
+   `@import url(...fonts.googleapis`.
+   Both families are OFL-1.1; see fonts/LICENSE.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('fonts/archivo-var-latin.woff2') format('woff2-variations'),
+       url('fonts/archivo-var-latin.woff2') format('woff2');
+  font-weight: 400 800;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/inter-var-latin.woff2') format('woff2-variations'),
+       url('fonts/inter-var-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* --- Tokens ----------------------------------------------------------------
+
+   Additive. --accent-gold and --accent-gold-text are NOT redefined here:
+   48 pages still use them, and tools/fix_contrast.py rewrites any paired
+   gold into var(--accent-gold-text), so removing that token would produce an
+   undefined colour sitewide.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Ground and ink. Measured against --paper:
+     --ink 16.83:1 · --ink-soft 7.47:1 · --loss 7.56:1 — all AA for body text. */
+  --paper:        #FBFAF7;   /* warm off-white, the page ground */
+  --paper-sunk:   #F4F1EA;   /* recessed band; --ink 15.57:1, --ink-soft 6.91:1 */
+  --ink:          #1A1917;   /* near-black body text */
+  --ink-soft:     #55524B;   /* secondary text, notes, attribution */
+
+  /* Two rule weights, because that is how an operating statement reads: a
+     hairline between line items, a heavy rule under a total. */
+  --rule:         #A39A86;   /* row separators — 2.67:1 on paper */
+  --rule-strong:  #1A1917;   /* totals and section boundaries — 16.83:1 */
+
+  /* The loss signal. Used ONLY where something is being lost or flagged:
+     a leak figure, a negative delta, a not-a-fit column. Never a CTA, never
+     a heading colour, never a background for body text. The metaphor is
+     bleeding profit; if red is everywhere the metaphor dies. */
+  --loss:         #A3121D;   /* 7.56:1 on paper, 6.99:1 on sunk */
+
+  --lg-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --lg-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Measured in characters so the measure holds as type scales. */
+  --lg-measure:  68ch;
+  --lg-gutter:   clamp(1.25rem, 5vw, 4rem);
+}
+
+
+/* --- Base ------------------------------------------------------------------
+   Overrides style.css's generic element rules. style.css loads first, so
+   plain element selectors at equal specificity win by source order.
+   -------------------------------------------------------------------------- */
+
+body.ledger {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--lg-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.ledger h1,
+body.ledger h2,
+body.ledger h3,
+body.ledger h4 {
+  font-family: var(--lg-display);
+  color: var(--ink);
+  font-weight: 800;
+  font-stretch: 85%;              /* the condensed set — the width axis at work */
+  letter-spacing: -0.015em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+body.ledger h1 { font-size: clamp(2.5rem, 7vw, 4.75rem); }
+body.ledger h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); margin-bottom: 1.5rem; }
+body.ledger h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); font-weight: 700; letter-spacing: -0.01em; }
+
+/* style.css:118 sets `p { color: var(--medium-text) }` as a direct rule, and a
+   direct rule beats an inherited colour however specific the ancestor. So the
+   paper bands need this, and the ink band needs the qualified override below —
+   without it, inheriting --paper silently loses and the text stays dark. */
+body.ledger p { max-width: var(--lg-measure); color: var(--ink); }
+body.ledger .lg-hero__sub,
+body.ledger .lg-row__note,
+body.ledger .lg-figure__note,
+body.ledger .lg-stack__item p { color: var(--ink-soft); }
+
+/* The skip link carries its own navy background from style.css:1250 and is
+   only visible on focus. body.ledger a was repainting its text --ink over
+   that navy at 1.94:1 — a keyboard-only regression no visual check would
+   have surfaced, since the element sits at left: -9999px until focused. */
+body.ledger a.skip-link { color: var(--white); }
+body.ledger a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+body.ledger a:hover { color: var(--loss); }
+
+/* Every figure on the page is tabular, so columns of dollars align. */
+body.ledger .lg-num,
+body.ledger .lg-row__figure,
+body.ledger .lg-figure__value,
+body.ledger .lg-spec__value {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+
+/* --- Section bands --------------------------------------------------------- */
+
+.lg-band {
+  padding: clamp(3rem, 8vw, 6.5rem) var(--lg-gutter);
+  background: var(--paper);
+}
+.lg-band--sunk { background: var(--paper-sunk); }
+.lg-band--ink  { background: var(--ink); color: var(--paper); }
+
+/* Specificity note: body.ledger h2 is (0,0,1,2) and would otherwise beat a
+   plain .lg-band--ink h2 at (0,0,1,1), painting near-black on near-black.
+   Caught by looking at a screenshot, not by any check — nothing in CI
+   evaluates text against an ancestor's background colour. */
+body.ledger .lg-band--ink h1,
+body.ledger .lg-band--ink h2,
+body.ledger .lg-band--ink h3 { color: var(--paper); }
+body.ledger .lg-band--ink a { color: var(--paper); }
+body.ledger .lg-band--ink .lg-eyebrow { color: var(--paper); border-bottom-color: rgba(251, 250, 247, 0.35); }
+body.ledger .lg-band--ink .lg-eyebrow__index { color: var(--paper); }
+body.ledger .lg-band--ink p,
+body.ledger .lg-band--ink li,
+body.ledger .lg-band--ink .lg-statement { color: var(--paper); }
+body.ledger .lg-band--ink .lg-cta { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+body.ledger .lg-band--ink .lg-cta:hover { background: transparent; color: var(--paper); }
+
+.lg-wrap { max-width: 1120px; margin: 0 auto; }
+
+/* The step number from the financial argument — 01 THE PROBLEM, 02 THE
+   EVIDENCE. Sets the page up as a sequence rather than a stack of sections. */
+.lg-eyebrow {
+  font-family: var(--lg-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid var(--rule);
+}
+.lg-eyebrow__index {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+
+/* --- The ledger ------------------------------------------------------------
+
+   The site's visual signature. A line item, its amount, and a note beneath —
+   which is also why the amount may repeat inside the note: that is how an
+   operating statement reads, and it means no body copy had to be trimmed to
+   pull the figure into its own column.
+   -------------------------------------------------------------------------- */
+
+.lg-ledger {
+  border-top: 2px solid var(--rule-strong);
+  margin: 0;
+}
+
+.lg-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  grid-template-areas:
+    'index label figure'
+    '.     note  note';
+  column-gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: baseline;
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.lg-row__index {
+  grid-area: index;
+  font-family: var(--lg-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.lg-row__label { grid-area: label; margin: 0; }
+
+/* Qualified for the same reason as .lg-cta: body.ledger p is (0,0,1,2) and
+   an unqualified .lg-row__figure is (0,0,1,0). Leaving it unqualified painted
+   the leak figures near-black — the one place in the whole design where red
+   carries the meaning, silently drained by the paragraph-colour fix. */
+body.ledger p.lg-row__figure,
+.lg-row__figure {
+  grid-area: figure;
+  font-family: var(--lg-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+  font-weight: 800;
+  font-stretch: 80%;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--loss);          /* money leaving: the one place red belongs */
+  white-space: nowrap;
+  text-align: right;
+}
+
+.lg-row__note {
+  grid-area: note;
+  margin: 0.75rem 0 0;
+  color: var(--ink-soft);
+  max-width: 62ch;
+}
+
+/* A total line closes the ledger — heavy rule above, as on a statement. */
+.lg-ledger__total {
+  border-top: 2px solid var(--rule-strong);
+  border-bottom: none;
+}
+
+
+/* The unit rides with the amount but must not compete with it. */
+.lg-row__unit {
+  font-size: 0.45em;
+  font-weight: 600;
+  font-stretch: 100%;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+
+/* --- Large numeric callouts (proof anchors) -------------------------------- */
+
+.lg-figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+  border-top: 2px solid var(--rule-strong);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.lg-figure__value {
+  display: block;
+  font-family: var(--lg-display);
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-weight: 800;
+  font-stretch: 78%;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  color: var(--ink);           /* a gain is ink, not red */
+}
+.lg-figure__label {
+  display: block;
+  margin-top: 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.lg-figure__note { margin: 1rem 0 0; font-size: 0.9375rem; color: var(--ink-soft); }
+
+
+/* --- Spec rows (the Snapshot's four facts) --------------------------------- */
+
+.lg-spec {
+  border-top: 2px solid var(--rule-strong);
+  margin: clamp(1.5rem, 4vw, 2.5rem) 0;
+}
+.lg-spec__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.125rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.lg-spec__key {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.lg-spec__value {
+  font-family: var(--lg-display);
+  font-size: clamp(1.375rem, 3vw, 2rem);
+  font-weight: 800;
+  font-stretch: 82%;
+  line-height: 1;
+  text-align: right;
+}
+
+
+/* The guarantee is a sentence, not a figure, so it drops to reading size
+   while keeping the spec row's prominence. */
+.lg-spec__value--prose {
+  font-family: var(--lg-body);
+  font-size: 1rem;
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.4;
+  max-width: 34ch;
+}
+
+/* One case study: category label, its anchors, then the prose beneath. */
+.lg-case { padding: clamp(2rem, 5vw, 3.25rem) 0; border-bottom: 1px solid var(--rule); }
+.lg-case:last-child { border-bottom: none; }
+.lg-case .lg-figures { border-top: none; padding-top: 0.75rem; margin-bottom: 1.5rem; }
+.lg-case .lg-figures::before { content: none; }
+.lg-case .lg-figure__note { max-width: 70ch; }
+
+
+/* --- Full-width statements and pull quotes --------------------------------- */
+
+.lg-statement {
+  font-family: var(--lg-display);
+  font-size: clamp(1.5rem, 3.6vw, 2.5rem);
+  font-weight: 700;
+  font-stretch: 88%;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  max-width: 34ch;
+  margin: 0;
+}
+
+.lg-quote {
+  margin: 0;
+  padding: clamp(2rem, 5vw, 3.5rem) 0;
+  border-top: 2px solid var(--rule-strong);
+  border-bottom: 2px solid var(--rule-strong);
+}
+.lg-quote blockquote {
+  margin: 0;
+  font-family: var(--lg-display);
+  font-size: clamp(1.375rem, 3.2vw, 2.125rem);
+  font-weight: 600;
+  font-stretch: 92%;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  max-width: 44ch;
+}
+.lg-quote figcaption {
+  margin-top: 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+
+/* --- Statement lists (included / not included, fit / not a fit) ------------ */
+
+.lg-list { list-style: none; margin: 0; padding: 0; }
+.lg-list li {
+  padding: 0.875rem 0 0.875rem 1.75rem;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  max-width: 62ch;
+}
+.lg-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--ink-soft);
+}
+/* The only other sanctioned use of red: an explicit exclusion. */
+.lg-list--out li::before { content: '\00D7'; color: var(--loss); }
+
+.lg-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+}
+
+
+/* --- Resource index -------------------------------------------------------- */
+
+.lg-index { border-top: 2px solid var(--rule-strong); }
+.lg-index a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.0625rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  font-weight: 600;
+}
+.lg-index a::after { content: '\2192'; color: var(--ink-soft); }
+.lg-index a:hover { color: var(--loss); }
+.lg-index a:hover::after { color: var(--loss); }
+
+
+/* --- Subordinate stack (Diagnose -> Fix -> Advise) ------------------------- */
+
+.lg-stack { border-top: 1px solid var(--rule); }
+.lg-stack__item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.lg-stack__item h3 { margin: 0; }
+.lg-stack__meta {
+  font-family: var(--lg-display);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-stretch: 85%;
+  white-space: nowrap;
+  text-align: right;
+}
+.lg-stack__item p { grid-column: 1 / -1; margin: 0; color: var(--ink-soft); }
+
+
+/* --- FAQ ------------------------------------------------------------------- */
+
+.lg-faq { border-top: 2px solid var(--rule-strong); }
+.lg-faq details { border-bottom: 1px solid var(--rule); }
+.lg-faq summary {
+  cursor: pointer;
+  padding: 1.25rem 2rem 1.25rem 0;
+  position: relative;
+  list-style: none;
+}
+.lg-faq summary::-webkit-details-marker { display: none; }
+.lg-faq summary h3 { margin: 0; display: inline; }
+.lg-faq summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 1.0625rem;
+  font-family: var(--lg-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+.lg-faq details[open] summary::after { content: '\2013'; }
+.lg-faq details > p { margin: 0 0 1.5rem; color: var(--ink-soft); }
+.lg-faq summary:focus-visible { outline: 2px solid var(--loss); outline-offset: 2px; }
+
+
+/* --- Hero and credibility line --------------------------------------------- */
+
+.lg-hero { padding: clamp(3.5rem, 10vw, 8rem) var(--lg-gutter) clamp(2.5rem, 6vw, 4rem); }
+.lg-hero h1 { margin: 0 0 1.5rem; max-width: 22ch; }
+.lg-hero__sub { font-size: clamp(1.0625rem, 1.8vw, 1.25rem); color: var(--ink-soft); margin: 0 0 2rem; }
+.lg-hero__note { margin-top: 1.25rem; font-size: 0.875rem; color: var(--ink-soft); }
+
+/* One restrained line, not a résumé strip. */
+.lg-credit {
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding: 1.125rem var(--lg-gutter);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* body.ledger a sets colour at (0,0,1,2); an unqualified .lg-cta is (0,0,1,0)
+   and loses, which rendered the primary CTA ink-on-ink — invisible. The
+   qualified selector is not decoration, it is the fix. */
+body.ledger a.lg-cta,
+.lg-cta {
+  display: inline-block;
+  font-family: var(--lg-display);
+  font-size: clamp(1rem, 1.6vw, 1.1875rem);
+  font-weight: 700;
+  font-stretch: 88%;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1.0625rem 1.875rem;
+  border: 2px solid var(--ink);
+  text-decoration: none;
+  transition: background 150ms ease, color 150ms ease;
+}
+body.ledger a.lg-cta:hover { background: var(--paper); color: var(--ink); }
+.lg-cta:focus-visible { outline: 3px solid var(--loss); outline-offset: 3px; }
+
+
+/* --- Nav and footer: appearance only ---------------------------------------
+
+   style.css:256-271 sets .nav-cta with 17 !important declarations, so these
+   overrides need !important to land. The mechanics (position, visibility,
+   right, display) are deliberately untouched — see the header of this file.
+   -------------------------------------------------------------------------- */
+
+body.ledger header { background: var(--paper) !important; border-bottom: 1px solid var(--rule); box-shadow: none !important; }
+body.ledger .logo { font-family: var(--lg-display); font-weight: 800; font-stretch: 85%; letter-spacing: -0.02em; color: var(--ink) !important; }
+body.ledger #mainNav a { font-family: var(--lg-body); font-size: 0.9375rem; font-weight: 600; color: var(--ink) !important; }
+body.ledger #mainNav a:hover { color: var(--loss) !important; }
+
+body.ledger #mainNav a.nav-cta {
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: var(--lg-display) !important;
+  font-weight: 700 !important;
+  transform: none !important;
+}
+body.ledger #mainNav a.nav-cta:hover { background: var(--loss) !important; color: var(--paper) !important; }
+
+body.ledger .dropdown-menu { border-radius: 0 !important; box-shadow: none !important; border: 1px solid var(--rule) !important; background: var(--paper) !important; }
+
+body.ledger footer { background: var(--ink) !important; color: var(--paper); border-top: none; }
+body.ledger footer h2, body.ledger footer h3, body.ledger footer h4 { font-family: var(--lg-display); color: var(--paper) !important; font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; }
+/* Every text descendant on a dark surface, not just the ones I thought of.
+   Enumerating elements one at a time found the CTA, then the ink band, then
+   the footer — three rounds of the same mistake. */
+body.ledger footer,
+body.ledger footer p,
+body.ledger footer li,
+body.ledger footer span,
+body.ledger footer div { color: var(--paper); }
+body.ledger footer a { color: var(--paper) !important; }
+body.ledger footer a:hover { color: var(--paper) !important; text-decoration-thickness: 2px; }
+
+
+/* --- Motion ----------------------------------------------------------------
+
+   A ledger line being revealed, and nothing else. No count-up on the
+   figures: that is JavaScript against a 200 ms total-blocking-time budget
+   with effectively no headroom (measured base ~0 ms, Lighthouse asserts 200
+   as an error). The rule draw satisfies the brief without spending it.
+   -------------------------------------------------------------------------- */
+
+@keyframes lg-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.lg-ledger,
+.lg-figures,
+.lg-spec,
+.lg-index,
+.lg-faq { position: relative; }
+
+.lg-ledger::before,
+.lg-figures::before,
+.lg-spec::before,
+.lg-index::before,
+.lg-faq::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 auto 0;
+  height: 2px;
+  background: var(--rule-strong);
+  transform-origin: left;
+  animation: lg-draw 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-ledger::before,
+  .lg-figures::before,
+  .lg-spec::before,
+  .lg-index::before,
+  .lg-faq::before { animation: none; transform: none; }
+  .lg-cta { transition: none; }
+}
+
+
+/* --- Narrow viewports ------------------------------------------------------
+
+   Designed, not stacked. The figure stays dominant and keeps its own line
+   rather than being squeezed against the label; the ledger stays scannable.
+   Tested at 375, 390, 768 and desktop.
+   -------------------------------------------------------------------------- */
+
+@media screen and (max-width: 640px) {
+  .lg-row {
+    grid-template-columns: 2.25rem 1fr;
+    grid-template-areas:
+      'index  label'
+      '.      figure'
+      '.      note';
+    row-gap: 0.5rem;
+  }
+  .lg-row__figure { text-align: left; font-size: clamp(1.75rem, 9vw, 2.25rem); }
+  .lg-spec__row { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .lg-spec__value { text-align: left; }
+  .lg-stack__item { grid-template-columns: 1fr; }
+  .lg-stack__meta { text-align: left; }
+  .lg-statement, .lg-quote blockquote { max-width: none; }
+}
