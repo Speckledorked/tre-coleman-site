@@ -24,9 +24,12 @@
     <meta name="twitter:description" content="Tell me where your operation is bottlenecked and get a practical first step. Book a $350 Profit Leak Snapshot or send a note about your operation." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
 <!-- Relative CSS path for GitHub Pages -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="ledger.css" />
 <link href="style.css" rel="stylesheet"/>
 
 <!-- Form submission is handled via a script at the bottom of the page -->
@@ -62,7 +65,7 @@
 }
 </script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
@@ -70,7 +73,7 @@
 <!-- Header -->
 <header>
 <div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <!-- Mobile Menu Toggle Button -->
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
@@ -118,8 +121,9 @@
 </div>
 </header>
 <main id="main-content">
+<section class="lg-band lg-contact">
 <section>
-<div class="container">
+<div class="lg-wrap">
 <h1 class="mb-2">Book Your Profit Leak Snapshot</h1>
 <p class="mb-2">Tell me where the bottleneck is. I’ll share a simple first step you can take this week.</p>
 <p class="mb-2"><strong>90 minutes. 3 profit leaks identified. Clear action plan. $350.</strong></p>
@@ -137,14 +141,14 @@
 </p>
 
 <h2 class="mb-1">Who this is for</h2>
-<ul class="mb-2">
+<ul class="lg-list" class="mb-2">
   <li>Independent restaurants, food trucks, catering companies, and ghost kitchens</li>
   <li>Operators who can pull a P&amp;L and item-level sales data, even if it is messy</li>
   <li>Owners who want to know where the money is going, not a marketing retainer</li>
 </ul>
 
 <h2 class="mb-1">Who it isn't for</h2>
-<ul class="mb-2">
+<ul class="lg-list" class="mb-2">
   <li>Pre-revenue concepts with no trading history to analyse — start with the
       <a href="audit.html">free operations audit</a> or the
       <a href="food-truck-audit.html">food truck launch audit</a> instead</li>
@@ -239,11 +243,12 @@
 <input name="utm_campaign" type="hidden"/>
 <!-- Disable FormSubmit's reCAPTCHA so users aren't blocked -->
 <input name="_captcha" type="hidden" value="false"/>
-<button class="button" style="margin-top:1rem;" type="submit">Get my plan</button>
+<button class="lg-cta" type="submit">Get my plan</button>
 </form>
 </div>
 </section>
 <!-- Footer -->
+</section>
 </main>
 <footer>
 <div class="container">
