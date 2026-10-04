@@ -23,377 +23,13 @@
 <meta content="A 90-minute session on your P&amp;L, labor, and item mix. Leave with your top 3 profit leaks priced in dollars and a prioritized fix list. $350." name="twitter:description"/>
 <meta content="https://trecoleman.com/images/og-card.jpg" name="twitter:image"/>
 <!-- Use relative path for CSS so it loads on GitHub Pages project sites -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="ledger.css" />
 <link href="style.css" rel="stylesheet"/>
-<style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      line-height: 1.6;
-      color: #2c3e50;
-      background: #ffffff;
-    }
-
-    /* Hero Section */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #1e3a5f 0%, #2c3e50 100%);
-      color: white;
-      padding: 4rem 1.5rem;
-      text-align: center;
-    }
-
-    .hero-content {
-      max-width: 750px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: 3.5rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 2rem;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-    }
-
-    .hero p {
-      color: #ffffff;
-    }
-
-    .hero .tagline {
-      font-size: 1.6rem;
-      line-height: 1.4;
-      margin-bottom: 2rem;
-      color: #ffffff;
-      font-weight: 400;
-    }
-
-    .hero .description {
-      font-size: 1.3rem;
-      line-height: 1.6;
-      margin-bottom: 3rem;
-      color: #ffffff;
-    }
-
-    .hero .pricing {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-    }
-
-    .hero .pricing .amount {
-      color: #A85F28;
-      font-size: 2.5rem;
-    }
-
-    /* CTA Buttons */
-    .cta-buttons {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-    }
-
-    .btn-primary {
-      background: #A85F28;
-      color: white;
-      padding: 1rem 2.5rem;
-      border-radius: 8px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-block;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-primary:hover {
-      background: #b8935f;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
-
-    .btn-secondary {
-      color: white;
-      padding: 1rem 2.5rem;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-block;
-      border: 2px solid rgba(255,255,255,0.5);
-      transition: all 0.3s ease;
-    }
-
-    .btn-secondary:hover {
-      border-color: white;
-      background: rgba(255,255,255,0.1);
-    }
-
-    .credit-note {
-      font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.95);
-      font-style: italic;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* Content Sections */
-    .section {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 5rem 1.5rem;
-    }
-
-    .section h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      color: #1e3a5f;
-    }
-
-    .section h3 {
-      font-size: 1.75rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      margin-top: 3rem;
-      color: #1e3a5f;
-    }
-
-    .section p {
-      font-size: 1.2rem;
-      line-height: 1.8;
-      margin-bottom: 1.5rem;
-      color: #2c3e50;
-    }
-
-    .section ul {
-      list-style: none;
-      margin: 2rem 0;
-    }
-
-    .section ul li {
-      font-size: 1.2rem;
-      padding: 1rem 0;
-      padding-left: 2rem;
-      position: relative;
-      color: #2c3e50;
-      line-height: 1.7;
-    }
-
-    .section ul li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      color: #A85F28;
-      font-weight: bold;
-      font-size: 1.4rem;
-    }
-
-    /* Important callout */
-    .important {
-      background: #f8f9fa;
-      border-left: 4px solid #d4a574;
-      padding: 1.5rem 2rem;
-      margin: 2rem 0;
-      font-size: 1.15rem;
-      color: #2c3e50;
-      font-weight: 500;
-    }
-
-    /* What NOT section */
-    .not-included {
-      background: #f8f9fa;
-      padding: 2rem;
-      border-radius: 8px;
-      margin: 2rem 0;
-    }
-
-    .not-included ul li::before {
-      content: "×";
-      color: #e74c3c;
-    }
-
-    /* Dark CTA sections */
-    .cta-section {
-      background: #2c3e50;
-      color: white;
-      padding: 4rem 1.5rem;
-      text-align: center;
-    }
-
-    .cta-section h2 {
-      color: white;
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
-    }
-
-    /* FAQ Section */
-    .faq {
-      background: #f8f9fa;
-      padding: 5rem 1.5rem;
-    }
-
-    .faq-item {
-      max-width: 800px;
-      margin: 0 auto 2.5rem;
-    }
-
-    .faq-item h3 {
-      font-size: 1.4rem;
-      color: #1e3a5f;
-      margin-bottom: 0.75rem;
-      margin-top: 0;
-    }
-
-    .faq-item p {
-      font-size: 1.15rem;
-      color: #2c3e50;
-      margin-bottom: 0;
-    }
-
-
-    /* Footer - override to match site color */
-    footer {
-      background: #1F4788;
-    }
-
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-      .hero {
-        min-height: auto;
-        padding: 3rem 1.25rem;
-      }
-
-      .hero h1 {
-        font-size: 2rem;
-      }
-
-      .hero .tagline {
-        font-size: 1.15rem;
-      }
-
-      .hero .description {
-        font-size: 1rem;
-        margin-bottom: 2rem;
-      }
-
-      .hero .pricing .amount {
-        font-size: 2rem;
-      }
-
-      .section h2,
-      .cta-section h2 {
-        font-size: 1.75rem;
-      }
-
-      .section p,
-      .section ul li {
-        font-size: 1rem;
-      }
-
-      .cta-buttons {
-        flex-direction: column;
-        gap: 1rem;
-      }
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-    /* Dropdown navigation styles - supplement to style.css */
-
-    .nav-dropdown {
-      position: relative;
-    }
-
-    .nav-dropdown > a::after {
-      content: ' ▾';
-      font-size: 0.8em;
-    }
-
-    .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      min-width: 200px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      border-radius: 8px;
-      padding: 0.5rem 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-
-    .nav-dropdown:hover .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    .dropdown-menu a {
-      display: block;
-      padding: 0.75rem 1.25rem;
-      color: #2c3e50 !important;
-    }
-
-    .dropdown-menu a:hover {
-      background: #f8f9fa;
-      color: #1e3a5f !important;
-    }
-
-/* Mobile nav styles handled by style.css */
-  
-    /* mobile dropdown override (tools/fix_mobile_dropdowns.py) */
-    @media screen and (max-width: 1024px) {
-      .mobile-menu-toggle {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 44px;
-        min-height: 44px;
-      }
-      /* Off-screen is not hidden: without this the closed panel keeps taking
-         keyboard focus, and tabbing walks into links at x=468 in a 390px
-         viewport. */
-      nav, #mainNav {
-        visibility: hidden;
-        transition: right 0.3s ease, visibility 0s linear 0.3s;
-      }
-      nav.active, #mainNav.active {
-        visibility: visible;
-        transition: right 0.3s ease, visibility 0s;
-      }
-      .dropdown-menu {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        display: none;
-      }
-      .nav-dropdown.active .dropdown-menu {
-        display: block;
-      }
-    }
-</style>
 <script src="analytics.js"></script>
   <link rel="canonical" href="https://trecoleman.com/profit-leak-snapshot.html" />
 <script type="application/ld+json">
@@ -423,7 +59,7 @@
 }
 </script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
@@ -431,7 +67,7 @@
 <!-- Header -->
 <header>
 <div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
 <span></span>
@@ -479,24 +115,30 @@
 <main id="main-content">
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">›</span> <a href="services.html">Services</a> <span aria-hidden="true">›</span> <span aria-current="page">Profit Leak Snapshot</span></nav>
 <!-- Hero Section -->
-<section class="hero">
-<div class="hero-content">
+<section class="lg-hero">
+<div class="lg-wrap">
 <h1>Profit Leak Snapshot</h1>
-<p class="tagline">Your operation is profitable on paper, but the money is not showing up in your account. Something is leaking.</p>
+<p class="lg-hero__sub">Your operation is profitable on paper, but the money is not showing up in your account. Something is leaking.</p>
 <p class="description">The Profit Leak Snapshot is a 90-minute diagnostic session to identify your top 3 profit leaks, estimate what they are costing you, and decide what to fix first.</p>
-<div class="cta-buttons">
-<a class="btn-primary" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
-<a class="btn-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
+<div class="lg-spec">
+<div class="lg-spec__row"><span class="lg-spec__key">Fee</span><span class="lg-spec__value">$350</span></div>
+<div class="lg-spec__row"><span class="lg-spec__key">Session</span><span class="lg-spec__value">90 minutes</span></div>
+<div class="lg-spec__row"><span class="lg-spec__key">You leave with</span><span class="lg-spec__value">Your top 3 profit leaks</span></div>
 </div>
-<p class="credit-note">If you decide to move forward with implementation support, the $350 credits toward your engagement.</p>
+<div class="cta-buttons">
+<a class="lg-cta" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
+<a class="lg-cta-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
+</div>
+<p class="lg-hero__note">If you decide to move forward with implementation support, the $350 credits toward your engagement.</p>
 </div>
 </section>
 <!-- What This Is -->
-<section class="section">
+<section class="lg-band">
+<div class="lg-wrap">
 <h2>What this is</h2>
 <p><strong>This is not consulting theater. It is a fast, operator-level diagnosis.</strong></p>
 <p>In 90 minutes, we will:</p>
-<ul>
+<ul class="lg-list">
 <li>Review your last 90 days of key numbers (P&amp;L, labor summary, sales mix basics)</li>
 <li>Pressure-test what you think the problem is</li>
 <li>Identify the top 3 likely profit leaks</li>
@@ -504,13 +146,15 @@
 <li>Prioritize what to fix first based on impact vs effort</li>
 <li>Call out what not to touch yet</li>
 </ul>
+</div>
 </section>
 <!-- What You Walk Away With -->
-<section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
-<div style="max-width: 800px; margin: 0 auto;">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
+<div>
 <h2>What you walk away with</h2>
 <p>You will leave the call with:</p>
-<ul>
+<ul class="lg-list">
 <li>Your top 3 profit leaks, clearly named</li>
 <li>A rough $ impact estimate for each leak (monthly and annual ranges)</li>
 <li>A simple Fix First order: first, second, third</li>
@@ -520,13 +164,15 @@
 <strong>What you leave with:</strong> A prioritized fix list — your top 3 leaks, what each is costing you, and what to address first. Capture it in your notes or a simple checklist template I'll walk you through during the session. This is built for clarity and speed, not a 50-page deck.
       </div>
 </div>
+</div>
 </section>
 <!-- What This Is Not -->
-<section class="section">
+<section class="lg-band">
+<div class="lg-wrap">
 <h2>What this is not</h2>
 <p>To keep the Snapshot clean and valuable, we do <strong>not</strong>:</p>
 <div class="not-included">
-<ul>
+<ul class="lg-list">
 <li>Rebuild schedules or staffing plans</li>
 <li>Rewrite your menu or fully engineer it</li>
 <li>Create SOPs</li>
@@ -536,141 +182,150 @@
 </ul>
 </div>
 <p>If you want help implementing the fixes, that is a separate scope.</p>
+</div>
 </section>
 <!-- Who This Is For -->
-<section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
-<div style="max-width: 800px; margin: 0 auto;">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
+<div>
 <h2>Who this is for</h2>
 <p>This is for operators who are:</p>
-<ul>
+<ul class="lg-list">
 <li>Actually running the operation—not just thinking about it</li>
 <li>Looking at P&amp;Ls that don't match the effort going in</li>
 <li>Ready to see the numbers behind the problem, not just talk in circles</li>
 <li>Willing to spend $350 to stop guessing and start fixing</li>
 </ul>
-<p style="margin-top: 2rem;">If you are exploring options, comparing consultants, or hoping for free advice, this is not the right fit. This is a paid diagnostic for operators who need clarity now.</p>
+<p>If you are exploring options, comparing consultants, or hoping for free advice, this is not the right fit. This is a paid diagnostic for operators who need clarity now.</p>
+</div>
 </div>
 </section>
 <!-- What to Bring -->
-<section class="section">
+<section class="lg-band">
+<div class="lg-wrap">
 <h2>What to bring</h2>
 <p>Have these ready on the call:</p>
-<ul>
+<ul class="lg-list">
 <li>Last 3 months of P&amp;L</li>
 <li>A labor summary (hours, payroll, OT if available)</li>
 <li>Basic sales mix or top sellers list from your POS (if available)</li>
 </ul>
 <p>If you are missing something, we will work with what you have and flag the gaps.</p>
+</div>
 </section>
 <!-- Why This Works -->
-<section class="section" style="background: #f8f9fa; padding: 5rem 1.5rem;">
-<div style="max-width: 800px; margin: 0 auto;">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
+<div>
 <h2>Why this works</h2>
 <!-- Professional Operations Image -->
-<div style="text-align: center; margin-bottom: 2.5rem;">
-<img alt="Professional restaurant operations management" src="images/restaurant-operations-management.webp" width="1200" height="800" loading="lazy" decoding="async" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);"/>
+<div>
 </div>
 <p>Most hospitality operations do not have one big problem. They have a few small leaks that compound.</p>
 <p>The Snapshot helps you:</p>
-<ul>
+<ul class="lg-list">
 <li>Stop chasing the wrong fix</li>
 <li>See the cost in dollars, not feelings</li>
 <li>Make one decision at a time, in the right order</li>
 </ul>
-<p style="margin-top: 2rem; font-size: 1.3rem; font-weight: 600; color: #1e3a5f;">You are buying clarity. Clarity drives profit.</p>
+<p>You are buying clarity. Clarity drives profit.</p>
+</div>
 </div>
 </section>
 <!-- FAQ Section -->
-<section class="faq">
-<div style="max-width: 800px; margin: 0 auto;">
-<h2 style="text-align: center; font-size: 2.5rem; color: #1e3a5f; margin-bottom: 3rem;">FAQ</h2>
-<div class="faq-item">
-<h3>How long is the session?</h3>
+<section class="lg-band">
+<div class="lg-wrap">
+<div class="lg-faq">
+<div>
+<h2>FAQ</h2>
+<details>
+<summary><h3>How long is the session?</h3></summary>
 <p>90 minutes.</p>
-</div>
-<div class="faq-item">
-<h3>Do I get a recording or a written plan?</h3>
+</details>
+<details>
+<summary><h3>Do I get a recording or a written plan?</h3></summary>
 <p>No recording or formal document — but you won't need one. We work through your numbers live and you leave with a clear prioritized fix list. I'll walk you through a simple checklist format during the session so you have everything captured before we hang up.</p>
-</div>
-<div class="faq-item">
-<h3>Will you tell me exactly what to do step-by-step?</h3>
+</details>
+<details>
+<summary><h3>Will you tell me exactly what to do step-by-step?</h3></summary>
 <p>You will leave with what to fix first and why. Implementation is a separate scope.</p>
-</div>
-<div class="faq-item">
-<h3>What if I do not have perfect reports?</h3>
+</details>
+<details>
+<summary><h3>What if I do not have perfect reports?</h3></summary>
 <p>Bring what you have. We will diagnose from available data and identify what is missing.</p>
-</div>
-<div class="faq-item">
-<h3>Can you help implement the fixes?</h3>
+</details>
+<details>
+<summary><h3>Can you help implement the fixes?</h3></summary>
 <p>Yes, if it makes sense. We can scope that after the Snapshot. If we move into an engagement, the $350 credits toward it.</p>
+</details>
+</div>
 </div>
 </div>
 </section>
 <!-- What Happens After Your Snapshot -->
-<section class="section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 5rem 1.5rem;">
-<div style="max-width: 800px; margin: 0 auto;">
-<h2 style="text-align: center; font-size: 2.5rem; color: #1e3a5f; margin-bottom: 2rem;">What Happens After Your Snapshot?</h2>
-<p style="font-size: 1.2rem; line-height: 1.7; margin-bottom: 2rem;">
+<section class="lg-band">
+<div class="lg-wrap">
+<div>
+<h2>What Happens After Your Snapshot?</h2>
+<p>
         The Profit Leak Snapshot gives you <strong>clarity</strong>—you'll know exactly what's leaking and what to fix first. But here's the reality: <strong>most operators already know their problems</strong>. The hard part isn't diagnosis. It's <strong>execution</strong>.
       </p>
-<p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
+<p>
         You'll leave the Snapshot with a prioritized action plan. Then you face a choice:
       </p>
-<div style="background: white; border-left: 4px solid #1e3a5f; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
-<ul style="list-style: disc inside; margin-left: 1rem; line-height: 1.8; font-size: 1.1rem;">
+<div>
+<ul>
 <li>Try to implement it yourself (which gets buried under daily fires)</li>
 <li>Hand it off to your team (who may lack the skills or capacity)</li>
 <li>Hire a full-time COO (expensive, risky, slow)</li>
 <li><strong>Or partner with a Fractional COO who helps you execute every week</strong></li>
 </ul>
 </div>
-<h3 style="color: #1e3a5f; font-size: 1.8rem; margin: 3rem 0 1.5rem;">The Fractional COO Solution</h3>
-<p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
+<h3>The Fractional COO Solution</h3>
+<p>
         If you want <strong>ongoing strategic partnership</strong> to execute on your Snapshot recommendations—weekly calls, direct access between sessions, KPI accountability, hands-on problem-solving—the <strong>Fractional COO service</strong> is the next step.
       </p>
-<div style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 2rem 0;">
-<p style="font-size: 1.2rem; font-weight: 600; color: #1e3a5f; margin-bottom: 1rem;">What you get:</p>
-<ul style="list-style: none; margin: 1.5rem 0;">
-<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-<span style="position: absolute; left: 0; color: #A85F28; font-weight: bold; font-size: 1.2rem;">✓</span>
-            Weekly 45-60 minute strategy calls
+<div>
+<p>What you get:</p>
+<ul>
+<li>
+Weekly 45-60 minute strategy calls
           </li>
-<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-<span style="position: absolute; left: 0; color: #A85F28; font-weight: bold; font-size: 1.2rem;">✓</span>
-            Direct Slack/email access between calls
+<li>
+Direct Slack/email access between calls
           </li>
-<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-<span style="position: absolute; left: 0; color: #A85F28; font-weight: bold; font-size: 1.2rem;">✓</span>
-            KPI tracking &amp; weekly reviews
+<li>
+KPI tracking &amp; weekly reviews
           </li>
-<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-<span style="position: absolute; left: 0; color: #A85F28; font-weight: bold; font-size: 1.2rem;">✓</span>
-            Hands-on project support &amp; accountability
+<li>
+Hands-on project support &amp; accountability
           </li>
-<li style="padding: 0.5rem 0 0.5rem 2rem; position: relative; line-height: 1.6;">
-<span style="position: absolute; left: 0; color: #A85F28; font-weight: bold; font-size: 1.2rem;">✓</span>
-            90-day strategic planning &amp; quarterly reviews
+<li>
+90-day strategic planning &amp; quarterly reviews
           </li>
 </ul>
-<p style="font-size: 1.3rem; font-weight: 700; color: #1e3a5f; margin: 2rem 0 1rem;">Investment: $2,000/month (3-month minimum)</p>
-<p style="font-size: 1.1rem; color: #2c3e50; margin-bottom: 2rem;">
-<strong>Bonus:</strong> If you start within 30 days of your Snapshot, your <span style="color: #A85F28; font-weight: 600;">$350 Snapshot fee gets credited toward your first month</span>—making your first month just $1,650.
+<p>Investment: $2,000/month (3-month minimum)</p>
+<p>
+<strong>Bonus:</strong> If you start within 30 days of your Snapshot, your <span>$350 Snapshot fee gets credited toward your first month</span>—making your first month just $1,650.
         </p>
-<div style="text-align: center; margin-top: 2rem;">
-<a href="advisory.html" style="background: #1e3a5f; color: white; padding: 1rem 2.5rem; border-radius: 8px; font-size: 1.2rem; font-weight: 700; text-decoration: none; display: inline-block; transition: all 0.3s ease;">Learn About Fractional COO →</a>
+<div>
+<a href="advisory.html">Learn About Fractional COO →</a>
 </div>
 </div>
-<p style="font-size: 1.05rem; line-height: 1.7; margin-top: 2rem; font-style: italic; color: #2c3e50;">
+<p>
 <strong>Bottom line:</strong> The Snapshot shows you the leaks. The Fractional COO partnership helps you plug them—with weekly accountability, strategic guidance, and hands-on execution support.
       </p>
 </div>
+</div>
 </section>
 <!-- Final CTA -->
-<section class="cta-section">
+<section class="lg-band lg-band--ink">
+<div class="lg-wrap">
 <h2>Ready to stop the bleeding?</h2>
 <div class="cta-buttons">
-<a class="btn-primary" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
-<a class="btn-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
+<a class="lg-cta" href="https://book.stripe.com/fZudR24Gz5yndAN76RcAo07" target="_blank" rel="noopener">Book Your Snapshot — $350 →</a>
+<a class="lg-cta-secondary" href="mailto:hello@trecoleman.com">Email a question</a>
+</div>
 </div>
 </section>
 <!-- Footer -->

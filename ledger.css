@@ -507,7 +507,10 @@ body.ledger p.lg-row__figure,
 
 /* --- Hero and credibility line --------------------------------------------- */
 
-.lg-hero { padding: clamp(3.5rem, 10vw, 8rem) var(--lg-gutter) clamp(2.5rem, 6vw, 4rem); }
+.lg-hero {
+  padding: clamp(3.5rem, 10vw, 8rem) var(--lg-gutter) clamp(2.5rem, 6vw, 4rem);
+  background: var(--paper);   /* style.css:556 styles bare `section`; without this it wins */
+}
 .lg-hero h1 { margin: 0 0 1.5rem; max-width: 22ch; }
 .lg-hero__sub { font-size: clamp(1.0625rem, 1.8vw, 1.25rem); color: var(--ink-soft); margin: 0 0 2rem; }
 .lg-hero__note { margin-top: 1.25rem; font-size: 0.875rem; color: var(--ink-soft); }
@@ -527,6 +530,7 @@ body.ledger p.lg-row__figure,
    and loses, which rendered the primary CTA ink-on-ink — invisible. The
    qualified selector is not decoration, it is the fix. */
 body.ledger a.lg-cta,
+body.ledger button.lg-cta,
 .lg-cta {
   display: inline-block;
   font-family: var(--lg-display);
@@ -540,8 +544,110 @@ body.ledger a.lg-cta,
   text-decoration: none;
   transition: background 150ms ease, color 150ms ease;
 }
-body.ledger a.lg-cta:hover { background: var(--paper); color: var(--ink); }
+body.ledger a.lg-cta:hover,
+body.ledger button.lg-cta:hover { background: var(--paper); color: var(--ink); }
+body.ledger button.lg-cta { cursor: pointer; width: auto; }
 .lg-cta:focus-visible { outline: 3px solid var(--loss); outline-offset: 3px; }
+
+
+/* The quieter second action beside a primary CTA: a rule, not a box, so it
+   cannot compete with the thing it sits next to. */
+body.ledger a.lg-cta-secondary {
+  display: inline-block;
+  font-family: var(--lg-body);
+  font-weight: 600;
+  color: var(--ink);
+  padding: 1.0625rem 0;
+  margin-left: 1.5rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+body.ledger a.lg-cta-secondary:hover { color: var(--loss); }
+body.ledger .lg-band--ink a.lg-cta-secondary { color: var(--paper); }
+body.ledger .lg-band--ink a.lg-cta-secondary:hover { color: var(--paper); text-decoration-thickness: 2px; }
+
+.cta-buttons { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.5rem; }
+@media screen and (max-width: 640px) {
+  .cta-buttons { display: block; }
+  body.ledger a.lg-cta-secondary { margin-left: 0; display: block; padding-top: 0.75rem; }
+}
+
+
+/* --- Modules, notes and forms ----------------------------------------------
+
+   The course modules and the advisory inclusions are the two places on this
+   site where containment genuinely helps: each is a discrete unit you scan
+   and compare. They get a rule and space, not a rounded shadowed card.
+   -------------------------------------------------------------------------- */
+
+.lg-module { padding: clamp(1.5rem, 3vw, 2.25rem) 0; border-bottom: 1px solid var(--rule); }
+.lg-module:last-child { border-bottom: none; }
+.lg-module h3 { margin: 0 0 0.75rem; }
+
+.lg-note {
+  border-left: 2px solid var(--rule-strong);
+  padding: 0.25rem 0 0.25rem 1.5rem;
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0;
+}
+.lg-note p:last-child { margin-bottom: 0; }
+
+.lg-cta-block {
+  border-top: 2px solid var(--rule-strong);
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* The contact form is the only form in this phase. Fields read as ledger
+   rows: a label, a rule beneath, nothing boxed. */
+/* style.css gives forms a white rounded card with a shadow. The brief rules
+   out exactly that, and it also made the form the only centred, boxed thing
+   on an otherwise left-aligned paper page. */
+body.ledger .lg-contact form {
+  margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+  max-width: 42rem;
+  background: transparent;
+  border: none;
+  border-top: 2px solid var(--rule-strong);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+.lg-contact label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 1.5rem 0 0.375rem;
+}
+body.ledger .lg-contact input,
+body.ledger .lg-contact select,
+body.ledger .lg-contact textarea {
+  width: 100%;
+  font-family: var(--lg-body);
+  font-size: 1rem;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.625rem 0;
+  box-shadow: none;
+}
+body.ledger .lg-contact textarea { border: 1px solid var(--rule); padding: 0.75rem; min-height: 8rem; }
+body.ledger .lg-contact input:focus,
+body.ledger .lg-contact select:focus,
+body.ledger .lg-contact textarea:focus {
+  outline: none;
+  border-color: var(--rule-strong);
+  border-bottom-width: 2px;
+}
+body.ledger .lg-contact input:focus-visible,
+body.ledger .lg-contact select:focus-visible,
+body.ledger .lg-contact textarea:focus-visible { outline: 2px solid var(--loss); outline-offset: 2px; }
+body.ledger .lg-contact button[type="submit"] { margin-top: 2rem; }
 
 
 /* --- Nav and footer: appearance only ---------------------------------------
@@ -581,6 +687,13 @@ body.ledger footer span,
 body.ledger footer div { color: var(--paper); }
 body.ledger footer a { color: var(--paper) !important; }
 body.ledger footer a:hover { color: var(--paper) !important; text-decoration-thickness: 2px; }
+
+
+/* style.css paints breadcrumbs with --light-text (#718096), which is 3.85:1
+   on paper. The separators are aria-hidden, but they are still visible text. */
+body.ledger .breadcrumbs,
+body.ledger .breadcrumbs span,
+body.ledger .breadcrumbs a { color: var(--ink-soft); }
 
 
 /* --- Motion ----------------------------------------------------------------
