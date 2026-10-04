@@ -5,9 +5,12 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="favicon.svg" rel="icon" type="image/svg+xml"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="ledger.css" />
 <link href="style.css" rel="stylesheet">
 <title>Free 90-Day Restaurant Profit Playbook | Tre Coleman</title>
     <meta name="description" content="A week-by-week plan for independent operators to find profit leaks and fix labor, menu pricing, and daily operations. Free, no fluff." />
@@ -27,83 +30,9 @@
     <meta name="twitter:title" content="Free 90-Day Restaurant Profit Playbook | Tre Coleman" />
     <meta name="twitter:description" content="A week-by-week plan for independent operators to find profit leaks and fix labor, menu pricing, and daily operations. Free, no fluff." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Georgia,serif;line-height:1.7;color:#2c3e50;background:#f9f9f9;padding:20px;padding-top:80px}
-
-/* Site Navigation */
-.site-header{background:#2c3e50;position:fixed;top:0;left:0;right:0;z-index:1100;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
-.nav-container{max-width:1200px;margin:0 auto;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
-.logo a{font-size:1.5rem;font-weight:700;color:white;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-#mainNav ul{display:flex;list-style:none;gap:2rem;align-items:center}
-#mainNav a{text-decoration:none;color:white;font-weight:600;transition:color 0.3s;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-#mainNav a:hover{color:#3498db}
-.nav-cta{background:#3498db!important;padding:0.5rem 1rem!important;border-radius:6px!important}
-.nav-dropdown{position:relative}
-.nav-dropdown>a::after{content:' ▾';font-size:0.8em}
-.dropdown-menu{position:absolute;top:100%;left:0;background:white;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,0.15);border-radius:8px;padding:0.5rem 0;opacity:0;visibility:hidden;transform:translateY(-10px);transition:all 0.3s ease;z-index:1000}
-.nav-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
-.dropdown-menu a{display:block;padding:0.75rem 1.25rem;color:#2c3e50!important}
-.dropdown-menu a:hover{background:#f8f9fa;color:#1e3a5f!important}
-.mobile-menu-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:0.5rem}
-.mobile-menu-toggle span{display:block;width:25px;height:3px;background:white}
-.mobile-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:1000}
-/* Mobile nav styles handled by style.css */
-.container{max-width:900px;margin:0 auto;background:white;padding:60px;box-shadow:0 2px 15px rgba(0,0,0,0.1)}
-h1{font-size:2.5em;color:#1a1a1a;margin-bottom:15px;line-height:1.2}
-.subtitle{font-size:1.15em;color:#666;margin-bottom:50px;font-style:italic}
-h2{font-size:2em;color:#2c3e50;margin:60px 0 25px;padding-bottom:10px;border-bottom:3px solid #3498db;page-break-before:always}
-h3{font-size:1.4em;color:#34495e;margin:35px 0 18px}
-h4{font-size:1.15em;color:#2c3e50;margin:25px 0 12px;font-weight:600}
-p{margin-bottom:18px}
-.box{padding:25px 30px;margin:28px 0;border-left:4px solid #3498db}
-.checklist{background:#f8f9fa}
-.case{background:#fff9e6;border-color:#f39c12}
-.tools{background:#e8f5e9;border-color:#27ae60}
-.cta{background:#3498db;color:white;padding:45px;text-align:center;border-radius:6px;border:none;margin:50px 0}
-.cta h3,.cta p{color:white}
-ul{margin:15px 0 15px 40px}
-li{margin-bottom:10px}
-.footer{margin-top:60px;padding-top:30px;border-top:2px solid#e0e0e0;text-align:center;color:#888}
-strong{color:#2c3e50}
-@media print{body{background:white;padding:0}.container{box-shadow:none;padding:40px}h2{page-break-before:always}}
-
-    /* mobile dropdown override (tools/fix_mobile_dropdowns.py) */
-    @media screen and (max-width: 1024px) {
-      .mobile-menu-toggle {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 44px;
-        min-height: 44px;
-      }
-      /* Off-screen is not hidden: without this the closed panel keeps taking
-         keyboard focus, and tabbing walks into links at x=468 in a 390px
-         viewport. */
-      nav, #mainNav {
-        visibility: hidden;
-        transition: right 0.3s ease, visibility 0s linear 0.3s;
-      }
-      nav.active, #mainNav.active {
-        visibility: visible;
-        transition: right 0.3s ease, visibility 0s;
-      }
-      .dropdown-menu {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        display: none;
-      }
-      .nav-dropdown.active .dropdown-menu {
-        display: block;
-      }
-    }
-</style>
 </link>  <script src="analytics.js"></script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
@@ -157,14 +86,14 @@ strong{color:#2c3e50}
 </div>
 </header>
 <!-- Lead Capture Overlay -->
-<div id="leadCaptureOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;">
-<div style="background:white;padding:40px;border-radius:8px;max-width:500px;width:90%;text-align:center;">
-<h2 style="color:#2c3e50;margin-bottom:20px;">Get Your Free 90-Day Profit Playbook | Tre Coleman</h2>
-<p style="color:#666;margin-bottom:30px;">Enter your information below to instantly access the complete playbook with AI integrations, SOPs, and profit frameworks.</p>
-<form id="leadCaptureForm" onsubmit="unlockPlaybook(event)" style="display:flex;flex-direction:column;gap:15px;">
-<input id="leadName" placeholder="Your Name" required="" style="padding:12px;border:2px solid #ddd;border-radius:4px;font-size:16px;" type="text"/>
-<input id="leadEmail" placeholder="Your Email" required="" style="padding:12px;border:2px solid #ddd;border-radius:4px;font-size:16px;" type="email"/>
-<button style="background:#3498db;color:white;padding:15px;border:none;border-radius:4px;font-size:18px;font-weight:bold;cursor:pointer;" type="submit">Access Playbook Now</button>
+<div id="leadCaptureOverlay">
+<div>
+<h2>Get Your Free 90-Day Profit Playbook | Tre Coleman</h2>
+<p>Enter your information below to instantly access the complete playbook with AI integrations, SOPs, and profit frameworks.</p>
+<form id="leadCaptureForm" onsubmit="unlockPlaybook(event)">
+<input id="leadName" placeholder="Your Name" required="" type="text"/>
+<input id="leadEmail" placeholder="Your Email" required="" type="email"/>
+<button type="submit">Access Playbook Now</button>
 </form>
 </div>
 </div>
@@ -420,12 +349,12 @@ async function unlockPlaybook(event) {
 <p>Either way, stop letting profit walk out the door. Your operation has money hiding in plain sight. Let's find it.</p>
 </div>
 <div class="footer">
-<img alt="From the Floor Up" src="images/from-the-floor-up-newsletter.webp" width="600" height="400" loading="lazy" decoding="async" style="max-width: 300px; width: 100%; height: auto; margin-bottom: 1.5rem;"/>
+<img alt="From the Floor Up" src="images/from-the-floor-up-newsletter.webp" width="600" height="400" loading="lazy" decoding="async"/>
 <p><strong>From the floor to the forecast — I build businesses that win.</strong></p>
 <p><strong>Tre Coleman</strong><br/>
 Hospitality Operations Consultant<br/>
 📧 hello@trecoleman.com | 📞 540.807.9045 | 🌐 trecoleman.com</p>
-<p style="margin-top:1rem;font-size:0.85rem;opacity:0.7;">Serving restaurant, catering, and food truck owners across the U.S. | Based in Virginia.</p>
+<p>Serving restaurant, catering, and food truck owners across the U.S. | Based in Virginia.</p>
 </div>
 </div>
 </main>

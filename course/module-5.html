@@ -7,52 +7,14 @@
   <title>Module 5: Cash Flow Management - The Catering Profit System</title>
   <meta name="description" content="Know your break-even, set protective payment terms, and track real profitability.">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2c3e50; background: #f8f9fa; }
-    .module-header { background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%); color: white; padding: 1.5rem 2rem; }
-    .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .back-btn { color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; opacity: 0.9; }
-    .back-btn:hover { opacity: 1; }
-    .logout-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
-    .module-hero { background: white; padding: 3rem 2rem; border-bottom: 1px solid #e9ecef; }
-    .module-hero-content { max-width: 800px; margin: 0 auto; }
-    .module-number { background: #A85F28; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
-    .module-hero h1 { color: #1F4788; font-size: 2.5rem; margin-bottom: 1rem; }
-    .module-hero p { font-size: 1.2rem; color: #666; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: 1fr 300px; gap: 2rem; }
-    .main-content { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-    .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
-    .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1F4788 0%, #2d5aa0 100%); color: white; text-align: center; padding: 2rem; }
-    .video-placeholder h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    .lesson-content { padding: 2rem; }
-    .lesson-content h2 { color: #1F4788; margin-bottom: 1rem; }
-    .lesson-content p { margin-bottom: 1rem; color: #444; }
-    .lesson-content ul { margin-left: 1.5rem; margin-bottom: 1rem; color: #444; }
-    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
-    .sidebar-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-    .sidebar-card h3 { color: #1F4788; font-size: 1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .lessons-list { list-style: none; }
-    .lessons-list li { padding: 0.75rem 0; border-bottom: 1px solid #e9ecef; }
-    .lessons-list li:last-child { border-bottom: none; }
-    .lessons-list a { color: #444; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-    .lessons-list a:hover { color: #1F4788; }
-    .download-list { list-style: none; }
-    .download-list li { padding: 0.5rem 0; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-    .download-list li span { flex: 1; color: #333; }
-    .dl-btn { background: #1F4788; color: white !important; text-decoration: none; font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 4px; white-space: nowrap; }
-    .view-btn { background: #f0f4fb; color: #1F4788 !important; border: 1px solid #c5d5ee; text-decoration: none; font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 4px; white-space: nowrap; }
-    .coming-soon-badge { background: #f8f9fa; color: #666; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-left: auto; }
-    .loading { display: flex; align-items: center; justify-content: center; min-height: 50vh; font-size: 1.2rem; color: #666; }
-    .nav-buttons { display: flex; justify-content: space-between; padding: 1.5rem 2rem; border-top: 1px solid #e9ecef; }
-    .nav-btn { padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; }
-    .nav-btn.prev { background: #f8f9fa; color: #1F4788; }
-    .nav-btn.next { background: #A85F28; color: white; }
-    @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .sidebar { order: -1; } }
-    @media (max-width: 768px) { .header-content { flex-direction: column; gap: 1rem; } .module-hero h1 { font-size: 2rem; } .container { padding: 1rem; } }
-  </style>
-</head>
-<body>
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="../fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="../fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="../ledger.css" />
+  </head>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
   <div id="loading" class="loading">Loading module...</div>

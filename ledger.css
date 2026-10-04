@@ -808,6 +808,339 @@ body.ledger article .cta-section h2,
 body.ledger article .cta-section h3 { margin-top: 0; }
 
 
+/* --- The course area -------------------------------------------------------
+
+   These pages carry no sitewide nav or footer and never linked style.css, so
+   ledger.css is the whole stylesheet here. Class names are styled rather than
+   renamed on purpose: `dl-btn` is asserted by check_site.py's course-gate
+   check and bound by course/downloads.js, and the auth pages wire
+   error-message / success-message from their own inline scripts. Renaming
+   would be a silent functional break for a cosmetic gain.
+   -------------------------------------------------------------------------- */
+
+body.ledger .module-header,
+body.ledger .dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.125rem var(--lg-gutter);
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+body.ledger .header-content { display: flex; justify-content: space-between; align-items: center; gap: 1rem; width: 100%; max-width: 1120px; margin: 0 auto; }
+body.ledger .back-btn,
+body.ledger .logout-btn {
+  font-family: var(--lg-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+body.ledger .back-btn:hover, body.ledger .logout-btn:hover { color: var(--loss); }
+
+body.ledger .module-hero,
+body.ledger .welcome-section {
+  background: var(--paper);
+  padding: clamp(2.5rem, 7vw, 5rem) var(--lg-gutter) clamp(1.5rem, 4vw, 2.5rem);
+  border-bottom: 2px solid var(--rule-strong);
+}
+body.ledger .module-hero-content { max-width: 1120px; margin: 0 auto; }
+body.ledger .module-number {
+  display: block;
+  font-family: var(--lg-display);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.75rem;
+  background: none;
+  padding: 0;
+}
+
+body.ledger .container { max-width: 1120px; margin: 0 auto; padding: clamp(2rem, 5vw, 3.5rem) var(--lg-gutter); }
+body.ledger .main-content,
+body.ledger .sidebar-card,
+body.ledger .module-card,
+body.ledger .lesson-content {
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+body.ledger .sidebar-card,
+body.ledger .module-card { border-top: 1px solid var(--rule); padding: 1.5rem 0; }
+body.ledger .module-card:first-child { border-top: 2px solid var(--rule-strong); }
+
+/* A placeholder is a placeholder: a ruled box, not a shaded panel. */
+body.ledger .video-container { margin-bottom: 2rem; }
+body.ledger .video-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 14rem;
+  background: var(--paper-sunk);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 2rem;
+}
+body.ledger .video-placeholder h2 { font-size: clamp(1.25rem, 2.5vw, 1.625rem); margin: 0 0 0.5rem; }
+body.ledger .video-placeholder p { color: var(--ink-soft); margin: 0; }
+
+body.ledger .coming-soon-badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.25rem 0.5rem;
+}
+
+body.ledger .download-list,
+body.ledger .module-deliverables { list-style: none; margin: 0; padding: 0; }
+body.ledger .download-list li,
+body.ledger .module-deliverables li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+body.ledger a.dl-btn,
+body.ledger a.view-btn,
+body.ledger button.dl-btn,
+body.ledger button.view-btn {
+  flex: none;
+  font-family: var(--lg-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0.5rem 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+body.ledger a.dl-btn:hover, body.ledger a.view-btn:hover,
+body.ledger button.dl-btn:hover, body.ledger button.view-btn:hover { background: var(--ink); color: var(--paper); }
+
+body.ledger .nav-buttons { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 2px solid var(--rule-strong); }
+body.ledger a.nav-btn {
+  font-family: var(--lg-display);
+  font-weight: 700;
+  font-stretch: 88%;
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0.5rem 0;
+  text-decoration: none;
+}
+body.ledger a.nav-btn:hover { color: var(--loss); }
+
+body.ledger .launch-notice,
+body.ledger .lg-note { border-left: 2px solid var(--rule-strong); background: none; border-radius: 0; padding: 0.25rem 0 0.25rem 1.5rem; }
+body.ledger .loading { padding: 3rem var(--lg-gutter); color: var(--ink-soft); }
+body.ledger .dashboard-footer { padding: 2rem var(--lg-gutter); border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 0.875rem; }
+body.ledger .week { font-weight: 700; color: var(--ink); }
+
+
+/* --- Auth pages ------------------------------------------------------------ */
+
+body.ledger .auth-container { min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: clamp(2rem, 6vw, 4rem) var(--lg-gutter); }
+body.ledger .auth-card {
+  width: 100%;
+  max-width: 26rem;
+  background: none;
+  border: none;
+  border-top: 2px solid var(--rule-strong);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 2rem 0 0;
+}
+body.ledger .auth-card h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); margin: 0 0 0.5rem; }
+body.ledger .auth-card .subtitle { color: var(--ink-soft); margin: 0 0 1.5rem; }
+body.ledger .auth-form { display: block; background: none; border: none; box-shadow: none; border-radius: 0; padding: 0; max-width: none; }
+body.ledger .auth-form label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 1.25rem 0 0.375rem;
+}
+body.ledger .auth-form input {
+  width: 100%;
+  font-family: var(--lg-body);
+  font-size: 1rem;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.625rem 0;
+  box-shadow: none;
+}
+body.ledger .auth-form input:focus { outline: none; border-bottom: 2px solid var(--rule-strong); }
+body.ledger .auth-form input:focus-visible { outline: 2px solid var(--loss); outline-offset: 2px; }
+body.ledger .auth-form button { width: 100%; margin-top: 1.75rem; }
+body.ledger .auth-links { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); font-size: 0.9375rem; }
+
+/* A failed login is the other sanctioned use of red: something went wrong. */
+body.ledger .error-message,
+body.ledger .success-message {
+  border-radius: 0;
+  border: none;
+  border-left: 2px solid var(--rule-strong);
+  background: none;
+  padding: 0.75rem 0 0.75rem 1rem;
+  margin: 1rem 0;
+  font-size: 0.9375rem;
+}
+body.ledger .error-message { border-left-color: var(--loss); color: var(--loss); }
+/* Both message divs ship empty and are filled by the page's own script. The
+   border and padding made an empty one render as a bare stub above the form. */
+body.ledger .error-message:empty,
+body.ledger .success-message:empty { display: none; }
+
+body.ledger .password-requirements { font-size: 0.8125rem; color: var(--ink-soft); margin-top: 0.5rem; }
+
+
+/* --- Post-purchase --------------------------------------------------------- */
+
+body.ledger .checkmark { display: none; }   /* the rule above the heading does this job */
+body.ledger .launch-date { border-left: 2px solid var(--rule-strong); background: none; border-radius: 0; padding: 0.25rem 0 0.25rem 1.5rem; margin: 1.5rem 0; }
+body.ledger .contact { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 0.9375rem; }
+body.ledger .home-link { font-weight: 600; }
+
+
+/* --- Directory, quizzes and the remaining utility pages --------------------
+
+   virginia-neighbors.html builds its listing cards in JavaScript, so these
+   class names come from template strings as well as markup; they are styled,
+   never renamed. The audit quizzes do the same with their question steps.
+   -------------------------------------------------------------------------- */
+
+body.ledger .hdr-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; max-width: 1120px; margin: 0 auto; }
+body.ledger .hero { background: var(--paper); padding: clamp(2.5rem, 7vw, 5rem) var(--lg-gutter); }
+body.ledger .hero-eyebrow {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.75rem;
+}
+body.ledger .hero-sub { color: var(--ink-soft); font-size: clamp(1rem, 1.8vw, 1.1875rem); }
+body.ledger .section { padding: clamp(2rem, 5vw, 3.5rem) var(--lg-gutter); }
+
+body.ledger .listing-card,
+body.ledger .quiz-card,
+body.ledger .question-card,
+body.ledger .result-card {
+  background: none; border: none; border-top: 1px solid var(--rule);
+  border-radius: 0; box-shadow: none; padding: 1.5rem 0;
+}
+body.ledger .listing-meta-item { color: var(--ink-soft); font-size: 0.875rem; }
+body.ledger .meta-icon { color: var(--ink-soft); }
+
+body.ledger .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0 1.5rem; }
+body.ledger .form-group { margin-bottom: 1.25rem; }
+body.ledger .form-label {
+  display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.375rem;
+}
+body.ledger .form-input,
+body.ledger .hero-search input {
+  width: 100%; font-family: var(--lg-body); font-size: 1rem; color: var(--ink);
+  background: transparent; border: none; border-bottom: 1px solid var(--rule);
+  border-radius: 0; padding: 0.625rem 0; box-shadow: none;
+}
+body.ledger .form-input:focus,
+body.ledger .hero-search input:focus { outline: none; border-bottom: 2px solid var(--rule-strong); }
+body.ledger textarea.form-input { border: 1px solid var(--rule); padding: 0.75rem; }
+
+/* The overlay's display toggle is BEHAVIOUR, not presentation: the page's
+   script adds .open to show it. Removing the page's <style> block took the
+   `display: none` default with it and left the submit-listing modal
+   permanently open over the page. Caught by chasing an accessibility score
+   that merely dipped to 0.96 and still passed its threshold. */
+body.ledger .modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 25, 23, 0.55);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+body.ledger .modal-overlay.open { display: flex; }
+body.ledger .modal {
+  background: var(--paper);
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  box-shadow: none;
+  max-width: 36rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+}
+body.ledger .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--rule-strong); }
+body.ledger .modal-title { font-family: var(--lg-display); font-weight: 800; font-stretch: 85%; font-size: 1.375rem; margin: 0; }
+body.ledger button.modal-close { background: none; border: none; color: var(--ink-soft); font-size: 1.5rem; line-height: 1; padding: 0.25rem; cursor: pointer; }
+body.ledger button.modal-close:hover { color: var(--loss); }
+body.ledger .modal-content { background: var(--paper); border-radius: 0; box-shadow: none; border: 1px solid var(--rule-strong); }
+body.ledger .social-link { color: var(--ink); }
+
+
+/* --- Restored display defaults ---------------------------------------------
+
+   These are behaviour, not presentation. Each page's own script reveals the
+   element by adding .show; the hidden default lived in the <style> block the
+   conversion removed, so without these the quiz results render as empty
+   panels before the quiz is taken and the directory's success message is in
+   the DOM flow from load. Found by auditing every removed block for a
+   `display: none` paired with a state class, after the modal taught me that
+   stripping a stylesheet can delete logic.
+   -------------------------------------------------------------------------- */
+
+body.ledger .results { display: none; }
+body.ledger .results.show { display: block; }
+body.ledger .success-msg { display: none; text-align: center; padding: 1.25rem; }
+body.ledger .success-msg.show { display: block; }
+
+/* The audit's pre-results email capture. Its gradient is gone with the rest. */
+body.ledger .email-section {
+  background: var(--paper-sunk);
+  border: none;
+  border-top: 2px solid var(--rule-strong);
+  border-radius: 0;
+  box-shadow: none;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  margin-top: 2rem;
+}
+body.ledger .email-section h2,
+body.ledger .email-section h3,
+body.ledger .email-section p { color: var(--ink); }
+
+
 /* --- Nav and footer: appearance only ---------------------------------------
 
    style.css:256-271 sets .nav-cta with 17 !important declarations, so these
