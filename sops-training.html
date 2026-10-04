@@ -23,183 +23,14 @@
     <meta name="twitter:title" content="Restaurant SOPs &amp; Staff Training Systems | Tre Coleman" />
     <meta name="twitter:description" content="Role scorecards, opening and closing checklists, and 30-60-90 onboarding plans that end tribal knowledge and shorten new-hire ramp time." />
     <meta name="twitter:image" content="https://trecoleman.com/images/og-card.jpg" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
 <link href="style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="ledger.css" />
 
-    <style>
-      .service-hero {
-        overflow: hidden;
-        position: relative;
-        background: url('images/hero-restaurant-operations.webp') center/cover no-repeat;
-        color: white;
-        padding: 4rem 0 3rem;
-        margin-bottom: 3rem;
-      }
-      .service-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(30, 58, 95, 0.92);
-        z-index: 0;
-      }
-      .service-hero .container {
-        position: relative;
-        z-index: 1;
-      }
-      .service-hero h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        line-height: 1.2;
-        color: #ffffff;
-        font-weight: 800;
-        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
-      }
-      .service-hero .subtitle {
-        font-size: 1.25rem;
-        color: #ffffff;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-        max-width: 700px;
-        margin: 0 auto;
-      }
-      .section-divider {
-        margin: 4rem 0;
-        border: none;
-        border-top: 2px solid var(--bg-cream);
-      }
-      .benefits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin: 2rem 0;
-      }
-      .benefit-card {
-        background: white;
-        border: 2px solid var(--bg-cream);
-        border-radius: 12px;
-        padding: 1.75rem;
-        transition: all 0.3s ease;
-      }
-      .benefit-card:hover {
-        border-color: var(--primary-navy);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        transform: translateY(-4px);
-      }
-      .benefit-card h3 {
-        color: var(--primary-navy);
-        margin-bottom: 0.75rem;
-        font-size: 1.3rem;
-      }
-      .process-steps {
-        counter-reset: step-counter;
-        margin: 2rem 0;
-      }
-      .process-step {
-        counter-increment: step-counter;
-        position: relative;
-        padding-left: 4rem;
-        margin-bottom: 2.5rem;
-      }
-      .process-step::before {
-        content: counter(step-counter);
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 50px;
-        height: 50px;
-        background: var(--primary-navy);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-      }
-      .process-step h3 {
-        margin-bottom: 0.5rem;
-        color: var(--primary-navy);
-      }
-      .outcomes-list {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-left: 4px solid var(--accent-gold);
-        padding: 2rem;
-        border-radius: 8px;
-        margin: 2rem 0;
-      }
-      .outcomes-list ul {
-        list-style: none;
-        margin: 1rem 0;
-      }
-      .outcomes-list li {
-        padding: 0.75rem 0;
-        padding-left: 2rem;
-        position: relative;
-      }
-      .outcomes-list li::before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        color: var(--accent-gold);
-        font-weight: bold;
-        font-size: 1.3rem;
-      }
-      .cta-section {
-        position: relative;
-        z-index: 1;
-        background: linear-gradient(135deg, var(--primary-navy) 0%, #2d5aa0 100%);
-        color: white;
-        padding: 3rem 2rem;
-        border-radius: 12px;
-        text-align: center;
-        margin: 3rem 0;
-      }
-      .cta-section h2 {
-        color: white;
-        margin-bottom: 1rem;
-      }
-      .cta-section p {
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-        opacity: 0.95;
-      }
-      .cta-section .button {
-        background: white;
-        color: var(--primary-navy);
-        padding: 1rem 2.5rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-      .cta-section .button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      }
-      @media (max-width: 768px) {
-        .service-hero h1 {
-          font-size: 2rem;
-        }
-        .service-hero .subtitle {
-          font-size: 1.1rem;
-        }
-        .benefits-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-      /* Main content section background and text */
-      section {
-        position: relative;
-        z-index: 1;
-        color: #2c3e50;
-      }
-      section h2, section h3, section p {
-        color: #2c3e50;
-      }
-    </style>
   <script src="analytics.js"></script>
 <script type="application/ld+json">
 {
@@ -269,15 +100,15 @@
 }
 </script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <!-- Header -->
 <header>
-<div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="lg-wrap">
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
 <span></span>
@@ -325,15 +156,15 @@
 <main id="main-content">
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">›</span> <a href="services.html">Services</a> <span aria-hidden="true">›</span> <span aria-current="page">SOPs & Training Systems</span></nav>
 <!-- Hero Section -->
-<div class="service-hero">
-<div class="container text-center">
+<div class="lg-hero">
+<div class="lg-wrap">
 <h1>SOPs &amp; Training Systems</h1>
-<p class="subtitle">Eliminate tribal knowledge and get new hires productive 50% faster. Build training systems with role scorecards, checklists, micro-training, and 30-60-90 plans that actually stick.</p>
+<p class="lg-hero__sub">Eliminate tribal knowledge and get new hires productive 50% faster. Build training systems with role scorecards, checklists, micro-training, and 30-60-90 plans that actually stick.</p>
 </div>
 </div>
 <!-- Main Content -->
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <!-- Problem/Solution -->
 <h2 class="mb-2">The Problem You're Facing</h2>
 <p class="mb-2">
@@ -348,47 +179,47 @@
         </p>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <!-- Benefits -->
 <h2 class="mb-2">What Professional SOPs &amp; Training Deliver</h2>
-<div class="benefits-grid">
-<div class="benefit-card">
+<div class="lg-stack">
+<div class="lg-stack__item">
 <h3>Faster Onboarding</h3>
 <p>
               New hires follow clear checklists and micro-training videos in a program built to cut ramp time—typical target: productive
               in 2-3 weeks instead of 4-6, with less manager hand-holding.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Consistent Execution</h3>
 <p>
               Every team member follows the same proven process—opening, closing, service standards,
               quality checks. No more "that's not how I was trained."
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Knowledge Transfer</h3>
 <p>
               Capture your best employees' expertise in simple, actionable SOPs. When they leave or
               get promoted, their knowledge stays with you.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Manager Leverage</h3>
 <p>
               Managers stop repeating the same training. They can point to a video or checklist instead
               of explaining from scratch every time.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Performance Clarity</h3>
 <p>
               Role scorecards define exactly what "good" looks like for each position. Performance
               conversations become objective, not subjective.
             </p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Scalable Standards</h3>
 <p>
               Built to scale across locations. Train new stores faster, maintain brand consistency,
@@ -398,47 +229,47 @@
 </div>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <!-- How It Works -->
 <h2 class="mb-2">How We Build Your Training Systems</h2>
-<div class="process-steps">
-<div class="process-step">
+<div class="lg-steps">
+<div class="lg-steps__item">
 <h3>Role &amp; Task Analysis</h3>
 <p>
               We shadow your team for 3-5 days, documenting every critical task, decision point, and quality
               standard. We identify your star performers and capture what makes them successful.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>SOP Documentation</h3>
 <p>
               We create clear, step-by-step SOPs for every key process—opening/closing, prep work, service
               standards, cleaning, quality checks. Simple checklists, not 50-page manuals nobody reads.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Micro-Training Videos</h3>
 <p>
               We film 2-5 minute training videos for critical tasks using your actual team and equipment.
               New hires can watch, practice, and reference these any time.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Role Scorecards</h3>
 <p>
               We build role scorecards that define success metrics for each position—line cook, server,
               shift lead, etc. Clear expectations = objective performance reviews.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>30-60-90 Day Plans</h3>
 <p>
               We create progressive training plans that gradually increase responsibility. New hires know
               exactly what they should master each month, and managers can track their progress.
             </p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Rollout &amp; Training</h3>
 <p>
               We train your managers on how to use the new systems, implement them with your team, and
@@ -448,12 +279,12 @@
 </div>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <!-- Outcomes -->
 <h2 class="mb-2">Real Outcomes You Can Expect</h2>
 <div class="outcomes-list">
-<h3 style="margin-bottom: 1rem;">After implementing professional SOPs and training systems, clients typically see:</h3>
+<h3>After implementing professional SOPs and training systems, clients typically see:</h3>
 <ul>
 <li><strong>Faster onboarding</strong>—programs built to cut ramp time, with a typical target of productive in 2-3 weeks instead of 4-6</li>
 <li><strong>40% reduction</strong> in manager time spent on repetitive training</li>
@@ -463,7 +294,7 @@
 <li><strong>Knowledge preservation</strong>—star employee expertise captured permanently</li>
 <li><strong>Faster multi-unit expansion</strong>—replicate training systems to new locations</li>
 </ul>
-<p style="margin-top: 1.5rem; font-style: italic;">
+<p>
 <strong>ROI target:</strong> 4-6x return within the first 90 days through reduced training time, measured against engagement cost,
             lower early turnover, and improved labor efficiency—not counting improved consistency and
             customer satisfaction.
@@ -471,11 +302,11 @@
 </div>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <!-- What's Included -->
 <h2 class="mb-2">What's Included in Your Training System</h2>
-<ul class="mb-2" style="list-style: disc inside; margin-left: 1.5rem; line-height: 1.8;">
+<ul class="mb-2">
 <li><strong>Opening &amp; Closing Checklists</strong> for every station and shift</li>
 <li><strong>Role Scorecards</strong> defining success metrics for each position</li>
 <li><strong>Step-by-Step SOPs</strong> for critical processes (15-25 procedures)</li>
@@ -488,14 +319,14 @@
 </ul>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <!-- Who It's For -->
 <h2 class="mb-2">Who This Is For</h2>
 <p class="mb-2">
 <strong>This service is perfect for:</strong>
 </p>
-<ul class="mb-2" style="list-style: disc inside; margin-left: 1.5rem; line-height: 1.8;">
+<ul class="mb-2">
 <li><strong>Multi-unit operators</strong> struggling with inconsistent execution across locations</li>
 <li><strong>Growing brands</strong> that need repeatable training systems to scale</li>
 <li><strong>High-turnover operations</strong> tired of constant re-training</li>
@@ -508,8 +339,8 @@
         </p>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <h2 class="mb-2">Common Questions</h2>
 <h3>We already have a training manual nobody reads. How is this different?</h3>
 <p class="mb-2">Most manuals fail because they were written to exist rather than to be used mid-shift. The work here is checklists and one-page role scorecards a person can follow on a Friday night, not a binder. If the frontline will not use it during a rush, it is not finished.</p>
@@ -522,17 +353,17 @@
 </div>
 </section>
 <section>
-<div class="container">
+<div class="lg-wrap">
 <!-- CTA Section -->
-<div class="cta-section">
+<div class="lg-cta-block">
 <h2>Ready to Eliminate Tribal Knowledge?</h2>
 <p>
             Book a 30-minute Training System Assessment. We'll review your current onboarding process,
             identify your biggest training gaps, and show you exactly how we'd document your operations.
           </p>
 <a class="button" href="profit-leak-snapshot.html" rel="noopener" target="_blank">Schedule Your Training Assessment →</a>
-<p style="font-size: 0.95rem; margin-top: 1.5rem; opacity: 0.9;">
-            Or email <a href="mailto:hello@trecoleman.com" style="color: white; text-decoration: underline;">hello@trecoleman.com</a>
+<p>
+            Or email <a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a>
             to request a sample SOP and role scorecard template.
           </p>
 </div>
@@ -541,7 +372,7 @@
 <!-- Footer -->
 </main>
 <footer>
-<div class="container">
+<div class="lg-wrap">
 <div class="footer-grid">
 <div class="footer-section">
 <h2>Tre Coleman Consulting LLC</h2>

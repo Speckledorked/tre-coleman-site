@@ -1026,7 +1026,11 @@ def build(shell, art):
 {schema}"""
 
     prefix = shell[:shell.index("<title>")]
-    middle = shell[shell.index('<link rel="preconnect"'):
+    # Was '<link rel="preconnect"'. The redesign self-hosts its fonts, so the
+    # preconnect pair the slice keyed on no longer exists and str.index would
+    # raise, crashing CI. The font preload is the new first link in the shell's
+    # head after the per-page meta that this generator emits itself.
+    middle = shell[shell.index('<link rel="preload" as="font"'):
                    shell.index('<main id="main-content">')]
     # Strip the shell's own canonical and JSON-LD, or the new article inherits
     # the source article's identity.

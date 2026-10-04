@@ -103,183 +103,14 @@
   ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
 <link href="style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="ledger.css" />
 
-    <style>
-      .service-hero {
-        overflow: hidden;
-        position: relative;
-        background: url('images/hero-restaurant-operations.webp') center/cover no-repeat;
-        color: white;
-        padding: 4rem 0 3rem;
-        margin-bottom: 3rem;
-      }
-      .service-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(30, 58, 95, 0.92);
-        z-index: 0;
-      }
-      .service-hero .container {
-        position: relative;
-        z-index: 1;
-      }
-      .service-hero h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        line-height: 1.2;
-        color: #ffffff;
-        font-weight: 800;
-        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
-      }
-      .service-hero .subtitle {
-        font-size: 1.25rem;
-        color: #ffffff;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-        max-width: 700px;
-        margin: 0 auto;
-      }
-      .section-divider {
-        margin: 4rem 0;
-        border: none;
-        border-top: 2px solid var(--bg-cream);
-      }
-      .benefits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-        margin: 2rem 0;
-      }
-      .benefit-card {
-        background: white;
-        border: 2px solid var(--bg-cream);
-        border-radius: 12px;
-        padding: 1.75rem;
-        transition: all 0.3s ease;
-      }
-      .benefit-card:hover {
-        border-color: var(--primary-navy);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        transform: translateY(-4px);
-      }
-      .benefit-card h3 {
-        color: var(--primary-navy);
-        margin-bottom: 0.75rem;
-        font-size: 1.3rem;
-      }
-      .process-steps {
-        counter-reset: step-counter;
-        margin: 2rem 0;
-      }
-      .process-step {
-        counter-increment: step-counter;
-        position: relative;
-        padding-left: 4rem;
-        margin-bottom: 2.5rem;
-      }
-      .process-step::before {
-        content: counter(step-counter);
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 50px;
-        height: 50px;
-        background: var(--primary-navy);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-      }
-      .process-step h3 {
-        margin-bottom: 0.5rem;
-        color: var(--primary-navy);
-      }
-      .outcomes-list {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-left: 4px solid var(--accent-gold);
-        padding: 2rem;
-        border-radius: 8px;
-        margin: 2rem 0;
-      }
-      .outcomes-list ul {
-        list-style: none;
-        margin: 1rem 0;
-      }
-      .outcomes-list li {
-        padding: 0.75rem 0;
-        padding-left: 2rem;
-        position: relative;
-      }
-      .outcomes-list li::before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        color: var(--accent-gold);
-        font-weight: bold;
-        font-size: 1.3rem;
-      }
-      .cta-section {
-        position: relative;
-        z-index: 1;
-        background: linear-gradient(135deg, var(--primary-navy) 0%, #2d5aa0 100%);
-        color: white;
-        padding: 3rem 2rem;
-        border-radius: 12px;
-        text-align: center;
-        margin: 3rem 0;
-      }
-      .cta-section h2 {
-        color: white;
-        margin-bottom: 1rem;
-      }
-      .cta-section p {
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-        opacity: 0.95;
-      }
-      .cta-section .button {
-        background: white;
-        color: var(--primary-navy);
-        padding: 1rem 2.5rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-      .cta-section .button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      }
-      @media (max-width: 768px) {
-        .service-hero h1 {
-          font-size: 2rem;
-        }
-        .service-hero .subtitle {
-          font-size: 1.1rem;
-        }
-        .benefits-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-      /* Main content section background and text */
-      section {
-        position: relative;
-        z-index: 1;
-        color: #2c3e50;
-      }
-      section h2, section h3, section p {
-        color: #2c3e50;
-      }
-    </style>
   <script src="analytics.js"></script>
 <script type="application/ld+json">
 {
@@ -308,15 +139,15 @@
 }
 </script>
 </head>
-<body>
+<body class="ledger">
 <a class="skip-link" href="#main-content">Skip to content</a>
 
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <!-- Header -->
 <header>
-<div class="container">
-<div class="logo"><a href="index.html" style="color: white; text-decoration: none;">Tre Coleman</a></div>
+<div class="lg-wrap">
+<div class="logo"><a href="index.html">Tre Coleman</a></div>
 <button aria-label="Toggle navigation menu" class="mobile-menu-toggle" id="mobileMenuToggle">
 <span></span>
 <span></span>
@@ -363,75 +194,75 @@
 </header>
 <main id="main-content">
 <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">›</span> <a href="services.html">Services</a> <span aria-hidden="true">›</span> <span aria-current="page">Virginia</span></nav>
-<div class="service-hero">
-<div class="container text-center">
+<div class="lg-hero">
+<div class="lg-wrap">
 <h1>Restaurant Consulting in Virginia</h1>
-<p class="subtitle">Based in Louisa. On-site across Central Virginia, and working remotely with operators anywhere in the country.</p>
+<p class="lg-hero__sub">Based in Louisa. On-site across Central Virginia, and working remotely with operators anywhere in the country.</p>
 </div>
 </div>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <h2 class="mb-2">The Problem You're Facing</h2>
 <p class="mb-2">Most restaurant consulting is sold as either a fly-in engagement or a purely remote one. Neither is quite right. The numbers work — P&amp;L review, item mix, labor modelling, menu margin — is genuinely better done remotely, with time to think. But some problems only show up on the floor during a real service.</p>
 <p class="mb-2">This practice is based in <strong>Louisa, Virginia</strong>. Virginia operators get both: the analysis done remotely, and on-site time where being in the room is what actually answers the question.</p>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <h2 class="mb-2">What This Covers</h2>
-<div class="benefits-grid">
-<div class="benefit-card">
+<div class="lg-stack">
+<div class="lg-stack__item">
 <h3>Charlottesville</h3>
 <p>Roughly 30 minutes from home base. Straightforward for service observations and on-site working sessions.</p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Richmond</h3>
 <p>About an hour out. Regular on-site work is practical, including multi-day project time.</p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Fredericksburg</h3>
 <p>Around an hour. On-site sessions and service observations are workable within a normal day.</p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Harrisonburg &amp; the Valley</h3>
 <p>Reachable for scheduled on-site work, usually grouped into fuller days to make the trip worthwhile.</p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Louisa &amp; Lake Anna</h3>
 <p>Home ground. Short-notice on-site time is genuinely possible here in a way it is not elsewhere.</p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3>Everywhere else</h3>
 <p>Remote, which is how most engagements run anyway — Zoom, shared docs, and recorded walkthroughs of your numbers.</p>
 </div>
 </div>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <h2 class="mb-2">How It Works</h2>
-<div class="process-steps">
-<div class="process-step">
+<div class="lg-steps">
+<div class="lg-steps__item">
 <h3>Start with the numbers</h3>
 <p>Four weeks of P&amp;Ls, labor reports, and item-level sales data. This part is remote for everyone, Virginia or not, because it is better done with time than in a room.</p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Add a service observation</h3>
 <p>For Virginia operators, being on site through a real service or event. Flow, handoffs, station layout, and the gap between how a shift is supposed to run and how it does.</p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Build the fixes</h3>
 <p>Whatever the diagnosis calls for — labor model, menu work, written procedures, local marketing calendar. Built remotely, reviewed together.</p>
 </div>
-<div class="process-step">
+<div class="lg-steps__item">
 <h3>Stay in it</h3>
 <p>Implementation is where most consulting quietly fails. Ongoing advisory keeps a weekly cadence on it; on-site check-ins are available for Virginia clients.</p>
 </div>
 </div>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <h2 class="mb-2">What You Get</h2>
 <div class="outcomes-list">
 <p>Who this practice works with across Virginia:</p>
@@ -444,8 +275,8 @@
 </div>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <h2 class="mb-2">Who This Is For</h2>
 <ul class="mb-2">
 <li>You are a Virginia operator who wants someone who can actually come stand in your operation</li>
@@ -455,8 +286,8 @@
 </ul>
 </div>
 </section>
-<section class="section-bg-cream">
-<div class="container">
+<section class="lg-band lg-band--sunk">
+<div class="lg-wrap">
 <h2 class="mb-2">Common Questions</h2>
 <h3>Do you only work with Virginia operators?</h3>
 <p class="mb-2">No. The practice is based in Louisa, Virginia and works with operators across the country. Virginia clients can add in-person time; everyone else works remotely, which is how the majority of engagements run regardless of location.</p>
@@ -466,28 +297,28 @@
 <p class="mb-2">Central Virginia is straightforward. Beyond that it depends on the scope of the project — worth raising on the first call so travel is priced into the proposal rather than added later.</p>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
+<section class="lg-band">
+<div class="lg-wrap">
 <h2 class="mb-2">Related</h2>
-<div class="benefits-grid">
-<div class="benefit-card">
+<div class="lg-stack">
+<div class="lg-stack__item">
 <h3><a href="services.html">All Services</a></h3>
 <p>Menu engineering, SOPs and training, local marketing, AI workflows, and advisory.</p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3><a href="virginia-neighbors.html">Virginia Neighbors Directory</a></h3>
 <p>A directory of Virginia restaurants, food trucks, caterers, and local businesses.</p>
 </div>
-<div class="benefit-card">
+<div class="lg-stack__item">
 <h3><a href="lsm.html">Local Store Marketing</a></h3>
 <p>Filling slow shifts through the neighbourhood rather than paid ads.</p>
 </div>
 </div>
 </div>
 </section>
-<section class="section-bg-white">
-<div class="container">
-<div class="cta-section">
+<section class="lg-band">
+<div class="lg-wrap">
+<div class="lg-cta-block">
 <h2>Operating in Virginia? Start with a Snapshot.</h2>
 <p>A 90-minute diagnostic on your P&amp;L, labor, and item mix. You leave with your top three profit leaks and a prioritised fix list. In person where it makes sense, remote where it does not.</p>
 <a class="button" href="profit-leak-snapshot.html">Book Your $350 Profit Leak Snapshot</a>
@@ -496,7 +327,7 @@
 </section>
 </main>
 <footer>
-<div class="container">
+<div class="lg-wrap">
 <div class="footer-grid">
 <div class="footer-section">
 <h2>Tre Coleman Consulting LLC</h2>
