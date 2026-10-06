@@ -1054,6 +1054,46 @@ def check_netlify_toml():
                                 f"Netlify will not treat it as a wildcard")
 
 
+def check_component_css():
+    """A component's own CSS must be reachable from every page that uses it.
+
+    Two bugs shipped together and neither was visible to any existing check,
+    because every one of them reads a page in isolation and no page was
+    malformed. Both were found by a human looking at the live site.
+
+    virginia-neighbors.html carried the full #mainNav but stopped linking
+    style.css during the redesign conversion. ledger.css only recolours the
+    nav; the layout (flex, list-style, dropdown positioning) is in style.css,
+    so the nav rendered as a bulleted list with every dropdown expanded.
+
+    .skip-link's off-screen parking is likewise style.css-only, so the
+    thirteen pages that do not link style.css each rendered a permanently
+    visible "Skip to content" above the masthead -- including every course
+    page and the post-purchase thank-you page.
+
+    So: if a page uses the component, the stylesheet that lays it out has to
+    be on that page. ledger.css now carries .skip-link itself, which is why
+    that half is satisfied by either sheet.
+    """
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        head = head_of(s)
+        links_style = re.search(r'<link[^>]+href="[^"]*style\.css"', head)
+        links_ledger = re.search(r'<link[^>]+href="[^"]*ledger\.css"', head)
+
+        if 'id="mainNav"' in s and not links_style:
+            err(path, 'uses #mainNav but does not link style.css '
+                      '(ledger.css only recolours the nav; the layout is in style.css)')
+
+        if "skip-link" in s and not (links_style or links_ledger):
+            # A page with no shared stylesheet may park the link inline instead,
+            # the way contact.html's honeypot does.
+            inline = re.search(r'class="skip-link"[^>]*style="[^"]*position:\s*absolute', s)
+            if not inline:
+                err(path, 'has a .skip-link but neither links style.css/ledger.css nor '
+                          'positions it inline, so it renders as visible text')
+
+
 CHECKS = [
     ("netlify-toml", check_netlify_toml, "netlify.toml parses and its redirects are sane"),
     ("secrets", check_secrets, "live credentials in tracked files"),
@@ -1061,6 +1101,7 @@ CHECKS = [
     ("json-ld", check_json_ld, "schema parses and describes its own page"),
     ("metadata", check_metadata, "title/description/canonical/h1 sanity"),
     ("structure", check_structure, "tag balance and lang attribute"),
+    ("component-css", check_component_css, "pages link the stylesheet that lays out the components they use"),
     ("links", check_links, "internal links resolve"),
     ("images", check_images, "images exist and carry width/height/alt"),
     ("sitemap", check_sitemap, "every indexable page listed, no noindex ones"),

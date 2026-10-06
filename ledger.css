@@ -147,7 +147,18 @@ body.ledger .lg-stack__item p { color: var(--ink-soft); }
    only visible on focus. body.ledger a was repainting its text --ink over
    that navy at 1.94:1 — a keyboard-only regression no visual check would
    have surfaced, since the element sits at left: -9999px until focused. */
-body.ledger a.skip-link { color: var(--white); }
+/* style.css:1250 parks the skip link off-screen, but the course pages,
+   thank-you.html and the directory do not link style.css, so without this it
+   renders as a visible "Skip to content" line above the masthead. Positioning
+   belongs with the component, not with whichever stylesheet happens to load. */
+body.ledger a.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1200;
+  color: var(--white);
+}
+body.ledger a.skip-link:focus { left: 0; }
 body.ledger a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 
 /* Images must never be wider than their column. The pages that carried this
@@ -883,6 +894,13 @@ body.ledger .module-card:first-child { border-top: 2px solid var(--rule-strong);
 body.ledger .video-container { margin-bottom: 2rem; }
 body.ledger .welcome-video { margin: 1.5rem 0; }
 body.ledger .welcome-video h3 { margin: 0 0 1rem; }
+body.ledger .lesson-video { margin-bottom: 2.25rem; }
+body.ledger .lesson-video > h2 {
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
 body.ledger .video-embed {
   position: relative;
   padding-bottom: 56.25%;
@@ -910,6 +928,7 @@ body.ledger .video-placeholder {
   padding: 2rem;
 }
 body.ledger .video-placeholder h2 { font-size: clamp(1.25rem, 2.5vw, 1.625rem); margin: 0 0 0.5rem; }
+body.ledger .video-placeholder h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); margin: 0 0 0.5rem; }
 body.ledger .video-placeholder p { color: var(--ink-soft); margin: 0; }
 
 body.ledger .coming-soon-badge {
