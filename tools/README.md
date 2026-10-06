@@ -13,9 +13,31 @@ block is how it stays at one.
 
 ## CI runs the generators and fails on any diff
 
-`.github/workflows/check-site.yml` runs six of them and fails if the tree
-changes. **That is the contract: if a generator and the committed file
-disagree, one of them is wrong.**
+`.github/workflows/check-site.yml` runs eleven of them, in this order, and
+fails if the tree changes. **That is the contract: if a generator and the
+committed file disagree, one of them is wrong.**
+
+```
+build_articles        standardise_footer       wire_nav_aria
+add_related_reading   fix_contrast             ensure_dropdown_handler
+fix_article_seams     sync_social_descriptions fix_nav_close_selector
+standardise_nav       fix_mobile_nav_css
+```
+
+**Those eleven are the whole contract. Everything else in `tools/` is a
+one-shot migration, and running `tools/*.py` as a batch is destructive.** Two
+ways it bites:
+
+- **Order.** `build_articles.py` strips the Related reading blocks and
+  `add_related_reading.py` puts them back. CI runs them in that order. A shell
+  glob runs them alphabetically, which is the reverse, so the blocks stay
+  deleted on six blog posts.
+- **Obsolete migrations.** `fix_font_loading.py` predates the self-hosted
+  fonts. It skips a page that already links Google Fonts — but the redesign
+  removed that link, so the page no longer matches the skip and the script
+  re-injects the trio. One batch run put `fonts.googleapis.com` back on 40
+  pages. It now also skips any page preloading a local woff2, but the general
+  lesson stands: run the eleven, by name, in the order above.
 
 It exists because the same bug happened four times in one day, and every
 instance shipped:
