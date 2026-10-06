@@ -193,7 +193,7 @@ exports.handler = async (event) => {
               <p style="margin: 30px 0;">
                 <a href="${SITE}/login.html" style="background: #F4A460; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Access Your Course</a>
               </p>
-              <p><strong>Course launches soon.</strong> You'll receive another email when the content is live!</p>
+              <p>Your materials are ready now. Remaining lesson videos are being added as they're finished.</p>
               <p style="margin-top: 30px; color: #666;">Let's fix those profit leaks!</p>
               <p style="color: #666;">— Tre Coleman</p>
             </div>
@@ -253,7 +253,7 @@ exports.handler = async (event) => {
                 <a href="${SITE}/login.html" style="background: #F4A460; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Log In Now</a>
               </p>
 
-              <p><strong>Course launches soon.</strong> You'll receive another email when the content is live!</p>
+              <p>Your materials are ready now. Remaining lesson videos are being added as they're finished.</p>
 
               <p style="margin-top: 30px; color: #666;">Let's fix those profit leaks!</p>
               <p style="color: #666;">— Tre Coleman</p>
