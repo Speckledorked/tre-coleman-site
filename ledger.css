@@ -883,6 +883,13 @@ body.ledger .module-card:first-child { border-top: 2px solid var(--rule-strong);
 body.ledger .video-container { margin-bottom: 2rem; }
 body.ledger .welcome-video { margin: 1.5rem 0; }
 body.ledger .welcome-video h3 { margin: 0 0 1rem; }
+body.ledger .lesson-video { margin-bottom: 2.25rem; }
+body.ledger .lesson-video > h2 {
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
 body.ledger .video-embed {
   position: relative;
   padding-bottom: 56.25%;
@@ -910,6 +917,7 @@ body.ledger .video-placeholder {
   padding: 2rem;
 }
 body.ledger .video-placeholder h2 { font-size: clamp(1.25rem, 2.5vw, 1.625rem); margin: 0 0 0.5rem; }
+body.ledger .video-placeholder h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); margin: 0 0 0.5rem; }
 body.ledger .video-placeholder p { color: var(--ink-soft); margin: 0; }
 
 body.ledger .coming-soon-badge {

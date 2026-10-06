@@ -32,6 +32,15 @@ HEAD_CLOSE = re.compile(r'</head>', re.I)
 HAS_FONTS = re.compile(r'fonts\.googleapis\.com/css2', re.I)
 USES_FONTS = re.compile(r'Montserrat|Open Sans|style\.css', re.I)
 
+# The redesign self-hosts Archivo and Inter and deliberately carries no Google
+# Fonts request. A page that preloads a local woff2 has already been migrated
+# past this script, so re-injecting FONT_BLOCK there would undo the redesign.
+# HAS_FONTS alone does not catch that case: the migrated page has no
+# fonts.googleapis.com to match on, and USES_FONTS matches every page that
+# links style.css. Without this guard, running tools/*.py as a batch silently
+# restores the Google Fonts trio on ~40 pages.
+SELF_HOSTED = re.compile(r'<link[^>]+rel="preload"[^>]+as="font"', re.I)
+
 
 def indent_of(line):
     return line[: len(line) - len(line.lstrip())]
@@ -45,6 +54,8 @@ def process(path):
         return "skip (no fonts used)"
     if HAS_FONTS.search(html):
         return "skip (already declared)"
+    if SELF_HOSTED.search(html):
+        return "skip (self-hosted fonts)"
     if not HEAD_CLOSE.search(html):
         return "skip (no <head>)"
 
