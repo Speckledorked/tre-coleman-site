@@ -1266,4 +1266,12 @@ body.ledger .breadcrumbs a { color: var(--ink-soft); }
   .lg-stack__item { grid-template-columns: 1fr; }
   .lg-stack__meta { text-align: left; }
   .lg-statement, .lg-quote blockquote { max-width: none; }
+  body.ledger .download-list li,
+  body.ledger .module-deliverables li { flex-wrap: wrap; }
+  body.ledger .download-list li > span,
+  body.ledger .module-deliverables li > span { flex: 1 1 100%; }
+  body.ledger a.dl-btn,
+  body.ledger a.view-btn,
+  body.ledger button.dl-btn,
+  body.ledger button.view-btn { flex: 1 1 100%; text-align: center; }
 }
