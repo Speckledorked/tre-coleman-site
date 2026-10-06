@@ -25,6 +25,7 @@
     <!-- Self-hosted variable fonts: same origin, two files, no third-party
          chain in the critical path. crossorigin is required on a font
          preload even same-origin. -->
+    <link rel="stylesheet" href="style.css" />
     <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
     <link rel="stylesheet" href="ledger.css" />
@@ -312,6 +313,21 @@
     'Auto & Transportation', 'Technology', 'Other'
   ];
 
+  // Listing fields are owner-submitted and rendered with innerHTML. Airtable's
+  // {Approved}=1 filter means a payload has to get past a human first, but that
+  // human is skimming a business listing in a grid view, not reviewing code --
+  // and this origin holds the course session token in localStorage, so an
+  // injected script here could read it. Escape on the way into the markup.
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // href="" is its own sink: javascript: and data: URLs execute on click even
+  // when the surrounding attribute is escaped.
+  const safeUrl = v => {
+    const raw = String(v ?? '').trim();
+    return /^(https?:|mailto:|tel:)/i.test(raw) ? esc(raw) : '';
+  };
+
   const CATEGORIES = [
     { label: "Restaurant & Food", icon: "🍽️" },
     { label: "Food Truck", icon: "🚚" },
@@ -393,7 +409,7 @@
     const current = sel.value;
     const pool = activeCategory ? allListings.filter(l => l.category === activeCategory) : allListings;
     const locs = [...new Set(pool.map(l => l.location).filter(Boolean))].sort();
-    sel.innerHTML = '<option value="">All Locations</option>' + locs.map(l => `<option value="${l}" ${l===current?'selected':''}>${l}</option>`).join('');
+    sel.innerHTML = '<option value="">All Locations</option>' + locs.map(l => `<option value="${esc(l)}" ${l===current?'selected':''}>${esc(l)}</option>`).join('');
   }
 
   function clearFilters() {
@@ -426,21 +442,22 @@
 
     grid.innerHTML = pool.map(l => {
       const icon = catMap[l.category] || '';
+      const fb = safeUrl(l.facebook), ig = safeUrl(l.instagram), site = safeUrl(l.website);
       const socials = [
-        l.facebook ? `<a class="social-link" href="${l.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>` : '',
-        l.instagram ? `<a class="social-link" href="${l.instagram}" target="_blank" rel="noopener noreferrer">Instagram</a>` : '',
+        fb ? `<a class="social-link" href="${fb}" target="_blank" rel="noopener noreferrer">Facebook</a>` : '',
+        ig ? `<a class="social-link" href="${ig}" target="_blank" rel="noopener noreferrer">Instagram</a>` : '',
       ].filter(Boolean).join('');
       return `<div class="listing-card ${l.featured?'featured':''}">
         ${l.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
-        <span class="listing-badge">${icon} ${l.category}</span>
-        <div class="listing-name">${l.name}</div>
-        <div class="listing-biz">${l.business}</div>
-        <div class="listing-desc">${l.description}</div>
+        <span class="listing-badge">${icon} ${esc(l.category)}</span>
+        <div class="listing-name">${esc(l.name)}</div>
+        <div class="listing-biz">${esc(l.business)}</div>
+        <div class="listing-desc">${esc(l.description)}</div>
         <div class="listing-meta">
-          ${l.location?`<div class="listing-meta-item"><span class="meta-icon">📍</span>${l.location}</div>`:''}
-          ${l.phone?`<div class="listing-meta-item"><span class="meta-icon">📞</span><a href="tel:${l.phone}" onclick="trackClick('${l.id}','Phone Clicks')">${l.phone}</a></div>`:''}
-          ${l.email?`<div class="listing-meta-item"><span class="meta-icon">✉️</span><a href="mailto:${l.email}" onclick="trackClick('${l.id}','Email Clicks')">${l.email}</a></div>`:''}
-          ${l.website?`<div class="listing-meta-item"><span class="meta-icon">🌐</span><a href="${l.website}" target="_blank" onclick="trackClick('${l.id}','Website Clicks')" rel="noopener noreferrer">${l.website.replace('https://','')}</a></div>`:''}
+          ${l.location?`<div class="listing-meta-item"><span class="meta-icon">📍</span>${esc(l.location)}</div>`:''}
+          ${l.phone?`<div class="listing-meta-item"><span class="meta-icon">📞</span><a href="tel:${esc(l.phone)}" onclick="trackClick('${esc(l.id)}','Phone Clicks')">${esc(l.phone)}</a></div>`:''}
+          ${l.email?`<div class="listing-meta-item"><span class="meta-icon">✉️</span><a href="mailto:${esc(l.email)}" onclick="trackClick('${esc(l.id)}','Email Clicks')">${esc(l.email)}</a></div>`:''}
+          ${site?`<div class="listing-meta-item"><span class="meta-icon">🌐</span><a href="${site}" target="_blank" onclick="trackClick('${esc(l.id)}','Website Clicks')" rel="noopener noreferrer">${esc(String(l.website).replace(/^https?:\/\//,''))}</a></div>`:''}
         </div>
         ${socials?`<div class="listing-socials">${socials}</div>`:''}
       </div>`;

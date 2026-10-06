@@ -147,7 +147,18 @@ body.ledger .lg-stack__item p { color: var(--ink-soft); }
    only visible on focus. body.ledger a was repainting its text --ink over
    that navy at 1.94:1 — a keyboard-only regression no visual check would
    have surfaced, since the element sits at left: -9999px until focused. */
-body.ledger a.skip-link { color: var(--white); }
+/* style.css:1250 parks the skip link off-screen, but the course pages,
+   thank-you.html and the directory do not link style.css, so without this it
+   renders as a visible "Skip to content" line above the masthead. Positioning
+   belongs with the component, not with whichever stylesheet happens to load. */
+body.ledger a.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1200;
+  color: var(--white);
+}
+body.ledger a.skip-link:focus { left: 0; }
 body.ledger a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 
 /* Images must never be wider than their column. The pages that carried this
