@@ -29,6 +29,7 @@ import re
 NAV = """<nav id="mainNav">
           <ul>
             <li><a href="{p}profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
+            <li><a href="{p}catering-profit.html">Course</a></li>
             <li class="nav-dropdown">
               <a href="{p}services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
@@ -42,13 +43,7 @@ NAV = """<nav id="mainNav">
               </div>
             </li>
             <li><a href="{p}advisory.html">Advisory</a></li>
-            <li class="nav-dropdown">
-              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Insights</a>
-              <div class="dropdown-menu">
-                <a href="{p}blog.html">Blog &amp; Playbooks</a>
-                <a href="{p}catering-profit.html">Catering Profit System</a>
-              </div>
-            </li>
+            <li><a href="{p}blog.html">Insights</a></li>
             <li class="nav-dropdown">
               <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Resources</a>
               <div class="dropdown-menu">

@@ -227,6 +227,7 @@
         <nav id="mainNav">
           <ul>
             <li><a href="profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
+            <li><a href="catering-profit.html">Course</a></li>
             <li class="nav-dropdown">
               <a href="services.html" aria-haspopup="true" aria-expanded="false">Services</a>
               <div class="dropdown-menu">
@@ -240,13 +241,7 @@
               </div>
             </li>
             <li><a href="advisory.html">Advisory</a></li>
-            <li class="nav-dropdown">
-              <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Insights</a>
-              <div class="dropdown-menu">
-                <a href="blog.html">Blog &amp; Playbooks</a>
-                <a href="catering-profit.html">Catering Profit System</a>
-              </div>
-            </li>
+            <li><a href="blog.html">Insights</a></li>
             <li class="nav-dropdown">
               <a href="#" onclick="return false;" role="button" aria-haspopup="true" aria-expanded="false">Resources</a>
               <div class="dropdown-menu">
@@ -281,6 +276,29 @@
     </section>
 
     <p class="lg-credit">10+ Years Multi-Unit Management &middot; $3M+ Revenue Responsibility &middot; Multi-Unit District Manager &middot; Potbelly · Hooters</p>
+
+    <section class="lg-band lg-band--ink" id="course">
+      <div class="lg-wrap">
+        <p class="lg-eyebrow"><span>The system</span></p>
+        <h2>The Catering Profit System</h2>
+        <p class="lg-statement">Scale Your Catering Business Without Killing Your Margins</p>
+        <div class="video-embed lg-video" data-video="LQn4X3pSqlM" data-title="Why Most Caterers Barely Make Money (And How to Fix It)">
+          <button type="button" class="lg-video__play" aria-label="Play video: Why Most Caterers Barely Make Money (And How to Fix It)">
+            <img src="images/catering-profit-system-teaser.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The Catering Profit System — 5 modules, 20 lessons, built by someone who's run the numbers in real kitchens" />
+            <span class="lg-video__cue">Watch the overview</span>
+          </button>
+        </div>
+        <p>A self-paced course on catering labor, pricing, food cost, logistics, and cash flow &mdash; the systems that turn catering revenue into real profit.</p>
+        <div class="lg-spec">
+          <div class="lg-spec__row"><span class="lg-spec__key">Price</span><span class="lg-spec__value">$67</span></div>
+          <div class="lg-spec__row"><span class="lg-spec__key">Course</span><span class="lg-spec__value">5 modules, 20 lessons</span></div>
+          <div class="lg-spec__row"><span class="lg-spec__key">Templates</span><span class="lg-spec__value">15 plug-and-play tools</span></div>
+          <div class="lg-spec__row"><span class="lg-spec__key">Access</span><span class="lg-spec__value">Lifetime, at your own pace</span></div>
+        </div>
+        <p><a href="https://buy.stripe.com/00wcMYc914ujdAN76RcAo08" class="lg-cta">Get the Course &mdash; $67</a></p>
+        <p><a href="catering-profit.html">See everything the course covers &rarr;</a></p>
+      </div>
+    </section>
 
     <section class="lg-band">
       <div class="lg-wrap">
@@ -428,7 +446,6 @@
           <a href="food-truck-audit.html">Food Truck Launch Audit</a>
           <a href="playbook.html">90-Day Profit Playbook</a>
           <a href="blog.html">Blog & Playbooks</a>
-          <a href="catering-profit.html">Catering Profit System</a>
           <a href="virginia-neighbors.html">Virginia Neighbors Directory</a>
           <a href="chat.html">AI Chat Assistant</a>
         </div>
@@ -505,7 +522,7 @@
               <li><a href="virginia-restaurant-consulting.html">Consulting in Virginia</a></li>
               <li><a href="about.html">About</a></li>
               <li><a href="blog.html">Blog</a></li>
-              <li><a href="catering-profit.html">Catering Course</a></li>
+              <li><a href="catering-profit.html">The Catering Profit System</a></li>
               <li><a href="virginia-neighbors.html">Virginia Neighbors</a></li>
               <li><a href="contact.html">Contact</a></li>
               <li><a href="login.html">Course Login</a></li>
@@ -532,6 +549,26 @@
 
     <!-- Mobile Menu Script -->
     <script>
+      // Click-to-play teaser: the iframe does not exist until someone asks
+      // for it. See the facade note in the markup above.
+      document.querySelectorAll('.lg-video').forEach(function (box) {
+        var btn = box.querySelector('.lg-video__play');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var id = box.getAttribute('data-video');
+          if (!id) return;
+          var frame = document.createElement('iframe');
+          frame.src = 'https://www.youtube-nocookie.com/embed/' +
+            encodeURIComponent(id) + '?autoplay=1&rel=0';
+          frame.title = box.getAttribute('data-title') || 'Video';
+          frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+          frame.setAttribute('allowfullscreen', '');
+          frame.setAttribute('loading', 'eager');
+          box.replaceChild(frame, btn);
+          if (typeof gtag === 'function') gtag('event', 'teaser_play', { video_id: id });
+        });
+      });
+
       // Sticky header scroll effect
       const header = document.querySelector('header');
       window.addEventListener('scroll', () => {
