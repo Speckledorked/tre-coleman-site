@@ -1085,6 +1085,15 @@ def check_component_css():
             err(path, 'uses #mainNav but does not link style.css '
                       '(ledger.css only recolours the nav; the layout is in style.css)')
 
+        # ledger.css is additive and overrides style.css at equal specificity,
+        # which only works if it loads second. Ten pages had it first after the
+        # conversion; the symptom was invisible under the light theme and only
+        # surfaced as 236 contrast failures once a dark theme existed.
+        if links_style and links_ledger:
+            if links_ledger.start() < links_style.start():
+                err(path, 'loads ledger.css before style.css; ledger.css is additive '
+                          'and must load second or style.css wins at equal specificity')
+
         if "skip-link" in s and not (links_style or links_ledger):
             # A page with no shared stylesheet may park the link inline instead,
             # the way contact.html's honeypot does.

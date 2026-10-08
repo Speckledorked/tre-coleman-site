@@ -102,6 +102,162 @@
 }
 
 
+/* --- Dark ------------------------------------------------------------------
+   The site previously had no dark theme at all, so a browser set to auto-dark
+   inverted it algorithmically and produced a muddy approximation nobody chose.
+   This is the same ledger, printed on dark stock: the metaphor is unchanged,
+   only the stock and the ink.
+
+   Every pairing measured against the new ground, same thresholds as light:
+     --ink 16.18:1 · --ink-soft 7.33:1 · --loss 5.14:1 (4.71:1 on sunk)
+   --rule is 2.58:1, deliberately matching the light theme's 2.67:1: it is a
+   separator between line items, not a control, and a hairline that outweighs
+   the type it divides is louder than a ledger should be.
+
+   The attribute selector lets a page force a theme later without a rewrite;
+   with no attribute set the system preference decides.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:        #14130F;
+    --paper-sunk:   #1E1C17;
+    --ink:          #F2EFE7;
+    --ink-soft:     #A8A298;
+    --rule:         #5C5747;
+    --rule-strong:  #F2EFE7;
+    --loss:         #E4584F;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:        #14130F;
+  --paper-sunk:   #1E1C17;
+  --ink:          #F2EFE7;
+  --ink-soft:     #A8A298;
+  --rule:         #5C5747;
+  --rule-strong:  #F2EFE7;
+  --loss:         #E4584F;
+}
+
+
+
+/* --- style.css's hardcoded whites -----------------------------------------
+   style.css paints eight things a literal `white` or `#f8f9fa`. Under the
+   light theme those sit within a point or two of --paper, so nobody noticed;
+   under the dark theme they stayed white while the ink above them went light,
+   and a measured sweep found 236 failures at 1.15:1 across thirteen pages.
+   The worst is structural rather than cosmetic: section:nth-child(even)
+   repaints every other section on every page.
+
+   These are the same tokens either way, so the override is not a dark-mode
+   patch -- it also removes the light theme's white-vs-paper mismatch.
+   -------------------------------------------------------------------------- */
+
+body.ledger section:nth-child(even) { background-color: var(--paper); }
+body.ledger .proof-strip,
+body.ledger .testimonials .pillar { background: var(--paper-sunk); }
+body.ledger .dropdown-menu a:hover { background: var(--paper-sunk); }
+body.ledger a.button.secondary,
+body.ledger .button.secondary,
+body.ledger .hero .cta-buttons a.secondary {
+  background-color: transparent;
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+}
+body.ledger .mobile-menu-toggle span { background-color: var(--ink); }
+/* style.css:757 paints every bare <label> with --dark-text (#2c2c2c). The quiz
+   pages use bare labels for their question text, so on dark stock thirteen
+   questions per page sat at 1.33:1. */
+body.ledger label { color: var(--ink); }
+
+/* The quiz pages wrap their content in .content-container, which carries no
+   padding of its own, so the questions ran flush to the viewport edge. This
+   predates the dark theme -- it was just as wrong in light. */
+body.ledger .content-container { padding-left: var(--lg-gutter); padding-right: var(--lg-gutter); }
+body.ledger .content-container .section { padding-left: 0; padding-right: 0; }
+body.ledger input[type="text"],
+body.ledger input[type="email"],
+body.ledger input[name="name"],
+body.ledger input[name="company"],
+body.ledger input[name="phone"],
+body.ledger input[name="location"],
+body.ledger select,
+body.ledger textarea {
+  background-color: transparent;
+  color: var(--ink);
+}
+
+/* --- Markers ---------------------------------------------------------------
+   Replaces the emoji the brief rules out, without reaching for an icon
+   library it also rules out. An operating statement does not draw pictures of
+   its line items: it uses an account code, a field label, and a status word.
+
+   .lg-code   a two-letter category code in a hairline box
+   .lg-field  a small-caps field label standing where a pictogram stood
+   .lg-flag   a status word; --loss only where something is actually wrong
+   -------------------------------------------------------------------------- */
+
+.lg-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5em;
+  padding: 0.2em 0.4em;
+  font-family: var(--lg-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.lg-field {
+  display: inline-block;
+  min-width: 4.5em;
+  font-family: var(--lg-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.lg-flag {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  font-family: var(--lg-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+}
+
+.lg-flag--loss { color: var(--loss); border-color: var(--loss); }
+
+/* A contact the visitor asks for, rather than one sitting in the markup for
+   anything that crawls the page. Styled as a quiet control, not a CTA. */
+body.ledger button.lg-reveal {
+  justify-self: start;
+  width: auto;
+  font-family: var(--lg-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.15em 0.6em;
+  cursor: pointer;
+}
+
+body.ledger button.lg-reveal:hover { border-color: var(--rule-strong); background: none; color: var(--ink); }
+
+
 /* --- Base ------------------------------------------------------------------
    Overrides style.css's generic element rules. style.css loads first, so
    plain element selectors at equal specificity win by source order.
@@ -1092,8 +1248,62 @@ body.ledger .result-card {
   background: none; border: none; border-top: 1px solid var(--rule);
   border-radius: 0; box-shadow: none; padding: 1.5rem 0;
 }
-body.ledger .listing-meta-item { color: var(--ink-soft); font-size: 0.875rem; }
-body.ledger .meta-icon { color: var(--ink-soft); }
+/* .listings-section and .filters-bar are this page's own wrappers and are not
+   .section, so they inherited no page gutter and the register ran flush to the
+   viewport edge. */
+body.ledger .listings-section,
+body.ledger .filters-bar { padding-left: var(--lg-gutter); padding-right: var(--lg-gutter); }
+body.ledger .filters-bar {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem 1rem;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--rule);
+}
+body.ledger .filter-label,
+body.ledger .results-count {
+  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft);
+}
+body.ledger .filter-clear { font-size: 0.8125rem; color: var(--ink-soft); cursor: pointer; text-decoration: underline; }
+
+body.ledger .listings-grid { display: block; }
+body.ledger .listing-card:last-child { border-bottom: 1px solid var(--rule); }
+
+body.ledger .listing-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-soft); margin-bottom: 0.625rem;
+}
+body.ledger .listing-name {
+  font-family: var(--lg-display); font-weight: 700; line-height: 1.15;
+  font-size: clamp(1.125rem, 1.8vw, 1.375rem); color: var(--ink);
+}
+body.ledger .listing-biz { font-size: 0.9375rem; color: var(--ink-soft); margin-bottom: 0.625rem; }
+body.ledger .listing-desc {
+  color: var(--ink); max-width: var(--lg-measure); margin-bottom: 1rem;
+}
+
+/* Label column, value column: the fields line up down the page the way a
+   statement's figures do, which is the whole point of the metaphor. */
+body.ledger .listing-meta { display: block; }
+body.ledger .listing-meta-item {
+  display: grid; grid-template-columns: 4.5rem 1fr; gap: 0 0.875rem;
+  align-items: baseline; color: var(--ink-soft); font-size: 0.875rem;
+  padding: 0.1875rem 0;
+}
+body.ledger .listing-socials { margin-top: 0.75rem; display: flex; gap: 1rem; }
+body.ledger .social-link { font-size: 0.8125rem; }
+
+/* The category chooser is a filter, not a set of tiles. */
+body.ledger .categories-grid {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;
+}
+body.ledger .cat-card {
+  display: inline-flex; align-items: baseline; gap: 0.5rem;
+  padding: 0.5rem 0.75rem; cursor: pointer;
+  background: none; border: 1px solid var(--rule); border-radius: 0;
+}
+body.ledger .cat-card:hover { border-color: var(--rule-strong); }
+body.ledger .cat-card.active { border-color: var(--rule-strong); background: var(--paper-sunk); }
+body.ledger .cat-label { font-size: 0.875rem; color: var(--ink); }
+body.ledger .cat-count { font-size: 0.75rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 
 body.ledger .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0 1.5rem; }
 body.ledger .form-group { margin-bottom: 1.25rem; }
