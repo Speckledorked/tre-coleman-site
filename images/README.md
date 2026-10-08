@@ -1,51 +1,67 @@
-# Images Directory
+# images/
 
-## Required Images
+## Art direction
 
-### 1. Your Headshot
-**Filename:** `tre-headshot.jpg`
-**Where used:** About page hero section
-**Specifications:**
-- Minimum resolution: 400x400px
-- Format: JPG or PNG
-- Square aspect ratio (will be displayed as circle)
-- Professional business attire
-- Clean, well-lit background
+**No stock photography.** The site's visual language is typographic: paper
+ground, ink text, hairline rules, and figures set large. Headlines, ledger
+rules and numbers carry the page. An earlier version of this file asked for
+Unsplash and Pexels searches for "restaurant kitchen" and "business meeting",
+which is the opposite of the current direction and produced the generic hero
+that was reused on eleven pages before the redesign removed it.
 
-Save your headshot from the photo you provided as `tre-headshot.jpg` in this directory.
+Also avoided, by the same brief: generic illustrations, cartoon graphics,
+decorative blobs, gradient backgrounds, glassmorphism, icon libraries, emoji
+as iconography, and giant hero graphics that carry no information.
 
-## Recommended Professional Stock Photos
+So before adding an image, the question is not "which stock photo" but
+"does a picture say something type cannot". Usually it does not. The course
+teaser's poster on the homepage is set as HTML text rather than a rendered
+slide for exactly this reason: it stays sharp at any density, weighs nothing,
+and follows the light and dark themes on its own.
 
-For a more polished look across the site, consider adding these professional stock images:
+What images are legitimately for here: a real photograph of a real person, a
+screenshot of a real artifact, and the social sharing card.
 
-### 2. Restaurant Operations (hero-restaurant.jpg)
-- **Where to use:** Home page hero background, Services page
-- **Suggested source:** Unsplash, Pexels (search: "restaurant kitchen", "chef cooking")
-- **Size:** 1920x1080px (hero images)
+## What is in use
 
-### 3. Team Collaboration (team-meeting.jpg)
-- **Where to use:** Advisory/Fractional Ops page
-- **Suggested source:** Unsplash (search: "business meeting", "restaurant team")
-- **Size:** 1200x800px
+| File | Used by |
+|---|---|
+| `og-card.jpg` | the `og:image` on every page |
+| `advisory-fractional-operations.webp` | `services.html` |
+| `ai-integration-restaurants.webp` | `services.html` |
+| `local-store-marketing.webp` | `services.html` |
+| `menu-engineering-analysis.webp` | `services.html` |
+| `restaurant-systems-before-after.webp` | `services.html` |
+| `sops-training-systems.webp` | `services.html` |
+| `from-the-floor-up-newsletter.webp` | `playbook.html` |
+| `tre-coleman-family.webp` | `about.html` |
 
-### 4. Food/Menu Images (menu-engineering.jpg)
-- **Where to use:** Menu Engineering service page
-- **Suggested source:** Unsplash (search: "restaurant menu", "food plating")
-- **Size:** 1200x800px
+## What is not in use
 
-### 5. Technology/AI (ai-automation.jpg)
-- **Where to use:** AI Integration service page  
-- **Suggested source:** Unsplash (search: "technology restaurant", "tablet restaurant")
-- **Size:** 1200x800px
+Both are still committed; neither is referenced by any page.
 
-## Free Stock Photo Sources
-- **Unsplash:** https://unsplash.com (free, high-quality)
-- **Pexels:** https://pexels.com (free, high-quality)
-- **Pixabay:** https://pixabay.com (free)
+- **`hero-restaurant-operations.webp`** — 70.5 KB, 1536×1024. The generic
+  restaurant interior that was the hero of eleven pages. The redesign removed
+  it everywhere. It is deployed on every build and downloaded by nobody.
+- **`tre-headshot.jpg`** — 9.9 KB, 200×200. Never referenced, and too small to
+  use at any modern size. A portrait means a new photograph, not an upscale of
+  this one. The only real photograph of Tre currently on the site is the family
+  shot on `about.html`.
 
-## Image Optimization Tips
-1. Compress images before uploading (use tinypng.com or similar)
-2. Use WebP format for better performance (with JPG fallback)
-3. Always include descriptive alt text for accessibility
-4. Keep file sizes under 500KB for web performanceEOF
-cat /home/user/tre-coleman-site/images/README.md
+Deleting either is a judgement call for the owner, not for whoever is next in
+this directory, which is why they are documented rather than removed.
+
+`tools/check_site.py`'s `unused-img` check only warns above 100 KB, so it says
+nothing about either of these. That threshold is deliberate — it exists to
+catch weight, not tidiness — but it does mean "no warning" is not the same as
+"nothing unused".
+
+## Requirements for anything added here
+
+- `width`, `height` and a descriptive `alt` on every `<img>`, or
+  `check_site.py`'s `images` check fails and Lighthouse errors on
+  `unsized-images`.
+- WebP, unless the format genuinely cannot be (`og-card.jpg` stays JPEG
+  because some social scrapers still handle WebP badly).
+- Under 400 KB per file, which is where `check_weight` errors.
+- Referenced from a page, or it ships to every visitor for nothing.

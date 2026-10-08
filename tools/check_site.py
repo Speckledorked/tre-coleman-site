@@ -518,7 +518,7 @@ def check_weight():
 
 def check_unused_images():
     referenced = set()
-    for path in html_files() + ["style.css"]:
+    for path in html_files() + ["style.css", "ledger.css"]:
         if not os.path.exists(path):
             continue
         s = open(path, encoding="utf-8", errors="replace").read()
