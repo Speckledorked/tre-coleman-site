@@ -676,6 +676,52 @@ MONTHS = {m: i for i, m in enumerate(
 PROMISE = r"launch\w*|goes live|going live|coming|release\w*|drops|opens"
 
 
+def check_prelaunch_language():
+    """Pre-launch wording must not outlive the thing it was waiting for.
+
+    check_launch_dates catches a *date* that has passed. It says nothing about
+    undated wording, which is what the sales page actually used -- "Course
+    launches soon", "before launch", "on launch day", and an Offer schema of
+    PreOrder. All five survived the course going fully live, so the page people
+    buy from was selling a finished product as a pre-order, and Google was
+    being told the same thing in structured data.
+
+    The anchor is the content itself: if a module page still has a
+    video-placeholder, the course is genuinely incomplete and pre-launch
+    wording is honest. Once every lesson has an embed, it is not.
+    """
+    modules = [f for f in sorted(glob.glob("course/module-*.html"))
+               if "template" not in f]
+    if not modules:
+        return
+    incomplete = any("video-placeholder" in
+                     open(m, encoding="utf-8", errors="replace").read()
+                     for m in modules)
+    if incomplete:
+        return  # still genuinely pre-launch; nothing to enforce
+
+    phrases = re.compile(
+        r"launches soon|releases soon|launch day|before launch|"
+        r"coming soon|pre-order|pre-ordering|schema\.org/PreOrder", re.I)
+    # Scoped to the course's own surface, not the whole site. Launch language
+    # is legitimate elsewhere: food-truck-audit.html discusses a CLIENT's truck
+    # launch ("Launch day support", "BEFORE LAUNCH"), which has nothing to do
+    # with whether this course has shipped. A sitewide grep flags five of those
+    # and teaches everyone to ignore the check.
+    files = (["catering-profit.html", "thank-you.html",
+              "netlify/functions/stripe-webhook.js"]
+             + [f for f in sorted(glob.glob("course/*.html"))
+                if "module-template" not in f])
+    for path in files:
+        if not os.path.exists(path):
+            continue
+        body = open(path, encoding="utf-8", errors="replace").read()
+        for m in phrases.finditer(body):
+            line = body.count("\n", 0, m.start()) + 1
+            err(path, f"line {line}: {m.group(0)!r} but every course lesson "
+                      f"has a video embed — the course is live")
+
+
 def check_launch_dates():
     """A launch date that has already passed must not still be advertised.
 
@@ -1126,6 +1172,7 @@ CHECKS = [
     ("ga4-ids", check_ga4_ids_agree, "the GA4 measurement id matches in both files"),
     ("md-private", check_markdown_blocked, "working .md documents are not served"),
     ("launch-date", check_launch_dates, "no advertised launch date has already passed"),
+    ("prelaunch", check_prelaunch_language, "pre-launch wording outliving the launch"),
     ("redirects", check_redirects, "netlify.toml redirect targets exist"),
     ("prices", check_prices, "no stale product prices"),
     ("html-a11y", check_ids_and_a11y, "duplicate ids, noopener, mixed content, labels"),
