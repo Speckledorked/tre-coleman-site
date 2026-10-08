@@ -188,6 +188,113 @@ body.ledger textarea {
   color: var(--ink);
 }
 
+
+/* --- Progress --------------------------------------------------------------
+   A count and a line, which is how a statement reports completion: the figure
+   carries the information and the rule is the ledger line being drawn. Not a
+   percentage inside a bar -- "3 / 4" tells a student what is left, "75%" does
+   not, and the denominator is the useful half.
+   -------------------------------------------------------------------------- */
+
+body.ledger .lg-progress { margin: 0 0 2rem; }
+
+body.ledger .lg-progress__figure {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+body.ledger .lg-progress__done {
+  font-family: var(--lg-display);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+body.ledger .lg-progress__of {
+  font-family: var(--lg-display);
+  font-weight: 600;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+body.ledger .lg-progress__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-left: 0.5rem;
+}
+
+body.ledger .lg-progress__track {
+  height: 2px;
+  background: var(--rule);
+}
+body.ledger .lg-progress__fill {
+  height: 2px;
+  background: var(--rule-strong);
+  /* style.css carries a prefers-reduced-motion block, but the course pages
+     are ledger-only and never link style.css, so it cannot cover this. The
+     block at the end of this file does. Measured, after a test showed the
+     transition still running at 240ms under reduce. */
+  transition: width 240ms ease-out;
+}
+
+/* The tick is a quiet control, not a call to action: finishing a lesson is
+   the student's own bookkeeping. body.ledger button (0,0,1,1) paints every
+   button ink-on-paper, so this has to be scoped past it. */
+body.ledger button.lg-tick {
+  display: inline-block;
+  width: auto;
+  margin-top: 0.875rem;
+  font-family: var(--lg-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+}
+body.ledger button.lg-tick:hover {
+  background: none;
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+body.ledger button.lg-tick.is-done {
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+body.ledger button.lg-tick.is-done::before {
+  content: "\2713";          /* U+2713 CHECK MARK, the brief's own mark */
+  margin-right: 0.4375em;
+  font-weight: 700;
+}
+body.ledger button.lg-tick[disabled] { opacity: 0.6; cursor: default; }
+
+/* A completed lesson in the module's own contents list. */
+body.ledger .lessons-list li.is-done > a { color: var(--ink-soft); }
+body.ledger .lessons-list li.is-done > a::after {
+  content: "\2713";
+  margin-left: 0.5em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+body.ledger .lg-module-count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.125rem;
+  margin-top: 0.375rem;
+}
+body.ledger .lg-module-count .lg-progress__done { font-size: 1.125rem; }
+body.ledger .lg-module-count .lg-progress__of { font-size: 0.9375rem; }
+body.ledger .lg-module-count .lg-progress__label { margin-left: 0.375rem; }
+
 /* --- Markers ---------------------------------------------------------------
    Replaces the emoji the brief rules out, without reaching for an icon
    library it also rules out. An operating statement does not draw pictures of
@@ -1470,6 +1577,7 @@ body.ledger .breadcrumbs a { color: var(--ink-soft); }
   .lg-index::before,
   .lg-faq::before { animation: none; transform: none; }
   .lg-cta { transition: none; }
+  body.ledger .lg-progress__fill { transition: none; }
 }
 
 
