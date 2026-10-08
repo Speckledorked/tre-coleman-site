@@ -38,22 +38,15 @@ screenshot of a real artifact, and the social sharing card.
 
 ## What is not in use
 
-Both are still committed; neither is referenced by any page.
+Nothing. Two files were carried unreferenced for a while and have now been
+deleted: `hero-restaurant-operations.webp` (70.5 KB, the generic restaurant
+interior that was the hero of eleven pages until the redesign removed it) and
+`tre-headshot.jpg` (200x200, which ~20 pages had pointed `og:image` at while
+declaring 1200x630). Both remain in git history if either is ever wanted back.
 
-- **`hero-restaurant-operations.webp`** — 70.5 KB, 1536×1024. The generic
-  restaurant interior that was the hero of eleven pages. The redesign removed
-  it everywhere. It is deployed on every build and downloaded by nobody.
-- **`tre-headshot.jpg`** — 9.9 KB, 200×200. Never referenced, and too small to
-  use at any modern size. A portrait means a new photograph, not an upscale of
-  this one. The only real photograph of Tre currently on the site is the family
-  shot on `about.html`.
-
-Deleting either is a judgement call for the owner, not for whoever is next in
-this directory, which is why they are documented rather than removed.
-
-`tools/check_site.py`'s `unused-img` check only warns above 100 KB, so it says
-nothing about either of these. That threshold is deliberate — it exists to
-catch weight, not tidiness — but it does mean "no warning" is not the same as
+`tools/check_site.py`'s `unused-img` check only warns above 100 KB, so it said
+nothing about either of them. That threshold is deliberate -- it exists to
+catch weight, not tidiness -- but it does mean "no warning" is not the same as
 "nothing unused".
 
 ## Requirements for anything added here
