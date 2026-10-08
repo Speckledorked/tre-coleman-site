@@ -282,6 +282,12 @@
         <p class="lg-eyebrow"><span>The system</span></p>
         <h2>The Catering Profit System</h2>
         <p class="lg-statement">Scale Your Catering Business Without Killing Your Margins</p>
+        <div class="video-embed lg-video" data-video="LQn4X3pSqlM" data-title="Why Most Caterers Barely Make Money (And How to Fix It)">
+          <button type="button" class="lg-video__play" aria-label="Play video: Why Most Caterers Barely Make Money (And How to Fix It)">
+            <img src="images/catering-profit-system-teaser.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The Catering Profit System — 5 modules, 20 lessons, built by someone who's run the numbers in real kitchens" />
+            <span class="lg-video__cue">Watch the overview</span>
+          </button>
+        </div>
         <p>A self-paced course on catering labor, pricing, food cost, logistics, and cash flow &mdash; the systems that turn catering revenue into real profit.</p>
         <div class="lg-spec">
           <div class="lg-spec__row"><span class="lg-spec__key">Price</span><span class="lg-spec__value">$67</span></div>
@@ -543,6 +549,26 @@
 
     <!-- Mobile Menu Script -->
     <script>
+      // Click-to-play teaser: the iframe does not exist until someone asks
+      // for it. See the facade note in the markup above.
+      document.querySelectorAll('.lg-video').forEach(function (box) {
+        var btn = box.querySelector('.lg-video__play');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var id = box.getAttribute('data-video');
+          if (!id) return;
+          var frame = document.createElement('iframe');
+          frame.src = 'https://www.youtube-nocookie.com/embed/' +
+            encodeURIComponent(id) + '?autoplay=1&rel=0';
+          frame.title = box.getAttribute('data-title') || 'Video';
+          frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+          frame.setAttribute('allowfullscreen', '');
+          frame.setAttribute('loading', 'eager');
+          box.replaceChild(frame, btn);
+          if (typeof gtag === 'function') gtag('event', 'teaser_play', { video_id: id });
+        });
+      });
+
       // Sticky header scroll effect
       const header = document.querySelector('header');
       window.addEventListener('scroll', () => {

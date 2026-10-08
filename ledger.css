@@ -1189,6 +1189,52 @@ body.ledger .video-embed iframe {
   width: 100%;
   height: 100%;
 }
+/* The teaser facade. The poster is a button, so it is keyboard reachable and
+   announces the video's title; the cue line keeps it from reading as a plain
+   image that happens to be clickable. No gradient play badge -- a ruled frame
+   and a labelled control is what the rest of the page does. */
+body.ledger .lg-video { margin: clamp(1.5rem, 4vw, 2.25rem) 0; }
+body.ledger button.lg-video__play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  overflow: hidden;
+}
+body.ledger button.lg-video__play:hover { background: none; }
+body.ledger .lg-video__play img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+body.ledger .lg-video__cue {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-family: var(--lg-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 0.5rem 0.875rem;
+}
+body.ledger .lg-video__play:hover .lg-video__cue,
+body.ledger .lg-video__play:focus-visible .lg-video__cue {
+  color: var(--paper);
+  background: var(--loss);
+}
+/* The band repaints its components; the frame has to come with it. */
+body.ledger .lg-band--ink .video-embed { border-color: var(--paper); }
+
 body.ledger .video-placeholder {
   display: flex;
   align-items: center;
