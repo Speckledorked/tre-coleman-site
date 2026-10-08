@@ -29,8 +29,8 @@
          preload even same-origin. -->
     <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
-    <link rel="stylesheet" href="ledger.css" />
 <link href="style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="ledger.css" />
   <script src="analytics.js"></script>
 </head>
 <body class="ledger">
@@ -91,7 +91,7 @@
 <main id="main-content">
 <div class="content-container">
 <div class="header">
-<h1><span aria-hidden="true">🚚</span> Food Truck Launch Readiness Audit</h1>
+<h1>Food Truck Launch Readiness Audit</h1>
 <p>Identify gaps in your launch plan and avoid costly mistakes. For aspiring operators planning to launch in the next 3-12 months.</p>
 </div>
 <section class="audit-intro">
@@ -161,7 +161,7 @@
 <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
 <div class="content">
 <div class="section active">
-<h3><span class="section-icon">1</span>Foundation (5 Questions)</h3>
+<h3>Foundation (5 Questions)</h3>
 <div class="question">
 <label>What stage are you at?</label>
 <select id="stage">
@@ -216,7 +216,7 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">2</span>Concept &amp; Menu (5 Questions)</h3>
+<h3>Concept &amp; Menu (5 Questions)</h3>
 <div class="question">
 <label>How developed is your concept?</label>
 <select id="conceptDev">
@@ -271,7 +271,7 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">3</span>Equipment &amp; Logistics (5 Questions)</h3>
+<h3>Equipment &amp; Logistics (5 Questions)</h3>
 <div class="question">
 <label>Do you have your truck/trailer?</label>
 <select id="truckStatus">
@@ -326,7 +326,7 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">4</span>Financial Planning (5 Questions)</h3>
+<h3>Financial Planning (5 Questions)</h3>
 <div class="question">
 <label>Have you created a startup budget?</label>
 <select id="startupBudget">
@@ -381,27 +381,27 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">💭</span>Final Question</h3>
+<h3>Final Question</h3>
 <div class="question">
 <label>What's your #1 biggest fear or concern about launching?</label>
 <textarea id="biggestFear" placeholder="Type your biggest concern here..." rows="3"></textarea>
 </div>
 </div>
-<button class="calculate-btn" onclick="calculateAudit()">📊 Calculate My Launch Readiness Score</button>
+<button class="calculate-btn" onclick="calculateAudit()">Calculate My Launch Readiness Score</button>
 <!-- EMAIL COLLECTION SECTION - SHOWN BEFORE RESULTS -->
 <div class="email-section" id="emailSection">
-<h3>🎯 Enter Your Email to See Results</h3>
+<h3>Enter Your Email to See Results</h3>
 <p><strong>Your audit is complete! You're one step away from your personalized results.</strong></p>
 <p>Enter your email below to receive your detailed readiness score and customized launch roadmap:</p>
 <div class="email-form">
 <input id="emailInput" placeholder="Enter your email address" required="" type="email"/>
-<button id="showResultsBtn" onclick="showResults()">🚀 Show My Results Now</button>
+<button id="showResultsBtn" onclick="showResults()">Show My Results Now</button>
 </div>
 <p>
-                    📧 We'll also send you additional food truck launch tips and follow-up recommendations
+ We'll also send you additional food truck launch tips and follow-up recommendations
                 </p>
 <p>
-                    🔒 Your email is secure and will only be used for food truck launch resources
+ Your email is secure and will only be used for food truck launch resources
                 </p>
 </div>
 <!-- RESULTS SECTION - ONLY SHOWN AFTER EMAIL SUBMISSION -->
@@ -470,19 +470,19 @@
             let scoreClass, scoreText, scoreCategory;
             if (percentage >= 81) {
                 scoreClass = 'score-excellent';
-                scoreText = 'Launch Ready ✅';
+ scoreText = 'Launch Ready ';
                 scoreCategory = 'launch-ready';
             } else if (percentage >= 62) {
                 scoreClass = 'score-good';
-                scoreText = 'On Track 🟡';
+ scoreText = 'On Track ';
                 scoreCategory = 'on-track';
             } else if (percentage >= 43) {
                 scoreClass = 'score-poor';
-                scoreText = 'High Risk ⚠️';
+ scoreText = 'High Risk ';
                 scoreCategory = 'high-risk';
             } else {
                 scoreClass = 'score-critical';
-                scoreText = 'Not Ready 🚨';
+ scoreText = 'Not Ready ';
                 scoreCategory = 'not-ready';
             }
 
@@ -517,7 +517,7 @@
             setTimeout(() => {
                 generateAndShowResults();
                 btn.disabled = false;
-                btn.textContent = '🚀 Show My Results Now';
+ btn.textContent = ' Show My Results Now';
 
                 // Submit form data in background without page navigation
                 submitAuditDataAsync();
@@ -548,19 +548,19 @@
                 ${recommendations}
 
                 <div class="cta">
-                    <h3>🚀 Ready to Launch Your Food Truck Successfully?</h3>
+ <h3>Ready to Launch Your Food Truck Successfully?</h3>
                     <p>Get a personalized 30-minute consultation to discuss your specific launch plan and next steps.</p>
                     <div>
                         <a href="profit-leak-snapshot.html" target="_blank" rel="noopener"
                           >
-                           📅 Schedule Free Consultation
+ Schedule Free Consultation
                         </a>
                     </div>
                     <!-- Contact info -->
                     <p>
-                        📧 <a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a>
+ <a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a>
                         &nbsp;|&nbsp;
-                        📱 <a href="tel:5408079045">540-807-9045</a>
+ <a href="tel:5408079045">540-807-9045</a>
                     </p>
                 </div>
             `;
@@ -717,10 +717,10 @@ END OF AUDIT REPORT
 
             if (userSuccess) {
                 successMsg.style.cssText = 'background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #c3e6cb;';
-                successMsg.innerHTML = '✅ <strong>Results emailed!</strong> Check your inbox at <strong>' + email + '</strong> for your detailed audit report. (Check spam if not received in 5 minutes)';
+ successMsg.innerHTML = ' <strong>Results emailed!</strong>Check your inbox at <strong>' + email + '</strong>for your detailed audit report. (Check spam if not received in 5 minutes)';
             } else {
                 successMsg.style.cssText = 'background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #ffeaa7;';
-                successMsg.innerHTML = '⚠️ <strong>Email may require verification.</strong> Your results are displayed below. Please screenshot or print them, and check your email shortly. Contact hello@trecoleman.com if you don\'t receive them.';
+ successMsg.innerHTML = ' <strong>Email may require verification.</strong>Your results are displayed below. Please screenshot or print them, and check your email shortly. Contact hello@trecoleman.com if you don\'t receive them.';
             }
             resultsBox.insertBefore(successMsg, resultsBox.firstChild);
         }
@@ -738,10 +738,10 @@ END OF AUDIT REPORT
         function getLaunchReadyRecommendations(answers) {
             return `
                 <div class="recommendations">
-                    <h4>🎯 You're Almost There - Final Launch Sprint</h4>
+ <h4>You're Almost There - Final Launch Sprint</h4>
                     <p><strong>Excellent! You're well-prepared with a strong foundation in place.</strong> Here's how to finish strong and launch successfully in 60-90 days:</p>
 
-                    <h5>✅ Your Strengths:</h5>
+ <h5>Your Strengths:</h5>
                     <ul>
                         <li>Strong planning and preparation foundation</li>
                         <li>Clear concept and business model</li>
@@ -749,7 +749,7 @@ END OF AUDIT REPORT
                         <li>Understanding of key operational requirements</li>
                     </ul>
 
-                    <h5>🎯 Final Push - 8-10 Week Launch Sprint:</h5>
+ <h5>Final Push - 8-10 Week Launch Sprint:</h5>
                     <ul>
                         <li><strong>Week 1-2:</strong> Finalize any remaining permits and licensing</li>
                         <li><strong>Week 3-4:</strong> Complete equipment installation and testing</li>
@@ -758,9 +758,9 @@ END OF AUDIT REPORT
                         <li><strong>Week 9-10:</strong> Soft launch and final preparation</li>
                     </ul>
 
-                    <h5>💡 Recommended Package:</h5>
+ <h5>Recommended Package:</h5>
                     <p><strong>$3,500 Full Launch Package</strong> - You're 80% there. Let's finish strong and launch in 60-90 days.</p>
-                    <p>💳 Payment plan available: $1,250/month for 3 months</p>
+ <p>Payment plan available: $1,250/month for 3 months</p>
                     <p><strong>What You Get:</strong></p>
                     <ul>
                         <li>8-10 week implementation sprint</li>
@@ -785,10 +785,10 @@ END OF AUDIT REPORT
 
             return `
                 <div class="recommendations priority-medium">
-                    <h4>🟡 Solid Foundation - Key Gaps to Address</h4>
+ <h4>Solid Foundation - Key Gaps to Address</h4>
                     <p><strong>You have a solid foundation with several important gaps to fill.</strong> Focus areas identified: ${gaps.slice(0, 3).join(', ')}${gaps.length > 3 ? ', and more' : ''}.</p>
 
-                    <h5>✅ Your Strengths:</h5>
+ <h5>Your Strengths:</h5>
                     <ul>
                         ${answers.conceptDev >= 4 ? '<li>Well-defined concept and vision</li>' : ''}
                         ${answers.experience >= 3 ? '<li>Relevant food industry experience</li>' : ''}
@@ -796,7 +796,7 @@ END OF AUDIT REPORT
                         ${answers.timeline >= 4 ? '<li>Realistic timeline expectations</li>' : ''}
                     </ul>
 
-                    <h5>⚠️ Critical Gaps to Address:</h5>
+ <h5>Critical Gaps to Address:</h5>
                     <ul>
                         ${answers.funding <= 2 ? '<li><strong>Funding:</strong> Secure financing and establish cash reserves</li>' : ''}
                         ${answers.truckStatus <= 2 ? '<li><strong>Truck Acquisition:</strong> Find and secure your vehicle</li>' : ''}
@@ -807,9 +807,9 @@ END OF AUDIT REPORT
                         ${answers.conceptTest <= 2 ? '<li><strong>Testing:</strong> Validate concept with real customers before launch</li>' : ''}
                     </ul>
 
-                    <h5>💡 Recommended Package:</h5>
+ <h5>Recommended Package:</h5>
                     <p><strong>$2,500 Launch Accelerator</strong> - Coaching + templates to fill your gaps and launch in 90-120 days.</p>
-                    <p>💳 Payment plan available: $900/month for 3 months</p>
+ <p>Payment plan available: $900/month for 3 months</p>
                     <p><strong>What You Get:</strong></p>
                     <ul>
                         <li>6 weekly 1-on-1 coaching calls (60 min each)</li>
@@ -820,10 +820,10 @@ END OF AUDIT REPORT
                         <li>Email/text support between calls</li>
                     </ul>
 
-                    <h5>🚀 Want More Hands-On Support?</h5>
+ <h5>Want More Hands-On Support?</h5>
                     <p><strong>$3,500 Full Launch Package</strong> - Done-with-you implementation, launch day support, and 30-day post-launch stabilization.</p>
 
-                    <h5>📋 Implementation Timeline:</h5>
+ <h5>Implementation Timeline:</h5>
                     <ul>
                         <li><strong>Weeks 1-2:</strong> Fill critical gaps (funding, truck, permits)</li>
                         <li><strong>Weeks 3-4:</strong> Equipment setup and vendor relationships</li>
@@ -845,11 +845,11 @@ END OF AUDIT REPORT
 
             return `
                 <div class="recommendations priority-high">
-                    <h4>⚠️ High Risk - Foundation Work Required</h4>
+ <h4>High Risk - Foundation Work Required</h4>
                     <p><strong>Multiple critical gaps present - substantial foundational work needed to launch successfully.</strong></p>
-                    <p><strong>⚠️ WARNING:</strong> Launching without addressing these gaps significantly increases your risk of failure and costly mistakes.</p>
+ <p><strong>WARNING:</strong>Launching without addressing these gaps significantly increases your risk of failure and costly mistakes.</p>
 
-                    <h5>🚨 Critical Issues Identified:</h5>
+ <h5>Critical Issues Identified:</h5>
                     <ul>
                         ${criticalIssues.map(issue => `<li><strong>${issue}</strong></li>`).join('')}
                         ${answers.conceptTest === 0 ? '<li><strong>No customer validation</strong> - concept not tested</li>' : ''}
@@ -857,7 +857,7 @@ END OF AUDIT REPORT
                         ${answers.truckStatus <= 1 ? '<li><strong>No truck identified</strong> - major equipment gap</li>' : ''}
                     </ul>
 
-                    <h5>🎯 What You Need First:</h5>
+ <h5>What You Need First:</h5>
                     <ul>
                         <li><strong>Concept Validation:</strong> Test your idea with real customers before investing heavily</li>
                         <li><strong>Financial Modeling:</strong> Understand true costs and revenue potential</li>
@@ -867,9 +867,9 @@ END OF AUDIT REPORT
                         <li><strong>Clear Budget:</strong> Line-by-line startup and operating costs</li>
                     </ul>
 
-                    <h5>💡 Recommended Package:</h5>
+ <h5>Recommended Package:</h5>
                     <p><strong>$1,500 Foundation Package (4 weeks)</strong> - Let's validate your concept and build your roadmap first, then decide on full launch support.</p>
-                    <p>💳 Payment plan available: $500/month for 3 months</p>
+ <p>Payment plan available: $500/month for 3 months</p>
                     <p><strong>What You Get:</strong></p>
                     <ul>
                         <li><strong>Week 1:</strong> Concept validation and market assessment</li>
@@ -879,7 +879,7 @@ END OF AUDIT REPORT
                         <li><strong>Bonus:</strong> $500 credit toward Launch Accelerator or Full Launch if you continue</li>
                     </ul>
 
-                    <h5>📊 Expected Outcomes:</h5>
+ <h5>Expected Outcomes:</h5>
                     <ul>
                         <li>Clear go/no-go decision on your concept</li>
                         <li>Realistic financial projections and requirements</li>
@@ -894,11 +894,11 @@ END OF AUDIT REPORT
         function getNotReadyRecommendations(answers) {
             return `
                 <div class="recommendations priority-high">
-                    <h4>🚨 Not Ready - Strategic Planning Required</h4>
+ <h4>Not Ready - Strategic Planning Required</h4>
                     <p><strong>You're too early stage for full launch engagement. Let's build foundational clarity first.</strong></p>
-                    <p><strong>⚠️ CRITICAL:</strong> Launching now would be extremely high risk. You need foundational planning and concept validation before investing significant time and money.</p>
+ <p><strong>CRITICAL:</strong>Launching now would be extremely high risk. You need foundational planning and concept validation before investing significant time and money.</p>
 
-                    <h5>🚨 Major Gaps Identified:</h5>
+ <h5>Major Gaps Identified:</h5>
                     <ul>
                         ${answers.conceptDev <= 2 ? '<li><strong>Concept unclear</strong> - need specific cuisine, signature items, target customer</li>' : ''}
                         ${answers.funding === 0 ? '<li><strong>No funding plan</strong> - critical financial gap</li>' : ''}
@@ -911,7 +911,7 @@ END OF AUDIT REPORT
                         <li><strong>Multiple foundational elements missing</strong></li>
                     </ul>
 
-                    <h5>🎯 What You Need to Do First:</h5>
+ <h5>What You Need to Do First:</h5>
                     <ol>
                         <li><strong>Clarify Your Concept:</strong> Define specific cuisine, signature dishes, target customers</li>
                         <li><strong>Test the Idea:</strong> Cook for friends, do pop-ups, get real feedback</li>
@@ -920,7 +920,7 @@ END OF AUDIT REPORT
                         <li><strong>Create Realistic Timeline:</strong> 6-12 months minimum to prepare properly</li>
                     </ol>
 
-                    <h5>💡 Recommended Starting Point:</h5>
+ <h5>Recommended Starting Point:</h5>
                     <p><strong>$350 Strategy Session (90 minutes)</strong> - Let's clarify your concept and build a realistic timeline, then reconnect when you're ready.</p>
                     <p><strong>What You Get:</strong></p>
                     <ul>
@@ -933,7 +933,7 @@ END OF AUDIT REPORT
                         <li><strong>Bonus:</strong> $350 credited toward any package if you continue within 90 days</li>
                     </ul>
 
-                    <h5>📅 Realistic Timeline:</h5>
+ <h5>Realistic Timeline:</h5>
                     <ul>
                         <li><strong>Months 1-3:</strong> Concept development, testing, research</li>
                         <li><strong>Months 4-6:</strong> Financial planning, funding, equipment research</li>
@@ -941,7 +941,7 @@ END OF AUDIT REPORT
                         <li><strong>Months 10-12:</strong> Final prep and launch</li>
                     </ul>
 
-                    <p><strong>💪 Don't be discouraged!</strong> Every successful food truck started exactly where you are. The key is taking the right steps in the right order. Let's build your foundation properly so you launch with confidence.</p>
+ <p><strong>Don't be discouraged!</strong>Every successful food truck started exactly where you are. The key is taking the right steps in the right order. Let's build your foundation properly so you launch with confidence.</p>
                 </div>
             `;
         }
@@ -949,7 +949,7 @@ END OF AUDIT REPORT
         // Detailed recommendations for email (Launch Ready)
         function getDetailedLaunchReadyRecommendations(answers) {
             return `
-ASSESSMENT: LAUNCH READY ✅
+ASSESSMENT: LAUNCH READY 
 
 You're well-prepared with minor gaps only. Strong foundation in place.
 Ready to execute with minimal support.
@@ -1004,7 +1004,7 @@ ESTIMATED TIMELINE: 60-90 days to successful launch
         // Detailed recommendations for email (On Track)
         function getDetailedOnTrackRecommendations(answers) {
             let details = `
-ASSESSMENT: ON TRACK 🟡
+ASSESSMENT: ON TRACK 
 
 Solid foundation with several important gaps to address.
 Good trajectory but needs structured support.
@@ -1090,7 +1090,7 @@ ESTIMATED TIMELINE: 90-120 days to launch
         // Detailed recommendations for email (High Risk)
         function getDetailedHighRiskRecommendations(answers) {
             return `
-ASSESSMENT: HIGH RISK ⚠️
+ASSESSMENT: HIGH RISK 
 
 Multiple critical gaps present. Substantial foundational work needed.
 Risk of costly mistakes without proper guidance.
@@ -1152,7 +1152,7 @@ REALISTIC TIMELINE: 4-6 months to launch readiness
         // Detailed recommendations for email (Not Ready)
         function getDetailedNotReadyRecommendations(answers) {
             return `
-ASSESSMENT: NOT READY 🚨
+ASSESSMENT: NOT READY 
 
 Too early stage for full engagement. Foundational clarity needed first.
 Should not launch without major preparation work.

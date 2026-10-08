@@ -91,7 +91,6 @@
   <h1>Find a <span>Neighbor</span> You Can Trust</h1>
   <p class="hero-sub">Local businesses, real people. Browse services across Virginia and connect directly.</p>
   <div class="hero-search">
-    <span class="search-icon">🔍</span>
     <input type="text" id="searchInput" placeholder="Search by name, business, or keyword..." oninput="renderListings()" aria-label="Search by name, business, or keyword">
   </div>
 </div>
@@ -144,7 +143,6 @@
   </div>
   <div class="listings-grid" id="listingsGrid" style="display:none;"></div>
   <div class="empty-state" id="emptyState" style="display:none;">
-    <div class="empty-icon">🏘️</div>
     <h3>No listings found</h3>
     <p>Try a different category, location, or search term.</p>
   </div>
@@ -296,7 +294,6 @@
       <p class="form-note">Listings are reviewed before going live. Free to join.</p>
     </div>
     <div class="success-msg" id="successMsg">
-      <div class="success-icon">✅</div>
       <h3>Submission Received!</h3>
       <p>Thanks for submitting. Your listing will be reviewed and added once approved.</p>
     </div>
@@ -329,20 +326,20 @@
   };
 
   const CATEGORIES = [
-    { label: "Restaurant & Food", icon: "🍽️" },
-    { label: "Food Truck", icon: "🚚" },
-    { label: "Catering", icon: "🥂" },
-    { label: "Contractor & Trades", icon: "🔨" },
-    { label: "Retail", icon: "🛍️" },
-    { label: "Marketing & Design", icon: "📣" },
-    { label: "Real Estate", icon: "🏡" },
-    { label: "Landscaping", icon: "🌿" },
-    { label: "Cleaning Services", icon: "🧹" },
-    { label: "Health & Wellness", icon: "💪" },
-    { label: "Legal & Financial", icon: "⚖️" },
-    { label: "Auto & Transportation", icon: "🚗" },
-    { label: "Technology", icon: "💻" },
-    { label: "Other", icon: "📌" },
+    { label: "Restaurant & Food", code: "RF" },
+    { label: "Food Truck", code: "FT" },
+    { label: "Catering", code: "CA" },
+    { label: "Contractor & Trades", code: "CT" },
+    { label: "Retail", code: "RT" },
+    { label: "Marketing & Design", code: "MD" },
+    { label: "Real Estate", code: "RE" },
+    { label: "Landscaping", code: "LS" },
+    { label: "Cleaning Services", code: "CL" },
+    { label: "Health & Wellness", code: "HW" },
+    { label: "Legal & Financial", code: "LF" },
+    { label: "Auto & Transportation", code: "AT" },
+    { label: "Technology", code: "TC" },
+    { label: "Other", code: "OT" },
   ];
 
   let allListings = [];
@@ -378,6 +375,22 @@
     }
   }
 
+  // These are other people's personal phone numbers and addresses, and this is
+  // a public page. Keeping them out of the served markup stops the harvesters
+  // that regex over HTML, which is most of them. It does not stop a headless
+  // browser -- the values are in the fetched JSON either way -- so this is a
+  // reduction in exposure, not a guarantee of privacy.
+  function revealContact(btn, id, field) {
+    const listing = allListings.find(l => l.id === id);
+    const value = listing && listing[field];
+    if (!value) return;
+    const a = document.createElement('a');
+    a.href = (field === 'email' ? 'mailto:' : 'tel:') + value;
+    a.textContent = value;
+    a.addEventListener('click', () => trackClick(id, field === 'email' ? 'Email Clicks' : 'Phone Clicks'));
+    btn.replaceWith(a);
+  }
+
   function renderCategories() {
     const grid = document.getElementById('categoriesGrid');
     grid.innerHTML = CATEGORIES
@@ -388,7 +401,7 @@
       .filter(({ count }) => count > 0)
       .map(({ cat, count }) =>
         `<div class="cat-card ${activeCategory === cat.label ? 'active' : ''}" onclick="selectCategory('${cat.label.replace(/'/g, "\\'")}')">
-          <span class="cat-icon">${cat.icon}</span>
+          <span class="lg-code">${cat.code}</span>
           <div class="cat-label">${cat.label}</div>
           <div class="cat-count">${count} listing${count !== 1 ? 's' : ''}</div>
         </div>`
@@ -438,26 +451,26 @@
     if (pool.length === 0) { grid.innerHTML=''; empty.style.display='block'; return; }
     empty.style.display = 'none';
 
-    const catMap = Object.fromEntries(CATEGORIES.map(c => [c.label, c.icon]));
+    const catMap = Object.fromEntries(CATEGORIES.map(c => [c.label, c.code]));
 
     grid.innerHTML = pool.map(l => {
-      const icon = catMap[l.category] || '';
+      const code = catMap[l.category] || '';
       const fb = safeUrl(l.facebook), ig = safeUrl(l.instagram), site = safeUrl(l.website);
       const socials = [
         fb ? `<a class="social-link" href="${fb}" target="_blank" rel="noopener noreferrer">Facebook</a>` : '',
         ig ? `<a class="social-link" href="${ig}" target="_blank" rel="noopener noreferrer">Instagram</a>` : '',
       ].filter(Boolean).join('');
       return `<div class="listing-card ${l.featured?'featured':''}">
-        ${l.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
-        <span class="listing-badge">${icon} ${esc(l.category)}</span>
+        ${l.featured ? '<span class="lg-flag">Featured</span>' : ''}
+        <span class="listing-badge"><span class="lg-code">${code}</span> ${esc(l.category)}</span>
         <div class="listing-name">${esc(l.name)}</div>
         <div class="listing-biz">${esc(l.business)}</div>
         <div class="listing-desc">${esc(l.description)}</div>
         <div class="listing-meta">
-          ${l.location?`<div class="listing-meta-item"><span class="meta-icon">📍</span>${esc(l.location)}</div>`:''}
-          ${l.phone?`<div class="listing-meta-item"><span class="meta-icon">📞</span><a href="tel:${esc(l.phone)}" onclick="trackClick('${esc(l.id)}','Phone Clicks')">${esc(l.phone)}</a></div>`:''}
-          ${l.email?`<div class="listing-meta-item"><span class="meta-icon">✉️</span><a href="mailto:${esc(l.email)}" onclick="trackClick('${esc(l.id)}','Email Clicks')">${esc(l.email)}</a></div>`:''}
-          ${site?`<div class="listing-meta-item"><span class="meta-icon">🌐</span><a href="${site}" target="_blank" onclick="trackClick('${esc(l.id)}','Website Clicks')" rel="noopener noreferrer">${esc(String(l.website).replace(/^https?:\/\//,''))}</a></div>`:''}
+          ${l.location?`<div class="listing-meta-item"><span class="lg-field">Loc</span>${esc(l.location)}</div>`:''}
+          ${l.phone?`<div class="listing-meta-item"><span class="lg-field">Tel</span><button type="button" class="lg-reveal" onclick="revealContact(this,'${esc(l.id)}','phone')">Show number</button></div>`:''}
+          ${l.email?`<div class="listing-meta-item"><span class="lg-field">Email</span><button type="button" class="lg-reveal" onclick="revealContact(this,'${esc(l.id)}','email')">Show email</button></div>`:''}
+          ${site?`<div class="listing-meta-item"><span class="lg-field">Web</span><a href="${site}" target="_blank" onclick="trackClick('${esc(l.id)}','Website Clicks')" rel="noopener noreferrer">${esc(String(l.website).replace(/^https?:\/\//,''))}</a></div>`:''}
         </div>
         ${socials?`<div class="listing-socials">${socials}</div>`:''}
       </div>`;

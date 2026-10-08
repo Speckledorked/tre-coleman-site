@@ -29,8 +29,8 @@
          preload even same-origin. -->
     <link rel="preload" as="font" type="font/woff2" href="fonts/archivo-var-latin.woff2" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="fonts/inter-var-latin.woff2" crossorigin>
-    <link rel="stylesheet" href="ledger.css" />
 <link href="style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="ledger.css" />
 
   <script src="analytics.js"></script>
 </head>
@@ -92,7 +92,7 @@
 <main id="main-content">
 <div class="content-container">
 <div class="header">
-<h1><span aria-hidden="true">🍽️</span> Hospitality Operations Audit</h1>
+<h1>Hospitality Operations Audit</h1>
 <p>Discover hidden profit leaks and optimization opportunities in your restaurant</p>
 </div>
 <section class="audit-intro">
@@ -162,7 +162,7 @@
 <div class="progress-bar"><div class="progress" id="progressBar"></div></div>
 <div class="content">
 <div class="section active">
-<h3><span class="section-icon">1</span>Food Cost Management</h3>
+<h3>Food Cost Management</h3>
 <div class="question">
 <label>What's your current food cost percentage?</label>
 <select id="foodCost">
@@ -195,7 +195,7 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">2</span>Labor Efficiency</h3>
+<h3>Labor Efficiency</h3>
 <div class="question">
 <label>What's your labor cost percentage?</label>
 <select id="laborCost">
@@ -228,7 +228,7 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">3</span>Revenue Optimization</h3>
+<h3>Revenue Optimization</h3>
 <div class="question">
 <label>What's your average table turn time during peak hours?</label>
 <select id="turnTime">
@@ -261,7 +261,7 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">4</span>Technology &amp; Systems</h3>
+<h3>Technology &amp; Systems</h3>
 <div class="question">
 <label>How integrated are your POS, inventory, and scheduling systems?</label>
 <select id="integration">
@@ -284,7 +284,7 @@
 </div>
 </div>
 <div class="section">
-<h3><span class="section-icon">5</span>Quality &amp; Consistency</h3>
+<h3>Quality &amp; Consistency</h3>
 <div class="question">
 <label>How standardized are your operating procedures?</label>
 <select id="procedures">
@@ -306,21 +306,21 @@
 </select>
 </div>
 </div>
-<button class="calculate-btn" onclick="calculateAudit()">📊 Calculate My Operations Score</button>
+<button class="calculate-btn" onclick="calculateAudit()">Calculate My Operations Score</button>
 <!-- EMAIL COLLECTION SECTION - SHOWN BEFORE RESULTS -->
 <div class="email-section" id="emailSection">
-<h3>🎯 Enter Your Email to See Results</h3>
+<h3>Enter Your Email to See Results</h3>
 <p><strong>Your audit is complete! You're one step away from your personalized results.</strong></p>
 <p>Enter your email below to receive your detailed operations score and customized recommendations:</p>
 <div class="email-form">
 <input id="emailInput" placeholder="Enter your email address" required="" type="email"/>
-<button id="showResultsBtn" onclick="showResults()">🚀 Show My Results Now</button>
+<button id="showResultsBtn" onclick="showResults()">Show My Results Now</button>
 </div>
 <p>
-                    📧 We'll also send you additional optimization tips and follow-up recommendations
+ We'll also send you additional optimization tips and follow-up recommendations
                 </p>
 <p>
-                    🔒 Your email is secure and will only be used for restaurant optimization resources
+ Your email is secure and will only be used for restaurant optimization resources
                 </p>
 </div>
 <!-- RESULTS SECTION - ONLY SHOWN AFTER EMAIL SUBMISSION -->
@@ -424,7 +424,7 @@
             setTimeout(() => {
                 generateAndShowResults();
                 btn.disabled = false;
-                btn.textContent = '🚀 Show My Results Now';
+ btn.textContent = ' Show My Results Now';
                 
                 // FIXED: Submit form data in background without page navigation
                 submitAuditDataAsync();
@@ -453,19 +453,19 @@
                 ${recommendations}
 
                 <div class="cta">
-                    <h3>🚀 Ready to Optimize Your Hospitality Operations?</h3>
+ <h3>Ready to Optimize Your Hospitality Operations?</h3>
                     <p>Get a personalized 30-minute consultation to discuss your specific challenges and opportunities.</p>
                     <div>
                         <a href="profit-leak-snapshot.html" target="_blank" rel="noopener" 
                           >
-                           📅 Schedule Free Consultation
+ Schedule Free Consultation
                         </a>
                     </div>
                     <!-- Contact info -->
                     <p>
-                        📧 <a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a>
+ <a href="mailto:hello@trecoleman.com">hello@trecoleman.com</a>
                         &nbsp;|&nbsp;
-                        📱 <a href="tel:5408079045">540-807-9045</a>
+ <a href="tel:5408079045">540-807-9045</a>
                     </p>
                 </div>
             `;
@@ -612,10 +612,10 @@ END OF AUDIT REPORT
 
             if (userSuccess) {
                 successMsg.style.cssText = 'background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #c3e6cb;';
-                successMsg.innerHTML = '✅ <strong>Results emailed!</strong> Check your inbox at <strong>' + email + '</strong> for your detailed audit report. (Check spam if not received in 5 minutes)';
+ successMsg.innerHTML = ' <strong>Results emailed!</strong>Check your inbox at <strong>' + email + '</strong>for your detailed audit report. (Check spam if not received in 5 minutes)';
             } else {
                 successMsg.style.cssText = 'background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #ffeaa7;';
-                successMsg.innerHTML = '⚠️ <strong>Email may require verification.</strong> Your results are displayed below. Please screenshot or print them, and check your email shortly. Contact hello@trecoleman.com if you don\'t receive them.';
+ successMsg.innerHTML = ' <strong>Email may require verification.</strong>Your results are displayed below. Please screenshot or print them, and check your email shortly. Contact hello@trecoleman.com if you don\'t receive them.';
             }
             resultsBox.insertBefore(successMsg, resultsBox.firstChild);
         }
@@ -685,7 +685,7 @@ Your restaurant has solid fundamentals with significant room for improvement. Fo
             if (answers.foodCost <= 2) {
                 recs += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔥 HIGH PRIORITY: FOOD COST CONTROL
+ HIGH PRIORITY: FOOD COST CONTROL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ISSUE: Your food costs are ${answers.foodCost === 1 ? 'CRITICALLY HIGH (over 35%)' : 'ABOVE OPTIMAL (30-35%)'}
@@ -734,7 +734,7 @@ POTENTIAL SAVINGS: $2,000-8,000+ per month
 
                 recs += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚡ HIGH PRIORITY: LABOR OPTIMIZATION
+ HIGH PRIORITY: LABOR OPTIMIZATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ISSUE: ${laborIssue}
@@ -776,7 +776,7 @@ POTENTIAL SAVINGS: $1,500-6,000+ per month
 
                 recs += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💰 HIGH PRIORITY: REVENUE OPTIMIZATION
+ HIGH PRIORITY: REVENUE OPTIMIZATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ISSUES IDENTIFIED: ${issues.join(', ')}
@@ -816,7 +816,7 @@ POTENTIAL INCREASE: $3,000-12,000+ per month
             if (answers.integration <= 2 || answers.analytics <= 2) {
                 recs += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 MEDIUM PRIORITY: TECHNOLOGY UPGRADE
+ MEDIUM PRIORITY: TECHNOLOGY UPGRADE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ISSUE: Your systems are holding back efficiency
@@ -850,7 +850,7 @@ EXPECTED IMPACT: 10-15 hours/week time savings + better decision making
             if (answers.procedures <= 2 || answers.quality <= 2) {
                 recs += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 MEDIUM PRIORITY: OPERATIONAL CONSISTENCY
+ MEDIUM PRIORITY: OPERATIONAL CONSISTENCY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ISSUE: Lack of standardization affects quality and training efficiency
@@ -884,7 +884,7 @@ EXPECTED IMPACT: Improved customer satisfaction + reduced training costs
 
             recs += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💡 OVERALL ASSESSMENT & TIMELINE
+ OVERALL ASSESSMENT & TIMELINE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 TOTAL ESTIMATED PROFIT INCREASE: 12-25% within 90 days
@@ -934,29 +934,29 @@ MONTH 3: Scale improvements to other areas
 PERFORMANCE LEVEL: NEEDS IMMEDIATE IMPROVEMENT
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚨 URGENT: COMPREHENSIVE OPERATIONS OVERHAUL REQUIRED
+ URGENT: COMPREHENSIVE OPERATIONS OVERHAUL REQUIRED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Your restaurant has significant operational challenges in ${criticalIssues.length} key areas:
 ${criticalIssues.map((issue, i) => `${i + 1}. ${issue}`).join('\n')}
 
-⚠️ WARNING: Without immediate action, these issues compound quickly and can lead to serious financial difficulties or business failure.
+ WARNING: Without immediate action, these issues compound quickly and can lead to serious financial difficulties or business failure.
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔥 PHASE 1 - CRISIS MANAGEMENT (First 30 Days)
+ PHASE 1 - CRISIS MANAGEMENT (First 30 Days)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 IMMEDIATE ACTIONS - START TODAY:
 
-${answers.foodCost === 1 ? `1. ⚠️ URGENT - FOOD COST CRISIS
+${answers.foodCost === 1 ? `1. URGENT - FOOD COST CRISIS
    - You're losing significant money daily
    - Implement daily cost tracking immediately
    - Audit inventory for waste/theft
    - Review all vendor pricing
    - Stop the bleeding NOW
 
-` : ''}${answers.laborCost === 1 ? `2. ⚠️ URGENT - LABOR COST CRISIS
+` : ''}${answers.laborCost === 1 ? `2. URGENT - LABOR COST CRISIS
    - Review all schedules immediately
    - Excessive labor spending detected
    - Cut non-essential overtime NOW
@@ -991,7 +991,7 @@ EXPECTED RESULTS: Stop major losses, stabilize operations (5-10% cost reduction)
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚡ PHASE 2 - STABILIZATION (Days 31-60)
+ PHASE 2 - STABILIZATION (Days 31-60)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 BUILD ON PHASE 1 IMPROVEMENTS:
@@ -1030,7 +1030,7 @@ EXPECTED RESULTS: Improve efficiency and quality (additional 5-8% profit improve
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 PHASE 3 - GROWTH FOUNDATION (Days 61-90)
+ PHASE 3 - GROWTH FOUNDATION (Days 61-90)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 POSITION FOR SUSTAINABLE GROWTH:
@@ -1069,7 +1069,7 @@ EXPECTED RESULTS: Build foundation for growth (additional 5-7% profit improvemen
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 90-DAY RESULTS PROJECTION
+ 90-DAY RESULTS PROJECTION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 MONTH 1: Stop major losses, stabilize operations (5-10% improvement)
@@ -1080,7 +1080,7 @@ TOTAL POTENTIAL PROFIT INCREASE: 15-25% WITHIN 90 DAYS
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚠️ CRITICAL WARNING
+ CRITICAL WARNING
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 These issues are serious and compound quickly. Without immediate, decisive action, your restaurant faces potential business failure within 6-12 months.

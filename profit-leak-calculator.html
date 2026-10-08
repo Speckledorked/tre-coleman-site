@@ -69,7 +69,7 @@
     .seg-btn { border: 2px solid var(--cream-dark); background: var(--cream); border-radius: 12px; padding: 18px 12px; cursor: pointer; text-align: center; transition: all 0.2s; }
     .seg-btn:hover { border-color: var(--navy-light); background: #fff; }
     .seg-btn.selected { border-color: var(--navy); background: var(--navy); color: #fff; }
-    .seg-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+    .seg-icon { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px; display: block; }
     .seg-label { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; }
     .seg-desc { font-size: 0.7rem; color: var(--text-light); margin-top: 4px; line-height: 1.3; }
     .seg-btn.selected .seg-desc { color: rgba(255,255,255,0.65); }
@@ -88,7 +88,7 @@
     .score-blur-label { color: rgba(255,255,255,0.8); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; position: relative; z-index: 2; margin-bottom: 8px; }
     .score-blur-number { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 4rem; color: #fff; filter: blur(12px); position: relative; z-index: 2; line-height: 1; margin-bottom: 4px; }
     .score-blur-sub { color: rgba(255,255,255,0.6); font-size: 0.78rem; filter: blur(6px); position: relative; z-index: 2; }
-    .lock-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 50%; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; backdrop-filter: blur(6px); }
+    .lock-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 50%; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; backdrop-filter: blur(6px); }
     .gate-headline { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--navy); margin-bottom: 8px; }
     .gate-sub { color: var(--text-mid); font-size: 0.87rem; margin-bottom: 22px; line-height: 1.5; }
     .email-row { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
@@ -221,11 +221,11 @@
     };
 
     const SEGMENT_INFO = {
-      restaurant: { icon: "🍽️", label: "Restaurant", desc: "Full-service, fast casual, QSR" },
-      foodtruck: { icon: "🚚", label: "Food Truck", desc: "Mobile & event operations" },
-      catering: { icon: "🥂", label: "Catering", desc: "Event, corporate & drop-off" },
-      contractor: { icon: "🔨", label: "Contractor", desc: "Trades, construction, home services" },
-      retail: { icon: "🛍️", label: "Retail", desc: "Storefront & product-based" },
+      restaurant: { code: "RS", label: "Restaurant", desc: "Full-service, fast casual, QSR" },
+      foodtruck: { code: "FT", label: "Food Truck", desc: "Mobile & event operations" },
+      catering: { code: "CA", label: "Catering", desc: "Event, corporate & drop-off" },
+      contractor: { code: "CT", label: "Contractor", desc: "Trades, construction, home services" },
+      retail: { code: "RT", label: "Retail", desc: "Storefront & product-based" },
     };
 
     function calcScore(segment, vals) {
@@ -426,7 +426,7 @@
               <div className="segments">
                 {Object.entries(SEGMENT_INFO).map(([key, info]) => (
                   <button key={key} className={`seg-btn ${segment === key ? "selected" : ""}`} onClick={() => setSegment(key)}>
-                    <span className="seg-icon">{info.icon}</span>
+                    <span className="seg-icon">{info.code}</span>
                     <div className="seg-label">{info.label}</div>
                     <div className="seg-desc">{info.desc}</div>
                   </button>
@@ -470,7 +470,7 @@
                   <div className="score-blur-label">Profit Leak Score</div>
                   <div className="score-blur-number">74</div>
                   <div className="score-blur-sub">Calculating results...</div>
-                  <div className="lock-icon">🔒</div>
+                  <div className="lock-icon">Locked</div>
                 </div>
                 <div className="gate-headline">Score is ready.</div>
                 <p className="gate-sub">Enter a name to personalize the report.</p>
@@ -509,7 +509,7 @@
 
                 {result.totalImpact > 100 && (
                   <div className="dollar-box">
-                    <div className="dollar-icon">💸</div>
+                    
                     <div className="dollar-content">
                       <div className="dollar-label">Est. Annual Recoverable Profit</div>
                       <div className="dollar-amount">{fmt(result.totalImpact)}</div>
