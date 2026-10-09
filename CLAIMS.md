@@ -101,14 +101,19 @@ Currently presented on `index.html` under "Results from the Field", labelled
 
 | # | Claim | Evidence | Status |
 |---|---|---|---|
-| 15 | Fast-casual: "Overtime dropped 22%. ~$18,000 in annual labor savings" | | unreviewed |
-| 16 | Catering: "Average event margin up 11 points" | | unreviewed |
-| 17 | Food truck: "Onboarding cut from 3 weeks to 8 days" | | unreviewed |
+| 15 | Fast-casual labor: "Overtime dropped 22%", "~$18,000 in annual labor savings"; problem/fix narrative adds "Labor running 34%", "overtime built into every week, no scheduling model", "90 days to results" | | unreviewed |
+| 16 | Catering pricing: "Average event margin up 11 points", "Profitable quarter within 90 days" | | unreviewed |
+| 17 | Food truck training: "Onboarding cut from 3 weeks to 8 days", "Owner off the truck 2 days/week"; problem narrative adds "New hires taking 3 weeks to get operational" | | unreviewed |
 
 > These are your strongest assets on the whole site — specific, operational,
-> and the kind of thing a prospect recognises as real. Worth documenting
+> and the kind of thing a prospect recognises as real. The redesign now sets
+> them at display size ("The proof" section), which raises the bar: a
+> display-size number invites more scrutiny than body copy. Worth documenting
 > properly: which client, what the before/after numbers were, and written
-> permission for anonymised use.
+> permission for anonymised use. Until then the honest statuses are
+> `unreviewed`, and the sub-claims in the problem/fix narratives (34% labor,
+> 90-day timeframes, 2 days/week off the truck) need the same treatment as
+> the headline figures.
 
 ## Service description claims
 
