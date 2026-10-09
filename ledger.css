@@ -1594,6 +1594,26 @@ body.ledger .logo { font-family: var(--lg-display); font-weight: 800; font-stret
 body.ledger #mainNav a { font-family: var(--lg-body); font-size: 0.9375rem; font-weight: 600; color: var(--ink) !important; }
 body.ledger #mainNav a:hover { color: var(--loss) !important; }
 
+/* The mobile slide-out panel. style.css:924 paints it a hardcoded light
+   gradient (#FAFAF8 -> #F5F5F3) with #eee dividers, from before this site had
+   a dark theme. ledger.css paints the links var(--ink), which under dark is
+   near-white -- so the whole menu rendered near-white on near-white and only
+   Snapshot stayed readable, because .nav-cta carries its own background.
+
+   Two blind spots let this ship. The hardcoded-white sweep used a
+   case-sensitive pattern and never matched #FAFAF8 or #F5F5F3, and the
+   contrast audit skips elements with no offsetParent -- which this panel has
+   none of until the menu is opened. Measured now with the menu open. */
+@media screen and (max-width: 1024px) {
+  body.ledger nav,
+  body.ledger #mainNav {
+    background: var(--paper);
+    border-left: 1px solid var(--rule);
+  }
+  body.ledger nav ul li,
+  body.ledger #mainNav li { border-bottom-color: var(--rule); }
+}
+
 body.ledger #mainNav a.nav-cta {
   background: var(--ink) !important;
   color: var(--paper) !important;
