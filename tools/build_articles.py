@@ -439,7 +439,7 @@ ARTICLES = [
         "h1": "How to Lower Restaurant Labor Cost Without Cutting Service",
         "description": "Labor is the fastest-moving cost you control. How to "
                        "build a schedule from sales patterns instead of habit, "
-                       "and why cutting hours is usually the wrong first move.",
+                       "and why cutting hours is the wrong first move.",
         "read": "8 min read",
         "body": """
 <p>
@@ -571,7 +571,7 @@ ARTICLES = [
         "h1": "Fractional COO vs Restaurant Consultant: Which Do You Need?",
         "description": "Project consulting and ongoing fractional leadership "
                        "solve different problems. How to tell which one your "
-                       "operation actually needs — including when it's neither.",
+                       "operation needs — including when it's neither.",
         "read": "7 min read",
         "body": """
 <p>
