@@ -79,7 +79,7 @@
             }
         }
 
-        // PRIMARY CONVERSION: the $67 course checkout. Only book.stripe.com
+        // PRIMARY CONVERSION: the $197 course checkout. Only book.stripe.com
         // was tracked before, so every click on the course's own buy button
         // was missing from the funnel.
         if (host === 'buy.stripe.com') {
@@ -197,7 +197,7 @@
     // /success. A buyer who closes the tab at Stripe is paid up but never
     // onboarded, and that gap is worth being able to see.
     //
-    // Only the $67 course comes back here — thank-you.html is written for it
+    // Only the $197 course comes back here — thank-you.html is written for it
     // by name. The $350 Snapshot goes to a book.stripe.com link
     // (profit-leak-snapshot.html:488) and finishes on Stripe's own page, so
     // it is invisible to this file and reaches GA4 only via the webhook.

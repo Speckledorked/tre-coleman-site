@@ -115,7 +115,7 @@ REWRITES = {
         "Catering Profit System: Course for Catering Operators",
         "A self-paced course on catering labor, pricing, food cost, "
         "logistics, and cash flow — the systems that turn catering revenue "
-        "into real profit. $67.",
+        "into real profit. $197.",
     ),
     "chat.html": (
         "Free AI Restaurant Operations Assistant | Tre Coleman",

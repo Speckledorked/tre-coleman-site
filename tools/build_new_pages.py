@@ -12,7 +12,7 @@ CSS and script blocks stay byte-identical to the rest of the site. Only the
 <head> metadata and <main> content differ.
 
 Deliberately claim-light: no invented percentages, ROI multiples or case
-studies. Every figure that appears ($350, $2,000/mo, $67) is one already
+studies. Every figure that appears ($350, $2,000/mo, $197) is one already
 published elsewhere on the site.
 
 Run from the repository root:
@@ -186,7 +186,7 @@ FOOD_TRUCK_FAQ = [
 
 CATERING_FAQ = [
     ("What is the difference between this and the Catering Profit System course?",
-     "The course is a self-paced $67 product covering labor, pricing, food "
+     "The course is a self-paced $197 product covering labor, pricing, food "
      "cost, logistics and cash flow — the right choice if you want to work "
      "through it yourself. Consulting applies the same frameworks directly "
      "to your numbers and contracts. Many operators start with the course "
@@ -406,7 +406,7 @@ PAGES = [
                 "top three leaks and a prioritised fix list."),
         "related": [
             ("catering-profit.html", "The Catering Profit System",
-             "The self-paced $67 course covering labor, pricing, food cost, "
+             "The self-paced $197 course covering labor, pricing, food cost, "
              "logistics, and cash flow."),
             ("menu-engineering.html", "Menu Engineering",
              "Item-level margin work for catering and restaurant menus."),
