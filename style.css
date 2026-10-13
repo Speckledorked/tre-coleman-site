@@ -201,8 +201,20 @@ header .logo {
   border-radius: 3px;
 }
 
+/* The three bars sit at -7px, 0 and +7px from the button's centre (3px tall,
+   4px gaps), so an X is each outer bar moved to the centre and then rotated
+   about itself. Writing the translate first and the rotation second says that
+   directly, and lands both strokes concentric.
+
+   The previous `rotate(45deg) translate(5px, 5px)` form translated inside the
+   already-rotated frame, where (5, 5) resolves to (0, 7.07) -- correct for
+   this bar by arithmetic that is invisible in the source. Its counterpart
+   `rotate(-45deg) translate(7px, -6px)` resolved to (0.71, -9.19) and so
+   overshot the centre by 2.2px, drawing a measurably lopsided X. Neither was
+   noticeable before, because this rule had never fired: nothing added
+   `active` to the button until nav-aria.js did. */
 .mobile-menu-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+  transform: translateY(7px) rotate(45deg);
 }
 
 .mobile-menu-toggle.active span:nth-child(2) {
@@ -210,7 +222,7 @@ header .logo {
 }
 
 .mobile-menu-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* Navigation */
