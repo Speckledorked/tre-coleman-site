@@ -165,7 +165,10 @@ body.ledger .hero .cta-buttons a.secondary {
   color: var(--ink);
   border: 1px solid var(--rule-strong);
 }
-body.ledger .mobile-menu-toggle span { background-color: var(--ink); }
+body.ledger .mobile-menu-toggle span {
+  background-color: var(--ink);
+  box-shadow: none;          /* style.css:199 drop shadow; no shadows in this language */
+}
 /* style.css:757 paints every bare <label> with --dark-text (#2c2c2c). The quiz
    pages use bare labels for their question text, so on dark stock thirteen
    questions per page sat at 1.33:1. */
@@ -875,6 +878,54 @@ body.ledger input[type="submit"] {
 }
 body.ledger button:hover,
 body.ledger input[type="submit"]:hover { background: var(--paper); color: var(--ink); }
+
+/* The menu toggle is an icon, not a filled control, and it is the one button
+   the baseline above must not touch.
+
+   It is a <button> holding three <span> bars, so it collected
+   background: var(--ink) from that rule -- while line 168 paints the bars
+   var(--ink) as well, on the assumption the button is transparent and they sit
+   on the header's paper. Together those gave ink bars on an ink ground:
+   measured 1.00:1 in BOTH themes, the icon invisible, with only the bars'
+   box-shadow tracing a ghost of it. The padding and border inflated a
+   deliberate 44x44 target (style.css:175, sized for WCAG 2.5.8 and Apple's
+   and Google's 44px guidance) into a 77x49 filled slab -- the only solid
+   block on a page built from hairlines and type.
+
+   This resets rather than narrowing the baseline's selector on purpose:
+   adding :not(.mobile-menu-toggle) there would raise it to (0,0,2,1), which
+   -- being later in the file -- would then beat button.lg-tick and
+   button.lg-reveal at the same specificity and repaint both.
+
+   Three audits missed this. The contrast sweeps filtered on offsetParent, so
+   they never measured the navigation; the hardcoded-white sweep was
+   case-sensitive. Neither would have caught it anyway: the bars are not text
+   but spans with a background-color, which a foreground-vs-background text
+   audit does not look at. tools/check_nav_contrast.js now measures them. */
+body.ledger button.mobile-menu-toggle {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  min-width: 44px;
+  min-height: 44px;
+  /* style.css:191 gives the toggle z-index 1001 -- the same as the nav panel
+     at style.css:930 -- but on a static element, where z-index does nothing.
+     So the panel, later in the DOM, painted over the close X: the icon
+     animated to an X and was immediately covered, and elementFromPoint at the
+     button's own centre returned the panel. The panel's padding-top: 5rem
+     reserves 80px of empty space exactly where the toggle sits, so showing
+     the X above it is what the original design intended.
+
+     Tapping the overlay still closes the menu, so this was never a trap --
+     just the close affordance being invisible while it was the obvious thing
+     to reach for. position: relative is what makes the z-index apply at all. */
+  position: relative;
+  z-index: 1002;
+}
+/* (0,0,3,1), to clear body.ledger button:hover at (0,0,2,1) above. */
+body.ledger button.mobile-menu-toggle:hover,
+body.ledger button.mobile-menu-toggle:focus-visible { background: none; }
 .lg-cta:focus-visible { outline: 3px solid var(--loss); outline-offset: 3px; }
 
 
@@ -1626,6 +1677,13 @@ body.ledger #mainNav a:hover { color: var(--loss) !important; }
   body.ledger #mainNav {
     background: var(--paper);
     border-left: 1px solid var(--rule);
+    /* style.css:931 reserves 5rem (80px) at the top of the panel for the
+       close button. The button runs y 52..96, so the last 16px of it sat over
+       the first nav item -- the inverted "Snapshot" chip -- and the X's
+       lower-left stroke, being --ink, vanished into the chip's --ink ground.
+       7rem clears the button with room to spare. This only began to matter
+       once the X was drawn above the panel at all. */
+    padding-top: 7rem;
   }
   body.ledger nav ul li,
   body.ledger #mainNav li { border-bottom-color: var(--rule); }

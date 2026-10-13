@@ -1,10 +1,12 @@
 name: Quality
 
 # Runtime checks that tools/check_site.py cannot do, because it is static:
-# real Core Web Vitals in a browser, and whether external links still resolve.
+# real Core Web Vitals in a browser, whether external links still resolve, and
+# the mobile navigation measured as rendered.
 #
-# Both are CI-only. Neither adds a runtime dependency to the site — package.json
-# still carries just the three the Netlify Functions need.
+# All three are CI-only. None adds a runtime dependency to the site —
+# package.json still carries just the three the Netlify Functions need, and the
+# nav job installs playwright with --no-save.
 
 on:
   push:
@@ -73,3 +75,26 @@ jobs:
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  nav:
+    name: Nav contrast
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # --no-save keeps package.json at the three runtime dependencies. Only
+      # chromium is installed: the audit needs one engine, not three.
+      - name: Install playwright
+        run: |
+          npm install --no-save playwright@1.63.x
+          npx playwright install --with-deps chromium
+
+      # Measures the toggle and the panel in both themes, shut AND open. The
+      # open state is the point: every earlier contrast sweep filtered on
+      # offsetParent and so never measured the navigation at all.
+      - name: Audit the mobile navigation
+        run: node tools/check_nav_contrast.js
