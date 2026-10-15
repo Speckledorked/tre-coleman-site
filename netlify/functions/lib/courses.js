@@ -78,6 +78,46 @@ const COURSES = {
 
 const SLUGS = Object.keys(COURSES);
 
+/**
+ * Bundles: things you can BUY that grant more than one course.
+ *
+ * Kept separate from COURSES because the two are different kinds of thing. A
+ * course is something you can open — it has lessons, files, a path. A bundle
+ * is only a way to pay for several of them at once, and has none of that.
+ * Folding bundles into COURSES would mean every lesson-id and download lookup
+ * having to skip entries that can never own a lesson or a file.
+ *
+ * A bundle works whichever shape it takes in Stripe, because the webhook
+ * grants the UNION of everything a session matches:
+ *
+ *   - one Price for a single "both courses" product -> matches here, grants
+ *     both via `grants`
+ *   - a payment link holding one line item per course -> matches each course
+ *     directly, and the union is the same two courses
+ */
+const BUNDLES = {
+  'catering-complete': {
+    slug: 'catering-complete',
+    name: 'The Catering Profit + People Bundle',
+    grants: ['catering-profit', 'catering-people'],
+    priceEnv: 'STRIPE_PRICE_IDS_CATERING_BUNDLE',
+  },
+};
+
+const BUNDLE_SLUGS = Object.keys(BUNDLES);
+
+/** The bundle record, or null. */
+function bundle(slug) {
+  return Object.prototype.hasOwnProperty.call(BUNDLES, slug) ? BUNDLES[slug] : null;
+}
+
+/** Price ids configured for a bundle. */
+function bundlePriceIdsFor(slug) {
+  const record = bundle(slug);
+  if (!record) return [];
+  return split(process.env[record.priceEnv]);
+}
+
 /** The course record, or null for an unknown slug. */
 function course(slug) {
   return Object.prototype.hasOwnProperty.call(COURSES, slug) ? COURSES[slug] : null;
@@ -130,31 +170,63 @@ function split(value) {
     .filter(Boolean);
 }
 
-/** Every configured price id, across all courses. */
+/** Every configured price id, across all courses AND bundles. */
 function allPriceIds() {
-  return SLUGS.flatMap(priceIdsFor);
+  return [...SLUGS.flatMap(priceIdsFor), ...BUNDLE_SLUGS.flatMap(bundlePriceIdsFor)];
 }
 
 /**
- * Which course a checkout's line items bought, or null for a payment that is
- * not a course at all — the $350 Snapshot finishes on Stripe's own page and
- * must not grant anything.
+ * What a checkout's line items actually bought.
  *
- * Returns the FIRST course matched. A session containing prices from two
- * courses would need a bundle, which does not exist yet; matchedCourses below
- * is what a caller uses to notice that case rather than silently half-grant.
+ * Returns every course the session grants, as a union over direct course
+ * prices AND any bundle prices, plus a name for the confirmation email.
+ *
+ * The union is what makes a bundle work in either shape — one bundle Price,
+ * or a link holding one line item per course — and it is also why a session
+ * matching two courses is no longer refused. Before a bundle existed,
+ * granting the first match and dropping the rest would have taken the money
+ * and delivered half, so the webhook alerted instead. Now that buying both at
+ * once is a real product, granting both is simply the right answer.
+ *
+ * A payment that is no course at all returns an empty list: the $350 Snapshot
+ * finishes on Stripe's own page and must not grant anything.
+ *
+ * @returns {{slugs: string[], name: string|null, bundles: string[]}}
  */
-function courseForLineItems(lineItems) {
-  const matches = matchedCourses(lineItems);
-  return matches.length ? matches[0] : null;
-}
-
-/** Every course the line items touch, de-duplicated and in registry order. */
-function matchedCourses(lineItems) {
+function purchaseFromLineItems(lineItems) {
   const ids = new Set(
     (lineItems || []).map((item) => item && item.price && item.price.id).filter(Boolean),
   );
-  return SLUGS.filter((slug) => priceIdsFor(slug).some((id) => ids.has(id)));
+
+  const direct = SLUGS.filter((slug) => priceIdsFor(slug).some((id) => ids.has(id)));
+  const bundles = BUNDLE_SLUGS.filter((slug) => bundlePriceIdsFor(slug).some((id) => ids.has(id)));
+
+  const slugs = new Set(direct);
+  for (const b of bundles) {
+    // Ignore a slug a bundle names that is not a registered course, rather
+    // than granting access to something nothing knows how to open.
+    for (const slug of BUNDLES[b].grants) if (course(slug)) slugs.add(slug);
+  }
+
+  // Keep registry order, so the name and the grants read consistently.
+  const ordered = SLUGS.filter((slug) => slugs.has(slug));
+
+  return { slugs: ordered, name: purchaseName(ordered, bundles), bundles };
+}
+
+/**
+ * What to call this purchase in a confirmation email.
+ *
+ * A bundle is named as the bundle, because that is what the customer chose. A
+ * single course is named as itself. Two courses bought as separate line items
+ * with no bundle price are joined, rather than silently described as one.
+ */
+function purchaseName(slugs, bundles) {
+  if (!slugs.length) return null;
+  if (bundles.length === 1) return BUNDLES[bundles[0]].name;
+  const names = slugs.map((slug) => COURSES[slug].name);
+  if (names.length === 1) return names[0];
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
 }
 
 /** The lesson ids a course accepts: m1l1..mNlM, plus bonus, with its prefix. */
@@ -229,8 +301,12 @@ module.exports = {
   course,
   priceIdsFor,
   allPriceIds,
-  courseForLineItems,
-  matchedCourses,
+  purchaseFromLineItems,
+  purchaseName,
+  BUNDLES,
+  BUNDLE_SLUGS,
+  bundle,
+  bundlePriceIdsFor,
   lessonIds,
   totalLessons,
   courseForLessonId,

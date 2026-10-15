@@ -23,6 +23,7 @@
 
 process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_197, price_147 ,';
 process.env.STRIPE_PRICE_IDS_CATERING_PEOPLE = 'price_people';
+process.env.STRIPE_PRICE_IDS_CATERING_BUNDLE = 'price_bundle';
 
 const c = require('../netlify/functions/lib/courses.js');
 
@@ -40,21 +41,47 @@ function is(got, want, label) {
 
 is(c.priceIdsFor('catering-profit'), ['price_197', 'price_147'],
   'a trailing comma and stray spaces do not become empty price ids');
-is(c.courseForLineItems([{ price: { id: 'price_197' } }]), 'catering-profit',
+const buy = (...ids) => c.purchaseFromLineItems(ids.map((id) => ({ price: { id } })));
+
+is(buy('price_197').slugs, ['catering-profit'],
   'the evergreen price grants the profit course');
-is(c.courseForLineItems([{ price: { id: 'price_147' } }]), 'catering-profit',
+is(buy('price_147').slugs, ['catering-profit'],
   'the founding price grants the profit course — the bug this registry exists for');
-is(c.courseForLineItems([{ price: { id: 'price_people' } }]), 'catering-people',
+is(buy('price_people').slugs, ['catering-people'],
   'the people price grants the people course');
-is(c.courseForLineItems([{ price: { id: 'price_snapshot' } }]), null,
+is(buy('price_snapshot').slugs, [],
   'the $350 Snapshot grants no course');
-is(c.courseForLineItems([]), null, 'no line items grant no course');
-is(c.courseForLineItems(null), null, 'missing line items grant no course');
-is(c.courseForLineItems([{}, { price: null }]), null,
+is(c.purchaseFromLineItems([]).slugs, [], 'no line items grant no course');
+is(c.purchaseFromLineItems(null).slugs, [], 'missing line items grant no course');
+is(c.purchaseFromLineItems([{}, { price: null }]).slugs, [],
   'line items without a price grant no course');
-is(c.matchedCourses([{ price: { id: 'price_197' } }, { price: { id: 'price_people' } }]),
-  ['catering-profit', 'catering-people'],
-  'a session touching both courses reports both, so a caller can refuse to half-grant');
+
+/* --- the bundle, in both shapes Stripe can take ------------------------- */
+
+/* Shape 1: one Price for a single "both courses" product. */
+is(buy('price_bundle').slugs, ['catering-profit', 'catering-people'],
+  'one bundle price grants both courses');
+is(buy('price_bundle').name, 'The Catering Profit + People Bundle',
+  'a bundle is named as the bundle, because that is what the customer chose');
+is(buy('price_bundle').bundles, ['catering-complete'], 'the bundle is reported');
+
+/* Shape 2: a payment link holding one line item per course. Granting the
+   first and dropping the rest would take the money and deliver half. */
+is(buy('price_197', 'price_people').slugs, ['catering-profit', 'catering-people'],
+  'two course line items in one session grant both, rather than being refused');
+is(buy('price_197', 'price_people').name,
+  'The Catering Profit System and The Catering People Course',
+  'two separately-bought courses are both named, not described as one bundle');
+
+/* Overlap must not double-grant or reorder. */
+is(buy('price_bundle', 'price_197').slugs, ['catering-profit', 'catering-people'],
+  'a bundle plus one of its own courses grants each course once');
+is(buy('price_people', 'price_197').slugs, ['catering-profit', 'catering-people'],
+  'grants come back in registry order regardless of line-item order');
+is(buy('price_bundle', 'price_snapshot').slugs, ['catering-profit', 'catering-people'],
+  'a Snapshot alongside a bundle neither adds nor removes a course');
+is(c.allPriceIds().includes('price_bundle'), true,
+  'bundle prices are in allPriceIds, or the gate would ignore a bundle purchase entirely');
 
 /* The superseded STRIPE_COURSE_PRICE_ID keeps working for the original
    course. This is what makes the deploy safe in every configuration: without
@@ -65,7 +92,7 @@ is(c.matchedCourses([{ price: { id: 'price_197' } }, { price: { id: 'price_peopl
 process.env.STRIPE_COURSE_PRICE_ID = 'price_legacy';
 is(c.priceIdsFor('catering-profit'), ['price_197', 'price_147', 'price_legacy'],
   'the superseded variable is added to the profit course, not substituted for it');
-is(c.courseForLineItems([{ price: { id: 'price_legacy' } }]), 'catering-profit',
+is(buy('price_legacy').slugs, ['catering-profit'],
   'a checkout at the superseded price still grants the profit course');
 is(c.priceIdsFor('catering-people'), ['price_people'],
   'the superseded variable never grants a later course');
@@ -73,7 +100,7 @@ is(c.priceIdsFor('catering-people'), ['price_people'],
 delete process.env.STRIPE_PRICE_IDS_CATERING_PROFIT;
 is(c.priceIdsFor('catering-profit'), ['price_legacy'],
   'with only the superseded variable set, it alone gates the profit course — exactly as before this change');
-is(c.courseForLineItems([{ price: { id: 'price_snapshot' } }]), null,
+is(buy('price_snapshot').slugs, [],
   'and the $350 Snapshot is still excluded, which is the regression this guards');
 process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_197, price_147 ,';
 delete process.env.STRIPE_COURSE_PRICE_ID;
@@ -139,9 +166,22 @@ is(c.SLUGS.filter((s) => c.COURSES[s].downloadPrefix === '').length, 1,
 is(c.SLUGS.filter((s) => c.COURSES[s].legacyFlag).length, 1,
   'exactly one course may honour the single-course boolean');
 
-/* Price-id collisions across courses would grant the wrong course. */
+/* Price-id collisions would grant the wrong thing. A bundle price appearing
+   under a course as well would be harmless (the union is the same), but the
+   same id under two COURSES is a real misconfiguration. */
 const all = c.allPriceIds();
-is(new Set(all).size, all.length, 'no price id is configured for two courses');
+is(new Set(all).size, all.length, 'no price id is configured twice');
+
+/* Every course a bundle claims to grant must actually exist, or a buyer is
+   given access to something nothing knows how to open. */
+for (const b of c.BUNDLE_SLUGS) {
+  for (const granted of c.BUNDLES[b].grants) {
+    is(Boolean(c.course(granted)), true, `bundle ${b} grants a registered course: ${granted}`);
+  }
+  is(c.BUNDLES[b].grants.length >= 2, true, `bundle ${b} grants more than one course`);
+  is(new Set(c.BUNDLES[b].grants).size, c.BUNDLES[b].grants.length,
+    `bundle ${b} does not list a course twice`);
+}
 
 /* --- access reads (lib/access.js) --------------------------------------- */
 

@@ -79,6 +79,7 @@ See `.env.example` in the repository root for the same list with notes.
 | `STRIPE_WEBHOOK_SECRET` | Webhook signing secret | `whsec_xxxxx` | **No** — tied to one endpoint URL |
 | `STRIPE_PRICE_IDS_CATERING_PROFIT` | Price IDs granting the Catering Profit System, comma-separated (not payment links) | `price_xxx,price_yyy` | Yes — lookup in Products |
 | `STRIPE_PRICE_IDS_CATERING_PEOPLE` | Price IDs granting the Catering People Course, comma-separated | `price_zzz` | Yes — lookup in Products |
+| `STRIPE_PRICE_IDS_CATERING_BUNDLE` | Price IDs granting BOTH courses, comma-separated | `price_bbb` | Yes — lookup in Products |
 | `RESEND_API_KEY` | Resend API key | `re_xxxxx` | **No** — shown once |
 | `AIRTABLE_TOKEN` | Airtable personal access token | `patxxxxx...` | **No** — shown once |
 | `CHAT_PASSWORD` | Shared password for the premium AI chat | any string | **No** — self-chosen |
@@ -113,9 +114,19 @@ variables replaced a single `STRIPE_COURSE_PRICE_ID`, which could name only
 one of the two, and whichever price it did not name was a customer who paid
 and was told the payment "is not for the course".
 
-A price ID must appear under exactly one course. The same ID under two makes
-every purchase ambiguous, and the webhook refuses to guess — it grants
-nothing and emails you instead of half-delivering.
+A price ID must appear under exactly one of these variables.
+
+**The bundle works whichever shape you build it in.** The webhook grants the
+*union* of every course a checkout matches, so:
+
+- a single Price for a "both courses" product goes in
+  `STRIPE_PRICE_IDS_CATERING_BUNDLE`, and grants both;
+- a payment link holding one line item per course needs no bundle variable at
+  all — it matches each course directly and grants the same two.
+
+The confirmation email names the bundle when a bundle price was used, and
+names both courses when they were bought as separate line items, because
+those are different things from the customer's point of view.
 
 Leaving them all unset skips the check and treats every completed checkout as
 the Catering Profit System, the $350 Snapshot included. The function logs a

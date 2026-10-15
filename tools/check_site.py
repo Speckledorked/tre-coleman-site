@@ -580,6 +580,15 @@ def check_env_documented():
         # genuinely never read.
         if "process.env[" in s:
             dynamic |= set(re.findall(r"['\"]([A-Z][A-Z0-9_]{3,})['\"]", s))
+
+        # A name held in a `somethingEnv:` property is a variable the code
+        # intends to read, so it counts as USED outright rather than only when
+        # already documented. That closes the hole the comment below describes
+        # for the registry's own convention: adding a course or a bundle adds a
+        # `priceEnv:` line, and forgetting to document it is now an error
+        # rather than silence. It bit immediately -- the bundle's variable was
+        # added and nothing noticed.
+        used |= set(re.findall(r"\w*[Ee]nv['\"]?\s*:\s*['\"]([A-Z][A-Z0-9_]{3,})['\"]", s))
     if not used:
         return
     if not os.path.exists(".env.example"):
@@ -601,12 +610,14 @@ def check_env_documented():
     # Otherwise any ALL_CAPS string in such a file would start inventing
     # variables and suppressing the "used but not documented" error above.
     #
-    # What this therefore does NOT catch: a NEW variable read only dynamically
-    # and never documented. Renaming one in code is caught, from the other
-    # side, as the old name becoming documented-but-unread. Adding one is not.
-    # Tightening it further would mean treating every ALL_CAPS string literal
-    # in these files as an environment variable, which invents findings faster
-    # than it finds real ones.
+    # A new variable read only dynamically used to escape this entirely. The
+    # `somethingEnv:` rule above closes that for anything following the
+    # registry's convention, which is how every course and bundle variable is
+    # declared. What is still not caught is a dynamically-read variable that
+    # follows no convention at all -- `process.env[someName]` where someName
+    # comes from somewhere this cannot see. Catching that would mean treating
+    # every ALL_CAPS string literal in these files as an environment variable,
+    # which invents findings faster than it finds real ones.
     used |= (dynamic & documented)
 
     for v in sorted(documented - used):
