@@ -35,19 +35,20 @@
 
 const { createClient } = require('@supabase/supabase-js');
 
+const courses = require('./lib/courses.js');
+const { coursesForUser, holds } = require('./lib/access.js');
+
 /**
- * Five modules of four lessons, plus the bonus roadmap. The ids are opaque on
- * purpose: they are short, stable, and carry no title text, so renaming a
- * lesson never orphans a student's completed row.
+ * Lesson ids come from the registry now that there is more than one course.
+ * They stay opaque on purpose: short, stable, and carrying no title text, so
+ * renaming a lesson never orphans a student's completed row.
+ *
+ * The Catering Profit System's ids are bare (`m1l1`..`m5l4`, `bonus`) because
+ * they predate the second course; every later course carries a prefix. That
+ * is also the default below, so a client that asks for no course in
+ * particular still gets the original one and keeps working unchanged.
  */
-const LESSONS = (() => {
-  const ids = [];
-  for (let m = 1; m <= 5; m += 1) {
-    for (let l = 1; l <= 4; l += 1) ids.push(`m${m}l${l}`);
-  }
-  ids.push('bonus');
-  return new Set(ids);
-})();
+const DEFAULT_COURSE = 'catering-profit';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -98,25 +99,50 @@ exports.handler = async (event) => {
 
   const service = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
+  /**
+   * WHICH course is being asked about?
+   *
+   * On a GET, from ?course=; on a POST, from the lesson id itself. Deriving
+   * the POST's course from the lesson rather than trusting a body field is the
+   * point: otherwise someone holding only one course could name the other in
+   * the body and write rows against a course they never bought.
+   */
+  let courseSlug = DEFAULT_COURSE;
+  if (event.httpMethod === 'GET') {
+    const asked = (event.queryStringParameters || {}).course;
+    if (asked) {
+      if (!courses.course(asked)) return json(400, { error: 'Unknown course' });
+      courseSlug = asked;
+    }
+  }
+
+  let held;
   try {
     const { data: profile, error } = await service
       .from('users')
       .select('has_course_access')
       .eq('id', user.id)
       .single();
-    if (error) {
+    // PGRST116 is "no row matched", a legitimate state for an account with no
+    // profile row yet; the access read below is then the only source.
+    if (error && error.code !== 'PGRST116') {
       console.error('course-progress: profile lookup failed', error);
       return json(500, { error: 'Progress tracking is unavailable right now' });
     }
-    if (!profile || !profile.has_course_access) {
-      return json(403, { error: 'This is part of the Catering Profit System' });
-    }
+    ({ slugs: held } = await coursesForUser(service, user.id, profile && profile.has_course_access));
   } catch (err) {
-    console.error('course-progress: profile lookup threw', err);
+    console.error('course-progress: access lookup threw', err);
     return json(500, { error: 'Progress tracking is unavailable right now' });
   }
 
   if (event.httpMethod === 'GET') {
+    // Authorise the course being READ, not just the one being written. Without
+    // this a caller holding nothing still got a 200 with an empty list and the
+    // course's lesson total, where the single-course version answered 403.
+    if (!holds(held, courseSlug)) {
+      const record = courses.course(courseSlug);
+      return json(403, { error: `This is part of ${record.name}` });
+    }
     try {
       const { data, error } = await service
         .from('lesson_progress')
@@ -126,12 +152,20 @@ exports.handler = async (event) => {
         console.error('course-progress: read failed', error);
         return json(500, { error: 'Progress tracking is unavailable right now' });
       }
-      // Filter on the way out too: a row for a lesson that no longer exists
-      // should not count toward the total the page displays.
+      // Filter on the way out too, and to THIS course: a row for a lesson
+      // that no longer exists should not count toward the total the page
+      // displays, and one course's rows must never inflate another's. The two
+      // courses would otherwise share a count, because a student holds both
+      // sets of rows under one user_id.
+      const allowed = courses.lessonIds(courseSlug);
       const completed = (data || [])
-        .filter((r) => LESSONS.has(r.lesson_id))
+        .filter((r) => allowed.has(r.lesson_id))
         .map((r) => r.lesson_id);
-      return json(200, { completed, total: LESSONS.size });
+      return json(200, {
+        completed,
+        total: courses.totalLessons(courseSlug),
+        course: courseSlug
+      });
     } catch (err) {
       console.error('course-progress: read threw', err);
       return json(500, { error: 'Progress tracking is unavailable right now' });
@@ -146,8 +180,14 @@ exports.handler = async (event) => {
   }
 
   const lessonId = typeof payload.lesson_id === 'string' ? payload.lesson_id : '';
-  if (!LESSONS.has(lessonId)) {
+  // The lesson id decides the course, not the request body.
+  const lessonCourse = courses.courseForLessonId(lessonId);
+  if (!lessonCourse) {
     return json(400, { error: 'Unknown lesson' });
+  }
+  if (!holds(held, lessonCourse)) {
+    const record = courses.course(lessonCourse);
+    return json(403, { error: `This is part of ${record.name}` });
   }
   const done = payload.completed !== false;
 

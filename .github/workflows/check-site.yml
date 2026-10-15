@@ -46,6 +46,20 @@ jobs:
       - name: Run site checks
         run: python3 tools/check_site.py
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The course registry decides who gets access to which course and whose
+      # progress is whose. Its two sharpest edges would both fail silently:
+      # the original course's lesson prefix is the empty string, so a prefix
+      # match in the wrong order sends every second-course id to the wrong
+      # course; and a course with two live prices needs both honoured or one
+      # price's buyers pay and get nothing. No dependencies, so it runs here
+      # rather than in the Quality workflow.
+      - name: Course registry and access tests
+        run: node tools/check_courses.js
+
       - name: Confirm the sitemap is current
         # The sitemap is generated. If regenerating it produces a diff, someone
         # hand-edited it or added a page without updating tools/build_sitemap.py.

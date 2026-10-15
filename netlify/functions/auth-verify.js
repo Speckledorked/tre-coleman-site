@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const { coursesForUser } = require('./lib/access.js');
 
 exports.handler = async (event) => {
   // Handle preflight
@@ -73,6 +74,21 @@ exports.handler = async (event) => {
       };
     }
 
+    // Which courses this account holds. Same rule as the profile lookup
+    // above: a failed read is an error, not a verdict of "no access".
+    let courseSlugs;
+    try {
+      ({ slugs: courseSlugs } = await coursesForUser(
+        serviceSupabase, user.id, profile?.has_course_access
+      ));
+    } catch (e) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Verification failed' })
+      };
+    }
+
     return {
       statusCode: 200,
       headers,
@@ -82,7 +98,10 @@ exports.handler = async (event) => {
           id: user.id,
           email: user.email,
           name: profile?.name || user.user_metadata?.name || 'User',
-          has_course_access: profile?.has_course_access || false
+          // Kept for anything still reading the single-course field. It now
+          // means "holds the original course", which is what it always meant.
+          has_course_access: courseSlugs.includes('catering-profit'),
+          courses: courseSlugs
         }
       })
     };

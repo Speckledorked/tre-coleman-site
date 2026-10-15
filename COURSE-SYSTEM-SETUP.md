@@ -77,7 +77,8 @@ See `.env.example` in the repository root for the same list with notes.
 | `SUPABASE_SERVICE_KEY` | Service role key (**secret**, bypasses RLS) | `eyJhbGciOi...` | Yes — viewable in dashboard |
 | `STRIPE_SECRET_KEY` | Stripe secret key | `sk_live_xxxxx` | Yes — revealable in dashboard |
 | `STRIPE_WEBHOOK_SECRET` | Webhook signing secret | `whsec_xxxxx` | **No** — tied to one endpoint URL |
-| `STRIPE_COURSE_PRICE_ID` | Price ID of the course (not a payment link) | `price_xxxxx` | Yes — lookup in Products |
+| `STRIPE_PRICE_IDS_CATERING_PROFIT` | Price IDs granting the Catering Profit System, comma-separated (not payment links) | `price_xxx,price_yyy` | Yes — lookup in Products |
+| `STRIPE_PRICE_IDS_CATERING_PEOPLE` | Price IDs granting the Catering People Course, comma-separated | `price_zzz` | Yes — lookup in Products |
 | `RESEND_API_KEY` | Resend API key | `re_xxxxx` | **No** — shown once |
 | `AIRTABLE_TOKEN` | Airtable personal access token | `patxxxxx...` | **No** — shown once |
 | `CHAT_PASSWORD` | Shared password for the premium AI chat | any string | **No** — self-chosen |
@@ -98,10 +99,27 @@ fails if those two ever disagree.
 
 ### Three that are easy to get wrong
 
-**`STRIPE_COURSE_PRICE_ID` must be a price ID, not a payment link.**
-`netlify/functions/stripe-webhook.js:45-48` matches it against the checkout
-session's line items to decide whether a payment grants course access. If it
-is wrong, customers are charged and receive nothing.
+**The `STRIPE_PRICE_IDS_*` variables must hold price IDs, not payment links,
+and must list every live price for their course.**
+`netlify/functions/stripe-webhook.js` matches them against the checkout
+session's line items to decide which course a payment grants. If one is wrong
+or missing, customers are charged and receive nothing.
+
+They are comma-separated because a course can have several live prices at
+once. The Catering Profit System sells at **$197** evergreen and **$147** to
+the first ten founding members — separate payment links, therefore separate
+Price objects, and **both must be listed**. This is not hypothetical: these
+variables replaced a single `STRIPE_COURSE_PRICE_ID`, which could name only
+one of the two, and whichever price it did not name was a customer who paid
+and was told the payment "is not for the course".
+
+A price ID must appear under exactly one course. The same ID under two makes
+every purchase ambiguous, and the webhook refuses to guess — it grants
+nothing and emails you instead of half-delivering.
+
+Leaving them all unset skips the check and treats every completed checkout as
+the Catering Profit System, the $350 Snapshot included. The function logs a
+warning to that effect on every payment.
 
 **`STRIPE_WEBHOOK_SECRET` cannot be recovered and must be regenerated whenever
 the site URL changes.** Create the endpoint at

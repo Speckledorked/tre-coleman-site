@@ -559,10 +559,27 @@ def check_env_documented():
     the next person reading it learns the function depends on something they
     will not find in the Netlify UI.
     """
+    # Recursive: shared modules live in netlify/functions/lib/, and a variable
+    # read only from there is still read. Globbing the top level alone reported
+    # the two STRIPE_PRICE_IDS_* variables as documented-but-unread, while in
+    # fact every purchase depends on them.
     used = set()
-    for f in glob.glob("netlify/functions/*.js"):
+    dynamic = set()
+    for f in glob.glob("netlify/functions/**/*.js", recursive=True):
         s = open(f, encoding="utf-8", errors="replace").read()
         used |= set(re.findall(r"process\.env\.([A-Z0-9_]+)", s))
+        # process.env[someVariable] — the name is a string literal elsewhere in
+        # the file rather than part of the member expression, so the pattern
+        # above cannot see it. The course registry reads its price variables
+        # this way on purpose: at call time, so a Netlify environment change
+        # takes effect without a redeploy.
+        #
+        # Collecting every env-shaped literal ONLY from files that actually do
+        # dynamic access keeps this narrow. A file with no `process.env[` is
+        # unaffected, so the check still catches a variable documented and
+        # genuinely never read.
+        if "process.env[" in s:
+            dynamic |= set(re.findall(r"['\"]([A-Z][A-Z0-9_]{3,})['\"]", s))
     if not used:
         return
     if not os.path.exists(".env.example"):
@@ -579,6 +596,18 @@ def check_env_documented():
                                     f"Netlify, but is not explained anywhere")
             continue
         err(".env.example", f"{v} is used by a function but not documented")
+
+    # A dynamic literal counts as a read only when it is also documented.
+    # Otherwise any ALL_CAPS string in such a file would start inventing
+    # variables and suppressing the "used but not documented" error above.
+    #
+    # What this therefore does NOT catch: a NEW variable read only dynamically
+    # and never documented. Renaming one in code is caught, from the other
+    # side, as the old name becoming documented-but-unread. Adding one is not.
+    # Tightening it further would mean treating every ALL_CAPS string literal
+    # in these files as an environment variable, which invents findings faster
+    # than it finds real ones.
+    used |= (dynamic & documented)
 
     for v in sorted(documented - used):
         warn(".env.example", f"{v} is documented but no function reads it")
