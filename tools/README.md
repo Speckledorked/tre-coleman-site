@@ -138,6 +138,7 @@ tells you which ones it skipped rather than inventing one.
 | `sync_social_descriptions.py` | Keeps `og:description` / `twitter:description` equal to the meta description |
 | `fix_accessibility.py` | `<main>`, skip links, footer heading levels, nav ARIA |
 | `build_new_pages.py` | Generates the service and location pages |
+| `build_people_course.py` | **One-shot. OVERWRITES.** Generates the seven `course/people/` pages (5 modules, bonus, dashboard) from the module and video manifest inside it. Not one of the eleven CI runs. Re-running it discards anything hand-edited into those pages, so change the manifest, not the output. |
 | `migrate_blog_urls.py` | One-shot: renamed blog files to slugs, added 301s |
 | `fix_contrast.py` | Raises colour pairings measured below WCAG AA |
 | `wire_course_downloads.py` | Adds `downloads.js` to the course pages with download links |
