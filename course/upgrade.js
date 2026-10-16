@@ -1,6 +1,17 @@
 /**
- * The "add the other course" offer, shown on a dashboard to a student who
- * owns exactly one of the two courses.
+ * What a dashboard says about the course you are NOT currently in.
+ *
+ * Two cases, and the second was missing until someone who owned both courses
+ * found there was no way to reach the second one:
+ *
+ *   own ONE  -> offer the other (see the upgrade note below)
+ *   own BOTH -> link to the other, because otherwise the only route to it is
+ *               typing the URL
+ *
+ * The gap was asymmetric and so easy to miss: the People dashboard already
+ * linked back to the Profit one, so it only bit in the direction nobody
+ * tested. Buying the second course made the site look like it had not
+ * registered the purchase.
  *
  * There is no upgrade LINK anywhere, deliberately. The upgrade price grants
  * both courses, because one Stripe price cannot know which one the buyer is
@@ -19,10 +30,35 @@
 
   var ENDPOINT = '/.netlify/functions/course-upgrade-checkout';
 
-  var OTHER = {
-    'catering-profit': 'The Catering People System',
-    'catering-people': 'The Catering Profit System'
+  /**
+   * The courses, client-side.
+   *
+   * This duplicates netlify/functions/lib/courses.js, which is normally the
+   * thing to avoid -- course-progress.js takes its lesson scheme from the
+   * server for exactly that reason. Here the browser needs a name and a path
+   * before it has asked the server anything, so a copy is unavoidable.
+   *
+   * tools/check_courses.js asserts this map against the registry, so the two
+   * cannot drift apart silently. A course added there and forgotten here
+   * would otherwise become quietly unreachable -- which is the bug this map
+   * was extended to fix.
+   */
+  var COURSES = {
+    'catering-profit': {
+      name: 'The Catering Profit System',
+      dashboard: '/course/dashboard.html'
+    },
+    'catering-people': {
+      name: 'The Catering People System',
+      dashboard: '/course/people/dashboard.html'
+    }
   };
+
+  /** Which course's dashboard is this? */
+  function current() {
+    var path = (window.location.pathname || '').toLowerCase();
+    return path.indexOf('/course/people/') === 0 ? 'catering-people' : 'catering-profit';
+  }
 
   function token() {
     // auth.js declares `const CourseAuth`, and a top-level const is a global
@@ -103,15 +139,59 @@
     main.appendChild(wrap);
   }
 
+  /**
+   * Links to the other courses this account already holds.
+   *
+   * Rendered at the TOP of the dashboard, not the bottom: someone who owns
+   * both arrives looking for the other one, and a link below five module
+   * cards is a link they have to go hunting for.
+   */
+  function renderSwitch(owned) {
+    var here = current();
+    var others = owned.filter(function (slug) {
+      return slug !== here && COURSES[slug];
+    });
+    if (!others.length) return;
+
+    var main = document.querySelector('.main-content') || document.querySelector('main');
+    if (!main) return;
+
+    var wrap = document.createElement('section');
+    wrap.className = 'welcome-section';
+
+    var h = document.createElement('h2');
+    h.textContent = others.length > 1 ? 'Your other courses' : 'Your other course';
+    wrap.appendChild(h);
+
+    others.forEach(function (slug) {
+      var p = document.createElement('p');
+      var a = document.createElement('a');
+      a.href = COURSES[slug].dashboard;
+      a.className = 'module-btn';
+      a.textContent = 'Go to ' + COURSES[slug].name + ' \u2192';
+      p.appendChild(a);
+      wrap.appendChild(p);
+    });
+
+    main.insertBefore(wrap, main.firstChild);
+  }
+
   window.CourseUpgrade = {
     init: function () {
       var owned = held();
-      // Exactly one: nothing to upgrade from with none, nothing to add with
-      // both.
+
+      // More than one: they already own the other, so link it rather than
+      // trying to sell them something they have.
+      if (owned.length > 1) {
+        renderSwitch(owned);
+        return;
+      }
+
+      // Exactly one: offer the other. None: nothing to upgrade from.
       if (owned.length !== 1) return;
-      var missing = OTHER[owned[0]];
-      if (!missing) return;
-      render(missing);
+      var other = owned[0] === 'catering-profit' ? 'catering-people' : 'catering-profit';
+      if (!COURSES[other]) return;
+      render(COURSES[other].name);
     }
   };
 }());
