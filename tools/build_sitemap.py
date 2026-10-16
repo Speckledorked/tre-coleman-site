@@ -36,7 +36,6 @@ PAGES = [
     ("/audit.html",                   "audit.html",                 "0.8", "monthly"),
     ("/food-truck-audit.html",        "food-truck-audit.html",      "0.8", "monthly"),
     ("/catering-profit.html",         "catering-profit.html",       "0.7", "monthly"),
-    ("/catering-people.html",         "catering-people.html",       "0.7", "monthly"),
     ("/playbook.html",                "playbook.html",              "0.7", "monthly"),
     ("/blog.html",                    "blog.html",                  "0.7", "weekly"),
     ("/blog/busy-but-not-profitable.html",

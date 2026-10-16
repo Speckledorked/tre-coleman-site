@@ -20,6 +20,23 @@
 
 # Redirect rules
 [[redirects]]
+  # The Catering People System's sales page was merged into
+  # catering-profit.html, which now sells both halves and the complete
+  # system. 301 rather than deleting it: the page was live and in the
+  # sitemap, and anything that linked it should land on the offer rather
+  # than a 404.
+  from = "/catering-people.html"
+  to = "/catering-profit.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/catering-people"
+  to = "/catering-profit.html"
+  status = 301
+  force = true
+
+[[redirects]]
   # Stripe success redirect
   from = "/success"
   to = "/thank-you.html"
