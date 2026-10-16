@@ -27,6 +27,25 @@ process.env.STRIPE_PRICE_IDS_CATERING_BUNDLE = 'price_bundle';
 
 const c = require('../netlify/functions/lib/courses.js');
 
+/**
+ * Only the ids that came from an environment variable.
+ *
+ * Several assertions below are about what the VARIABLES contribute, so they
+ * have to ignore whatever is registered in lib/courses.js. Deriving that set
+ * from the registry rather than matching a hardcoded id prefix means
+ * registering another price or product never breaks an assertion that was
+ * never about it — which it did, twice.
+ */
+const REGISTERED = new Set([
+  ...c.SLUGS.flatMap((slug) => [
+    ...(c.COURSES[slug].priceIds || []), ...(c.COURSES[slug].productIds || []),
+  ]),
+  ...c.BUNDLE_SLUGS.flatMap((slug) => [
+    ...(c.BUNDLES[slug].priceIds || []), ...(c.BUNDLES[slug].productIds || []),
+  ]),
+]);
+const fromEnvOnly = (slug) => c.priceIdsFor(slug).filter((id) => !REGISTERED.has(id));
+
 const failures = [];
 let ran = 0;
 
@@ -39,7 +58,7 @@ function is(got, want, label) {
 
 /* --- prices ------------------------------------------------------------- */
 
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_197', 'price_147'],
   'a trailing comma and stray spaces do not become empty price ids');
 const buy = (...ids) => c.purchaseFromLineItems(ids.map((id) => ({ price: { id } })));
@@ -116,28 +135,30 @@ is(c.allPriceIds().includes('price_bundle'), true,
    checkout as a course purchase -- handing the course to $350 Snapshot
    buyers, who that one price id currently excludes correctly. */
 process.env.STRIPE_COURSE_PRICE_ID = 'price_legacy';
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_197', 'price_147', 'price_legacy'],
   'the superseded variable is added to the profit course, not substituted for it');
 is(buy('price_legacy').slugs, ['catering-profit'],
   'a checkout at the superseded price still grants the profit course');
-is(c.priceIdsFor('catering-people'), ['price_people'],
+is(c.priceIdsFor('catering-people').includes('price_legacy'), false,
   'the superseded variable never grants a later course');
+is(c.priceIdsFor('catering-people').includes('price_people'), true,
+  "and the People course's own configured id is still there");
 
 delete process.env.STRIPE_PRICE_IDS_CATERING_PROFIT;
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_legacy'],
   'with only the superseded variable set, it still gates the profit course alongside the registered ones');
 is(buy('price_snapshot').slugs, [],
   'and the $350 Snapshot is still excluded, which is the regression this guards');
 process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_197, price_147 ,';
 delete process.env.STRIPE_COURSE_PRICE_ID;
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_197', 'price_147'],
   'and it drops back out once unset');
 /* The registered ids are never affected by any of that: they are the floor. */
-is(c.priceIdsFor('catering-profit').filter((id) => id.startsWith('price_1UPg')).length, 2,
-  'the two registered live prices survive every environment permutation above');
+is(c.priceIdsFor('catering-profit').filter((id) => REGISTERED.has(id)).length >= 2, true,
+  'the registered ids survive every environment permutation above');
 
 /* --- matching by PRODUCT as well as price -------------------------------- */
 
@@ -178,6 +199,33 @@ is(c.bundlesRequiringExisting(byProduct('prod_VS4cGwqq2RvVBA').bundles), ['cater
   'and the real upgrade product is still gated on already owning a course');
 is(byProduct('prod_somethingelse').slugs, [],
   'an unregistered product grants nothing');
+
+/* The retired $67 product still lets its buyers in. It stays on sale, and
+   STRIPE_COURSE_PRICE_ID pointed at it, so dropping it would lock out anyone
+   using an old link — and registering it in code means that no longer depends
+   on an environment variable surviving a tidy-up. */
+is(byProduct('prod_TiTNRNGJzG7fwr').slugs, ['catering-profit'],
+  'the retired $67 product still grants the profit course');
+is(byProduct('prod_TiTNRNGJzG7fwr').slugs.includes('catering-people'), false,
+  'but it grants only what it ever sold, not the course that did not exist then');
+
+
+/* The People course sold on its own. ONE product carries both its $197 and
+   $147 prices, so matching the product covers both tiers without naming
+   either — the shape that would have prevented the Profit course's bug. */
+is(byProduct('prod_VS5bug6dIbIa6i').slugs, ['catering-people'],
+  'the real People product grants the People course');
+is(byProduct('prod_VS5bug6dIbIa6i').name, 'The Catering People System',
+  'and names it correctly in the confirmation email');
+is(byProduct('prod_VS5bug6dIbIa6i').slugs.includes('catering-profit'), false,
+  'buying People alone does NOT grant Profit — the whole point of selling them separately');
+is(byProduct('prod_VS5bug6dIbIa6i').bundles, [],
+  'People alone is not a bundle, so none of the bundle gating applies to it');
+
+/* The upgrade has to work from the People side too, not just the Profit side:
+   someone who bought People alone pays $100 and should end up with both. */
+is(c.bundle('catering-upgrade').grants.includes('catering-people'), true,
+  'the upgrade covers a People owner buying Profit, not only the other direction');
 
 /* Stripe sends price.product as an id string, or as the expanded object when
    asked. Reading only one shape would silently stop matching. */
@@ -225,14 +273,26 @@ delete process.env.STRIPE_PRICE_IDS_CATERING_UPGRADE;
 /* --- lesson ids --------------------------------------------------------- */
 
 is(c.totalLessons('catering-profit'), 21, 'profit: 5 modules x 4 lessons + bonus');
-is(c.totalLessons('catering-people'), 21, 'people: same shape');
+is(c.totalLessons('catering-people'), 22,
+  'people: 5 modules x 4 lessons + TWO bonuses');
 is(c.courseForLessonId('m1l1'), 'catering-profit', 'a bare id belongs to the profit course');
 is(c.courseForLessonId('m5l4'), 'catering-profit', 'the last bare lesson');
 is(c.courseForLessonId('bonus'), 'catering-profit', 'the bare bonus');
 is(c.courseForLessonId('pp-m1l1'), 'catering-people',
   'a prefixed id belongs to the people course, NOT to the empty-prefix course');
 is(c.courseForLessonId('pp-m5l4'), 'catering-people', 'the last prefixed lesson');
-is(c.courseForLessonId('pp-bonus'), 'catering-people', 'the prefixed bonus');
+is(c.courseForLessonId('pp-bonus1'), 'catering-people', 'the first prefixed bonus');
+is(c.courseForLessonId('pp-bonus2'), 'catering-people', 'the second prefixed bonus');
+is(c.courseForLessonId('pp-bonus'), null,
+  'and the unnumbered form is not a lesson — the People course has two bonuses, not one');
+
+/* The Profit course's bonus id must stay exactly `bonus`. Rows already exist
+   under it, so renaming it to match the newer scheme would orphan every
+   student's completed bonus for a cosmetic gain. */
+is(c.course('catering-profit').bonusIds, ['bonus'],
+  "the original course's bonus id is unchanged");
+is(c.totalLessons('catering-profit'), 21, 'so the Profit course is still 21 lessons');
+is(c.totalLessons('catering-people'), 22, 'and the People course is 22, having two bonuses');
 is(c.courseForLessonId('m9l9'), null, 'an out-of-range lesson is rejected');
 is(c.courseForLessonId('pp-m9l9'), null, 'an out-of-range prefixed lesson is rejected');
 is(c.courseForLessonId('m0l0'), null, 'a zero-indexed lesson is rejected');
@@ -257,6 +317,17 @@ is(c.courseForDownloadPath('people/module-1/rota.xlsx'), 'catering-people',
   'a people/ download belongs to the people course, not to the empty-prefix course');
 is(c.courseForDownloadPath('/people/module-1/rota.xlsx'), 'catering-people',
   'a leading slash does not change ownership');
+
+/* Real paths from the shipped templates. course-download.js derives the
+   course from the file's path and refuses anyone without that entitlement, so
+   a wrong answer here hands one course's buyers the other course's
+   worksheets. */
+is(c.courseForDownloadPath('people/module-1/Ideal_Buyer_Map.xlsx'), 'catering-people',
+  'a real People template belongs to the People course');
+is(c.courseForDownloadPath('people/bonus/90_Day_People_Plan.pdf'), 'catering-people',
+  'including the ones in its bonus folder');
+is(c.courseForDownloadPath('module-1/Event_Staffing_Calculator.xlsx'), 'catering-profit',
+  'and a real Profit template still belongs to the Profit course');
 
 /* --- misc --------------------------------------------------------------- */
 
@@ -325,6 +396,40 @@ is(access.holds(undefined, 'catering-profit'), false, 'holds: undefined list');
 /* A Supabase client stub: .from().select().eq() resolves to one canned reply. */
 const stub = (reply) => ({ from: () => ({ select: () => ({ eq: async () => reply }) }) });
 
+/**
+ * Run a test that is SUPPOSED to log a warning or an error, with those
+ * silenced and asserted instead.
+ *
+ * Two of the access tests exercise failure paths on purpose, and the code
+ * under test says so loudly — correctly, since in production those are things
+ * somebody needs to see. In CI they landed in the log as:
+ *
+ *   course_access does not exist yet ... Run tools/sql/course_access.sql
+ *   course_access lookup failed for u connection failure
+ *
+ * which reads like a broken deployment in a job that passed, and the first
+ * line is now simply untrue: the migration has been run. A green check whose
+ * log says something is wrong is how people learn to stop reading the log.
+ *
+ * Silencing is not enough on its own, though — a test that expects a warning
+ * should fail if the warning stops being emitted, so the message is captured
+ * and returned for the caller to assert on.
+ */
+async function quietly(fn) {
+  const warn = console.warn;
+  const error = console.error;
+  const captured = [];
+  console.warn = (...a) => captured.push(a.join(' '));
+  console.error = (...a) => captured.push(a.join(' '));
+  try {
+    const value = await fn();
+    return { value, logged: captured.join('\n') };
+  } finally {
+    console.warn = warn;
+    console.error = error;
+  }
+}
+
 async function accessTests() {
   let r = await access.coursesForUser(stub({ data: [{ course_slug: 'catering-people' }], error: null }), 'u', false);
   is(r.slugs, ['catering-people'], 'the table alone grants the people course');
@@ -342,18 +447,25 @@ async function accessTests() {
   r = await access.coursesForUser(stub({ data: [{ course_slug: 'ghost-course' }], error: null }), 'u', false);
   is(r.slugs, [], 'a slug not in the registry is ignored');
 
-  r = await access.coursesForUser(stub({ data: null, error: { code: '42P01' } }), 'u', true);
-  is([r.slugs, r.legacyOnly], [['catering-profit'], true],
+  const missing = await quietly(() =>
+    access.coursesForUser(stub({ data: null, error: { code: '42P01' } }), 'u', true));
+  is([missing.value.slugs, missing.value.legacyOnly], [['catering-profit'], true],
     'a missing table falls back to the boolean instead of throwing');
+  is(/course_access does not exist yet/.test(missing.logged), true,
+    'and says so, because in production that is something somebody has to see');
 
   let threw = false;
-  try {
-    await access.coursesForUser(stub({ data: null, error: { code: '08006', message: 'connection failure' } }), 'u', true);
-  } catch (e) {
-    threw = true;
-  }
+  const failed = await quietly(async () => {
+    try {
+      await access.coursesForUser(
+        stub({ data: null, error: { code: '08006', message: 'connection failure' } }), 'u', true);
+    } catch (e) {
+      threw = true;
+    }
+  });
   is(threw, true,
     'a real query failure throws, so the caller answers 500 rather than telling a buyer they have nothing');
+  is(/lookup failed/.test(failed.logged), true, 'and is logged, not swallowed');
 }
 
 /* --- report ------------------------------------------------------------- */

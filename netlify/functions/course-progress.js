@@ -161,10 +161,24 @@ exports.handler = async (event) => {
       const completed = (data || [])
         .filter((r) => allowed.has(r.lesson_id))
         .map((r) => r.lesson_id);
+      /**
+       * The lesson-id scheme travels with the response.
+       *
+       * The browser has to build ids to tick lessons off, and the only other
+       * way to do that is a second copy of the registry in client JavaScript
+       * — which is a second place for the prefix and the bonus ids to be
+       * wrong, on the exact values that decide whose progress is whose.
+       * Sending them keeps one source of truth on the server.
+       */
+      const record = courses.course(courseSlug);
       return json(200, {
         completed,
         total: courses.totalLessons(courseSlug),
-        course: courseSlug
+        course: courseSlug,
+        prefix: record.lessonPrefix,
+        modules: record.modules,
+        lessonsPerModule: record.lessonsPerModule,
+        bonusIds: record.bonusIds || []
       });
     } catch (err) {
       console.error('course-progress: read threw', err);

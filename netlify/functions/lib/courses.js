@@ -54,7 +54,15 @@ const COURSES = {
     lessonPrefix: '',
     modules: 5,
     lessonsPerModule: 4,
-    hasBonus: true,
+    /**
+     * Bonus lesson ids, listed rather than derived.
+     *
+     * This course's bonus is stored as the bare `bonus`, and rows already
+     * exist under that id. Deriving it from a pattern would have renamed it
+     * the moment a second course needed two bonuses, orphaning every
+     * student's completed row for a cosmetic gain.
+     */
+    bonusIds: ['bonus'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_PROFIT',
     /**
      * The live prices, in code.
@@ -77,6 +85,22 @@ const COURSES = {
     priceIds: [
       'price_1UPgfR3ZIXWMSTgNHf1HlfFv',   // $197 standard
       'price_1UPgeJ3ZIXWMSTgNLDiulogW',   // $147 founding, first 10 buyers
+    ],
+    /**
+     * The retired $67 product, still honoured.
+     *
+     * It is what STRIPE_COURSE_PRICE_ID actually pointed at
+     * (price_1TIXA43ZIXWMSTgNMTp7MFBi on prod_TiTNRNGJzG7fwr) and it stays
+     * live in Stripe, so an old link that still gets used must still let its
+     * buyer in. Registering it here means that no longer depends on an
+     * environment variable nobody will remember the purpose of — clearing the
+     * variable as tidy-up would otherwise quietly stop honouring a product
+     * that is still on sale.
+     *
+     * The PRODUCT rather than the price, so any price on it counts.
+     */
+    productIds: [
+      'prod_TiTNRNGJzG7fwr',   // the retired $67 course, old links still work
     ],
     /**
      * What it costs, for the one place that has to agree with the markup.
@@ -103,11 +127,27 @@ const COURSES = {
     lessonPrefix: 'pp-',
     modules: 5,
     lessonsPerModule: 4,
-    hasBonus: true,
+    // Two bonuses, so 22 lessons rather than 21.
+    bonusIds: ['pp-bonus1', 'pp-bonus2'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_PEOPLE',
-    // Not created yet. Until one exists, no checkout can match this course,
-    // which is the correct behaviour: it cannot be bought yet either.
     priceIds: [],
+    /**
+     * One PRODUCT covers both tiers.
+     *
+     * The $197 and $147 payment links are two Prices on this single Product,
+     * so matching the product grants the course on either without naming each
+     * price — which is the shape of the bug that made all of this necessary
+     * on the Profit course, where a one-price gate silently refused the other
+     * tier. Registering the product means a third tier, or a price change,
+     * needs nothing here.
+     *
+     * Payment links, for the sales page when it is built:
+     *   $197  https://buy.stripe.com/8x228kdd55yn7cp2QBcAo0f
+     *   $147  https://buy.stripe.com/6oU7sEfldd0P0O1gHrcAo0g
+     */
+    productIds: [
+      'prod_VS5bug6dIbIa6i',
+    ],
     usd: 197,
     foundingUsd: 147,
     legacyFlag: false,
@@ -366,7 +406,7 @@ function lessonIds(slug) {
       ids.push(`${record.lessonPrefix}m${m}l${l}`);
     }
   }
-  if (record.hasBonus) ids.push(`${record.lessonPrefix}bonus`);
+  for (const id of record.bonusIds || []) ids.push(id);
   return new Set(ids);
 }
 
@@ -374,7 +414,7 @@ function lessonIds(slug) {
 function totalLessons(slug) {
   const record = course(slug);
   if (!record) return 0;
-  return record.modules * record.lessonsPerModule + (record.hasBonus ? 1 : 0);
+  return record.modules * record.lessonsPerModule + (record.bonusIds || []).length;
 }
 
 /**

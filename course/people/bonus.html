@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Bonus Material - The Catering People System</title>
+  <meta name="description" content="Bonus material for the Catering People System.">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="../../fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="../../fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="../../ledger.css" />
+  </head>
+<body class="ledger">
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div id="loading" class="loading">Loading bonus material...</div>
+
+  <div id="bonus-page" style="display: none;">
+    <header class="module-header">
+      <div class="header-content">
+        <div class="header-nav">
+          <a href="dashboard.html" class="back-btn">&larr; Back to Dashboard</a>
+        </div>
+        <button onclick="CourseAuth.logout()" class="logout-btn">Log Out</button>
+      </div>
+    </header>
+
+    <section class="module-hero">
+      <div class="module-hero-content">
+        <span class="module-number">BONUS</span>
+        <h1>Put It Into Practice</h1>
+        <p>Two sessions for after the course: a plan for the first ninety days, and the communication tools to run it with.</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <main class="main-content" id="main-content">
+        <div class="lesson-videos">
+        <div class="lesson-video" id="lesson-1">
+          <h2>Bonus 1: Your 90-Day People Plan</h2>
+          <div class="video-embed">
+            <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/hIWKmty9Ohs" title="Catering People System &mdash; Bonus 1: Your 90-Day People Plan" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="lesson-video" id="lesson-2">
+          <h2>Bonus 2: Team Communication Toolkit</h2>
+          <div class="video-embed">
+            <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/ZmZSbmChNFg" title="Catering People System &mdash; Bonus 2: Team Communication Toolkit" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+        </div>
+        </div>
+        <div class="nav-buttons">
+          <a href="module-5.html" class="nav-btn prev">&larr; Team and Culture</a>
+          <a href="dashboard.html" class="nav-btn next">Back to Dashboard &rarr;</a>
+        </div>
+      </main>
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>Sessions</h3>
+          <ul class="lessons-list">
+            <li><a href="#lesson-1" class="active">&#9654; Your 90-Day People Plan</a></li>
+            <li><a href="#lesson-2">&#9654; Team Communication Toolkit</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-card">
+          <h3>Downloads</h3>
+          <ul class="download-list">
+            <li><span>&#128196; 90-Day People Plan (DOCX)</span><a href="../downloads/people/bonus/90_Day_People_Plan.docx" download class="dl-btn">&#11015; Download</a></li>
+            <li><span>&#128196; 90-Day People Plan (PDF)</span><a href="../downloads/people/bonus/90_Day_People_Plan.pdf" download class="dl-btn">&#11015; Download</a></li>
+            <li><span>&#128196; Team Communication Toolkit</span><a href="../downloads/people/bonus/Team_Communication_Toolkit.docx" download class="dl-btn">&#11015; Download</a></li>
+            <li><span>&#128196; Staff Roster Tracker</span><a href="../downloads/people/bonus/Staff_Roster_Tracker.xlsx" download class="dl-btn">&#11015; Download</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <script src="../auth.js"></script>
+  <!-- Intercepts download links and re-issues them with the Bearer token;
+       an <a href> cannot send an Authorization header, and
+       /course/downloads/* is a function, not a static file. -->
+  <script src="../downloads.js"></script>
+  <script src="../progress.js"></script>
+  <script src="../upgrade.js"></script>
+  <script>
+    async function initPage() {
+      CourseAuth.init();
+      const back = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+      if (!CourseAuth.isLoggedIn()) { window.location.href = back; return; }
+      const isValid = await CourseAuth.verifySession();
+      if (!isValid) { window.location.href = back; return; }
+      if (!CourseAuth.hasCourseAccess('catering-people')) {
+        window.location.href = '/course/no-access.html?course=catering-people';
+        return;
+      }
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('bonus-page').style.display = 'block';
+      const nameEl = document.getElementById('user-name');
+      if (nameEl) {
+        const u = CourseAuth.getUser();
+        if (u && u.name) nameEl.textContent = u.name;
+      }
+      CourseProgress.init();
+      // Only the dashboard offers the other course; module pages do not.
+      if (typeof CourseUpgrade !== 'undefined' && document.getElementById('dashboard')) {
+        CourseUpgrade.init();
+      }
+    }
+    initPage();
+  </script>
+</body>
+</html>

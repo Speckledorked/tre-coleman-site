@@ -867,6 +867,32 @@ def course_file_text(path):
     return xml.sax.saxutils.unescape(re.sub(r"<[^>]+>", " ", raw))
 
 
+def check_course_external_links():
+    """A paid course page must not link a course asset out to Google.
+
+    Twenty-five "Open in Google Sheets" and "Open in browser" buttons sat
+    beside the download buttons. TWENTY-ONE of them were owner-only in Drive,
+    so a student who had paid clicked one and got "Request access". The four
+    that worked were Module 1's, shared once and never repeated.
+
+    Nothing caught it, and could not have: both a shared and an unshared
+    Google URL answer 302 to a link checker, so the external-link job saw an
+    identical response for a working sheet and a locked one.
+
+    They also went around the paywall. /course/downloads/* is a function that
+    checks a Bearer token; a Google link is a bearer token itself, so a
+    forwarded URL is a free template. The authenticated download is the one
+    route in, and this keeps it that way.
+
+    Scoped to course pages. The rest of the site may link Google freely.
+    """
+    for path in sorted(glob.glob("course/**/*.html", recursive=True)):
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for m in re.finditer(r'href="(https://(?:docs|drive)\.google\.com/[^"]+)"', s):
+            err(path, f"links a course asset out to Google: {m.group(1)[:72]} — "
+                      f"use the authenticated /course/downloads/ route instead")
+
+
 def check_prices():
     """The Snapshot price must be $350 wherever it is named.
 
@@ -1192,6 +1218,8 @@ def check_component_css():
 CHECKS = [
     ("netlify-toml", check_netlify_toml, "netlify.toml parses and its redirects are sane"),
     ("secrets", check_secrets, "live credentials in tracked files"),
+    ("course-external", check_course_external_links,
+     "course pages route assets through the authenticated download, not Google"),
     ("gitignore", check_gitignore, ".env is ignored"),
     ("json-ld", check_json_ld, "schema parses and describes its own page"),
     ("metadata", check_metadata, "title/description/canonical/h1 sanity"),

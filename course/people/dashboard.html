@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Course Dashboard - The Catering People System</title>
+  <meta name="description" content="Your dashboard for the Catering People System.">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+    <!-- Self-hosted variable fonts: same origin, two files, no third-party
+         chain in the critical path. crossorigin is required on a font
+         preload even same-origin. -->
+    <link rel="preload" as="font" type="font/woff2" href="../../fonts/archivo-var-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="../../fonts/inter-var-latin.woff2" crossorigin>
+    <link rel="stylesheet" href="../../ledger.css" />
+  </head>
+<body class="ledger">
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div id="loading" class="loading">Loading your course...</div>
+
+  <div id="dashboard" style="display: none;">
+    <header class="module-header">
+      <div class="header-content">
+        <div class="header-nav">
+          <a href="/course/dashboard.html" class="back-btn">&larr; The Catering Profit System</a>
+        </div>
+        <button onclick="CourseAuth.logout()" class="logout-btn">Log Out</button>
+      </div>
+    </header>
+
+    <main class="main-content" id="main-content">
+      <section class="welcome-section">
+        <h1>The Catering People System</h1>
+        <h2>Welcome back, <span id="user-name">Student</span>!</h2>
+        <p>Five modules on finding the work and building the team that delivers it. Two bonus sessions at the end.</p>
+      </section>
+
+      <!-- The module cards are h3, so this h2 is what keeps the outline from
+           jumping h1 to h3. The Profit dashboard gets the same level from its
+           "Welcome back" heading; check_site.py's html-a11y check caught the
+           omission here. -->
+      <h2 class="section-heading">Modules</h2>
+      <section class="modules-grid">
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-number">Module 1</span>
+            <h3>Lead Generation</h3>
+          </div>
+          <div class="module-content">
+            <p>Find buyers, position right, and book the call.</p>
+            <ul class="module-deliverables">
+              <li>Where Catering Buyers Actually Are</li>
+              <li>Positioning for Corporate vs. Private Events</li>
+              <li>Outreach Systems That Work</li>
+              <li>Converting Inquiries Into Booked Calls</li>
+            </ul>
+            <a href="module-1.html" class="module-btn">Go to Module 1 &rarr;</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-number">Module 2</span>
+            <h3>Marketing</h3>
+          </div>
+          <div class="module-content">
+            <p>Build a brand that books gigs on repeat.</p>
+            <ul class="module-deliverables">
+              <li>Brand and Messaging for Caterers</li>
+              <li>Social Media That Books Gigs</li>
+              <li>Flyers, Materials, and Local Presence</li>
+              <li>Reviews and Reputation Management</li>
+            </ul>
+            <a href="module-2.html" class="module-btn">Go to Module 2 &rarr;</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-number">Module 3</span>
+            <h3>Winning and Keeping Clients</h3>
+          </div>
+          <div class="module-content">
+            <p>Close the sale and keep them coming back.</p>
+            <ul class="module-deliverables">
+              <li>The Sales Conversation</li>
+              <li>Pricing and Proposals</li>
+              <li>Referral Systems</li>
+              <li>Handling Difficult Client Situations</li>
+            </ul>
+            <a href="module-3.html" class="module-btn">Go to Module 3 &rarr;</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-number">Module 4</span>
+            <h3>Hiring and Staffing</h3>
+          </div>
+          <div class="module-content">
+            <p>Hire right, onboard fast, and handle the hard exits.</p>
+            <ul class="module-deliverables">
+              <li>Who to Hire and When</li>
+              <li>The Hiring Process</li>
+              <li>Onboarding and Training</li>
+              <li>Letting Someone Go</li>
+            </ul>
+            <a href="module-4.html" class="module-btn">Go to Module 4 &rarr;</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-number">Module 5</span>
+            <h3>Team and Culture</h3>
+          </div>
+          <div class="module-content">
+            <p>Build a team that stays and performs on event day.</p>
+            <ul class="module-deliverables">
+              <li>Building a Culture People Want to Stay In</li>
+              <li>Retention Strategies</li>
+              <li>Accountability Without Micromanaging</li>
+              <li>Leading the Team on Event Day</li>
+            </ul>
+            <a href="module-5.html" class="module-btn">Go to Module 5 &rarr;</a>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="welcome-section">
+        <h2>Bonus Material</h2>
+        <p>A ninety-day plan and a communication toolkit, for once you have been through the modules.</p>
+        <a href="bonus.html" class="module-btn">Go to Bonus Material &rarr;</a>
+      </section>
+    </main>
+  </div>
+  <script src="../auth.js"></script>
+  <!-- Intercepts download links and re-issues them with the Bearer token;
+       an <a href> cannot send an Authorization header, and
+       /course/downloads/* is a function, not a static file. -->
+  <script src="../downloads.js"></script>
+  <script src="../progress.js"></script>
+  <script src="../upgrade.js"></script>
+  <script>
+    async function initPage() {
+      CourseAuth.init();
+      const back = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+      if (!CourseAuth.isLoggedIn()) { window.location.href = back; return; }
+      const isValid = await CourseAuth.verifySession();
+      if (!isValid) { window.location.href = back; return; }
+      if (!CourseAuth.hasCourseAccess('catering-people')) {
+        window.location.href = '/course/no-access.html?course=catering-people';
+        return;
+      }
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      const nameEl = document.getElementById('user-name');
+      if (nameEl) {
+        const u = CourseAuth.getUser();
+        if (u && u.name) nameEl.textContent = u.name;
+      }
+      CourseProgress.init();
+      // Only the dashboard offers the other course; module pages do not.
+      if (typeof CourseUpgrade !== 'undefined' && document.getElementById('dashboard')) {
+        CourseUpgrade.init();
+      }
+    }
+    initPage();
+  </script>
+</body>
+</html>
