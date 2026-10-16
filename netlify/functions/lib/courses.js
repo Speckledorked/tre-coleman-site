@@ -147,6 +147,7 @@ const BUNDLES = {
      * is not created yet, and until it is, a $297 checkout matches nothing.
      */
     productIds: [
+      'prod_VS4zUUhRNMs2eR',   // standard bundle, $297
       'prod_VS4cctwqCDniwT',   // founders bundle, $247
     ],
     usd: 297,

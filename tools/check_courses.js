@@ -147,8 +147,29 @@ is(c.priceIdsFor('catering-profit').filter((id) => id.startsWith('price_1UPg')).
 const byProduct = (productId) =>
   c.purchaseFromLineItems([{ price: { id: 'price_irrelevant', product: productId } }]);
 
+is(byProduct('prod_VS4zUUhRNMs2eR').slugs, ['catering-profit', 'catering-people'],
+  'the real STANDARD bundle product ($297) grants both courses');
 is(byProduct('prod_VS4cctwqCDniwT').slugs, ['catering-profit', 'catering-people'],
-  'the real founders bundle product grants both courses');
+  'the real FOUNDERS bundle product ($247) grants both courses');
+is(c.bundlesRequiringExisting(byProduct('prod_VS4zUUhRNMs2eR').bundles), [],
+  'the standard bundle is bought outright, so it is not gated on owning anything');
+
+/* Every registered Stripe identifier, across every course and bundle, must be
+   distinct. The same product under two of them would grant the wrong thing,
+   and the symptom is silent: someone is simply let into more than they paid
+   for. */
+const registered = [
+  ...c.SLUGS.flatMap((slug) => [
+    ...(c.COURSES[slug].priceIds || []), ...(c.COURSES[slug].productIds || []),
+  ]),
+  ...c.BUNDLE_SLUGS.flatMap((slug) => [
+    ...(c.BUNDLES[slug].priceIds || []), ...(c.BUNDLES[slug].productIds || []),
+  ]),
+];
+is(new Set(registered).size, registered.length,
+  'no Stripe price or product id is registered against two different things');
+is(registered.every((id) => /^(price|prod)_[A-Za-z0-9]+$/.test(id)), true,
+  'every registered id is a price or product id — never a payment link, which would never match');
 is(byProduct('prod_VS4cctwqCDniwT').name, 'The Complete Catering System: Profit + People',
   'and is named as the bundle');
 is(byProduct('prod_VS4cGwqq2RvVBA').slugs, ['catering-profit', 'catering-people'],
