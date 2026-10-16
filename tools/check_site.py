@@ -916,6 +916,54 @@ def check_no_placeholder_links():
                       f"real URL before this ships")
 
 
+def check_download_orphans():
+    """Every file under course/downloads/ must be linked from a course page.
+
+    course-download.js builds its allowlist by WALKING this directory, so an
+    unlinked file is still a live, fetchable URL for anyone who holds that
+    course and can guess the path -- and it ships inside every function bundle,
+    because netlify.toml's included_files pulls in course/downloads/**.
+
+    It found Cash_Flow_Projection(1).xlsx: a byte-identical duplicate of the
+    real file, sitting beside it from a double upload, linked by nothing. The
+    unused-img check only warns above 100 KB and only looks at images, so
+    nothing was watching this directory at all.
+
+    The mirror of check_course_download_links below: that one catches a link
+    with no file, this one a file with no link.
+    """
+    linked = set()
+    for path in glob.glob("course/**/*.html", recursive=True):
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for m in re.finditer(r'href="(?:\.\./)*downloads/([^"]+)"', s):
+            linked.add(m.group(1))
+
+    for path in sorted(glob.glob("course/downloads/**/*", recursive=True)):
+        if not os.path.isfile(path):
+            continue
+        rel = os.path.relpath(path, "course/downloads")
+        if rel not in linked:
+            err(path, "sits in course/downloads/ but no course page links it — "
+                      "delete it, or link it from the module it belongs to")
+
+
+def check_course_download_links():
+    """Every course download link must resolve to a file that exists.
+
+    A link with nothing behind it answers 404 through course-download.js, and
+    the student is left clicking something inside a course they paid for that
+    will never work. Nothing else notices: the page is valid HTML, and the
+    external link checker does not resolve same-origin paths that are served
+    by a function rather than from disk.
+    """
+    for path in sorted(glob.glob("course/**/*.html", recursive=True)):
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for m in re.finditer(r'href="((?:\.\./)*downloads/[^"]+)"', s):
+            target = os.path.normpath(os.path.join(os.path.dirname(path), m.group(1)))
+            if not os.path.isfile(target):
+                err(path, f"download link resolves to nothing: {m.group(1)}")
+
+
 def check_prices():
     """The Snapshot price must be $350 wherever it is named.
 
@@ -1241,6 +1289,10 @@ def check_component_css():
 CHECKS = [
     ("netlify-toml", check_netlify_toml, "netlify.toml parses and its redirects are sane"),
     ("secrets", check_secrets, "live credentials in tracked files"),
+    ("download-orphans", check_download_orphans,
+     "every course download file is linked from a page"),
+    ("download-links", check_course_download_links,
+     "every course download link resolves to a real file"),
     ("placeholder-links", check_no_placeholder_links,
      "no page ships with an unresolved link placeholder"),
     ("course-external", check_course_external_links,
