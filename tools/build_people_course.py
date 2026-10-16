@@ -257,6 +257,27 @@ def slug(name):
     return "".join(keep).strip().replace(" ", "_")
 
 
+# A download whose FILE is named differently from its label, where the
+# difference is a real word rather than punctuation. Listed explicitly rather
+# than matched loosely: dropping a word to make two names meet is how the
+# wrong file ends up behind the right button.
+FILE_OVERRIDES = {
+    "Recognition and Incentive Menu": "Recognition_Incentive_Menu",
+}
+
+
+def norm(value):
+    """Compare names ignoring punctuation only.
+
+    The files use underscores where the labels use hyphens
+    ("30-Day Onboarding Plan" -> 30_Day_Onboarding_Plan.docx). That is the
+    same name written two ways, so matching through it is safe. Word
+    differences are NOT bridged here -- those go in FILE_OVERRIDES where they
+    can be seen.
+    """
+    return "".join(c for c in value.lower() if c.isalnum())
+
+
 def find_download(folder, name):
     """The real file for a download, whatever extension it has.
 
@@ -271,31 +292,40 @@ def find_download(folder, name):
     left clicking something that will never work. The missing ones are
     reported at the end instead.
     """
-    base = slug(name)
+    base = FILE_OVERRIDES.get(name) or slug(name)
     folder_path = os.path.join(DOWNLOAD_ROOT, folder)
     if not os.path.isdir(folder_path):
         MISSING.append(f"{folder}/{base}.*")
-        return None
+        return []
+
+    found = []
     for entry in sorted(os.listdir(folder_path)):
         stem, ext = os.path.splitext(entry)
-        if stem == base and ext:
-            return entry
-    MISSING.append(f"{folder}/{base}.*")
-    return None
+        if ext and norm(stem) == norm(base):
+            found.append(entry)
+
+    if not found:
+        MISSING.append(f"{folder}/{base}.*")
+    return found
 
 
 def downloads_card(folder, names):
     """The sidebar card, or nothing at all if no file exists yet."""
     rows = []
     for name in names:
-        filename = find_download(folder, name)
-        if not filename:
-            continue
-        href = f"../downloads/people/{folder}/{filename}"
-        rows.append(
-            f'            <li><span>&#128196; {esc(name)}</span>'
-            f'<a href="{href}" download class="dl-btn">&#11015; Download</a></li>\n'
-        )
+        files = find_download(folder, name)
+        for filename in files:
+            # One template can ship in more than one format -- the 90-Day
+            # People Plan is a PDF to read and a Word file to fill in. Label
+            # the format when there is a choice, and say nothing when there
+            # is not, so the common row stays clean.
+            ext = os.path.splitext(filename)[1].lstrip(".").upper()
+            label = f"{name} ({ext})" if len(files) > 1 else name
+            href = f"../downloads/people/{folder}/{filename}"
+            rows.append(
+                f'            <li><span>&#128196; {esc(label)}</span>'
+                f'<a href="{href}" download class="dl-btn">&#11015; Download</a></li>\n'
+            )
     if not rows:
         return ""
     return ("""        <div class="sidebar-card">

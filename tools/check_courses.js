@@ -318,6 +318,17 @@ is(c.courseForDownloadPath('people/module-1/rota.xlsx'), 'catering-people',
 is(c.courseForDownloadPath('/people/module-1/rota.xlsx'), 'catering-people',
   'a leading slash does not change ownership');
 
+/* Real paths from the shipped templates. course-download.js derives the
+   course from the file's path and refuses anyone without that entitlement, so
+   a wrong answer here hands one course's buyers the other course's
+   worksheets. */
+is(c.courseForDownloadPath('people/module-1/Ideal_Buyer_Map.xlsx'), 'catering-people',
+  'a real People template belongs to the People course');
+is(c.courseForDownloadPath('people/bonus/90_Day_People_Plan.pdf'), 'catering-people',
+  'including the ones in its bonus folder');
+is(c.courseForDownloadPath('module-1/Event_Staffing_Calculator.xlsx'), 'catering-profit',
+  'and a real Profit template still belongs to the Profit course');
+
 /* --- misc --------------------------------------------------------------- */
 
 is(c.hasLegacyFlag('catering-profit'), true,
