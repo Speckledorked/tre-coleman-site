@@ -139,6 +139,36 @@ is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg'))
 is(c.priceIdsFor('catering-profit').filter((id) => id.startsWith('price_1UPg')).length, 2,
   'the two registered live prices survive every environment permutation above');
 
+/* --- the bundle and the upgrade ---------------------------------------- */
+
+process.env.STRIPE_PRICE_IDS_CATERING_UPGRADE = 'price_upgrade';
+is(buy('price_upgrade').slugs, ['catering-profit', 'catering-people'],
+  'the upgrade grants BOTH courses, because one price cannot know which one the buyer lacks');
+is(buy('price_upgrade').bundles, ['catering-upgrade'], 'the upgrade is reported as its own product');
+is(c.bundlesRequiringExisting(buy('price_upgrade').bundles), ['catering-upgrade'],
+  'the upgrade is gated on already holding a course — without this it is a $100 link worth $297');
+is(c.bundlesRequiringExisting(buy('price_bundle').bundles), [],
+  'the full bundle is NOT gated: it is the whole price, bought outright');
+is(c.bundlesRequiringExisting([]), [], 'no bundles, nothing gated');
+is(c.bundlesRequiringExisting(null), [], 'null is safe');
+
+/* The money has to add up, or the upgrade is either a discount nobody
+   intended or a worse deal than buying the second course outright. */
+const profit = c.course('catering-profit');
+const complete = c.bundle('catering-complete');
+const upgrade = c.bundle('catering-upgrade');
+is(complete.usd - profit.usd, upgrade.usd,
+  'the upgrade is exactly the difference between one standard course and the bundle');
+is(complete.foundingUsd - profit.foundingUsd, upgrade.usd,
+  'and exactly the difference at the founding prices too, so it is one figure either way');
+
+/* Every bundle price must be gated or not on purpose, never by omission. */
+for (const b of c.BUNDLE_SLUGS) {
+  is(typeof c.BUNDLES[b].requiresExisting, 'boolean',
+    `bundle ${b} states explicitly whether it requires an existing course`);
+}
+delete process.env.STRIPE_PRICE_IDS_CATERING_UPGRADE;
+
 /* --- lesson ids --------------------------------------------------------- */
 
 is(c.totalLessons('catering-profit'), 21, 'profit: 5 modules x 4 lessons + bonus');

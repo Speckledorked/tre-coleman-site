@@ -3,6 +3,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
 const crypto = require('crypto');
 const courses = require('./lib/courses.js');
+const { coursesForUser } = require('./lib/access.js');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -134,6 +135,45 @@ exports.handler = async (event) => {
         // place it can be counted.
         await reportPurchaseToGA4(stripeEvent, lineItems);
         return { statusCode: 200, body: 'Non-course payment acknowledged' };
+      }
+
+      /**
+       * The upgrade price is only for someone who already owns one course.
+       *
+       * It grants both courses, because one Stripe price cannot know which one
+       * the buyer is missing. That makes the $100 link worth $297 to anyone
+       * who finds it, and a Stripe payment link cannot be gated on a previous
+       * purchase — an unlisted link is still a shareable URL.
+       *
+       * So: if they hold neither course, grant nothing and ask for a human.
+       * They have underpaid, and whether to refund or bill the difference is
+       * not a decision to make automatically. Checked BEFORE any access is
+       * written, so nothing has to be taken back.
+       */
+      const gated = courses.bundlesRequiringExisting(purchased.bundles);
+      if (gated.length) {
+        const existing = await heldCourses(customerEmail);
+        const qualifies = existing.some((slug) => purchased.slugs.includes(slug));
+        if (!qualifies) {
+          console.error(`Upgrade bought by ${customerEmail} who holds no course (session ${session.id})`);
+          await alertAdmin('Upgrade price bought by someone with no course', `
+            <p>${customerEmail} paid the upgrade price, which is the difference
+               between one course and the bundle, but holds neither course.</p>
+            <p>Stripe Session ID: ${session.id}</p>
+            <p>Amount: $${((session.amount_total || 0) / 100).toFixed(2)}</p>
+            <p><strong>No access has been granted.</strong> They have underpaid
+               for what that price grants, so this needs a decision: refund
+               them, bill the difference, or grant it anyway by inserting rows
+               into <code>course_access</code> for
+               <code>${purchased.slugs.join('</code> and <code>')}</code>.</p>
+            <p>If this keeps happening the upgrade link has got out, and the
+               price should be replaced with a fresh one.</p>
+          `);
+          await reportPurchaseToGA4(stripeEvent, lineItems);
+          // 200: a redelivery cannot change who they are, and a 500 makes
+          // Stripe retry the same event for days.
+          return { statusCode: 200, body: 'Upgrade without a prior course, owner alerted' };
+        }
       }
     }
 
@@ -350,6 +390,43 @@ exports.handler = async (event) => {
 
   return { statusCode: 200, body: 'Event received' };
 };
+
+/**
+ * Which courses the account behind this email already holds.
+ *
+ * Used only by the upgrade guard, before anything is granted. Returns an
+ * EMPTY list for an unknown email, which is the honest answer: no account, no
+ * courses, so an upgrade bought with it does not qualify.
+ *
+ * Never throws. A failure here must not fail the purchase of a bundle that
+ * does not need the check, and the caller treats an empty list as "does not
+ * qualify", which alerts a human rather than granting or refusing silently.
+ */
+async function heldCourses(email) {
+  try {
+    const { data: user } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', String(email || '').toLowerCase())
+      .single();
+    if (!user) return [];
+
+    const { data: profile } = await supabase
+      .from('users')
+      .select('has_course_access')
+      .eq('id', user.id)
+      .single();
+
+    const { slugs } = await coursesForUser(
+      supabase, user.id, profile && profile.has_course_access
+    );
+    return slugs;
+  } catch (e) {
+    console.error('Could not read existing courses for', email, e.message);
+    return [];
+  }
+}
+
 
 /**
  * Record that a user may open a course.

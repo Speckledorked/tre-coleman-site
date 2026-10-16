@@ -78,6 +78,17 @@ const COURSES = {
       'price_1UPgfR3ZIXWMSTgNHf1HlfFv',   // $197 standard
       'price_1UPgeJ3ZIXWMSTgNLDiulogW',   // $147 founding, first 10 buyers
     ],
+    /**
+     * What it costs, for the one place that has to agree with the markup.
+     *
+     * Not read at runtime — the webhook only ever matches price ids, and the
+     * amount it charged is Stripe's business. These are here so the arithmetic
+     * between the courses, the bundle and the upgrade is checked rather than
+     * assumed: tools/check_courses.js asserts the upgrade really is the
+     * difference, at both the standard and the founding prices.
+     */
+    usd: 197,
+    foundingUsd: 147,
     /* The single-course boolean on users. Only this course honours it, and
        only as a fallback, so buyers keep working between this deploying and
        tools/sql/course_access.sql being run. See hasLegacyFlag below. */
@@ -97,6 +108,8 @@ const COURSES = {
     // Not created yet. Until one exists, no checkout can match this course,
     // which is the correct behaviour: it cannot be bought yet either.
     priceIds: [],
+    usd: 197,
+    foundingUsd: 147,
     legacyFlag: false,
   },
 };
@@ -126,7 +139,43 @@ const BUNDLES = {
     name: 'The Catering Profit + People Bundle',
     grants: ['catering-profit', 'catering-people'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_BUNDLE',
+    // $297 standard, $247 founding. Price ids go here once the products exist
+    // in Stripe; until then no checkout can match, which is correct, because
+    // until then it cannot be bought either.
     priceIds: [],
+    usd: 297,
+    foundingUsd: 247,
+    requiresExisting: false,
+  },
+
+  /**
+   * The upgrade: someone who owns one course paying the difference for the
+   * other. $100, which is $297 - $197 and also $247 - $147, so it is the same
+   * figure whether they bought at the standard or the founding price.
+   *
+   * It grants BOTH courses rather than "the other one", because a single
+   * Stripe price cannot know which one the buyer is missing. Granting both is
+   * correct from either direction: the course_access upsert makes the one they
+   * already hold a no-op, so a Profit owner gains People and a People owner
+   * gains Profit, from the same price.
+   *
+   * requiresExisting IS THE POINT. Without it this is a $100 link that hands
+   * both courses to anyone who finds it -- a $197 hole, since the bundle is
+   * $297. Stripe payment links cannot be gated on a previous purchase, and an
+   * unlisted link is still a shareable URL. So the webhook checks that the
+   * buyer already holds one of the two and, if they hold neither, grants
+   * nothing and asks for a human: that is someone who has underpaid, and
+   * whether to refund them or bill the difference is not a decision to make
+   * automatically.
+   */
+  'catering-upgrade': {
+    slug: 'catering-upgrade',
+    name: 'The Catering Profit + People Bundle (upgrade)',
+    grants: ['catering-profit', 'catering-people'],
+    priceEnv: 'STRIPE_PRICE_IDS_CATERING_UPGRADE',
+    priceIds: [],
+    usd: 100,
+    requiresExisting: true,
   },
 };
 
@@ -135,6 +184,17 @@ const BUNDLE_SLUGS = Object.keys(BUNDLES);
 /** The bundle record, or null. */
 function bundle(slug) {
   return Object.prototype.hasOwnProperty.call(BUNDLES, slug) ? BUNDLES[slug] : null;
+}
+
+/**
+ * Bundles matched by these line items that may only be bought by someone who
+ * already holds one of the courses they grant. See catering-upgrade.
+ */
+function bundlesRequiringExisting(bundleSlugs) {
+  return (bundleSlugs || []).filter((slug) => {
+    const record = bundle(slug);
+    return Boolean(record && record.requiresExisting);
+  });
 }
 
 /** Price ids configured for a bundle. */
@@ -343,6 +403,7 @@ module.exports = {
   BUNDLE_SLUGS,
   bundle,
   bundlePriceIdsFor,
+  bundlesRequiringExisting,
   lessonIds,
   totalLessons,
   courseForLessonId,
