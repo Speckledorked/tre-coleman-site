@@ -468,6 +468,30 @@ async function accessTests() {
   is(/lookup failed/.test(failed.logged), true, 'and is logged, not swallowed');
 }
 
+/* --- the client-side course map (course/upgrade.js) ---------------------- */
+
+/* upgrade.js keeps its own small copy of the courses, because the browser
+   needs a name and a dashboard path before it has asked the server anything.
+   Unchecked, a course added to the registry and forgotten there becomes
+   quietly UNREACHABLE: nothing links it, and the only route in is typing the
+   URL. That is not hypothetical -- it is what happened to the People course
+   for everyone who owned both, until someone said so. */
+const upgradeSrc = require('fs').readFileSync(
+  require('path').join(__dirname, '../course/upgrade.js'), 'utf8');
+
+const clientSlugs = [...upgradeSrc.matchAll(/'(catering-[a-z]+)':\s*\{/g)].map((m) => m[1]);
+
+is(clientSlugs.slice().sort(), c.SLUGS.slice().sort(),
+  'course/upgrade.js lists exactly the courses the registry does');
+
+for (const slug of c.SLUGS) {
+  const record = c.COURSES[slug];
+  is(upgradeSrc.includes(`'${record.name}'`), true,
+    `upgrade.js uses the registry's name for ${slug}: ${record.name}`);
+  is(upgradeSrc.includes(`'${record.basePath}dashboard.html'`), true,
+    `upgrade.js points ${slug} at its real dashboard: ${record.basePath}dashboard.html`);
+}
+
 /* --- report ------------------------------------------------------------- */
 
 function report() {

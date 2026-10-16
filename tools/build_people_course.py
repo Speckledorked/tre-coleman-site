@@ -509,9 +509,12 @@ def dashboard_page():
   <div id="dashboard" style="display: none;">
     <header class="module-header">
       <div class="header-content">
-        <div class="header-nav">
-          <a href="/course/dashboard.html" class="back-btn">&larr; The Catering Profit System</a>
-        </div>
+        <!-- No link to the other course here. It used to be an
+             unconditional "← The Catering Profit System", which pointed a
+             People-only buyer at a dashboard that would greet them with the
+             no-access overlay. upgrade.js now renders a link to the other
+             course only when the account actually holds it. -->
+        <div class="header-nav"></div>
         <button onclick="CourseAuth.logout()" class="logout-btn">Log Out</button>
       </div>
     </header>
