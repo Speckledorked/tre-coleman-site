@@ -373,6 +373,40 @@ is(access.holds(undefined, 'catering-profit'), false, 'holds: undefined list');
 /* A Supabase client stub: .from().select().eq() resolves to one canned reply. */
 const stub = (reply) => ({ from: () => ({ select: () => ({ eq: async () => reply }) }) });
 
+/**
+ * Run a test that is SUPPOSED to log a warning or an error, with those
+ * silenced and asserted instead.
+ *
+ * Two of the access tests exercise failure paths on purpose, and the code
+ * under test says so loudly — correctly, since in production those are things
+ * somebody needs to see. In CI they landed in the log as:
+ *
+ *   course_access does not exist yet ... Run tools/sql/course_access.sql
+ *   course_access lookup failed for u connection failure
+ *
+ * which reads like a broken deployment in a job that passed, and the first
+ * line is now simply untrue: the migration has been run. A green check whose
+ * log says something is wrong is how people learn to stop reading the log.
+ *
+ * Silencing is not enough on its own, though — a test that expects a warning
+ * should fail if the warning stops being emitted, so the message is captured
+ * and returned for the caller to assert on.
+ */
+async function quietly(fn) {
+  const warn = console.warn;
+  const error = console.error;
+  const captured = [];
+  console.warn = (...a) => captured.push(a.join(' '));
+  console.error = (...a) => captured.push(a.join(' '));
+  try {
+    const value = await fn();
+    return { value, logged: captured.join('\n') };
+  } finally {
+    console.warn = warn;
+    console.error = error;
+  }
+}
+
 async function accessTests() {
   let r = await access.coursesForUser(stub({ data: [{ course_slug: 'catering-people' }], error: null }), 'u', false);
   is(r.slugs, ['catering-people'], 'the table alone grants the people course');
@@ -390,18 +424,25 @@ async function accessTests() {
   r = await access.coursesForUser(stub({ data: [{ course_slug: 'ghost-course' }], error: null }), 'u', false);
   is(r.slugs, [], 'a slug not in the registry is ignored');
 
-  r = await access.coursesForUser(stub({ data: null, error: { code: '42P01' } }), 'u', true);
-  is([r.slugs, r.legacyOnly], [['catering-profit'], true],
+  const missing = await quietly(() =>
+    access.coursesForUser(stub({ data: null, error: { code: '42P01' } }), 'u', true));
+  is([missing.value.slugs, missing.value.legacyOnly], [['catering-profit'], true],
     'a missing table falls back to the boolean instead of throwing');
+  is(/course_access does not exist yet/.test(missing.logged), true,
+    'and says so, because in production that is something somebody has to see');
 
   let threw = false;
-  try {
-    await access.coursesForUser(stub({ data: null, error: { code: '08006', message: 'connection failure' } }), 'u', true);
-  } catch (e) {
-    threw = true;
-  }
+  const failed = await quietly(async () => {
+    try {
+      await access.coursesForUser(
+        stub({ data: null, error: { code: '08006', message: 'connection failure' } }), 'u', true);
+    } catch (e) {
+      threw = true;
+    }
+  });
   is(threw, true,
     'a real query failure throws, so the caller answers 500 rather than telling a buyer they have nothing');
+  is(/lookup failed/.test(failed.logged), true, 'and is logged, not swallowed');
 }
 
 /* --- report ------------------------------------------------------------- */
