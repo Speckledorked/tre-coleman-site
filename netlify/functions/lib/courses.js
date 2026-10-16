@@ -54,7 +54,15 @@ const COURSES = {
     lessonPrefix: '',
     modules: 5,
     lessonsPerModule: 4,
-    hasBonus: true,
+    /**
+     * Bonus lesson ids, listed rather than derived.
+     *
+     * This course's bonus is stored as the bare `bonus`, and rows already
+     * exist under that id. Deriving it from a pattern would have renamed it
+     * the moment a second course needed two bonuses, orphaning every
+     * student's completed row for a cosmetic gain.
+     */
+    bonusIds: ['bonus'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_PROFIT',
     /**
      * The live prices, in code.
@@ -119,7 +127,8 @@ const COURSES = {
     lessonPrefix: 'pp-',
     modules: 5,
     lessonsPerModule: 4,
-    hasBonus: true,
+    // Two bonuses, so 22 lessons rather than 21.
+    bonusIds: ['pp-bonus1', 'pp-bonus2'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_PEOPLE',
     priceIds: [],
     /**
@@ -397,7 +406,7 @@ function lessonIds(slug) {
       ids.push(`${record.lessonPrefix}m${m}l${l}`);
     }
   }
-  if (record.hasBonus) ids.push(`${record.lessonPrefix}bonus`);
+  for (const id of record.bonusIds || []) ids.push(id);
   return new Set(ids);
 }
 
@@ -405,7 +414,7 @@ function lessonIds(slug) {
 function totalLessons(slug) {
   const record = course(slug);
   if (!record) return 0;
-  return record.modules * record.lessonsPerModule + (record.hasBonus ? 1 : 0);
+  return record.modules * record.lessonsPerModule + (record.bonusIds || []).length;
 }
 
 /**

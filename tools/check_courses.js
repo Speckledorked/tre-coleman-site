@@ -273,14 +273,26 @@ delete process.env.STRIPE_PRICE_IDS_CATERING_UPGRADE;
 /* --- lesson ids --------------------------------------------------------- */
 
 is(c.totalLessons('catering-profit'), 21, 'profit: 5 modules x 4 lessons + bonus');
-is(c.totalLessons('catering-people'), 21, 'people: same shape');
+is(c.totalLessons('catering-people'), 22,
+  'people: 5 modules x 4 lessons + TWO bonuses');
 is(c.courseForLessonId('m1l1'), 'catering-profit', 'a bare id belongs to the profit course');
 is(c.courseForLessonId('m5l4'), 'catering-profit', 'the last bare lesson');
 is(c.courseForLessonId('bonus'), 'catering-profit', 'the bare bonus');
 is(c.courseForLessonId('pp-m1l1'), 'catering-people',
   'a prefixed id belongs to the people course, NOT to the empty-prefix course');
 is(c.courseForLessonId('pp-m5l4'), 'catering-people', 'the last prefixed lesson');
-is(c.courseForLessonId('pp-bonus'), 'catering-people', 'the prefixed bonus');
+is(c.courseForLessonId('pp-bonus1'), 'catering-people', 'the first prefixed bonus');
+is(c.courseForLessonId('pp-bonus2'), 'catering-people', 'the second prefixed bonus');
+is(c.courseForLessonId('pp-bonus'), null,
+  'and the unnumbered form is not a lesson — the People course has two bonuses, not one');
+
+/* The Profit course's bonus id must stay exactly `bonus`. Rows already exist
+   under it, so renaming it to match the newer scheme would orphan every
+   student's completed bonus for a cosmetic gain. */
+is(c.course('catering-profit').bonusIds, ['bonus'],
+  "the original course's bonus id is unchanged");
+is(c.totalLessons('catering-profit'), 21, 'so the Profit course is still 21 lessons');
+is(c.totalLessons('catering-people'), 22, 'and the People course is 22, having two bonuses');
 is(c.courseForLessonId('m9l9'), null, 'an out-of-range lesson is rejected');
 is(c.courseForLessonId('pp-m9l9'), null, 'an out-of-range prefixed lesson is rejected');
 is(c.courseForLessonId('m0l0'), null, 'a zero-indexed lesson is rejected');

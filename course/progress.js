@@ -20,17 +20,30 @@
   'use strict';
 
   var ENDPOINT = '/.netlify/functions/course-progress';
-  var LESSONS_PER_MODULE = 4;
-  var MODULE_COUNT = 5;
+
+  /**
+   * The lesson-id scheme comes from the server, not from a copy of the
+   * registry kept here. These are only the shape of an empty answer; every
+   * field is replaced by what the GET returns before anything is rendered.
+   */
+  var scheme = { prefix: '', modules: 5, lessonsPerModule: 4, bonusIds: ['bonus'] };
 
   /** Which page are we on? Module pages carry their number in the filename. */
   function pageContext() {
     var path = (window.location.pathname || '').toLowerCase();
+    // Which course: the only thing the browser works out for itself, because
+    // it has to ask the server about one before the server can answer.
+    var course = path.indexOf('/course/people/') === 0 ? 'catering-people' : 'catering-profit';
     var m = /module-([1-5])(?:\.html)?$/.exec(path);
-    if (m) return { kind: 'module', module: parseInt(m[1], 10) };
-    if (/bonus(?:\.html)?$/.test(path)) return { kind: 'bonus' };
-    if (/dashboard(?:\.html)?$/.test(path)) return { kind: 'dashboard' };
-    return { kind: 'other' };
+    if (m) return { kind: 'module', module: parseInt(m[1], 10), course: course };
+    if (/bonus(?:\.html)?$/.test(path)) return { kind: 'bonus', course: course };
+    if (/dashboard(?:\.html)?$/.test(path)) return { kind: 'dashboard', course: course };
+    return { kind: 'other', course: course };
+  }
+
+  /** The id for a lesson, built from whatever scheme the server sent. */
+  function lessonId(moduleNo, lessonNo) {
+    return scheme.prefix + 'm' + moduleNo + 'l' + lessonNo;
   }
 
   /**
@@ -47,10 +60,11 @@
     }
   }
 
-  function request(method, body) {
+  function request(method, body, course) {
     var t = token();
     if (!t) return Promise.reject(new Error('no token'));
-    return fetch(ENDPOINT, {
+    var url = ENDPOINT + (course ? '?course=' + encodeURIComponent(course) : '');
+    return fetch(url, {
       method: method,
       headers: body
         ? { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }
@@ -138,7 +152,7 @@
     // computing the meter first reported 0 of 4 on a module with lessons
     // already complete, while the ticks beneath it were correctly marked.
     lessons.forEach(function (el, i) {
-      el.dataset.lessonId = 'm' + moduleNo + 'l' + (i + 1);
+      el.dataset.lessonId = lessonId(moduleNo, i + 1);
     });
 
     var done = function () {
@@ -180,17 +194,42 @@
     var ctx = pageContext();
     if (ctx.kind !== 'module') return;
     [].forEach.call(items, function (li, i) {
-      var id = 'm' + ctx.module + 'l' + (i + 1);
+      var id = lessonId(ctx.module, i + 1);
       li.classList.toggle('is-done', completed.indexOf(id) !== -1);
     });
   }
 
+  /**
+   * A bonus page can hold more than one bonus lesson — the People course has
+   * two — so each .lesson-video gets its own tick, matched to the bonus ids
+   * in page order. Falling back to one tick at the top keeps a page that has
+   * no .lesson-video blocks working as it did.
+   */
   function renderBonus(completed) {
     var main = document.querySelector('.main-content') || document.querySelector('main');
     if (!main) return;
+    var ids = scheme.bonusIds || [];
+    var lessons = [].slice.call(document.querySelectorAll('.lesson-video'));
+
+    if (lessons.length) {
+      lessons.forEach(function (el, i) {
+        var id = ids[i];
+        if (!id) return;
+        el.dataset.lessonId = id;
+        el.appendChild(tick(id, completed.indexOf(id) !== -1, function (lessonId, next) {
+          var at = completed.indexOf(lessonId);
+          if (next && at === -1) completed.push(lessonId);
+          if (!next && at !== -1) completed.splice(at, 1);
+        }));
+      });
+      return;
+    }
+
     var wrap = document.createElement('div');
     wrap.className = 'lg-progress';
-    wrap.appendChild(tick('bonus', completed.indexOf('bonus') !== -1, function () {}));
+    ids.forEach(function (id) {
+      wrap.appendChild(tick(id, completed.indexOf(id) !== -1, function () {}));
+    });
     main.insertBefore(wrap, main.firstChild);
   }
 
@@ -202,15 +241,15 @@
     var cards = document.querySelectorAll('.modules-grid .module-card');
     [].forEach.call(cards, function (card, idx) {
       var moduleNo = idx + 1;
-      if (moduleNo > MODULE_COUNT) return;
+      if (moduleNo > scheme.modules) return;
       var n = 0;
-      for (var l = 1; l <= LESSONS_PER_MODULE; l += 1) {
-        if (completed.indexOf('m' + moduleNo + 'l' + l) !== -1) n += 1;
+      for (var l = 1; l <= scheme.lessonsPerModule; l += 1) {
+        if (completed.indexOf(lessonId(moduleNo, l)) !== -1) n += 1;
       }
       var tag = document.createElement('div');
       tag.className = 'lg-module-count';
       tag.innerHTML = '<span class="lg-progress__done">' + n + '</span>' +
-        '<span class="lg-progress__of"> / ' + LESSONS_PER_MODULE + '</span>' +
+        '<span class="lg-progress__of"> / ' + scheme.lessonsPerModule + '</span>' +
         '<span class="lg-progress__label"> complete</span>';
       var header = card.querySelector('.module-header');
       if (header) header.appendChild(tag);
@@ -223,9 +262,14 @@
     init: function () {
       var ctx = pageContext();
       if (ctx.kind === 'other') return Promise.resolve();
-      return request('GET').then(function (data) {
+      return request('GET', null, ctx.course).then(function (data) {
         var completed = Array.isArray(data.completed) ? data.completed : [];
-        var total = typeof data.total === 'number' ? data.total : 21;
+        var total = typeof data.total === 'number' ? data.total : 0;
+        // Adopt the server's scheme before anything builds an id with it.
+        if (typeof data.prefix === 'string') scheme.prefix = data.prefix;
+        if (typeof data.modules === 'number') scheme.modules = data.modules;
+        if (typeof data.lessonsPerModule === 'number') scheme.lessonsPerModule = data.lessonsPerModule;
+        if (Array.isArray(data.bonusIds)) scheme.bonusIds = data.bonusIds;
         if (ctx.kind === 'module') renderModule(ctx.module, completed);
         else if (ctx.kind === 'bonus') renderBonus(completed);
         else if (ctx.kind === 'dashboard') renderDashboard(completed, total);

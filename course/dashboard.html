@@ -201,6 +201,7 @@
 
   <script src="auth.js"></script>
   <script src="progress.js"></script>
+  <script src="upgrade.js"></script>
   <script>
     async function initDashboard() {
       CourseAuth.init();
@@ -229,10 +230,16 @@
       document.getElementById('user-name').textContent = user.name.split(' ')[0];
       CourseAuth.renderUserInfo('user-info');
 
-      // Check course access
-      if (!user.has_course_access) {
+      // Check course access. hasCourseAccess() with no argument still means
+      // this course, so the meaning is unchanged; it now reads the per-course
+      // list with the old boolean as a fallback for a session stored before
+      // that shipped.
+      if (!CourseAuth.hasCourseAccess('catering-profit')) {
         document.getElementById('no-access-overlay').style.display = 'flex';
       }
+
+      // Offer the other course to someone who owns exactly one.
+      if (typeof CourseUpgrade !== 'undefined') CourseUpgrade.init();
     }
 
     initDashboard();
