@@ -70,6 +70,10 @@
     </div>
   </div>
   <script src="../auth.js"></script>
+  <!-- Intercepts download links and re-issues them with the Bearer token;
+       an <a href> cannot send an Authorization header, and
+       /course/downloads/* is a function, not a static file. -->
+  <script src="../downloads.js"></script>
   <script src="../progress.js"></script>
   <script src="../upgrade.js"></script>
   <script>

@@ -45,6 +45,13 @@ MODULES = [
             "An outreach system you can run every week without it going stale",
             "Turning an inquiry into a booked call instead of an unanswered email",
         ],
+        "downloads": [
+            "Ideal Buyer Map",
+            "Corporate vs Private Positioning Sheet",
+            "Weekly Outreach Tracker",
+            "Venue Planner Partnership Pitch",
+            "Inquiry Qualification Checklist",
+        ],
         "lessons": [
             ("Where Catering Buyers Actually Are", "jVE3WPjTUqY"),
             ("Positioning for Corporate vs. Private Events", "Ufsth-BCHMo"),
@@ -61,6 +68,13 @@ MODULES = [
             "Social media judged on bookings rather than on followers",
             "Flyers, materials and local presence that still earn their cost",
             "Asking for reviews on purpose, and answering the bad ones",
+        ],
+        "downloads": [
+            "Brand Messaging Worksheet",
+            "Social Content Calendar",
+            "One-Page Menu Flyer Template",
+            "Event Photo Shot List",
+            "Review Response Playbook",
         ],
         "lessons": [
             ("Brand and Messaging for Caterers", "we4XJvu-IEk"),
@@ -79,6 +93,14 @@ MODULES = [
             "A referral system that does not depend on remembering to ask",
             "Handling the difficult situations that decide whether they rebook",
         ],
+        "downloads": [
+            "Discovery Call Script",
+            "Objection Response Sheet",
+            "Client Expectations Agreement",
+            "Event Timeline Confirmation",
+            "Referral Program Tracker",
+            "Difficult Client Playbook",
+        ],
         "lessons": [
             ("The Sales Conversation", "lUoXU99b5VY"),
             ("Pricing and Proposals", "Xf-L4BFGGYM"),
@@ -95,6 +117,14 @@ MODULES = [
             "A hiring process that filters before it costs you a shift",
             "Onboarding that gets someone useful on their first event",
             "Letting someone go without damaging the rest of the team",
+        ],
+        "downloads": [
+            "Job Post Templates",
+            "Interview Question Bank and Scoring",
+            "Role Scorecards",
+            "Working Interview Checklist",
+            "30-Day Onboarding Plan",
+            "Separation Documentation Checklist",
         ],
         "lessons": [
             ("Who to Hire and When", "5oWmKuBYQBk"),
@@ -113,6 +143,14 @@ MODULES = [
             "Holding people accountable without standing over them",
             "Leading the team on event day, when nothing goes to plan",
         ],
+        "downloads": [
+            "Team Standards Sheet",
+            "Stay Interview Guide",
+            "Recognition and Incentive Menu",
+            "Weekly Check-In Template",
+            "Event Day Pre-Shift Brief",
+            "Post-Event Debrief Form",
+        ],
         "lessons": [
             ("Building a Culture People Want to Stay In", "oRDWSc9aU4k"),
             ("Retention Strategies", "tFuqinXsB6s"),
@@ -125,6 +163,12 @@ MODULES = [
 BONUS = [
     ("Your 90-Day People Plan", "hIWKmty9Ohs"),
     ("Team Communication Toolkit", "ZmZSbmChNFg"),
+]
+
+BONUS_DOWNLOADS = [
+    "90-Day People Plan",
+    "Team Communication Toolkit",
+    "Staff Roster Tracker",
 ]
 
 # A YouTube id is 11 characters of [A-Za-z0-9_-]. Checked because a wrong id
@@ -155,6 +199,10 @@ HEAD = """<!DOCTYPE html>
 # The gate names the course. Owning the Catering Profit System must not open
 # these pages, which is the whole point of per-course access.
 BOOT = """  <script src="../auth.js"></script>
+  <!-- Intercepts download links and re-issues them with the Bearer token;
+       an <a href> cannot send an Authorization header, and
+       /course/downloads/* is a function, not a static file. -->
+  <script src="../downloads.js"></script>
   <script src="../progress.js"></script>
   <script src="../upgrade.js"></script>
   <script>
@@ -193,6 +241,73 @@ def esc(s):
              .replace('"', "&quot;"))
 
 
+DOWNLOAD_ROOT = "course/downloads/people"
+
+MISSING = []
+
+
+def slug(name):
+    """'Corporate vs Private Positioning Sheet' -> 'Corporate_vs_Private_Positioning_Sheet'.
+
+    Matches the Catering Profit System's convention
+    (Event_Staffing_Calculator.xlsx), so both courses' files look the same in
+    a downloads folder.
+    """
+    keep = [c for c in name if c.isalnum() or c in " -"]
+    return "".join(keep).strip().replace(" ", "_")
+
+
+def find_download(folder, name):
+    """The real file for a download, whatever extension it has.
+
+    The extension is NOT assumed. These range from trackers that are
+    obviously spreadsheets to scripts and playbooks that are obviously
+    documents, and guessing .xlsx for a 'Discovery Call Script' would produce
+    a link to a file that never arrives.
+
+    Returns the filename, or None -- and a download with no file behind it is
+    NOT written into the page. A dead link inside a paid course is worse than
+    a missing row: course-download.js answers 404 for it, and the student is
+    left clicking something that will never work. The missing ones are
+    reported at the end instead.
+    """
+    base = slug(name)
+    folder_path = os.path.join(DOWNLOAD_ROOT, folder)
+    if not os.path.isdir(folder_path):
+        MISSING.append(f"{folder}/{base}.*")
+        return None
+    for entry in sorted(os.listdir(folder_path)):
+        stem, ext = os.path.splitext(entry)
+        if stem == base and ext:
+            return entry
+    MISSING.append(f"{folder}/{base}.*")
+    return None
+
+
+def downloads_card(folder, names):
+    """The sidebar card, or nothing at all if no file exists yet."""
+    rows = []
+    for name in names:
+        filename = find_download(folder, name)
+        if not filename:
+            continue
+        href = f"../downloads/people/{folder}/{filename}"
+        rows.append(
+            f'            <li><span>&#128196; {esc(name)}</span>'
+            f'<a href="{href}" download class="dl-btn">&#11015; Download</a></li>\n'
+        )
+    if not rows:
+        return ""
+    return ("""        <div class="sidebar-card">
+          <h3>Downloads</h3>
+          <ul class="download-list">
+"""
+            + "".join(rows)
+            + """          </ul>
+        </div>
+""")
+
+
 def sidebar_item(i, title):
     """One entry in the lessons list. The first is marked active, matching the
     Profit course's pages; progress.js adds is-done to the <li> as lessons are
@@ -222,6 +337,7 @@ def module_page(m):
         sidebar_item(i, t) for i, (t, _) in enumerate(m["lessons"])
     )
     learn = "".join(f"            <li>{esc(x)}</li>\n" for x in m["learn"])
+    downloads = downloads_card(f"module-{m['n']}", m.get("downloads", []))
 
     nxt = (f'<a href="module-{m["n"] + 1}.html" class="nav-btn next">Next: '
            f'{esc(MODULES[m["n"]]["title"])} &rarr;</a>') if m["n"] < len(MODULES) else \
@@ -273,7 +389,7 @@ def module_page(m):
           <ul class="lessons-list">
 {sidebar}          </ul>
         </div>
-      </aside>
+{downloads}      </aside>
     </div>
   </div>
 """
@@ -286,6 +402,7 @@ def bonus_page():
         lesson_block("Bonus", i + 1, t, v) for i, (t, v) in enumerate(BONUS)
     )
     sidebar = "".join(sidebar_item(i, t) for i, (t, _) in enumerate(BONUS))
+    downloads = downloads_card("bonus", BONUS_DOWNLOADS)
     return (
         HEAD.format(title=f"Bonus Material - {COURSE_NAME}",
                     description="Bonus material for the Catering People System.")
@@ -325,7 +442,7 @@ def bonus_page():
           <ul class="lessons-list">
 {sidebar}          </ul>
         </div>
-      </aside>
+{downloads}      </aside>
     </div>
   </div>
 """
@@ -427,6 +544,14 @@ def main():
     for p in written:
         print(f"  {p}")
     print(f"  {len(written)} page(s), {len(seen)} unique video id(s)")
+
+    if MISSING:
+        print(f"\n  {len(MISSING)} download(s) have NO FILE and were left out "
+              f"of the pages:")
+        for m in MISSING:
+            print(f"    {DOWNLOAD_ROOT}/{m}")
+        print("\n  Drop the files in with those exact basenames (any "
+              "extension) and re-run.")
 
 
 if __name__ == "__main__":
