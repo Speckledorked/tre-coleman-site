@@ -27,6 +27,25 @@ process.env.STRIPE_PRICE_IDS_CATERING_BUNDLE = 'price_bundle';
 
 const c = require('../netlify/functions/lib/courses.js');
 
+/**
+ * Only the ids that came from an environment variable.
+ *
+ * Several assertions below are about what the VARIABLES contribute, so they
+ * have to ignore whatever is registered in lib/courses.js. Deriving that set
+ * from the registry rather than matching a hardcoded id prefix means
+ * registering another price or product never breaks an assertion that was
+ * never about it — which it did, twice.
+ */
+const REGISTERED = new Set([
+  ...c.SLUGS.flatMap((slug) => [
+    ...(c.COURSES[slug].priceIds || []), ...(c.COURSES[slug].productIds || []),
+  ]),
+  ...c.BUNDLE_SLUGS.flatMap((slug) => [
+    ...(c.BUNDLES[slug].priceIds || []), ...(c.BUNDLES[slug].productIds || []),
+  ]),
+]);
+const fromEnvOnly = (slug) => c.priceIdsFor(slug).filter((id) => !REGISTERED.has(id));
+
 const failures = [];
 let ran = 0;
 
@@ -39,7 +58,7 @@ function is(got, want, label) {
 
 /* --- prices ------------------------------------------------------------- */
 
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_197', 'price_147'],
   'a trailing comma and stray spaces do not become empty price ids');
 const buy = (...ids) => c.purchaseFromLineItems(ids.map((id) => ({ price: { id } })));
@@ -116,7 +135,7 @@ is(c.allPriceIds().includes('price_bundle'), true,
    checkout as a course purchase -- handing the course to $350 Snapshot
    buyers, who that one price id currently excludes correctly. */
 process.env.STRIPE_COURSE_PRICE_ID = 'price_legacy';
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_197', 'price_147', 'price_legacy'],
   'the superseded variable is added to the profit course, not substituted for it');
 is(buy('price_legacy').slugs, ['catering-profit'],
@@ -127,19 +146,19 @@ is(c.priceIdsFor('catering-people').includes('price_people'), true,
   "and the People course's own configured id is still there");
 
 delete process.env.STRIPE_PRICE_IDS_CATERING_PROFIT;
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_legacy'],
   'with only the superseded variable set, it still gates the profit course alongside the registered ones');
 is(buy('price_snapshot').slugs, [],
   'and the $350 Snapshot is still excluded, which is the regression this guards');
 process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_197, price_147 ,';
 delete process.env.STRIPE_COURSE_PRICE_ID;
-is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+is(fromEnvOnly('catering-profit'),
   ['price_197', 'price_147'],
   'and it drops back out once unset');
 /* The registered ids are never affected by any of that: they are the floor. */
-is(c.priceIdsFor('catering-profit').filter((id) => id.startsWith('price_1UPg')).length, 2,
-  'the two registered live prices survive every environment permutation above');
+is(c.priceIdsFor('catering-profit').filter((id) => REGISTERED.has(id)).length >= 2, true,
+  'the registered ids survive every environment permutation above');
 
 /* --- matching by PRODUCT as well as price -------------------------------- */
 
@@ -180,6 +199,16 @@ is(c.bundlesRequiringExisting(byProduct('prod_VS4cGwqq2RvVBA').bundles), ['cater
   'and the real upgrade product is still gated on already owning a course');
 is(byProduct('prod_somethingelse').slugs, [],
   'an unregistered product grants nothing');
+
+/* The retired $67 product still lets its buyers in. It stays on sale, and
+   STRIPE_COURSE_PRICE_ID pointed at it, so dropping it would lock out anyone
+   using an old link — and registering it in code means that no longer depends
+   on an environment variable surviving a tidy-up. */
+is(byProduct('prod_TiTNRNGJzG7fwr').slugs, ['catering-profit'],
+  'the retired $67 product still grants the profit course');
+is(byProduct('prod_TiTNRNGJzG7fwr').slugs.includes('catering-people'), false,
+  'but it grants only what it ever sold, not the course that did not exist then');
+
 
 /* The People course sold on its own. ONE product carries both its $197 and
    $147 prices, so matching the product covers both tiers without naming

@@ -79,6 +79,22 @@ const COURSES = {
       'price_1UPgeJ3ZIXWMSTgNLDiulogW',   // $147 founding, first 10 buyers
     ],
     /**
+     * The retired $67 product, still honoured.
+     *
+     * It is what STRIPE_COURSE_PRICE_ID actually pointed at
+     * (price_1TIXA43ZIXWMSTgNMTp7MFBi on prod_TiTNRNGJzG7fwr) and it stays
+     * live in Stripe, so an old link that still gets used must still let its
+     * buyer in. Registering it here means that no longer depends on an
+     * environment variable nobody will remember the purpose of — clearing the
+     * variable as tidy-up would otherwise quietly stop honouring a product
+     * that is still on sale.
+     *
+     * The PRODUCT rather than the price, so any price on it counts.
+     */
+    productIds: [
+      'prod_TiTNRNGJzG7fwr',   // the retired $67 course, old links still work
+    ],
+    /**
      * What it costs, for the one place that has to agree with the markup.
      *
      * Not read at runtime — the webhook only ever matches price ids, and the
