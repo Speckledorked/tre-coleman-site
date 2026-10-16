@@ -893,6 +893,29 @@ def check_course_external_links():
                       f"use the authenticated /course/downloads/ route instead")
 
 
+def check_no_placeholder_links():
+    """No page may ship with an unresolved link placeholder.
+
+    The combined sales page was written before the bundle's Stripe payment
+    links existed -- only its PRODUCT ids were known, and a product id is not
+    something a browser can open. Rather than invent a url or quietly point
+    the headline offer somewhere else, the hrefs are left as named
+    placeholders and this fails until they are replaced.
+
+    It matters because the failure mode is silent and expensive: a buy button
+    that 404s on the page the whole site funnels into looks fine in every
+    other check. The page is valid HTML, the link checker cannot resolve a
+    token that is not a url, and nobody finds out until a customer tries to
+    pay.
+    """
+    pattern = re.compile(r"[A-Z][A-Z0-9_]{6,}_LINK")
+    for path in html_files():
+        s = open(path, encoding="utf-8", errors="replace").read()
+        for m in set(pattern.findall(s)):
+            err(path, f"unresolved link placeholder {m!r} — replace it with the "
+                      f"real URL before this ships")
+
+
 def check_prices():
     """The Snapshot price must be $350 wherever it is named.
 
@@ -1218,6 +1241,8 @@ def check_component_css():
 CHECKS = [
     ("netlify-toml", check_netlify_toml, "netlify.toml parses and its redirects are sane"),
     ("secrets", check_secrets, "live credentials in tracked files"),
+    ("placeholder-links", check_no_placeholder_links,
+     "no page ships with an unresolved link placeholder"),
     ("course-external", check_course_external_links,
      "course pages route assets through the authenticated download, not Google"),
     ("gitignore", check_gitignore, ".env is ignored"),

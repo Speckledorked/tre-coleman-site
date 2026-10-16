@@ -47,8 +47,12 @@
      course existed. */
   (function () {
     var COURSES = {
-      'catering-profit': { name: 'The Catering Profit System', page: '/catering-profit.html' },
-      'catering-people': { name: 'The Catering People System', page: '/catering-people.html' }
+      /* Both halves are sold from one page now, so both point there; the
+         People half gets the anchor for the options block. The NAME still
+         differs, because telling someone which course they are missing is
+         the whole job of this page. */
+      'catering-profit': { name: 'The Catering Profit System', page: '/catering-profit.html#options' },
+      'catering-people': { name: 'The Catering People System', page: '/catering-profit.html#options' }
     };
     var slug = new URLSearchParams(window.location.search).get('course');
     var course = COURSES[slug] || COURSES['catering-profit'];

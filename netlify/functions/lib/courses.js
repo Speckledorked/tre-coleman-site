@@ -121,7 +121,9 @@ const COURSES = {
   'catering-people': {
     slug: 'catering-people',
     name: 'The Catering People System',
-    salesPage: '/catering-people.html',
+    // Both halves sell from the one page now; #options is where its own
+    // $197 buttons are.
+    salesPage: '/catering-profit.html#options',
     basePath: '/course/people/',
     downloadPrefix: 'people/',
     lessonPrefix: 'pp-',
