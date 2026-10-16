@@ -96,7 +96,7 @@ const COURSES = {
   },
   'catering-people': {
     slug: 'catering-people',
-    name: 'The Catering People Course',
+    name: 'The Catering People System',
     salesPage: '/catering-people.html',
     basePath: '/course/people/',
     downloadPrefix: 'people/',
@@ -139,10 +139,16 @@ const BUNDLES = {
     name: 'The Complete Catering System: Profit + People',
     grants: ['catering-profit', 'catering-people'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_BUNDLE',
-    // $297 standard, $247 founding. Price ids go here once the products exist
-    // in Stripe; until then no checkout can match, which is correct, because
-    // until then it cannot be bought either.
+    // $297 standard, $247 founding.
     priceIds: [],
+    /**
+     * Matched by PRODUCT, so the bundle grants both courses however it is
+     * priced. The founding product is registered; the standard $297 product
+     * is not created yet, and until it is, a $297 checkout matches nothing.
+     */
+    productIds: [
+      'prod_VS4cctwqCDniwT',   // founders bundle, $247
+    ],
     usd: 297,
     foundingUsd: 247,
     requiresExisting: false,
@@ -177,6 +183,9 @@ const BUNDLES = {
     grants: ['catering-profit', 'catering-people'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_UPGRADE',
     priceIds: [],
+    productIds: [
+      'prod_VS4cGwqq2RvVBA',   // the $100 upgrade
+    ],
     usd: 100,
     requiresExisting: true,
   },
@@ -204,7 +213,7 @@ function bundlesRequiringExisting(bundleSlugs) {
 function bundlePriceIdsFor(slug) {
   const record = bundle(slug);
   if (!record) return [];
-  const ids = [...(record.priceIds || [])];
+  const ids = [...(record.priceIds || []), ...(record.productIds || [])];
   for (const id of split(process.env[record.priceEnv])) {
     if (!ids.includes(id)) ids.push(id);
   }
@@ -231,9 +240,10 @@ function priceIdsFor(slug) {
   if (!record) return [];
 
   // Registry defaults first, then anything the environment adds. Union, so
-  // setting the variable can only ever add a price, never silently drop one
-  // that is working.
-  const ids = [...(record.priceIds || [])];
+  // setting the variable can only ever add an id, never silently drop one
+  // that is working. Price ids and product ids live in the same list: the
+  // matcher checks a line item against both forms, so either works.
+  const ids = [...(record.priceIds || []), ...(record.productIds || [])];
   for (const id of split(process.env[record.priceEnv])) {
     if (!ids.includes(id)) ids.push(id);
   }
@@ -293,9 +303,26 @@ function allPriceIds() {
  * @returns {{slugs: string[], name: string|null, bundles: string[]}}
  */
 function purchaseFromLineItems(lineItems) {
-  const ids = new Set(
-    (lineItems || []).map((item) => item && item.price && item.price.id).filter(Boolean),
-  );
+  /**
+   * Both identifiers off each line item: the PRICE (price_...) and the
+   * PRODUCT it belongs to (prod_...).
+   *
+   * Matching the product as well as the price means a registered product
+   * grants its course however it is priced — raising a price, or adding a
+   * second one, needs no change here at all. A price id pins one exact
+   * amount; a product id follows the thing being sold. Both are useful, so
+   * both are accepted, and a configured id may be either form.
+   */
+  const ids = new Set();
+  for (const item of lineItems || []) {
+    const price = item && item.price;
+    if (!price) continue;
+    if (price.id) ids.add(price.id);
+    // price.product is the id string by default, but is the expanded object
+    // when the caller asked Stripe to expand it.
+    if (typeof price.product === 'string') ids.add(price.product);
+    else if (price.product && price.product.id) ids.add(price.product.id);
+  }
 
   const direct = SLUGS.filter((slug) => priceIdsFor(slug).some((id) => ids.has(id)));
   const bundles = BUNDLE_SLUGS.filter((slug) => bundlePriceIdsFor(slug).some((id) => ids.has(id)));

@@ -96,7 +96,7 @@ is(buy('price_bundle').bundles, ['catering-complete'], 'the bundle is reported')
 is(buy('price_197', 'price_people').slugs, ['catering-profit', 'catering-people'],
   'two course line items in one session grant both, rather than being refused');
 is(buy('price_197', 'price_people').name,
-  'The Catering Profit System and The Catering People Course',
+  'The Catering Profit System and The Catering People System',
   'two separately-bought courses are both named, not described as one bundle');
 
 /* Overlap must not double-grant or reorder. */
@@ -138,6 +138,38 @@ is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg'))
 /* The registered ids are never affected by any of that: they are the floor. */
 is(c.priceIdsFor('catering-profit').filter((id) => id.startsWith('price_1UPg')).length, 2,
   'the two registered live prices survive every environment permutation above');
+
+/* --- matching by PRODUCT as well as price -------------------------------- */
+
+/* A line item carries both: the price (one exact amount) and the product it
+   belongs to. Matching the product means a registered product grants its
+   course however it is priced, so raising a price needs no code change. */
+const byProduct = (productId) =>
+  c.purchaseFromLineItems([{ price: { id: 'price_irrelevant', product: productId } }]);
+
+is(byProduct('prod_VS4cctwqCDniwT').slugs, ['catering-profit', 'catering-people'],
+  'the real founders bundle product grants both courses');
+is(byProduct('prod_VS4cctwqCDniwT').name, 'The Complete Catering System: Profit + People',
+  'and is named as the bundle');
+is(byProduct('prod_VS4cGwqq2RvVBA').slugs, ['catering-profit', 'catering-people'],
+  'the real upgrade product grants both courses');
+is(c.bundlesRequiringExisting(byProduct('prod_VS4cGwqq2RvVBA').bundles), ['catering-upgrade'],
+  'and the real upgrade product is still gated on already owning a course');
+is(byProduct('prod_somethingelse').slugs, [],
+  'an unregistered product grants nothing');
+
+/* Stripe sends price.product as an id string, or as the expanded object when
+   asked. Reading only one shape would silently stop matching. */
+is(c.purchaseFromLineItems([{ price: { id: 'px', product: { id: 'prod_VS4cctwqCDniwT' } } }]).slugs,
+  ['catering-profit', 'catering-people'],
+  'an EXPANDED product object matches too, not just the id string');
+is(c.purchaseFromLineItems([{ price: { id: 'px', product: null } }]).slugs, [],
+  'a null product is not a match');
+
+/* Price matching must still work: the two course prices are registered that
+   way, and losing it would lock out every buyer at $197 or $147. */
+is(buy('price_1UPgfR3ZIXWMSTgNHf1HlfFv').slugs, ['catering-profit'],
+  'price matching still works alongside product matching');
 
 /* --- the bundle and the upgrade ---------------------------------------- */
 

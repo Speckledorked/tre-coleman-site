@@ -101,8 +101,15 @@ fails if those two ever disagree.
 
 ### Three that are easy to get wrong
 
-**The `STRIPE_PRICE_IDS_*` variables are optional, and must hold price IDs
-rather than payment links.**
+**The `STRIPE_PRICE_IDS_*` variables are optional, and hold price IDs or
+product IDs — but never payment links.**
+
+A price ID (`price_...`) pins one exact amount. A product ID (`prod_...`)
+follows the thing being sold, so a registered product grants its course
+however it is priced and a price rise needs no change anywhere. The webhook
+checks each line item's price *and* the product it belongs to, so either form
+works and they can be mixed. A payment link (`plink_...`, or a
+`buy.stripe.com` URL) is neither and will never match.
 
 The Catering Profit System's two live prices are registered in
 `netlify/functions/lib/courses.js`, so the webhook works with none of these
