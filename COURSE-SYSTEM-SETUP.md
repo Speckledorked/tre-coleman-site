@@ -79,7 +79,7 @@ See `.env.example` in the repository root for the same list with notes.
 | `STRIPE_WEBHOOK_SECRET` | Webhook signing secret | `whsec_xxxxx` | **No** — tied to one endpoint URL |
 | `STRIPE_PRICE_IDS_CATERING_PROFIT` | **Optional.** Extra price IDs granting the Catering Profit System; its two live prices are already registered in `lib/courses.js` | `price_xxx,price_yyy` | Yes — lookup in Products |
 | `STRIPE_PRICE_IDS_CATERING_PEOPLE` | Price IDs granting the Catering People Course, comma-separated | `price_zzz` | Yes — lookup in Products |
-| `STRIPE_PRICE_IDS_CATERING_BUNDLE` | Price IDs granting BOTH courses ($297 / $247 founding) | `price_bbb` | Yes — lookup in Products |
+| `STRIPE_PRICE_IDS_CATERING_BUNDLE` | Price IDs for *The Complete Catering System: Profit + People* — grants both courses ($297 / $247 founding) | `price_bbb` | Yes — lookup in Products |
 | `STRIPE_PRICE_IDS_CATERING_UPGRADE` | Price IDs for the $100 upgrade; grants both, but only to someone who already owns one | `price_uuu` | Yes — lookup in Products |
 | `RESEND_API_KEY` | Resend API key | `re_xxxxx` | **No** — shown once |
 | `AIRTABLE_TOKEN` | Airtable personal access token | `patxxxxx...` | **No** — shown once |

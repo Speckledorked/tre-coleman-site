@@ -136,7 +136,7 @@ const SLUGS = Object.keys(COURSES);
 const BUNDLES = {
   'catering-complete': {
     slug: 'catering-complete',
-    name: 'The Catering Profit + People Bundle',
+    name: 'The Complete Catering System: Profit + People',
     grants: ['catering-profit', 'catering-people'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_BUNDLE',
     // $297 standard, $247 founding. Price ids go here once the products exist
@@ -170,7 +170,10 @@ const BUNDLES = {
    */
   'catering-upgrade': {
     slug: 'catering-upgrade',
-    name: 'The Catering Profit + People Bundle (upgrade)',
+    // Named off the bundle on purpose: an upgrade buyer ends up holding the
+    // bundle, so the email should name what they now have, with the word
+    // that explains why they paid $100 for it.
+    name: 'The Complete Catering System: Profit + People (upgrade)',
     grants: ['catering-profit', 'catering-people'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_UPGRADE',
     priceIds: [],

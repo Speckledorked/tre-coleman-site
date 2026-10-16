@@ -87,7 +87,7 @@ process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_197, price_147 ,';
 /* Shape 1: one Price for a single "both courses" product. */
 is(buy('price_bundle').slugs, ['catering-profit', 'catering-people'],
   'one bundle price grants both courses');
-is(buy('price_bundle').name, 'The Catering Profit + People Bundle',
+is(buy('price_bundle').name, 'The Complete Catering System: Profit + People',
   'a bundle is named as the bundle, because that is what the customer chose');
 is(buy('price_bundle').bundles, ['catering-complete'], 'the bundle is reported');
 
