@@ -152,7 +152,14 @@ exports.handler = async (event) => {
        */
       const gated = courses.bundlesRequiringExisting(purchased.bundles);
       if (gated.length) {
-        const existing = await heldCourses(customerEmail);
+        // Prefer the account id the session carries. course-upgrade-checkout
+        // sets client_reference_id, so the buyer is identified exactly rather
+        // than by an email that may differ from the one on their card — which
+        // would read as "holds no course" and alert on a legitimate upgrade.
+        const existing = await heldCourses({
+          userId: session.client_reference_id || (session.metadata && session.metadata.user_id),
+          email: customerEmail,
+        });
         const qualifies = existing.some((slug) => purchased.slugs.includes(slug));
         if (!qualifies) {
           console.error(`Upgrade bought by ${customerEmail} who holds no course (session ${session.id})`);
@@ -402,27 +409,35 @@ exports.handler = async (event) => {
  * does not need the check, and the caller treats an empty list as "does not
  * qualify", which alerts a human rather than granting or refusing silently.
  */
-async function heldCourses(email) {
+async function heldCourses({ userId, email }) {
   try {
-    const { data: user } = await supabase
-      .from('users')
-      .select('id')
-      .eq('email', String(email || '').toLowerCase())
-      .single();
-    if (!user) return [];
+    let id = userId || null;
+
+    if (!id) {
+      // Fall back to the email, for a session created outside
+      // course-upgrade-checkout — a payment link, or one made by hand in the
+      // Stripe dashboard.
+      const { data: user } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', String(email || '').toLowerCase())
+        .single();
+      if (!user) return [];
+      id = user.id;
+    }
 
     const { data: profile } = await supabase
       .from('users')
       .select('has_course_access')
-      .eq('id', user.id)
+      .eq('id', id)
       .single();
 
     const { slugs } = await coursesForUser(
-      supabase, user.id, profile && profile.has_course_access
+      supabase, id, profile && profile.has_course_access
     );
     return slugs;
   } catch (e) {
-    console.error('Could not read existing courses for', email, e.message);
+    console.error('Could not read existing courses for', userId || email, e.message);
     return [];
   }
 }
