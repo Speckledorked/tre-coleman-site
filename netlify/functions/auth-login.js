@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const { coursesForUser } = require('./lib/access.js');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -80,6 +81,21 @@ exports.handler = async (event) => {
       };
     }
 
+    // Which courses this account holds. As with the profile lookup above, a
+    // failed read must not become "no access" for someone who paid.
+    let courseSlugs;
+    try {
+      ({ slugs: courseSlugs } = await coursesForUser(
+        serviceSupabase, data.user.id, profile?.has_course_access
+      ));
+    } catch (e) {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Login failed' })
+      };
+    }
+
     return {
       statusCode: 200,
       headers,
@@ -94,7 +110,10 @@ exports.handler = async (event) => {
           id: data.user.id,
           email: data.user.email,
           name: profile?.name || data.user.user_metadata?.name || 'User',
-          has_course_access: profile?.has_course_access || false
+          // Kept for anything still reading the single-course field. It now
+          // means "holds the original course", which is what it always meant.
+          has_course_access: courseSlugs.includes('catering-profit'),
+          courses: courseSlugs
         }
       })
     };

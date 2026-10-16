@@ -2,6 +2,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
 const crypto = require('crypto');
+const courses = require('./lib/courses.js');
+const { coursesForUser } = require('./lib/access.js');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -98,26 +100,111 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: 'No customer email' };
     }
 
-    // If a course price ID is configured, verify this payment is for the course.
-    // This prevents ad-hoc service payments from triggering course access.
-    const coursePriceId = process.env.STRIPE_COURSE_PRICE_ID;
+    // Which course did they buy?
+    //
+    // This used to match ONE price id from STRIPE_COURSE_PRICE_ID, which broke
+    // in two ways as soon as there was more than one of anything. A course
+    // with two live prices -- the Catering Profit System sells at $197 and at
+    // $147 to the first ten founding members, separate payment links and so
+    // separate Price objects -- had one of them treated as "not the course",
+    // and the buyer was charged and let in nowhere. And one price id cannot
+    // say WHICH course, so a second product would have granted the first.
+    //
+    // netlify/functions/lib/courses.js now holds a LIST of price ids per
+    // course. See .env.example for the variables.
+    const configuredPriceIds = courses.allPriceIds();
+
     // Describes the purchase to GA4 further down. Stays null when no course
     // price is configured, because nothing then needs to read the line items
     // and an extra Stripe call on every payment would buy nothing.
     let lineItems = null;
-    if (coursePriceId) {
-      const items = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
+    // Every course this payment grants. A bundle grants more than one, so this
+    // is a list rather than a single course all the way through.
+    let purchased = { slugs: [], name: null, bundles: [] };
+
+    if (configuredPriceIds.length) {
+      const items = await stripe.checkout.sessions.listLineItems(session.id, { limit: 10 });
       lineItems = items.data;
-      const isCoursePayment = lineItems.some(item => item.price?.id === coursePriceId);
-      if (!isCoursePayment) {
-        console.log(`Payment from ${customerEmail} is not for the course (session ${session.id}). Skipping course access.`);
-        // Not the course, but still money taken: the $350 Snapshot finishes
-        // on Stripe's own page and never touches the site, so this is the
-        // only place it can be counted.
+
+      purchased = courses.purchaseFromLineItems(lineItems);
+
+      if (!purchased.slugs.length) {
+        console.log(`Payment from ${customerEmail} is not for a course (session ${session.id}). Skipping course access.`);
+        // Not a course, but still money taken: the $350 Snapshot finishes on
+        // Stripe's own page and never touches the site, so this is the only
+        // place it can be counted.
         await reportPurchaseToGA4(stripeEvent, lineItems);
         return { statusCode: 200, body: 'Non-course payment acknowledged' };
       }
+
+      /**
+       * The upgrade price is only for someone who already owns one course.
+       *
+       * It grants both courses, because one Stripe price cannot know which one
+       * the buyer is missing. That makes the $100 link worth $297 to anyone
+       * who finds it, and a Stripe payment link cannot be gated on a previous
+       * purchase — an unlisted link is still a shareable URL.
+       *
+       * So: if they hold neither course, grant nothing and ask for a human.
+       * They have underpaid, and whether to refund or bill the difference is
+       * not a decision to make automatically. Checked BEFORE any access is
+       * written, so nothing has to be taken back.
+       */
+      const gated = courses.bundlesRequiringExisting(purchased.bundles);
+      if (gated.length) {
+        // Prefer the account id the session carries. course-upgrade-checkout
+        // sets client_reference_id, so the buyer is identified exactly rather
+        // than by an email that may differ from the one on their card — which
+        // would read as "holds no course" and alert on a legitimate upgrade.
+        const existing = await heldCourses({
+          userId: session.client_reference_id || (session.metadata && session.metadata.user_id),
+          email: customerEmail,
+        });
+        const qualifies = existing.some((slug) => purchased.slugs.includes(slug));
+        if (!qualifies) {
+          console.error(`Upgrade bought by ${customerEmail} who holds no course (session ${session.id})`);
+          await alertAdmin('Upgrade price bought by someone with no course', `
+            <p>${customerEmail} paid the upgrade price, which is the difference
+               between one course and the bundle, but holds neither course.</p>
+            <p>Stripe Session ID: ${session.id}</p>
+            <p>Amount: $${((session.amount_total || 0) / 100).toFixed(2)}</p>
+            <p><strong>No access has been granted.</strong> They have underpaid
+               for what that price grants, so this needs a decision: refund
+               them, bill the difference, or grant it anyway by inserting rows
+               into <code>course_access</code> for
+               <code>${purchased.slugs.join('</code> and <code>')}</code>.</p>
+            <p>If this keeps happening the upgrade link has got out, and the
+               price should be replaced with a fresh one.</p>
+          `);
+          await reportPurchaseToGA4(stripeEvent, lineItems);
+          // 200: a redelivery cannot change who they are, and a 500 makes
+          // Stripe retry the same event for days.
+          return { statusCode: 200, body: 'Upgrade without a prior course, owner alerted' };
+        }
+      }
     }
+
+    // With nothing configured the gate is skipped, exactly as before, and the
+    // payment is treated as the original course. That keeps a missing variable
+    // from locking out buyers, but it also means the Snapshot would grant a
+    // course, so say so loudly rather than only in a comment.
+    if (!purchased.slugs.length) {
+      purchased = {
+        slugs: ['catering-profit'],
+        name: courses.course('catering-profit').name,
+        bundles: [],
+      };
+      console.warn(
+        'No course price ids are configured, so every completed checkout is '
+        + 'being treated as a purchase of the Catering Profit System -- the '
+        + '$350 Snapshot included. Set STRIPE_PRICE_IDS_CATERING_PROFIT, '
+        + 'STRIPE_PRICE_IDS_CATERING_PEOPLE and STRIPE_PRICE_IDS_CATERING_BUNDLE. '
+        + 'See .env.example.'
+      );
+    }
+
+    // What to call it in the email and the logs.
+    const purchasedName = purchased.name || 'your course';
 
     // The money has to have actually arrived.
     //
@@ -158,7 +245,7 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: 'Awaiting payment' };
     }
 
-    console.log(`Processing course purchase for: ${customerEmail}`);
+    console.log(`Processing ${purchased.slugs.join('+')} purchase for: ${customerEmail}`);
 
     try {
       // Check if user already exists
@@ -169,26 +256,41 @@ exports.handler = async (event) => {
         .single();
 
       if (existingUser) {
-        // User exists - grant course access
+        // User exists - grant access to the course they bought
+        const update = {
+          stripe_customer_id: session.customer,
+          // "Most recent purchase". Per-course timing lives on the
+          // course_access row's granted_at, so overwriting this loses nothing.
+          course_purchased_at: new Date().toISOString()
+        };
+        // Only the original course still writes the single-course boolean, and
+        // only so this change can be rolled back by reverting the code alone.
+        // The single-course boolean is still written when the purchase
+        // includes the original course, so this stays revertible.
+        if (purchased.slugs.some((slug) => courses.hasLegacyFlag(slug))) {
+          update.has_course_access = true;
+        }
+
         await supabase
           .from('users')
-          .update({
-            has_course_access: true,
-            stripe_customer_id: session.customer,
-            course_purchased_at: new Date().toISOString()
-          })
+          .update(update)
           .eq('id', existingUser.id);
+
+        // Every course the purchase covers. A bundle grants two.
+        for (const slug of purchased.slugs) {
+          await grantCourseAccess(existingUser.id, slug, session.id);
+        }
 
         // Send access granted email
         await resend.emails.send({
           from: 'Tre Coleman <noreply@trecoleman.com>',
           to: customerEmail,
-          subject: 'Your Course Access is Ready! - The Catering Profit System',
+          subject: `Your Course Access is Ready! - ${purchasedName}`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
               <h1 style="color: #1F4788;">You're In! Course Access Granted</h1>
               <p>Hi ${existingUser.name || 'there'},</p>
-              <p>Thank you for purchasing <strong>The Catering Profit System</strong>!</p>
+              <p>Thank you for purchasing <strong>${purchasedName}</strong>!</p>
               <p>Your account has been updated with full course access. You can log in now to start learning:</p>
               <p style="margin: 30px 0;">
                 <a href="${SITE}/login.html" style="background: #F4A460; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Access Your Course</a>
@@ -200,7 +302,7 @@ exports.handler = async (event) => {
           `
         });
 
-        console.log(`Course access granted for existing user: ${customerEmail}`);
+        console.log(`${purchased.slugs.join('+')} access granted for existing user: ${customerEmail}`);
       } else {
         // New user - create account with temporary password
         const tempPassword = generateTempPassword();
@@ -219,26 +321,32 @@ exports.handler = async (event) => {
         }
 
         // Create user profile with course access
-        await supabase
-          .from('users')
-          .insert({
-            id: authData.user.id,
-            email: customerEmail.toLowerCase(),
-            name: session.customer_details?.name || 'Course Student',
-            has_course_access: true,
-            stripe_customer_id: session.customer,
-            course_purchased_at: new Date().toISOString(),
-            created_at: new Date().toISOString()
-          });
+        const profile = {
+          id: authData.user.id,
+          email: customerEmail.toLowerCase(),
+          name: session.customer_details?.name || 'Course Student',
+          stripe_customer_id: session.customer,
+          course_purchased_at: new Date().toISOString(),
+          created_at: new Date().toISOString()
+        };
+        if (purchased.slugs.some((slug) => courses.hasLegacyFlag(slug))) {
+          profile.has_course_access = true;
+        }
+
+        await supabase.from('users').insert(profile);
+
+        for (const slug of purchased.slugs) {
+          await grantCourseAccess(authData.user.id, slug, session.id);
+        }
 
         // Send welcome + course access email with temp password
         await resend.emails.send({
           from: 'Tre Coleman <noreply@trecoleman.com>',
           to: customerEmail,
-          subject: 'Welcome! Your Course Access + Login Details - The Catering Profit System',
+          subject: `Welcome! Your Course Access + Login Details - ${purchasedName}`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-              <h1 style="color: #1F4788;">Welcome to The Catering Profit System!</h1>
+              <h1 style="color: #1F4788;">Welcome to ${purchasedName}!</h1>
               <p>Hi ${session.customer_details?.name || 'there'},</p>
               <p>Thank you for your purchase! Your account has been created and you have full course access.</p>
 
@@ -261,7 +369,7 @@ exports.handler = async (event) => {
           `
         });
 
-        console.log(`New user created with course access: ${customerEmail}`);
+        console.log(`New user created with ${purchased.slugs.join('+')} access: ${customerEmail}`);
       }
 
       // Last, and never in a way that can fail the purchase: access is
@@ -277,7 +385,10 @@ exports.handler = async (event) => {
         <p>Failed to automatically process purchase for: ${customerEmail}</p>
         <p>Stripe Session ID: ${session.id}</p>
         <p>Error: ${error.message}</p>
-        <p>Please manually grant course access.</p>
+        <p>Course(s): <strong>${purchased.slugs.join(', ') || 'unknown'}</strong></p>
+        <p>Please grant access by hand: insert a row into
+           <code>course_access</code> for this customer's user id for EACH
+           <code>course_slug</code> listed above.</p>
       `);
 
       return { statusCode: 500, body: 'Processing error' };
@@ -286,6 +397,87 @@ exports.handler = async (event) => {
 
   return { statusCode: 200, body: 'Event received' };
 };
+
+/**
+ * Which courses the account behind this email already holds.
+ *
+ * Used only by the upgrade guard, before anything is granted. Returns an
+ * EMPTY list for an unknown email, which is the honest answer: no account, no
+ * courses, so an upgrade bought with it does not qualify.
+ *
+ * Never throws. A failure here must not fail the purchase of a bundle that
+ * does not need the check, and the caller treats an empty list as "does not
+ * qualify", which alerts a human rather than granting or refusing silently.
+ */
+async function heldCourses({ userId, email }) {
+  try {
+    let id = userId || null;
+
+    if (!id) {
+      // Fall back to the email, for a session created outside
+      // course-upgrade-checkout — a payment link, or one made by hand in the
+      // Stripe dashboard.
+      const { data: user } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', String(email || '').toLowerCase())
+        .single();
+      if (!user) return [];
+      id = user.id;
+    }
+
+    const { data: profile } = await supabase
+      .from('users')
+      .select('has_course_access')
+      .eq('id', id)
+      .single();
+
+    const { slugs } = await coursesForUser(
+      supabase, id, profile && profile.has_course_access
+    );
+    return slugs;
+  } catch (e) {
+    console.error('Could not read existing courses for', userId || email, e.message);
+    return [];
+  }
+}
+
+
+/**
+ * Record that a user may open a course.
+ *
+ * THROWS on failure, deliberately. The caller's catch block alerts the owner
+ * and returns 500 so Stripe retries, which is what should happen: a customer
+ * who paid and has no row is locked out of what they bought, and that is worse
+ * than a retried webhook. Swallowing this would make the failure invisible
+ * until the customer emailed to ask where their course was.
+ *
+ * upsert, so a Stripe redelivery of the same event is a no-op rather than a
+ * duplicate-key error that would look like a real failure and trigger a
+ * pointless alert. ignoreDuplicates keeps the original granted_at and
+ * session_id: the first grant is the one that happened.
+ */
+async function grantCourseAccess(userId, courseSlug, sessionId) {
+  const { error } = await supabase
+    .from('course_access')
+    .upsert(
+      {
+        user_id: userId,
+        course_slug: courseSlug,
+        granted_at: new Date().toISOString(),
+        session_id: sessionId || null
+      },
+      { onConflict: 'user_id,course_slug', ignoreDuplicates: true }
+    );
+
+  if (error) {
+    // Surfaced with the slug and user so the row can be written by hand from
+    // the alert alone, without digging through logs for which course it was.
+    console.error(`Failed to grant ${courseSlug} to ${userId}:`, error.message);
+    throw new Error(`course_access upsert failed for ${courseSlug}: ${error.message}`);
+  }
+}
+
 
 // Tell the owner that something needs a human.
 //

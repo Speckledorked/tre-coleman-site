@@ -30,6 +30,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const courses = require('./lib/courses.js');
+const { coursesForUser, holds } = require('./lib/access.js');
 const { createClient } = require('@supabase/supabase-js');
 
 const MIME = {
@@ -152,9 +154,14 @@ exports.handler = async (event) => {
     return json(500, { error: 'Downloads are unavailable right now' });
   }
 
-  // has_course_access is read with the service key, exactly as auth-verify
-  // does, so the answer does not depend on row-level security being right.
-  let hasAccess = false;
+  // Which course owns the requested file. Taken from its path under
+  // course/downloads/, never from anything the caller sends, so holding one
+  // course cannot be used to pull the other's worksheets.
+  const fileCourse = courses.courseForDownloadPath(requested);
+
+  // Access is read with the service key, exactly as auth-verify does, so the
+  // answer does not depend on row-level security being right.
+  let held = [];
   try {
     const service = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
     const { data: profile, error } = await service
@@ -162,18 +169,23 @@ exports.handler = async (event) => {
       .select('has_course_access')
       .eq('id', user.id)
       .single();
-    if (error) {
+    // PGRST116 is "no row matched", a legitimate state for an account with no
+    // profile row yet; the access read is then the only source.
+    if (error && error.code !== 'PGRST116') {
       console.error('course-download: profile lookup failed', error);
       return json(500, { error: 'Downloads are unavailable right now' });
     }
-    hasAccess = Boolean(profile && profile.has_course_access);
+    ({ slugs: held } = await coursesForUser(service, user.id, profile && profile.has_course_access));
   } catch (err) {
-    console.error('course-download: profile lookup threw', err);
+    console.error('course-download: access lookup threw', err);
     return json(500, { error: 'Downloads are unavailable right now' });
   }
 
-  if (!hasAccess) {
-    return json(403, { error: 'This file is part of the Catering Profit System' });
+  if (!fileCourse || !holds(held, fileCourse)) {
+    const record = fileCourse && courses.course(fileCourse);
+    return json(403, {
+      error: `This file is part of ${record ? record.name : 'a course you do not have'}`
+    });
   }
 
   if (!ROOT) {
