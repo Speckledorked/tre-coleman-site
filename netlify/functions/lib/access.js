@@ -27,12 +27,21 @@
 
 const courses = require('./courses.js');
 
-/** Postgres undefined_table. PostgREST passes the SQLSTATE through as `code`. */
-const UNDEFINED_TABLE = '42P01';
+/**
+ * Postgres undefined_table, and PostgREST's own code for a table it cannot
+ * find in its schema cache.
+ *
+ * PGRST205 is what the live project actually returns — verified against it
+ * with the public anon key, which answers 404 / PGRST205 for a table that does
+ * not exist and an empty array for one that exists but is closed by RLS.
+ * 42P01 is the SQLSTATE underneath, kept because PostgREST passes it through
+ * in other situations.
+ */
+const MISSING_TABLE_CODES = new Set(['42P01', 'PGRST205']);
 
 function tableIsMissing(error) {
   if (!error) return false;
-  if (error.code === UNDEFINED_TABLE) return true;
+  if (MISSING_TABLE_CODES.has(error.code)) return true;
   // Belt and braces: PostgREST has worded this differently across versions,
   // and mistaking "table missing" for a real failure 500s every login.
   return /relation .*course_access.* does not exist|could not find the table/i

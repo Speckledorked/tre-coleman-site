@@ -307,6 +307,8 @@ const access = require('../netlify/functions/lib/access.js');
    forces that to happen before a deploy. */
 is(access.tableIsMissing({ code: '42P01' }), true,
   'SQLSTATE 42P01 is a missing table');
+is(access.tableIsMissing({ code: 'PGRST205' }), true,
+  "PGRST205 is a missing table — what the live project actually returns, checked against it");
 is(access.tableIsMissing({ message: 'relation "public.course_access" does not exist' }), true,
   'the worded form is a missing table');
 is(access.tableIsMissing({ message: "Could not find the table 'public.course_access' in the schema cache" }), true,
