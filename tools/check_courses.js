@@ -121,8 +121,10 @@ is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg'))
   'the superseded variable is added to the profit course, not substituted for it');
 is(buy('price_legacy').slugs, ['catering-profit'],
   'a checkout at the superseded price still grants the profit course');
-is(c.priceIdsFor('catering-people'), ['price_people'],
+is(c.priceIdsFor('catering-people').includes('price_legacy'), false,
   'the superseded variable never grants a later course');
+is(c.priceIdsFor('catering-people').includes('price_people'), true,
+  "and the People course's own configured id is still there");
 
 delete process.env.STRIPE_PRICE_IDS_CATERING_PROFIT;
 is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
@@ -178,6 +180,23 @@ is(c.bundlesRequiringExisting(byProduct('prod_VS4cGwqq2RvVBA').bundles), ['cater
   'and the real upgrade product is still gated on already owning a course');
 is(byProduct('prod_somethingelse').slugs, [],
   'an unregistered product grants nothing');
+
+/* The People course sold on its own. ONE product carries both its $197 and
+   $147 prices, so matching the product covers both tiers without naming
+   either — the shape that would have prevented the Profit course's bug. */
+is(byProduct('prod_VS5bug6dIbIa6i').slugs, ['catering-people'],
+  'the real People product grants the People course');
+is(byProduct('prod_VS5bug6dIbIa6i').name, 'The Catering People System',
+  'and names it correctly in the confirmation email');
+is(byProduct('prod_VS5bug6dIbIa6i').slugs.includes('catering-profit'), false,
+  'buying People alone does NOT grant Profit — the whole point of selling them separately');
+is(byProduct('prod_VS5bug6dIbIa6i').bundles, [],
+  'People alone is not a bundle, so none of the bundle gating applies to it');
+
+/* The upgrade has to work from the People side too, not just the Profit side:
+   someone who bought People alone pays $100 and should end up with both. */
+is(c.bundle('catering-upgrade').grants.includes('catering-people'), true,
+  'the upgrade covers a People owner buying Profit, not only the other direction');
 
 /* Stripe sends price.product as an id string, or as the expanded object when
    asked. Reading only one shape would silently stop matching. */

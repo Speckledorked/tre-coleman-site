@@ -105,9 +105,24 @@ const COURSES = {
     lessonsPerModule: 4,
     hasBonus: true,
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_PEOPLE',
-    // Not created yet. Until one exists, no checkout can match this course,
-    // which is the correct behaviour: it cannot be bought yet either.
     priceIds: [],
+    /**
+     * One PRODUCT covers both tiers.
+     *
+     * The $197 and $147 payment links are two Prices on this single Product,
+     * so matching the product grants the course on either without naming each
+     * price — which is the shape of the bug that made all of this necessary
+     * on the Profit course, where a one-price gate silently refused the other
+     * tier. Registering the product means a third tier, or a price change,
+     * needs nothing here.
+     *
+     * Payment links, for the sales page when it is built:
+     *   $197  https://buy.stripe.com/8x228kdd55yn7cp2QBcAo0f
+     *   $147  https://buy.stripe.com/6oU7sEfldd0P0O1gHrcAo0g
+     */
+    productIds: [
+      'prod_VS5bug6dIbIa6i',
+    ],
     usd: 197,
     foundingUsd: 147,
     legacyFlag: false,
