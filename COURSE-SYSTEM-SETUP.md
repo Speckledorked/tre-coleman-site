@@ -77,7 +77,7 @@ See `.env.example` in the repository root for the same list with notes.
 | `SUPABASE_SERVICE_KEY` | Service role key (**secret**, bypasses RLS) | `eyJhbGciOi...` | Yes — viewable in dashboard |
 | `STRIPE_SECRET_KEY` | Stripe secret key | `sk_live_xxxxx` | Yes — revealable in dashboard |
 | `STRIPE_WEBHOOK_SECRET` | Webhook signing secret | `whsec_xxxxx` | **No** — tied to one endpoint URL |
-| `STRIPE_PRICE_IDS_CATERING_PROFIT` | Price IDs granting the Catering Profit System, comma-separated (not payment links) | `price_xxx,price_yyy` | Yes — lookup in Products |
+| `STRIPE_PRICE_IDS_CATERING_PROFIT` | **Optional.** Extra price IDs granting the Catering Profit System; its two live prices are already registered in `lib/courses.js` | `price_xxx,price_yyy` | Yes — lookup in Products |
 | `STRIPE_PRICE_IDS_CATERING_PEOPLE` | Price IDs granting the Catering People Course, comma-separated | `price_zzz` | Yes — lookup in Products |
 | `STRIPE_PRICE_IDS_CATERING_BUNDLE` | Price IDs granting BOTH courses, comma-separated | `price_bbb` | Yes — lookup in Products |
 | `RESEND_API_KEY` | Resend API key | `re_xxxxx` | **No** — shown once |
@@ -100,8 +100,15 @@ fails if those two ever disagree.
 
 ### Three that are easy to get wrong
 
-**The `STRIPE_PRICE_IDS_*` variables must hold price IDs, not payment links,
-and must list every live price for their course.**
+**The `STRIPE_PRICE_IDS_*` variables are optional, and must hold price IDs
+rather than payment links.**
+
+The Catering Profit System's two live prices are registered in
+`netlify/functions/lib/courses.js`, so the webhook works with none of these
+variables set. A price ID is an identifier rather than a credential, and the
+repository already hardcodes the payment links those prices sit behind. These
+variables exist to ADD a price without a deploy; they are unioned with the
+registry and can never drop a working one.
 `netlify/functions/stripe-webhook.js` matches them against the checkout
 session's line items to decide which course a payment grants. If one is wrong
 or missing, customers are charged and receive nothing.

@@ -39,7 +39,8 @@ function is(got, want, label) {
 
 /* --- prices ------------------------------------------------------------- */
 
-is(c.priceIdsFor('catering-profit'), ['price_197', 'price_147'],
+is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+  ['price_197', 'price_147'],
   'a trailing comma and stray spaces do not become empty price ids');
 const buy = (...ids) => c.purchaseFromLineItems(ids.map((id) => ({ price: { id } })));
 
@@ -55,6 +56,31 @@ is(c.purchaseFromLineItems([]).slugs, [], 'no line items grant no course');
 is(c.purchaseFromLineItems(null).slugs, [], 'missing line items grant no course');
 is(c.purchaseFromLineItems([{}, { price: null }]).slugs, [],
   'line items without a price grant no course');
+
+/* --- the REAL live price ids -------------------------------------------- */
+
+/* These are the actual prices behind the two payment links on the live site.
+   Asserted literally, because the whole point of putting them in the registry
+   is that the webhook works without anyone setting an environment variable —
+   and because the failure they prevent is silent: a buyer is charged and
+   granted nothing, and the first anyone hears of it is an email asking where
+   the course went. A typo in one of these ids would reproduce exactly that. */
+is(buy('price_1UPgfR3ZIXWMSTgNHf1HlfFv').slugs, ['catering-profit'],
+  'the real $197 standard price grants the profit course');
+is(buy('price_1UPgeJ3ZIXWMSTgNLDiulogW').slugs, ['catering-profit'],
+  'the real $147 founding price grants the profit course');
+is(buy('price_1UPgfR3ZIXWMSTgNHf1HlfFv', 'price_1UPgeJ3ZIXWMSTgNLDiulogW').slugs,
+  ['catering-profit'],
+  'both real prices in one session still grant the course exactly once');
+
+/* The environment variable may only ADD. Dropping a working price by setting
+   it would put us straight back in the bug this replaced. */
+process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_added_later';
+is(c.priceIdsFor('catering-profit').includes('price_1UPgfR3ZIXWMSTgNHf1HlfFv'), true,
+  'setting the variable does not drop the registered $197 price');
+is(c.priceIdsFor('catering-profit').includes('price_added_later'), true,
+  'and the variable still adds its own');
+process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_197, price_147 ,';
 
 /* --- the bundle, in both shapes Stripe can take ------------------------- */
 
@@ -90,7 +116,8 @@ is(c.allPriceIds().includes('price_bundle'), true,
    checkout as a course purchase -- handing the course to $350 Snapshot
    buyers, who that one price id currently excludes correctly. */
 process.env.STRIPE_COURSE_PRICE_ID = 'price_legacy';
-is(c.priceIdsFor('catering-profit'), ['price_197', 'price_147', 'price_legacy'],
+is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+  ['price_197', 'price_147', 'price_legacy'],
   'the superseded variable is added to the profit course, not substituted for it');
 is(buy('price_legacy').slugs, ['catering-profit'],
   'a checkout at the superseded price still grants the profit course');
@@ -98,14 +125,19 @@ is(c.priceIdsFor('catering-people'), ['price_people'],
   'the superseded variable never grants a later course');
 
 delete process.env.STRIPE_PRICE_IDS_CATERING_PROFIT;
-is(c.priceIdsFor('catering-profit'), ['price_legacy'],
-  'with only the superseded variable set, it alone gates the profit course — exactly as before this change');
+is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+  ['price_legacy'],
+  'with only the superseded variable set, it still gates the profit course alongside the registered ones');
 is(buy('price_snapshot').slugs, [],
   'and the $350 Snapshot is still excluded, which is the regression this guards');
 process.env.STRIPE_PRICE_IDS_CATERING_PROFIT = 'price_197, price_147 ,';
 delete process.env.STRIPE_COURSE_PRICE_ID;
-is(c.priceIdsFor('catering-profit'), ['price_197', 'price_147'],
+is(c.priceIdsFor('catering-profit').filter((id) => !id.startsWith('price_1UPg')),
+  ['price_197', 'price_147'],
   'and it drops back out once unset');
+/* The registered ids are never affected by any of that: they are the floor. */
+is(c.priceIdsFor('catering-profit').filter((id) => id.startsWith('price_1UPg')).length, 2,
+  'the two registered live prices survive every environment permutation above');
 
 /* --- lesson ids --------------------------------------------------------- */
 

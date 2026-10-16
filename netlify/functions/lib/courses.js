@@ -56,6 +56,28 @@ const COURSES = {
     lessonsPerModule: 4,
     hasBonus: true,
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_PROFIT',
+    /**
+     * The live prices, in code.
+     *
+     * A Stripe PRICE id is an identifier, not a credential — it is what
+     * client-side Stripe integrations pass around, and this repository
+     * already hardcodes the PAYMENT LINKS these sit behind
+     * (index.html:302 and :305), which are strictly more revealing. So
+     * there is nothing gained by making the webhook unable to work until
+     * someone sets an environment variable, and something real lost: the
+     * $147 founding tier shipped on 2026-10-12 against a gate that could
+     * name only one price, so whichever price was not named took money
+     * and granted nothing.
+     *
+     * Changing a price is already a code change here, because the payment
+     * link in the markup has to change with it. The environment variable
+     * still works and is UNIONED with this, so a price can be added
+     * without a deploy; it cannot remove one, which is deliberate.
+     */
+    priceIds: [
+      'price_1UPgfR3ZIXWMSTgNHf1HlfFv',   // $197 standard
+      'price_1UPgeJ3ZIXWMSTgNLDiulogW',   // $147 founding, first 10 buyers
+    ],
     /* The single-course boolean on users. Only this course honours it, and
        only as a fallback, so buyers keep working between this deploying and
        tools/sql/course_access.sql being run. See hasLegacyFlag below. */
@@ -72,6 +94,9 @@ const COURSES = {
     lessonsPerModule: 4,
     hasBonus: true,
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_PEOPLE',
+    // Not created yet. Until one exists, no checkout can match this course,
+    // which is the correct behaviour: it cannot be bought yet either.
+    priceIds: [],
     legacyFlag: false,
   },
 };
@@ -101,6 +126,7 @@ const BUNDLES = {
     name: 'The Catering Profit + People Bundle',
     grants: ['catering-profit', 'catering-people'],
     priceEnv: 'STRIPE_PRICE_IDS_CATERING_BUNDLE',
+    priceIds: [],
   },
 };
 
@@ -115,7 +141,11 @@ function bundle(slug) {
 function bundlePriceIdsFor(slug) {
   const record = bundle(slug);
   if (!record) return [];
-  return split(process.env[record.priceEnv]);
+  const ids = [...(record.priceIds || [])];
+  for (const id of split(process.env[record.priceEnv])) {
+    if (!ids.includes(id)) ids.push(id);
+  }
+  return ids;
 }
 
 /** The course record, or null for an unknown slug. */
@@ -137,7 +167,13 @@ function priceIdsFor(slug) {
   const record = course(slug);
   if (!record) return [];
 
-  const ids = split(process.env[record.priceEnv]);
+  // Registry defaults first, then anything the environment adds. Union, so
+  // setting the variable can only ever add a price, never silently drop one
+  // that is working.
+  const ids = [...(record.priceIds || [])];
+  for (const id of split(process.env[record.priceEnv])) {
+    if (!ids.includes(id)) ids.push(id);
+  }
 
   /**
    * Honour the superseded STRIPE_COURSE_PRICE_ID for the original course.
