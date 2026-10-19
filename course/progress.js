@@ -162,8 +162,7 @@
     };
 
     var summary = meter(done(), lessons.length, 'lessons complete');
-    var main = document.querySelector('.main-content');
-    if (main) main.insertBefore(summary, main.firstChild);
+    mountMeter(summary);
 
     function refresh() {
       var fresh = meter(done(), lessons.length, 'lessons complete');
@@ -188,9 +187,40 @@
     markSidebar(completed);
   }
 
-  /** The sidebar list is the student's map of the module; mark it up to match. */
+  /**
+   * Where the meter goes.
+   *
+   * The redesigned pages carry a rail panel for it. The older pages do not,
+   * and both shapes are live at once while the two courses are converted, so
+   * this falls back rather than assuming: the panel, else the top of the main
+   * column, which is where it used to sit.
+   *
+   * The panel is a heading with nothing under it until this runs, so a page
+   * whose meter never arrives drops the panel instead of showing an empty
+   * one.
+   */
+  function mountMeter(el) {
+    var panel = document.getElementById('progress-panel');
+    if (panel) { panel.appendChild(el); return; }
+    var main = document.querySelector('.main-content');
+    if (main) main.insertBefore(el, main.firstChild);
+  }
+
+  function dropEmptyMeterPanel() {
+    var panel = document.getElementById('progress-panel');
+    if (panel && !panel.querySelector('.lg-progress')) panel.remove();
+  }
+
+  /**
+   * The student's map of the module, marked to match.
+   *
+   * Two lists can carry it: the numbered index the redesigned pages put at the
+   * top of the module, and the older sidebar list. Both are marked, because
+   * both are live while the courses are converted -- and a page has one or the
+   * other, never both, so there is nothing to double up.
+   */
   function markSidebar(completed) {
-    var items = document.querySelectorAll('.lessons-list li');
+    var items = document.querySelectorAll('.lesson-index > li, .lessons-list li');
     var ctx = pageContext();
     if (ctx.kind !== 'module') return;
     [].forEach.call(items, function (li, i) {
@@ -234,8 +264,15 @@
   }
 
   function renderDashboard(completed, total) {
-    var welcome = document.querySelector('.welcome-section');
-    if (welcome) welcome.appendChild(meter(completed.length, total, 'lessons complete'));
+    // The rail panel when the page has one, else the welcome section, which
+    // is where it sat before the rail existed.
+    var m = meter(completed.length, total, 'lessons complete');
+    var panel = document.getElementById('progress-panel');
+    if (panel) panel.appendChild(m);
+    else {
+      var welcome = document.querySelector('.welcome-section');
+      if (welcome) welcome.appendChild(m);
+    }
 
     // Per-module counts on the cards, in the order the modules appear.
     var cards = document.querySelectorAll('.modules-grid .module-card');
@@ -273,9 +310,11 @@
         if (ctx.kind === 'module') renderModule(ctx.module, completed);
         else if (ctx.kind === 'bonus') renderBonus(completed);
         else if (ctx.kind === 'dashboard') renderDashboard(completed, total);
+        dropEmptyMeterPanel();
       }).catch(function (err) {
         // No controls rather than broken controls. See the file header.
         console.error('progress: unavailable', err);
+        dropEmptyMeterPanel();
       });
     },
   };

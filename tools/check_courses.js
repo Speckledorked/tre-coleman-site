@@ -492,6 +492,62 @@ for (const slug of c.SLUGS) {
     `upgrade.js points ${slug} at its real dashboard: ${record.basePath}dashboard.html`);
 }
 
+/* --- the course shell (both courses) -------------------------------------
+
+   The two courses are maintained differently -- the People pages are
+   generated from a manifest, the Profit pages are hand-written and were
+   converted in place -- so the same design can be applied to one and not the
+   other, and nothing about a green build would say so. A student who owns
+   both would be the one to notice.
+
+   These assert the shell itself on every page that carries lessons: the two
+   columns, the numbered index, and the rail a student navigates by. The
+   Profit bonus is listed as a page that should NOT have an index, because it
+   is a written roadmap rather than video lessons -- asserting its absence
+   stops a later change from quietly giving it an empty one. */
+
+const fs = require('fs');
+const path = require('path');
+const readPage = (rel) => fs.readFileSync(path.join(__dirname, '..', rel), 'utf8');
+
+const WITH_INDEX = [
+  'course/module-1.html', 'course/module-2.html', 'course/module-3.html',
+  'course/module-4.html', 'course/module-5.html',
+  'course/people/module-1.html', 'course/people/module-2.html',
+  'course/people/module-3.html', 'course/people/module-4.html',
+  'course/people/module-5.html', 'course/people/bonus.html',
+];
+const SHELL_ONLY = ['course/dashboard.html', 'course/people/dashboard.html', 'course/bonus.html'];
+
+for (const rel of WITH_INDEX.concat(SHELL_ONLY)) {
+  const src = readPage(rel);
+  is(src.includes('container course-grid'), true, `${rel} uses the two-column course grid`);
+  is(/<ol class="rail-modules">/.test(src), true, `${rel} carries the module rail`);
+  // The old sidebar lesson list and the new index are alternatives, never both:
+  // together they print the same titles twice and progress.js marks both.
+  is(src.includes('class="lessons-list"'), false, `${rel} no longer carries the old lesson list`);
+  // Emoji were used as icons here; the brief rules them out and they rendered
+  // as tofu boxes on the devices that lacked the glyphs.
+  for (const [cp, what] of [['&#128196;', 'page'], ['&#11015;', 'down arrow'], ['&#9654;', 'play']]) {
+    is(src.includes(cp), false, `${rel} carries no ${what} emoji (${cp})`);
+  }
+}
+
+for (const rel of WITH_INDEX) {
+  const src = readPage(rel);
+  is(/<ol class="lesson-index">/.test(src), true, `${rel} carries the numbered lesson index`);
+  // Every index row must point at an anchor that exists, or "Start lesson"
+  // scrolls nowhere.
+  const targets = [...src.matchAll(/class="lesson-index__go" href="#([a-z]+-\d+)"/g)].map((m) => m[1]);
+  is(targets.length > 0, true, `${rel} index rows link somewhere`);
+  for (const t of targets) {
+    is(src.includes(`id="${t}"`), true, `${rel} has the anchor its index links to: #${t}`);
+  }
+}
+
+is(readPage('course/bonus.html').includes('<ol class="lesson-index">'), false,
+  'course/bonus.html has no lesson index: it is a written roadmap, not lessons');
+
 /* --- report ------------------------------------------------------------- */
 
 function report() {
