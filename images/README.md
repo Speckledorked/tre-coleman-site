@@ -20,7 +20,31 @@ slide for exactly this reason: it stays sharp at any density, weighs nothing,
 and follows the light and dark themes on its own.
 
 What images are legitimately for here: a real photograph of a real person, a
-screenshot of a real artifact, and the social sharing card.
+screenshot of a real artifact, the social sharing card, and the module hero
+inside the course.
+
+## Course module heroes
+
+One photograph per module, five per course, supplied by Tre -- not sourced.
+The redesigned module page has a slot for it above the lesson index.
+
+    images/course/profit/module-1.webp   ->  course/module-1.html
+    images/course/people/module-1.webp   ->  course/people/module-1.html
+
+`tools/wire_course_heroes.py` writes the markup. Drop the file in and run it;
+it reads the dimensions from the file itself, so there is no number to keep in
+step. It is re-runnable: replacing a file updates the dimensions, and deleting
+one removes the figure again.
+
+The page is designed to work with no hero at all -- a module with no file
+keeps its typographic hero rather than showing an empty frame -- so the five
+can arrive one at a time. `.webp`, `.jpg` and `.png` are all read; `.webp` is
+preferred for the reasons below.
+
+`alt` is deliberately empty on these. The hero repeats the module title set
+in the `<h1>` beside it, so a screen reader announcing it again is noise.
+That is the accessible choice for decoration, not an omission -- an image
+that carried information would need real alt text instead.
 
 ## What is in use
 

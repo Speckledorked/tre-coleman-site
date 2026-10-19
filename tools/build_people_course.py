@@ -323,8 +323,8 @@ def downloads_card(folder, names):
             label = f"{name} ({ext})" if len(files) > 1 else name
             href = f"../downloads/people/{folder}/{filename}"
             rows.append(
-                f'            <li><span>&#128196; {esc(label)}</span>'
-                f'<a href="{href}" download class="dl-btn">&#11015; Download</a></li>\n'
+                f'            <li><span>{esc(label)}</span>'
+                f'<a href="{href}" download class="dl-btn">Download</a></li>\n'
             )
     if not rows:
         return ""
@@ -338,13 +338,78 @@ def downloads_card(folder, names):
 """)
 
 
-def sidebar_item(i, title):
-    """One entry in the lessons list. The first is marked active, matching the
-    Profit course's pages; progress.js adds is-done to the <li> as lessons are
-    ticked off."""
-    active = ' class="active"' if i == 0 else ""
-    return (f'            <li><a href="#lesson-{i + 1}"{active}>'
-            f"&#9654; {esc(title)}</a></li>\n")
+def lesson_index(lessons, descriptions=None):
+    """The numbered lesson rows at the top of the module.
+
+    These are navigation, not headings: each lesson already carries an <h2>
+    on its own video block, so repeating the title as a heading here would
+    put two identical headings on the page and muddle the outline that
+    check_site.py's metadata check reads.
+
+    The description is the module's own "what you'll learn" line for that
+    lesson -- the manifest's learn[] entries align one-to-one with lessons[],
+    so this relocates copy that already exists rather than inventing a
+    second description per lesson. progress.js marks each <li> is-done.
+    """
+    rows = []
+    for i, (title, _vid) in enumerate(lessons):
+        desc = ""
+        if descriptions and i < len(descriptions):
+            desc = (f'              <p class="lesson-index__desc">'
+                    f'{esc(descriptions[i])}</p>\n')
+        rows.append(
+            f'          <li>\n'
+            f'            <span class="lesson-index__no">{i + 1:02d}</span>\n'
+            f'            <div>\n'
+            f'              <p class="lesson-index__title">'
+            f'<a href="#lesson-{i + 1}">{esc(title)}</a></p>\n'
+            f'{desc}'
+            f'            </div>\n'
+            f'            <a class="lesson-index__go" href="#lesson-{i + 1}">'
+            f'Start lesson &rarr;</a>\n'
+            f'          </li>\n'
+        )
+    return ('        <ol class="lesson-index">\n'
+            + "".join(rows)
+            + '        </ol>\n')
+
+
+def progress_panel():
+    """The rail's progress panel. progress.js fills it; an empty panel would
+    be a heading over nothing, so the script removes it if there is no meter
+    to put in."""
+    return ('        <div class="sidebar-card" id="progress-panel">\n'
+            '          <h3>Your progress</h3>\n'
+            '        </div>\n')
+
+
+def rail_modules(current):
+    """Every module in the course, with the current page marked.
+
+    The rail is how a student moves between modules. Before this the only
+    route from module 3 to module 5 was back to the dashboard and out again,
+    because the page carried nothing but prev/next.
+    """
+    rows = []
+    for m in MODULES:
+        cur = ' class="is-current"' if current == m["n"] else ""
+        rows.append(
+            f'            <li{cur}><a href="module-{m["n"]}.html">'
+            f'<span class="rail-modules__n">Module {m["n"]}</span>'
+            f'<span class="rail-modules__t">{esc(m["title"])}</span></a></li>\n'
+        )
+    cur = ' class="is-current"' if current == "bonus" else ""
+    rows.append(
+        f'            <li{cur}><a href="bonus.html">'
+        f'<span class="rail-modules__n">Bonus</span>'
+        f'<span class="rail-modules__t">Put It Into Practice</span></a></li>\n'
+    )
+    return ('        <div class="sidebar-card">\n'
+            '          <h3>Modules</h3>\n'
+            '          <ol class="rail-modules">\n'
+            + "".join(rows)
+            + '          </ol>\n'
+            '        </div>\n')
 
 
 def lesson_block(kind, index, title, vid, module_no=None):
@@ -363,10 +428,8 @@ def module_page(m):
         lesson_block("Lesson", i + 1, t, v, m["n"])
         for i, (t, v) in enumerate(m["lessons"])
     )
-    sidebar = "".join(
-        sidebar_item(i, t) for i, (t, _) in enumerate(m["lessons"])
-    )
-    learn = "".join(f"            <li>{esc(x)}</li>\n" for x in m["learn"])
+    index = lesson_index(m["lessons"], m.get("learn"))
+    rail = progress_panel() + rail_modules(m["n"])
     downloads = downloads_card(f"module-{m['n']}", m.get("downloads", []))
 
     nxt = (f'<a href="module-{m["n"] + 1}.html" class="nav-btn next">Next: '
@@ -399,27 +462,17 @@ def module_page(m):
       </div>
     </section>
 
-    <div class="container">
+    <div class="container course-grid">
       <main class="main-content" id="main-content">
-        <div class="lesson-videos">
+{index}        <div class="lesson-videos">
 {lessons}        </div>
-        <div class="lesson-content">
-          <h2>What You&rsquo;ll Learn</h2>
-          <ul>
-{learn}          </ul>
-        </div>
         <div class="nav-buttons">
           {prev}
           {nxt}
         </div>
       </main>
       <aside class="sidebar">
-        <div class="sidebar-card">
-          <h3>Lessons</h3>
-          <ul class="lessons-list">
-{sidebar}          </ul>
-        </div>
-{downloads}      </aside>
+{rail}{downloads}      </aside>
     </div>
   </div>
 """
@@ -431,7 +484,8 @@ def bonus_page():
     lessons = "".join(
         lesson_block("Bonus", i + 1, t, v) for i, (t, v) in enumerate(BONUS)
     )
-    sidebar = "".join(sidebar_item(i, t) for i, (t, _) in enumerate(BONUS))
+    index = lesson_index(BONUS)
+    rail = progress_panel() + rail_modules("bonus")
     downloads = downloads_card("bonus", BONUS_DOWNLOADS)
     return (
         HEAD.format(title=f"Bonus Material - {COURSE_NAME}",
@@ -457,9 +511,9 @@ def bonus_page():
       </div>
     </section>
 
-    <div class="container">
+    <div class="container course-grid">
       <main class="main-content" id="main-content">
-        <div class="lesson-videos">
+{index}        <div class="lesson-videos">
 {lessons}        </div>
         <div class="nav-buttons">
           <a href="module-5.html" class="nav-btn prev">&larr; Team and Culture</a>
@@ -467,12 +521,7 @@ def bonus_page():
         </div>
       </main>
       <aside class="sidebar">
-        <div class="sidebar-card">
-          <h3>Sessions</h3>
-          <ul class="lessons-list">
-{sidebar}          </ul>
-        </div>
-{downloads}      </aside>
+{rail}{downloads}      </aside>
     </div>
   </div>
 """
@@ -481,6 +530,7 @@ def bonus_page():
 
 
 def dashboard_page():
+    rail = progress_panel() + rail_modules(None)
     cards = ""
     for m in MODULES:
         items = "".join(
@@ -519,6 +569,7 @@ def dashboard_page():
       </div>
     </header>
 
+    <div class="container course-grid">
     <main class="main-content" id="main-content">
       <section class="welcome-section">
         <h1>{COURSE_NAME}</h1>
@@ -540,6 +591,9 @@ def dashboard_page():
         <a href="bonus.html" class="module-btn">Go to Bonus Material &rarr;</a>
       </section>
     </main>
+      <aside class="sidebar">
+{rail}      </aside>
+    </div>
   </div>
 """
         + BOOT.format(page_id="dashboard")

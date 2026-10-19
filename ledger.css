@@ -1795,3 +1795,187 @@ body.ledger .breadcrumbs a { color: var(--ink-soft); }
   body.ledger button.dl-btn,
   body.ledger button.view-btn { flex: 1 1 100%; text-align: center; }
 }
+
+
+/* --- The course shell ------------------------------------------------------
+
+   The module page used to be one long column: a hero, four full-width video
+   players stacked, and then -- four thousand pixels down -- the lesson list
+   and the downloads. Everything a student navigates by sat below everything
+   they had to scroll past.
+
+   This is the same ledger language applied to that problem. The lesson index
+   is a run of ledger rows, the number set large and tabular in the left
+   column the way a line item carries its figure; the rail holds progress,
+   the module list and the downloads beside the content instead of beneath it.
+
+   Panels are divided by hairlines rather than drawn as boxes: a rail of five
+   bordered cards is the card grid this design language replaced, and the
+   brief is explicit that not everything is a card.
+
+   Theme-aware throughout -- no page forces a theme, so a student sees the
+   course in whichever they already chose.
+   -------------------------------------------------------------------------- */
+
+/* Two columns from 900px. The rail is fixed-width because its job is a
+   steady reference edge; the content column takes the remainder. */
+@media (min-width: 900px) {
+  body.ledger .container.course-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: 0 clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  /* The rail tracks the reader down the page. Scoped to viewports tall
+     enough that a sticky rail cannot outgrow the window and strand its
+     own lower panels out of reach. */
+  @media (min-height: 46rem) {
+    body.ledger .course-grid > .sidebar {
+      position: sticky;
+      top: 1.5rem;
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+    }
+  }
+}
+
+/* --- Rail panels --- */
+body.ledger .course-grid > .sidebar > .sidebar-card { border-top: 1px solid var(--rule); }
+body.ledger .course-grid > .sidebar > .sidebar-card:first-child {
+  border-top: 2px solid var(--rule-strong);
+}
+body.ledger .sidebar-card > h3 {
+  font-family: var(--lg-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 1rem;
+}
+
+/* --- The module list in the rail --- */
+body.ledger .rail-modules { list-style: none; margin: 0; padding: 0; }
+body.ledger .rail-modules li { border-top: 1px solid var(--rule); }
+body.ledger .rail-modules li:first-child { border-top: none; }
+body.ledger .rail-modules a {
+  display: grid;
+  grid-template-columns: 4.25rem minmax(0, 1fr);
+  gap: 0 0.5rem;
+  align-items: baseline;
+  padding: 0.6875rem 0;
+  text-decoration: none;
+  color: var(--ink);
+}
+body.ledger .rail-modules a:hover { color: var(--loss); }
+body.ledger .rail-modules .rail-modules__n {
+  font-family: var(--lg-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+body.ledger .rail-modules .rail-modules__t {
+  font-family: var(--lg-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+/* The page you are on: a bar in the margin, not a filled row. */
+body.ledger .rail-modules li.is-current {
+  box-shadow: inset 3px 0 0 0 var(--rule-strong);
+}
+body.ledger .rail-modules li.is-current a { padding-left: 0.75rem; }
+body.ledger .rail-modules li.is-current .rail-modules__n { color: var(--ink); }
+
+/* --- The lesson index ------------------------------------------------------
+   The mockup's lesson cards, read as ledger rows. The number is the graphic
+   element: display face, tabular, the size of a figure rather than a label.
+   -------------------------------------------------------------------------- */
+body.ledger .lesson-index { list-style: none; margin: 0 0 2.5rem; padding: 0; }
+body.ledger .lesson-index > li {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  gap: 0 1.125rem;
+  align-items: baseline;
+  padding: 1.125rem 0;
+  border-top: 1px solid var(--rule);
+}
+body.ledger .lesson-index > li:first-child { border-top: 2px solid var(--rule-strong); }
+body.ledger .lesson-index > li:last-child { border-bottom: 1px solid var(--rule); }
+
+body.ledger .lesson-index__no {
+  font-family: var(--lg-display);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  font-stretch: 88%;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+body.ledger .lesson-index__title {
+  font-family: var(--lg-display);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  font-weight: 700;
+  font-stretch: 88%;
+  line-height: 1.3;
+  margin: 0 0 0.3125rem;
+}
+body.ledger .lesson-index__title a { color: var(--ink); text-decoration: none; }
+body.ledger .lesson-index__title a:hover { color: var(--loss); }
+body.ledger .lesson-index__desc {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 54ch;
+}
+body.ledger .lesson-index__go {
+  font-family: var(--lg-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 2px;
+}
+body.ledger .lesson-index__go:hover { color: var(--loss); border-bottom-color: var(--loss); }
+
+/* A completed row states it where the action was, so the column still reads
+   as one thing down the page. */
+body.ledger .lesson-index > li.is-done .lesson-index__no { color: var(--rule-strong); }
+body.ledger .lesson-index__state {
+  font-family: var(--lg-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+body.ledger .lesson-index__state::before { content: "\2713\00a0"; }
+
+@media (max-width: 36rem) {
+  body.ledger .lesson-index > li { grid-template-columns: 2.5rem minmax(0, 1fr); }
+  body.ledger .lesson-index__go,
+  body.ledger .lesson-index__state { grid-column: 2; margin-top: 0.625rem; }
+}
+
+/* --- The module hero image -------------------------------------------------
+   One photograph per module, and the markup is only emitted when the file is
+   actually on disk -- a missing hero leaves the typographic hero intact
+   rather than a broken frame or an unsized image.
+   -------------------------------------------------------------------------- */
+body.ledger .module-hero__figure { margin: 0 0 1.75rem; }
+body.ledger .module-hero__figure img {
+  display: block;
+  width: 100%;
+  height: clamp(10rem, 24vw, 16rem);
+  object-fit: cover;
+  border-top: 2px solid var(--rule-strong);
+  border-bottom: 1px solid var(--rule);
+}
