@@ -45,6 +45,56 @@ const CourseAuth = {
     return this.session?.access_token;
   },
 
+  /**
+   * Is the stored access token past its stated expiry?
+   *
+   * `expires_at` has been stored since auth-login shipped and was never read.
+   * Treated as expired 60 seconds early so a token cannot die between this
+   * check and the request it was checked for.
+   *
+   * An absent expires_at is NOT treated as expired: sessions stored before
+   * this shipped may not carry one, and calling those expired would sign
+   * every one of those students out at once.
+   */
+  isExpired() {
+    const at = this.session && this.session.expires_at;
+    if (!at) return false;
+    return Date.now() >= (at * 1000) - 60000;
+  },
+
+  /**
+   * Trade the refresh token for a live session.
+   *
+   * Returns true only if a new access token was actually stored, so every
+   * caller can fall back to its previous behaviour on false. Nothing here
+   * clears the session on failure: a network blip should not sign a student
+   * out of a course they are part way through.
+   */
+  async refresh() {
+    const refreshToken = this.session && this.session.refresh_token;
+    if (!refreshToken) return false;
+    try {
+      const response = await fetch('/.netlify/functions/auth-refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: refreshToken })
+      });
+      if (!response.ok) return false;
+      const data = await response.json();
+      if (!data || !data.session || !data.session.access_token) return false;
+      this.session = data.session;
+      localStorage.setItem('session', JSON.stringify(data.session));
+      if (data.user) {
+        this.user = data.user;
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
+      return true;
+    } catch (error) {
+      console.error('Session refresh failed:', error);
+      return false;
+    }
+  },
+
   getUser() {
     return this.user;
   },
@@ -54,12 +104,27 @@ const CourseAuth = {
       return false;
     }
 
+    // A token past its expiry is renewed before it is used, so the common
+    // case never costs a failed request.
+    if (this.isExpired()) await this.refresh();
+
     try {
-      const response = await fetch('/.netlify/functions/auth-verify', {
+      let response = await fetch('/.netlify/functions/auth-verify', {
         headers: {
           'Authorization': `Bearer ${this.getToken()}`
         }
       });
+
+      // 401 means the token is dead. Try once to renew it before signing the
+      // student out: before this, an expired token logged them straight out,
+      // which is what sent people back to the login page mid-course.
+      if (response.status === 401 && await this.refresh()) {
+        response = await fetch('/.netlify/functions/auth-verify', {
+          headers: {
+            'Authorization': `Bearer ${this.getToken()}`
+          }
+        });
+      }
 
       if (!response.ok) {
         this.logout();
@@ -79,9 +144,26 @@ const CourseAuth = {
     }
   },
 
+  /**
+   * Forget the stored session WITHOUT navigating.
+   *
+   * Needed separately from logout() because a caller that is about to send
+   * the student somewhere specific has to clear first: login.html honours
+   * ?redirect=, so leaving a dead session in storage makes it bounce the
+   * student straight back to the page they came from, without ever asking
+   * for credentials -- a loop between the two pages.
+   */
+  clearSession() {
+    this.session = null;
+    this.user = null;
+    try {
+      localStorage.removeItem('session');
+      localStorage.removeItem('user');
+    } catch (_) { /* storage can be unavailable; nothing to clear then */ }
+  },
+
   logout() {
-    localStorage.removeItem('session');
-    localStorage.removeItem('user');
+    this.clearSession();
     window.location.href = '/login.html';
   },
 

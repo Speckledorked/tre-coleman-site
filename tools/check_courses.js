@@ -492,6 +492,61 @@ for (const slug of c.SLUGS) {
     `upgrade.js points ${slug} at its real dashboard: ${record.basePath}dashboard.html`);
 }
 
+/* --- reading the course globals -------------------------------------------
+
+   auth.js declares `const CourseAuth`. A top-level const is a global LEXICAL
+   binding and never a property of window, so `window.CourseAuth` is undefined
+   while the bare name `CourseAuth` resolves fine from any other classic
+   script on the page.
+
+   downloads.js read it through window:
+
+       const token = window.CourseAuth && CourseAuth.getToken();
+
+   which short-circuits before it ever reaches the working name. `token` was
+   always undefined, so the "not signed in" branch fired on EVERY click and
+   every download redirected to the login page instead of fetching the file.
+   No student could download anything, and nothing failed loudly: the gate
+   returned 401 correctly, the files were there, the links were right.
+
+   progress.js and upgrade.js already carried a note about this trap.
+   downloads.js was written before it was understood, and was never revisited.
+
+   This asserts the rule rather than the one instance: whatever a course
+   script declares with a top-level const, no course script may read off
+   window. */
+
+// Inline requires, matching how this file already reads upgrade.js: a
+// top-level `const fs` here would collide with the one the course-shell
+// checks add on the redesign branch.
+const courseDir = require('path').join(__dirname, '../course');
+const readScript = (f) => require('fs').readFileSync(require('path').join(courseDir, f), 'utf8');
+const courseScripts = require('fs').readdirSync(courseDir).filter((f) => f.endsWith('.js'));
+
+const lexicalGlobals = new Set();
+for (const file of courseScripts) {
+  const src = readScript(file);
+  for (const m of src.matchAll(/^const\s+([A-Z][A-Za-z0-9_]*)\s*=/gm)) {
+    lexicalGlobals.add(m[1]);
+  }
+}
+
+is(lexicalGlobals.has('CourseAuth'), true,
+  'CourseAuth is still declared as a top-level const (the premise of this check)');
+
+for (const file of courseScripts) {
+  const src = readScript(file);
+  for (const name of lexicalGlobals) {
+    // Only flag real reads. The explanatory comments in these files name
+    // `window.CourseAuth` on purpose, so comment lines are excluded.
+    const code = src.split('\n')
+      .filter((line) => !/^\s*(\*|\/\/|\/\*)/.test(line))
+      .join('\n');
+    is(code.includes(`window.${name}`), false,
+      `course/${file} does not read window.${name} (a const is not a window property)`);
+  }
+}
+
 /* --- report ------------------------------------------------------------- */
 
 function report() {
