@@ -68,10 +68,31 @@
 </main>
 
   <script>
+    /**
+     * Where to send someone once they are signed in.
+     *
+     * course/downloads.js and course/auth.js both send students here as
+     * /login.html?redirect=<the page they were on>, and this page used to
+     * ignore that and send everyone to the dashboard. That is what a student
+     * saw when a download failed on an expired token: they clicked Download,
+     * landed on the dashboard, and were never told why or put back where they
+     * were.
+     *
+     * Only a same-origin path is honoured. An absolute URL, a
+     * protocol-relative "//evil.example" or a "/\evil.example" (which
+     * browsers treat the same way) would turn this into an open redirect that
+     * phishes the login page's own traffic.
+     */
+    function destination() {
+      const want = new URLSearchParams(window.location.search).get('redirect');
+      if (want && /^\/(?![\/\\])[A-Za-z0-9._~\-\/?#=&%]*$/.test(want)) return want;
+      return '/course/dashboard.html';
+    }
+
     // Check if already logged in
     const session = localStorage.getItem('session');
     if (session) {
-      window.location.href = '/course/dashboard.html';
+      window.location.href = destination();
     }
 
     const form = document.getElementById('login-form');
@@ -117,9 +138,9 @@
         successEl.textContent = 'Login successful! Redirecting...';
         successEl.style.display = 'block';
 
-        // Redirect to course dashboard
+        // Back to whatever they were trying to reach, else the dashboard.
         setTimeout(() => {
-          window.location.href = '/course/dashboard.html';
+          window.location.href = destination();
         }, 1000);
 
       } catch (error) {
