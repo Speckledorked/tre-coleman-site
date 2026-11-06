@@ -138,7 +138,9 @@ tells you which ones it skipped rather than inventing one.
 | `sync_social_descriptions.py` | Keeps `og:description` / `twitter:description` equal to the meta description |
 | `fix_accessibility.py` | `<main>`, skip links, footer heading levels, nav ARIA |
 | `build_new_pages.py` | Generates the service and location pages |
-| `build_people_course.py` | **One-shot. OVERWRITES.** Generates the seven `course/people/` pages (5 modules, bonus, dashboard) from the module and video manifest inside it. Not one of the eleven CI runs. Re-running it discards anything hand-edited into those pages, so change the manifest, not the output. |
+| `build_people_course.py` | **One-shot. OVERWRITES.** Generates the seven `course/people/` pages (5 modules, bonus, dashboard) from the module and video manifest inside it. Not one of the eleven CI runs. Re-running it discards anything hand-edited into those pages, so change the manifest, not the output -- including the module heroes, so run `wire_course_heroes.py` after it. |
+| `restyle_profit_course.py` | **One-shot, idempotent.** Applies the course shell (two-column grid, numbered lesson index, module rail) to the seven hand-maintained `course/` Profit pages. They are transformed in place rather than regenerated because they carry copy no manifest models -- per-module framing paragraphs, the dashboard's welcome video and launch notice. A page already carrying `container course-grid` is skipped, so a second run does nothing. |
+| `wire_course_heroes.py` | **Re-runnable.** Puts the one-per-module hero photograph on the module pages of both courses, reading `width`/`height` from the file header. Adds a figure when an image appears, updates the dimensions when one is replaced, removes it when one is deleted. Run it AFTER `build_people_course.py`. |
 | `migrate_blog_urls.py` | One-shot: renamed blog files to slugs, added 301s |
 | `fix_contrast.py` | Raises colour pairings measured below WCAG AA |
 | `wire_course_downloads.py` | Adds `downloads.js` to the course pages with download links |
