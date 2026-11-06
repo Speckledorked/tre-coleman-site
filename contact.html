@@ -168,7 +168,7 @@
 </p>
 
 <h2 class="mb-1">Tell me about your operation</h2>
-<form action="https://formsubmit.co/hello@trecoleman.com" id="contactForm" method="POST">
+<form action="/.netlify/functions/contact-form" id="contactForm" method="POST">
 <div>
 <label for="f-name">Name *
               <input name="name" id="f-name" required=""/>
@@ -231,14 +231,11 @@
 </div>
 <!-- Anti-spam & metadata -->
 <input aria-hidden="true" aria-label="Leave this field empty" autocomplete="off" name="website" style="position:absolute;left:-9999px;" tabindex="-1" type="text"/>
-<input name="_subject" type="hidden" value="New Lead from TreColeman.co"/>
-<input name="_autoresponse" type="hidden" value="Thanks for reaching out — I'll review and reply shortly."/>
 <input name="utm_source" type="hidden"/>
 <input name="utm_medium" type="hidden"/>
 <input name="utm_campaign" type="hidden"/>
-<!-- Disable FormSubmit's reCAPTCHA so users aren't blocked -->
-<input name="_captcha" type="hidden" value="false"/>
-<button class="lg-cta" type="submit">Get my plan</button>
+<button class="lg-cta" type="submit" id="contactSubmit">Get my plan</button>
+<p class="form-status" id="contactStatus" role="status" aria-live="polite"></p>
 </form>
 </div>
 </section>
@@ -339,16 +336,80 @@
           }
         });
       })();
-      // Form validation - honeypot check only
-      document.getElementById('contactForm').addEventListener('submit', function(e) {
-        const form = this;
-        const hp = form.querySelector('[name="website"]');
-        // Honeypot: if filled, prevent submission
-        if (hp && hp.value.trim() !== '') {
+      /**
+       * Submit without leaving the page.
+       *
+       * This form used to POST straight to a third-party handler. When that
+       * host went down, the browser navigated away, hung, and landed the
+       * visitor on someone else's error page; the enquiry was lost and
+       * nobody was told. Submitting by fetch keeps the visitor here and
+       * means a failure can actually be shown to them -- and the form still
+       * works without JavaScript, because the action still points at the
+       * same function and it answers a plain POST with a redirect.
+       */
+      (function () {
+        const form = document.getElementById('contactForm');
+        const button = document.getElementById('contactSubmit');
+        const status = document.getElementById('contactStatus');
+        if (!form || !button || !status) return;
+
+        form.addEventListener('submit', async function (e) {
+          const hp = form.querySelector('[name="website"]');
+          // Honeypot: a field no person sees. If it is filled, a bot filled
+          // it; stop, and say nothing that would teach it otherwise.
+          if (hp && hp.value.trim() !== '') {
+            e.preventDefault();
+            return false;
+          }
+
           e.preventDefault();
-          return false;
+          const original = button.textContent;
+          button.disabled = true;
+          button.textContent = 'Sending…';
+          status.textContent = '';
+          status.className = 'form-status';
+
+          const payload = {};
+          new FormData(form).forEach(function (value, key) { payload[key] = value; });
+
+          try {
+            const response = await fetch(form.action, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            let body = {};
+            try { body = await response.json(); } catch (_) { /* not JSON */ }
+
+            if (response.ok && body.success) {
+              form.reset();
+              status.className = 'form-status is-ok';
+              status.textContent = 'Thanks — that is with me. I will review it and reply shortly.';
+              button.textContent = 'Sent';
+              return;
+            }
+            // Say what went wrong and leave what they typed in place, so a
+            // failure costs them a retry rather than the whole message.
+            status.className = 'form-status is-error';
+            status.textContent = body.error
+              || 'That did not send. Please email hello@trecoleman.com or call 540.807.9045.';
+          } catch (_) {
+            status.className = 'form-status is-error';
+            status.textContent =
+              'That did not send — you may be offline. Please email hello@trecoleman.com or call 540.807.9045.';
+          }
+          button.disabled = false;
+          button.textContent = original;
+        });
+
+        // A no-JS submit lands back here with ?error=1 if the function
+        // refused it.
+        if (new URLSearchParams(location.search).get('error')) {
+          status.className = 'form-status is-error';
+          status.textContent =
+            'That did not send. Please email hello@trecoleman.com or call 540.807.9045.';
         }
-      });
+      })();
 
       // Mobile dropdown toggle
       const dropdownToggles = document.querySelectorAll('.nav-dropdown > a');

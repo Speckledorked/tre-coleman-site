@@ -61,9 +61,21 @@ jobs:
           # but means nothing to a checker reading a file off disk; without it
           # lychee reports them as unresolvable rather than checking them.
           #
-          # formsubmit.co is excluded: Cloudflare returns 5xx to the GitHub
-          # runner (521 on 2026-10-30, 522 on 2026-10-19) while the service
-          # itself is live, so the check fails on a working link.
+          # The pattern is deliberately unanchored. --exclude matches the
+          # RESOLVED uri, and with --root-dir a root-relative href resolves to
+          # file:///home/runner/work/.../.netlify/functions/contact-form, so
+          # anchoring it to the start of the string never matched anything.
+          #
+          # /.netlify/functions/* is excluded because it CANNOT be checked
+          # here: a serverless endpoint is not a file in the publish
+          # directory, so lychee resolves the contact form's action to a path
+          # on disk and reports "File not found" for an endpoint that is
+          # perfectly fine. That the function exists, and that the form points
+          # at it, is asserted by tools/check_contact_form.js instead, which
+          # can look at the source tree properly.
+          #
+          # The formsubmit.co exclusion is gone with formsubmit itself: the
+          # contact form is handled on this site now, and nothing links there.
           args: >-
             --no-progress
             --include-fragments
@@ -75,7 +87,7 @@ jobs:
             --accept 200,206,429
             --exclude-path node_modules
             --exclude-path .lighthouseci
-            --exclude https://formsubmit\.co/.*
+            --exclude \.netlify/functions/
             './**/*.html' './**/*.md'
           fail: true
         env:
