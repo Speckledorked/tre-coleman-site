@@ -60,6 +60,14 @@ jobs:
       - name: Course registry and access tests
         run: node tools/check_courses.js
 
+      # The contact form's fields live in two places: the markup in
+      # contact.html and the list the function validates and emails. They can
+      # disagree without anything failing -- the form submits, the mail sends,
+      # and an answer the buyer gave is simply missing from it. This asserts
+      # they match, and that the honeypot is still there and still checked.
+      - name: Contact form field agreement
+        run: node tools/check_contact_form.js
+
       - name: Confirm the sitemap is current
         # The sitemap is generated. If regenerating it produces a diff, someone
         # hand-edited it or added a page without updating tools/build_sitemap.py.

@@ -1979,3 +1979,28 @@ body.ledger .module-hero__figure img {
   border-top: 2px solid var(--rule-strong);
   border-bottom: 1px solid var(--rule);
 }
+
+
+/* --- Form status -----------------------------------------------------------
+   What the contact form says after a submit. It used to say nothing, because
+   the submit navigated away to a third-party handler; when that handler was
+   down the visitor met someone else's error page and the enquiry was lost.
+   An error here is a real failure the visitor needs to act on, which is what
+   --loss is for, and the only place in this design language it is allowed.
+   -------------------------------------------------------------------------- */
+body.ledger .form-status {
+  margin: 1rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  min-height: 1.5rem;
+}
+body.ledger .form-status.is-ok {
+  color: var(--ink);
+  border-left: 3px solid var(--rule-strong);
+  padding-left: 0.875rem;
+}
+body.ledger .form-status.is-error {
+  color: var(--loss);
+  border-left: 3px solid var(--loss);
+  padding-left: 0.875rem;
+}
