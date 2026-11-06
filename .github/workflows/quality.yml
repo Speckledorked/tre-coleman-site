@@ -60,6 +60,10 @@ jobs:
           # pages link to /catering-profit.html, which is correct in production
           # but means nothing to a checker reading a file off disk; without it
           # lychee reports them as unresolvable rather than checking them.
+          #
+          # formsubmit.co is excluded: Cloudflare returns 5xx to the GitHub
+          # runner (521 on 2026-10-30, 522 on 2026-10-19) while the service
+          # itself is live, so the check fails on a working link.
           args: >-
             --no-progress
             --include-fragments
@@ -71,6 +75,7 @@ jobs:
             --accept 200,206,429
             --exclude-path node_modules
             --exclude-path .lighthouseci
+            --exclude https://formsubmit\.co/.*
             './**/*.html' './**/*.md'
           fail: true
         env:
