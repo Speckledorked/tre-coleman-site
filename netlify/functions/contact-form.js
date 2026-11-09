@@ -159,24 +159,29 @@ exports.handler = async (event) => {
     return done(200, { success: true });
   }
 
-  // Spam defence, part two: the page stamps when it loaded, and the
-  // submitter's script sends that stamp with the JSON submission. A real
-  // person takes at least a couple of seconds to fill the form in; a bot
-  // fires the instant it fetches the page, or replays a stale stamp hours
-  // later. Plain form-encoded submits (no JavaScript) carry no stamp and
-  // skip this check. A tripped check is answered as though it worked, as
-  // with the honeypot -- except a missing stamp, which a stale cached page
-  // can cause, and which gets a real error so the person can reload and
-  // retry instead of losing the enquiry silently.
-  if (wantsJson) {
-    const started = Number(fields.started);
-    if (!Number.isFinite(started)) {
-      return done(400, { error: 'Please reload the page and try again.' });
-    }
-    const age = Date.now() - started;
-    if (age < 2000 || age > 2 * 60 * 60 * 1000 || age < -5 * 60 * 1000) {
-      return done(200, { success: true });
-    }
+  // Spam defence, part two: the page stamps when it loaded into a hidden
+  // field, and that stamp comes back with the submission on every path.
+  // A real person takes at least a couple of seconds to fill the form in;
+  // a bot fires the instant it fetches the page, or replays a stale stamp
+  // long after. A submission with no stamp at all did not come from this
+  // page -- that includes a plain direct POST to the endpoint, which is
+  // how the spam was getting in after the first fix, because the check
+  // only ran on JSON submissions. A missing stamp gets a real error so
+  // the person can reload and retry instead of losing the enquiry
+  // silently; a tripped stamp is answered as though it worked, as with
+  // the honeypot. The no-JavaScript path carries no stamp, so without
+  // JavaScript the form now answers with the error page instead of
+  // sending -- the error tells the visitor to email directly.
+  if (String(fields.started || '').trim() === '') {
+    return done(400, { error: 'Please reload the page and try again.' });
+  }
+  const started = Number(fields.started);
+  if (!Number.isFinite(started)) {
+    return done(400, { error: 'Please reload the page and try again.' });
+  }
+  const age = Date.now() - started;
+  if (age < 2000 || age > 24 * 60 * 60 * 1000 || age < -5 * 60 * 1000) {
+    return done(200, { success: true });
   }
 
   // Spam defence, part three: no more than a handful of submissions from

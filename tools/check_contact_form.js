@@ -24,8 +24,8 @@ const fields = [...form.matchAll(/<(?:input|select|textarea)\b([^>]*)>/g)]
     name: a.match(/name="([^"]+)"/)[1],
     required: /\brequired\b/.test(a),
   }))
-  // The honeypot is deliberately not a real field.
-  .filter((f) => f.name !== 'website');
+  // The honeypot and the load-time stamp are deliberately not real fields.
+  .filter((f) => f.name !== 'website' && f.name !== 'started');
 
 // The form's action is excluded from the link checker, because a serverless
 // endpoint is not a file on disk and lychee can only report "File not found"
@@ -63,10 +63,13 @@ const names = new Set(fields.map((f) => f.name));
 for (const n of handled) {
   if (!names.has(n)) problems.push(`contact-form.js handles "${n}" but the form has no such field`);
 }
-// The honeypot must stay: it is the form's only spam defence.
+// The honeypot must stay: it is one of the form's spam defences.
 if (!/name="website"/.test(form)) problems.push('the honeypot field is gone from contact.html');
 if (!/position:absolute;left:-9999px/.test(form)) problems.push('the honeypot is no longer hidden');
 if (!/fields\.website/.test(fn)) problems.push('contact-form.js no longer checks the honeypot');
+// The load-time stamp must stay: it is what stops direct POSTs to the endpoint.
+if (!/name="started"/.test(form)) problems.push('the load-time stamp field is gone from contact.html');
+if (!/fields\.started/.test(fn)) problems.push('contact-form.js no longer checks the load-time stamp');
 
 if (problems.length) {
   console.error(`FAILED — contact form:\n${problems.map((p) => `  ${p}`).join('\n')}`);

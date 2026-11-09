@@ -231,6 +231,7 @@
 </div>
 <!-- Anti-spam & metadata -->
 <input aria-hidden="true" aria-label="Leave this field empty" autocomplete="off" name="website" style="position:absolute;left:-9999px;" tabindex="-1" type="text"/>
+<input name="started" type="hidden" value=""/>
 <input name="utm_source" type="hidden"/>
 <input name="utm_medium" type="hidden"/>
 <input name="utm_campaign" type="hidden"/>
@@ -353,10 +354,13 @@
         const status = document.getElementById('contactStatus');
         if (!form || !button || !status) return;
 
-        // When this page loaded, sent with the submission so the function
-        // can tell a typed enquiry from one fired the instant the page
-        // was fetched.
+        // When this page loaded, stamped into the hidden field so the
+        // function can tell a typed enquiry from one fired the instant
+        // the page was fetched. A submission without it did not come
+        // from this page.
         const pageLoadedAt = Date.now();
+        const startedField = form.querySelector('[name="started"]');
+        if (startedField) startedField.value = String(pageLoadedAt);
 
         form.addEventListener('submit', async function (e) {
           const hp = form.querySelector('[name="website"]');
@@ -376,7 +380,6 @@
 
           const payload = {};
           new FormData(form).forEach(function (value, key) { payload[key] = value; });
-          payload.started = pageLoadedAt;
 
           try {
             const response = await fetch(form.action, {
