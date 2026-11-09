@@ -353,6 +353,11 @@
         const status = document.getElementById('contactStatus');
         if (!form || !button || !status) return;
 
+        // When this page loaded, sent with the submission so the function
+        // can tell a typed enquiry from one fired the instant the page
+        // was fetched.
+        const pageLoadedAt = Date.now();
+
         form.addEventListener('submit', async function (e) {
           const hp = form.querySelector('[name="website"]');
           // Honeypot: a field no person sees. If it is filled, a bot filled
@@ -371,6 +376,7 @@
 
           const payload = {};
           new FormData(form).forEach(function (value, key) { payload[key] = value; });
+          payload.started = pageLoadedAt;
 
           try {
             const response = await fetch(form.action, {

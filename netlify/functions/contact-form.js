@@ -93,6 +93,23 @@ function parseBody(event) {
   return { fields, wantsJson: false };
 }
 
+// In-memory per-address submission counts, pruned as they age out. This
+// only holds within one warm function instance, so it blunts a flood from
+// one address rather than stopping a distributed one.
+const SUBMISSIONS_BY_IP = new Map();
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 5;
+function rateLimited(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  const recent = (SUBMISSIONS_BY_IP.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_MAX) return true;
+  recent.push(now);
+  SUBMISSIONS_BY_IP.set(ip, recent);
+  if (SUBMISSIONS_BY_IP.size > 5000) SUBMISSIONS_BY_IP.clear();
+  return false;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -139,6 +156,40 @@ exports.handler = async (event) => {
   // never sees and a bot fills in. Answer as though it worked -- telling a
   // bot it was caught only teaches it to stop filling the field in.
   if (String(fields.website || '').trim() !== '') {
+    return done(200, { success: true });
+  }
+
+  // Spam defence, part two: the page stamps when it loaded, and the
+  // submitter's script sends that stamp with the JSON submission. A real
+  // person takes at least a couple of seconds to fill the form in; a bot
+  // fires the instant it fetches the page, or replays a stale stamp hours
+  // later. Plain form-encoded submits (no JavaScript) carry no stamp and
+  // skip this check. A tripped check is answered as though it worked, as
+  // with the honeypot -- except a missing stamp, which a stale cached page
+  // can cause, and which gets a real error so the person can reload and
+  // retry instead of losing the enquiry silently.
+  if (wantsJson) {
+    const started = Number(fields.started);
+    if (!Number.isFinite(started)) {
+      return done(400, { error: 'Please reload the page and try again.' });
+    }
+    const age = Date.now() - started;
+    if (age < 2000 || age > 2 * 60 * 60 * 1000 || age < -5 * 60 * 1000) {
+      return done(200, { success: true });
+    }
+  }
+
+  // Spam defence, part three: no more than a handful of submissions from
+  // one address in a short window. Over the limit, answer as though the
+  // submission worked.
+  const forwarded = event.headers['x-forwarded-for'] || event.headers['X-Forwarded-For'] || '';
+  const clientIp = (event.headers['x-nf-client-connection-ip']
+    || event.headers['X-Nf-Client-Connection-Ip']
+    || forwarded.split(',')[0]
+    || event.headers['client-ip']
+    || event.headers['Client-Ip']
+    || '').trim();
+  if (rateLimited(clientIp)) {
     return done(200, { success: true });
   }
 
