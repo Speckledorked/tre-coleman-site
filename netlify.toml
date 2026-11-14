@@ -118,6 +118,28 @@
 #   curl -so /dev/null -w '%{http_code}' <site>/course/downloads/bonus/90_Day_Implementation_Plan.pdf
 # 401 is correct. 200 means the rewrite is not matching and the files are open.
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Short ways back into a paid course.
+#
+# /course and /dashboard both answered 404: course/ is a directory with no
+# index, so the obvious URL a student would type led nowhere. They now land on
+# the dashboard, which checks the session itself and sends anyone not signed
+# in to /login.html?redirect=... -- and login.html honours that parameter, so
+# they arrive back at the dashboard rather than being dumped on the home page.
+#
+# Exact paths, not wildcards: /course/* would swallow the download rewrite
+# below and every module page with it.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/course"
+  to = "/course/dashboard.html"
+  status = 302
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/course/dashboard.html"
+  status = 302
+
 [[redirects]]
   from = "/course/downloads/*"
   to = "/.netlify/functions/course-download?file=:splat"

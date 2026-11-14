@@ -26,6 +26,13 @@ Six different nav variants existed before this ran. Run from the repo root:
 import glob
 import re
 
+# The last item is the course login. It lived only in the footer, so the way
+# back into a paid course was to scroll to the bottom of whatever page you had
+# landed on. It is last, and outlined rather than filled: it serves the few who
+# have already paid and must not compete with the Snapshot chip, which is the
+# one action a first-time visitor should take. ledger.css only draws the
+# outline above 1080px, because the extra width wraps the bar onto two rows
+# just above the mobile breakpoint.
 NAV = """<nav id="mainNav">
           <ul>
             <li><a href="{p}profit-leak-snapshot.html" class="nav-cta">Snapshot</a></li>
@@ -56,6 +63,7 @@ NAV = """<nav id="mainNav">
             </li>
             <li><a href="{p}about.html">About</a></li>
             <li><a href="{p}contact.html">Contact</a></li>
+            <li class="nav-login"><a href="{p}login.html" class="nav-login-link">Log in</a></li>
           </ul>
         </nav>"""
 
