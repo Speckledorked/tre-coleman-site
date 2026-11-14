@@ -2004,3 +2004,35 @@ body.ledger .form-status.is-error {
   border-left: 3px solid var(--loss);
   padding-left: 0.875rem;
 }
+
+
+/* --- The course login in the nav -------------------------------------------
+
+   A student who has paid needs a way back in. This lived only in the footer,
+   so the route into a paid course was to scroll to the bottom of whatever
+   page you had landed on.
+
+   Outlined, not filled, and last in the list. The filled chip is Snapshot,
+   the one action a first-time visitor should take, and two filled chips in
+   one bar means neither reads as primary. A hairline box is enough to find
+   by eye without competing.
+
+   Desktop only: below 1024px the nav is a stacked slide-out panel whose
+   items are divided by rules already, and a box inside that reads as a
+   stray button rather than a nav item.
+   -------------------------------------------------------------------------- */
+/* The outline costs about 28px of bar width, which is enough to wrap the
+   nav onto two rows between 1025px and roughly 1060px -- just above the
+   breakpoint where the menu becomes a slide-out panel. Measured, not
+   guessed: at 1025px the eight-item bar fits on one row and a bordered
+   ninth does not. So the box only appears once there is room for it, and in
+   that narrow band the link is plain text, which still reads as a nav item. */
+@media screen and (min-width: 1080px) {
+  body.ledger #mainNav a.nav-login-link {
+    border: 1px solid var(--rule-strong);
+    padding: 0.4375rem 0.8125rem;
+  }
+  body.ledger #mainNav a.nav-login-link:hover {
+    border-color: var(--loss);
+  }
+}
